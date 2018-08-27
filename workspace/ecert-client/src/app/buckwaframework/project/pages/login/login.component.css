@@ -1,0 +1,16 @@
+div1 {
+    background-color: lightblue;
+}
+
+.ui.footer {
+    background-color: #fff;
+    position: absolute;
+    margin-top: -50px;
+    left: 0;
+    width: 100%;
+    padding: 15px 0;
+  }
+ .ui.four  {
+    background-color: #0A6197;
+    width: 100%;
+  }
