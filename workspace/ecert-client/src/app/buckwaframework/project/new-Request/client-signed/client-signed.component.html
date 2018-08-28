@@ -77,13 +77,13 @@
         <br>
         <br>
         <div style="overflow-x: scroll">
-          <table class="ui small celled table" style="width: 120%">
+          <table class="ui small celled table display" id="table1" style="width: 120%">
             <thead>
               <tr style="text-align: center;">
-                <th rowspan="2">เอกสารที่ให้บริการ</th>
-                <th rowspan="2">ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</th>
-                <th rowspan="2">ค่าบริการของธนาคาร</th>
-                <th rowspan="2">จำนวน (ฉบับ/หน้า/เรื่อง) </th>
+                <th>เอกสารที่ให้บริการ</th>
+                <th>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</th>
+                <th>ค่าบริการของธนาคาร</th>
+                <th>จำนวน (ฉบับ/หน้า/เรื่อง) </th>
               </tr>
             </thead>
             <tbody>
@@ -268,7 +268,7 @@
         <br>
         <br>
         <div class="ui center aligned grid">
-          <button class="ui mini primary button">
+          <button class="ui mini primary button" (click)="popupAddData()">
             ยื่นใบคำขอ
           </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <button class="ui mini primary button">
@@ -285,5 +285,53 @@
       <br>
     </div>
 
+  </div>
+</div>
+
+
+<div id="modal2" class="ui modal small hidden transition" style="height: 0;">
+  <i class="close icon"></i>
+  <div class="header">
+    ดำเนินการชำระเงิน
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="four wide field">
+          <label>ใบคำขอหนังสือรับรองนิติบุคคล</label>
+        </div>
+        <div class="four wide field">
+          <input type="file" value="" />
+        </div>
+      </div>
+      <div class="inline fields">
+          <div class="four wide field">
+            <label>หนังสือยินยอมให้หักเงินจากบัญชีเงินฝากเพื่อชำระค่าธรรมเนียมฯ</label>
+          </div>
+          <div class="four wide field">
+            <input type="file" value="" />
+          </div>
+        </div>
+
+
+    </div>
+    <div class="ui grid">
+      <div class="three wide column"></div>
+      <div class="eight wide column">
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="six wide column">
+        <button class="ui mini primary button" (click)="closePopupAdd()">
+          บันทึกคำขอ
+        </button>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <button class="ui mini primary button" (click)="closePopupAdd()">
+          ยกเลิก
+        </button>
+      </div>
+    </div>
   </div>
 </div>
