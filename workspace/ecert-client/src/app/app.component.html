@@ -1,31 +1,81 @@
-<div class="ui borderless menu fixed" style="background: 	rgb(255, 255, 255);z-index: 999999;height: 75px;"> 
-    <img class="logo" src="../assets/image/TMB.png" style="width: 240px; height:65px; margin-left: 100px ;"> 
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)"  [routerLink]="[ '/performa']" >
-        ตรวจสอบติดตามผลการดำเนินการ        
-    </div> 
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)"  >
-        ยื่นแบบคำขอเอกสารใบรับรอง
+<div id="modal" class="ui modal small hidden transition" style="height: 0;">
+    <i class="close icon"></i>
+    <div class="header">
+        Request Form สำหรับลูกค้าทำรายการเอง
+
+    </div>
+
+    <div class="content">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="eight wide field">
+                    <label class="custom-label-w-15">บัตรประชาชน</label>
+                    <input type="file" value="" />
+                </div>
+            </div>
+        </div>
+
+        <div class="ui grid">
+            <div class="three wide column"></div>
+            <div class="eight wide column">
+
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui center aligned grid">
+            <div class="six wide column">
+                <button class="ui mini primary button" [routerLink]="['/performa']" (click)="closePopupAdd()">
+                    ตกลง
+                </button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <button class="ui mini primary button" (click)="closePopupAdd()">
+                    ยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui borderless menu fixed" style="background: 	rgb(255, 255, 255);z-index: 999999;height: 75px;">
+    <img class="logo" src="../assets/image/TMBLogo.png" style="width: 240px; height:65px; margin-left: 100px ;">
+    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
+        ตรวจสอบสถานะคำขอ
+    </div>
+    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
+        ทำคำขอใหม่
         <i class="dropdown icon "></i>
         <div class="menu ">
-            <a class="item " [routerLink]="[ '/performa'] " routerLinkActive="active ">พิมพ์แบบฟอร์มให้ลูกค้าลงนาม
+            <a class="item " (click)="popupAddData()" routerLinkActive="active ">Request Form สำหรับลูกค้าทำรายการเอง
+
             </a>
-            <a class="item " [routerLink]="[ '/epa02/1'] " routerLinkActive="active ">บันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม
+            <a class="item " routerLinkActive="active" [routerLink]="[ '/client-signed']">Request Form สำหรับทำรายการให้ลูกค้าลงนาม
             </a>
         </div>
-    </div> 
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" >
+    </div>
+    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
         รายงาน
         <i class="dropdown icon "></i>
         <div class="menu ">
-            <a class="item " [routerLink]="[ '/epa01/1'] " routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Day
+            <a class="item " [routerLink]="[ '/e-certificate-day'] " routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Day
+
             </a>
-            <a class="item " [routerLink]="[ '/epa02/1'] " routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Monthly
+            <a class="item " [routerLink]="[ '/e-certificate-monthly']" routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Monthly
+
+            </a>
+            <a class="item " [routerLink]="[ '/output-VAT']" routerLinkActive="active ">รายงาน Output VAT
+
             </a>
         </div>
-    </div> 
-  </div>
+    </div>
+</div>
 
-<div class="ui main  container ">   
+<div class="ui main  container">
     <router-outlet></router-outlet>
 </div>
 
+<div class="ui vertical footer" style="position: absolute; background:rgb(255, 255, 255);z-index: 999999;height: 100px;width: 100%;">
+    <div class="ui center aligned container ">
+        <p>© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
+    </div>
+</div>

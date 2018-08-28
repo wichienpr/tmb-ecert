@@ -1,0 +1,140 @@
+<div class="ui grid">
+    <div class="sixteen wide column">
+      <h2 class="ui header">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Monthly
+      </h2>
+  
+      <div class="ui top attached header segment">
+        <span>ระบุเงื่อนไขในการค้นหา </span>
+      </div>
+  
+  
+      <div class="ui attached segment">
+        <div class="ui form">
+          <div class="inline fields">
+              <div class="five wide field"></div>
+            <div class="one wide field">
+              <label class="custom-label-w-25">เดือน</label>
+            </div>
+            <div class="five wide field">
+              <div class="ui calendar" id="calendar1" style="width:100%">
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="startDate" id="startDate">
+                </div>
+              </div>
+            </div>          
+          </div>
+  
+        </div>
+        <br>
+        <br>
+        <div class="ui center aligned grid">
+  
+          <button class="ui mini primary button" (click)="searchData()">
+            <i class="search icon"></i>
+            ค้นหา
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui mini button" (click)="clearData()">
+            ล้างข้อมูล
+          </button>
+          <br>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="ui segment" *ngIf="showData">  
+          <br>  
+          <br>
+          <div style="overflow-x: scroll">
+            <table class="ui small celled table" style="width: 120%">
+              <thead>
+                <tr style="text-align: center;">
+                  <th rowspan="2">เลขที่คำขอ</th>
+                  <th rowspan="2">เลขที่นิติบุคคล</th>
+                  <th rowspan="2">ชื่อนิติบุคคล</th>
+                  <th rowspan="2">Segment </th>
+                  <th rowspan="2">ประเภทคำขอ</th>
+                  <th colspan="2">จำนวนเงิน : บาท</th>               
+                  <th rowspan="2">รวม</th>                 
+                  <th rowspan="2">Marker</th>
+                  <th rowspan="2">Checker</th>                
+                  <th rowspan="2">หมายเหตุ</th>
+                </tr>
+                <tr>
+                  <th>DBD </th>
+                  <th>TMB</th>
+                </tr>
+              </thead>
+              <tbody>
+                  
+                  <tr>
+                      <td>61100920717022</td>
+                      <td>1023456321234</td>
+                      <td>บริษัท เอ</td>
+                      <td>Segment1</td>
+                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                      <td>200.00</td>
+                      <td>150.00</td>
+                      <td>350.00</td>
+                      <td>นาย ก maker</td>
+                      <td>นาย ข checker</td>
+                      <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                      <td>61100920717023</td>
+                      <td>2023456321234</td>
+                      <td>บริษัท บี</td>
+                      <td>Segment1</td>
+                      <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                      <td>200.00</td>
+                      <td>150.00</td>
+                      <td>350.00</td>
+                      <td>นาย ก maker</td>
+                      <td>นาย ข checker</td>
+                      <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                      <td>61100920717024</td>
+                      <td>3023456321234</td>
+                      <td>บริษัท ซี</td>
+                      <td>Segment1</td>
+                      <td>สมาคมและหอการค้า</td>
+                      <td>200.00</td>
+                      <td>150.00</td>
+                      <td>350.00</td>
+                      <td>นาย ก maker</td>
+                      <td>นาย ข checker</td>
+                      <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                      <td>61100920717025</td>
+                      <td>4023456321234</td>
+                      <td>บริษัท เอ1</td>
+                      <td>Segment1</td>
+                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                      <td>200.00</td>
+                      <td>150.00</td>
+                      <td>350.00</td>
+                      <td>นาย ก maker</td>
+                      <td>นาย ข checker</td>
+                      <td>&nbsp;</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <br>
+         
+  
+          <div class="ui center aligned grid">
+            <button class="ui primary mini button">
+              Export to PDF
+            </button>         
+          </div>
+          <br>
+          <br>
+  
+        </div>
+      </div>
+    </div>

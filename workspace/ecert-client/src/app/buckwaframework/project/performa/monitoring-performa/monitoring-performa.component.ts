@@ -7,29 +7,67 @@ declare var $: any;
   styleUrls: ['./monitoring-performa.component.css']
 })
 export class MonitoringPerformaComponent implements OnInit {
-  
+  products: String[];  
+  showData: boolean = false;
+   actionStatus :String[];
+  selectProduct: String;
+  selectactionStatus :String;
   constructor() {
-    
+    this.products = [
+      "ทั้งหมด",
+      "ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด",    
+      "การประกอบธุรกิจของคนต่างด้าว",
+      "สมาคมและหอการค้า",       
+    ];
+    this.actionStatus = [
+      "ทั้งหมด",
+      "New",
+      "In Process",  
+      "Waiting Payment",
+      "Payment Complete",       
+
+      "Payment Incomplete",
+      "Upload to ECM Complete",
+      "Upload to ECM Incomplete",  
+      "Upload to e-Certificate Complete",
+      "Upload to e-Certificate Incomplete",
+      "Cancel",
+      "Waiting Request Form"  
+    ];
   
    }
 
   ngOnInit() {
-    $("#calendarLast").calendar({
-      startCalendar: $("#calendarFront"),
-      maxDate: new Date(),
-      type: "month",
-      text: TextDateTH,
+    
+    // $("#calendar1").calendar({    
+    //   maxDate: new Date(),
+    //   type: "month",
+    //   text: TextDateTH
   
-    });
+    // });
 
-    $("#calendarLast").calendar({
-      startCalendar: $("#calendarLast"),
-      maxDate: new Date(),
-      type: "month",
-      text: TextDateTH,
+    // $("#calendar2").calendar({    
+    //   maxDate: new Date(),
+    //   type: "month",
+    //   text: TextDateTH
   
-    });
+    // });
 
+}
+onSelectProducts = event => {
+  this.selectProduct = this.products[event.target.value];
+};
+
+onSelectactionStatus = event => {
+  this.selectProduct = this.products[event.target.value];
+};
+
+searchData(): void {
+  this.showData = true;
+}
+
+clearData(): void {
+  this.showData = false;
 }
 
 }

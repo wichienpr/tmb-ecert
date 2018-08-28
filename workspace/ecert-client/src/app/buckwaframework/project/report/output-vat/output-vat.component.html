@@ -1,0 +1,221 @@
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <h2 class="ui header">รายงาน Output VAT
+    </h2>
+
+    <div class="ui top attached header segment">
+      <span>ระบุเงื่อนไขในการค้นหา </span>
+    </div>
+
+
+    <div class="ui attached segment">
+      <div class="ui form">
+
+
+        <div class="inline fields">
+          <div class="two wide field ">
+            <label>เดือนปีภาษี
+            </label>
+          </div>
+          <div class="five wide field">
+            <div class="ui calendar" id="calendar1" style="width:100%">
+              <div class="ui input left icon">
+                <i class="time icon"></i>
+                <input type="text" name="startDate" id="startDate">
+              </div>
+            </div>
+          </div>
+          <div class="three wide field ">
+            <label>เลขประจำตัวผู้เสียภาษีอากร
+            </label>
+          </div>
+          <div class="five wide field ">
+            <input type="text" placeholder="" value="">
+          </div>
+
+        </div>
+
+        <div class="inline fields">
+          <div class="two wide field ">
+            <label>ชื่อผู้ประกอบการ </label>
+          </div>
+          <div class="five wide field ">
+            <input type="text" placeholder="" value="">
+          </div>
+        </div>
+
+      </div>
+      <br>
+      <br>
+      <div class="ui center aligned grid">
+
+        <button class="ui mini primary button" (click)="searchData()">
+          <i class="search icon"></i>
+          ค้นหา
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui mini button" (click)="clearData()">
+          ล้างข้อมูล
+        </button>
+        <br>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="ui segment" *ngIf="showData">
+
+        <h4>ผลการค้นหา
+        </h4>
+        <br>
+        <div class="ui form">
+          <div class="inline fields">
+            <div class="one wide field "></div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="three wide field ">
+              <h5>ชื่อผู้ประกอบการ
+              </h5>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            
+            <div class="three wide field ">
+              นาย ประกอบการ ร่ำรวย
+            </div>
+            <div class="five wide field ">
+              <h5>เลขประจำตัวผู้เสียภาษีอากรชื่อผู้ประกอบการ
+              </h5>
+            </div>
+            <div class="one wide field "></div>
+            <div class="five wide field ">
+              1234567843762
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="one wide field "></div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="three wide field ">
+              <h5>ชื่อสถานประกอบการ
+              </h5>
+            </div>
+            <div class="three wide field ">
+              บริษัท ตั้งเจริญ
+            </div>
+            <div class="five wide field ">
+              <h5>สำนักงานใหญ่/สาขา
+              </h5>
+            </div>
+            <div class="one wide field "></div>
+            <div class="five wide field ">
+              -
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="one wide field "></div>
+            <div class="three wide field ">
+              <h5>ที่อยู่สถานประกอบการ
+              </h5>
+            </div>
+            <div class="seven wide field ">
+              เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <br>
+        <div style="overflow-x: scroll">
+          <table class="ui small celled table" style="width: 120%">
+            <thead>
+              <tr style="text-align: center;">
+                <th rowspan="2">ลำดับ</th>
+                <th rowspan="2">วันที่</th>
+                <th rowspan="2">เลขที่คำขอ</th>
+                <th rowspan="2"> เลขที่นิติบุคคล</th>
+                <th rowspan="2">ชื่อนิติบุคคล</th>
+                <th rowspan="2">Segment</th>
+                <th rowspan="2">ประเภทคำขอ</th>
+                <th colspan="2">จำนวนเงิน : บาท</th>
+                <th rowspan="2">รวม</th>
+                <th rowspan="2">Marker</th>
+                <th rowspan="2">Checker</th>
+                <th rowspan="2">หมายเหตุ</th>
+              </tr>
+              <tr>
+                <th>DBD </th>
+                <th>TMB</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td style="text-align: center;">1</td>
+                <td>01/01/2561</td>
+                <td>61100920717022</td>
+                <td>1023456321234</td>
+                <td>บริษัท เอ</td>
+                <td>Segment1</td>
+                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                <td>200.00</td>
+                <td>150.00</td>
+                <td>350.00</td>
+                <td>นาย ก maker</td>
+                <td>นาย ข checker</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">2</td>
+                <td>01/01/2561</td>
+                <td>61100920717023</td>
+                <td>2023456321234</td>
+                <td>บริษัท บี</td>
+                <td>Segment1</td>
+                <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                <td>200.00</td>
+                <td>150.00</td>
+                <td>350.00</td>
+                <td>นาย ก maker</td>
+                <td>นาย ข checker</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">3</td>
+                <td>01/01/2561</td>
+                <td>61100920717024</td>
+                <td>3023456321234</td>
+                <td>บริษัท ซี</td>
+                <td>Segment1</td>
+                <td>สมาคมและหอการค้า</td>
+                <td>200.00</td>
+                <td>150.00</td>
+                <td>350.00</td>
+                <td>นาย ก maker</td>
+                <td>นาย ข checker</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">4</td>
+                <td>01/01/2561</td>
+                <td>61100920717025</td>
+                <td>4023456321234</td>
+                <td>บริษัท เอ1</td>
+                <td>Segment1</td>
+                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                <td>200.00</td>
+                <td>150.00</td>
+                <td>350.00</td>
+                <td>นาย ก maker</td>
+                <td>นาย ข checker</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <br>
+
+
+        <br>
+        <br>
+
+      </div>
+    </div>
+  </div>
