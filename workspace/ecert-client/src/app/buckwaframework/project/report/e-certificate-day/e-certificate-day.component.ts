@@ -22,6 +22,10 @@ export class ECertificateDayComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    $("#table").DataTable();
+  }
+
   onSelectProducts = event => {
     this.selectProduct = this.products[event.target.value];
   };
@@ -29,6 +33,11 @@ export class ECertificateDayComponent implements OnInit {
 
   searchData(): void {
     this.showData = true;
+    setTimeout(() => {
+      $("#table").DataTable({
+        scrollX: true
+      });
+    }, 200);
   }
   
   clearData(): void {
