@@ -37,21 +37,24 @@ export class MonitoringPerformaComponent implements OnInit {
   
    }
 
+   ngAfterViewInit() {
+    $("#table").DataTable();
+  }
   ngOnInit() {
     
-    // $("#calendar1").calendar({    
-    //   maxDate: new Date(),
-    //   type: "month",
-    //   text: TextDateTH
+    $("#calendar1").calendar({    
+      maxDate: new Date(),
+      type: "date",
+      text: TextDateTH
   
-    // });
+    });
 
-    // $("#calendar2").calendar({    
-    //   maxDate: new Date(),
-    //   type: "month",
-    //   text: TextDateTH
+    $("#calendar2").calendar({    
+      maxDate: new Date(),
+      type: "date",
+      text: TextDateTH
   
-    // });
+    });
 
 }
 onSelectProducts = event => {
@@ -62,10 +65,17 @@ onSelectactionStatus = event => {
   this.selectProduct = this.products[event.target.value];
 };
 
+
+
 searchData(): void {
   this.showData = true;
+  setTimeout(() => {
+    $("#table").DataTable({
+      scrollX: true,
+      searching :false
+    });
+  }, 200);
 }
-
 clearData(): void {
   this.showData = false;
 }
