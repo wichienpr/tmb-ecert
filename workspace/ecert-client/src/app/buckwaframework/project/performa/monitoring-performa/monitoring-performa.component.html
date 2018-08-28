@@ -1,44 +1,35 @@
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">ตรวจสอบสถานะคำขอ
-    </h2>  
+    </h2>
 
     <div class="ui top attached header segment">
       <span>สถานะการทำงาน </span>
     </div>
     <div class="ui attached segment">
       <br>
-     <div class="ui form">
-      <div class="inline fields">        
-          <div class="sixteen wide field ">
-              <b>
-                  <a href="#" class="ui  aligned item grid" style="color: #000;">
-                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                    <u>New (1)</u>
-                  </a>
-                </b>
-                <b>
-                    <a href="#" class="ui  aligned item grid" style="color: #000;">
-                      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      <u>In Process (1)</u>
-                    </a>
-                  </b>
-                  <b>
-                      <a href="#" class="ui  aligned item grid" style="color: #000;">
-                        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                        <u>Waiting Paymen (1)</u>
-                      </a>
-                    </b>
-                    <b>
-                        <a href="#" class="ui  aligned item grid" style="color: #000;">
-                          &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                          <u>Payment Complete (1)</u>
-                        </a>
-                      </b>
-                   
-          </div>
-        
-        </div>
+
+      <div class=" ui grid">
+
+        <a (click)="searchData()" class=" aligned  four wide  column" style="color: #000;  cursor: pointer">
+
+          <u>New (1)</u>
+
+        </a>
+
+        <a (click)="searchData()" class=" aligned four wide  column " style="color: #000;  cursor: pointer">
+          <u>In Process (1)</u>
+
+        </a>
+        <a (click)="searchData()" class=" aligned four wide  column" style="color: #000;  cursor: pointer">
+          <u>Waiting Payment 1 (1)</u>
+        </a>
+        <a (click)="searchData()" class="  aligned four wide  column" style="color: #000; cursor: pointer">
+          <u>Payment Incomplete 1 (1)</u>
+        </a>
+
+
+
       </div>
       <br>
     </div>
@@ -135,7 +126,6 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-
         <button class="ui mini primary button" (click)="searchData()">
           <i class="search icon"></i>
           ค้นหา
@@ -146,179 +136,173 @@
         <br>
       </div>
       <br>
-      <br>
-      <br>
-      <br>
+
       <div class="ui segment" *ngIf="showData">
-
-        <br>
-
-        <br>
-        <div>
-          <table class="ui small celled table nowrap" id="table" style="width: 100%">
-            <thead>
-              <tr style="text-align: center;">
-                <th class="collapsing">ลำดับ</th>
-                <th>วันที่ยื่นคำขอ</th>
-                <th>เลขที่อ้างอิง</th>
-                <th>เลขที่คำขอ</th>
-                <th>ประเภทคำขอ</th>
-                <th>เลขที่นิติบุคคล </th>
-                <th>ชื่อบริษัท</th>
-                <th>สถานะดำเนินการ</th>
-                <th>Action</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="text-align: right">1</td>
-                <td> 01/01/2561</td>
-                <td>01012561000001</td>
-                <td>-</td>
-                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                <td>1023456321234</td>
-                <td>บริษัท เอ</td>
-                <td>New</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">2</td>
-                <td>01/01/2561</td>
-                <td>01012561000002</td>
-                <td>-</td>
-                <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                <td>2023456321234</td>
-                <td>บริษัท บี</td>
-                <td>In Process</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">3</td>
-                <td>01/01/2561</td>
-                <td>01012561000003</td>
-                <td>-</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>3023456321234</td>
-                <td>บริษัท ซี</td>
-                <td>Waiting Payment</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                  <td style="text-align: right">4</td>
-                <td>01/01/2561</td>
-                <td>01012561000004</td>
-                <td>61100920717022</td>
-                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                <td>4023456321234</td>
-                <td>บริษัท เอ1</td>
-                <td>Payment Complete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">5</td>
-                <td>01/01/2561</td>
-                <td>01012561000005</td>
-                <td>61100920717022</td>
-                <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                <td>5023456321234</td>
-                <td>บริษัท บี1</td>
-                <td>Payment Incomplete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">6</td>
-                <td>01/01/2561</td>
-                <td>01012561000006</td>
-                <td>61100920717022</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>6023456321234</td>
-                <td>บริษัท ซี1</td>
-                <td>Upload to ECM Complete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr >
-                <td style="text-align: right">7</td>
-                <td>01/01/2561</td>
-                <td>01012561000007</td>
-                <td>61100920717022</td>
-                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                <td>7023456321234</td>
-                <td>บริษัท เอ2</td>
-                <td>Upload to ECM Incomplete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">8</td>
-                <td>01/01/2561</td>
-                <td>01012561000008</td>
-                <td>61100920717022</td>
-                <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                <td>8023456321234</td>
-                <td>บริษัท บี2</td>
-                <td>Upload to e-Certificate Complete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right" >9</td>
-                <td>01/01/2561</td>
-                <td>01012561000009</td>
-                <td>61100920717022</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>9023456321234</td>
-                <td>บริษัท ซี2</td>
-                <td>Upload to e-Certificate Incomplete</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">10</td>
-                <td>01/01/2561</td>
-                <td>01012561000010</td>
-                <td>-</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>9023456321235</td>
-                <td>บริษัท ซี3</td>
-                <td>Cancel</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: right">11</td>
-                <td>01/01/2561</td>
-                <td>01012561000010</td>
-                <td>-</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>9023456321236</td>
-                <td>บริษัท ซี4</td>
-                <td>Waiting Request Form</td>
-                <td>
-                  <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
+        <div class="two wide field ">
+          <b>ผลการค้นหา</b>
         </div>
+        <table class="ui small celled table" id="table" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th class="collapsing">ลำดับ</th>
+              <th>วันที่ยื่นคำขอ</th>
+              <th>เลขที่อ้างอิง</th>
+              <th>เลขที่คำขอ</th>
+              <th>ประเภทคำขอ</th>
+              <th>เลขที่นิติบุคคล </th>
+              <th>ชื่อบริษัท</th>
+              <th>สถานะดำเนินการ</th>
+              <th>Action</th>
 
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: right">1</td>
+              <td> 01/01/2561</td>
+              <td>01012561000001</td>
+              <td>-</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>1023456321234</td>
+              <td>บริษัท เอ</td>
+              <td>New</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">2</td>
+              <td>01/01/2561</td>
+              <td>01012561000002</td>
+              <td>-</td>
+              <td>การประกอบธุรกิจของคนต่างด้าว</td>
+              <td>2023456321234</td>
+              <td>บริษัท บี</td>
+              <td>In Process</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">3</td>
+              <td>01/01/2561</td>
+              <td>01012561000003</td>
+              <td>-</td>
+              <td>สมาคมและหอการค้า</td>
+              <td>3023456321234</td>
+              <td>บริษัท ซี</td>
+              <td>Waiting Payment</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">4</td>
+              <td>01/01/2561</td>
+              <td>01012561000004</td>
+              <td>61100920717022</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>4023456321234</td>
+              <td>บริษัท เอ1</td>
+              <td>Payment Complete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">5</td>
+              <td>01/01/2561</td>
+              <td>01012561000005</td>
+              <td>61100920717022</td>
+              <td>การประกอบธุรกิจของคนต่างด้าว</td>
+              <td>5023456321234</td>
+              <td>บริษัท บี1</td>
+              <td>Payment Incomplete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">6</td>
+              <td>01/01/2561</td>
+              <td>01012561000006</td>
+              <td>61100920717022</td>
+              <td>สมาคมและหอการค้า</td>
+              <td>6023456321234</td>
+              <td>บริษัท ซี1</td>
+              <td>Upload to ECM Complete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">7</td>
+              <td>01/01/2561</td>
+              <td>01012561000007</td>
+              <td>61100920717022</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>7023456321234</td>
+              <td>บริษัท เอ2</td>
+              <td>Upload to ECM Incomplete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">8</td>
+              <td>01/01/2561</td>
+              <td>01012561000008</td>
+              <td>61100920717022</td>
+              <td>การประกอบธุรกิจของคนต่างด้าว</td>
+              <td>8023456321234</td>
+              <td>บริษัท บี2</td>
+              <td>Upload to e-Certificate Complete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">9</td>
+              <td>01/01/2561</td>
+              <td>01012561000009</td>
+              <td>61100920717022</td>
+              <td>สมาคมและหอการค้า</td>
+              <td>9023456321234</td>
+              <td>บริษัท ซี2</td>
+              <td>Upload to e-Certificate Incomplete</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">10</td>
+              <td>01/01/2561</td>
+              <td>01012561000010</td>
+              <td>-</td>
+              <td>สมาคมและหอการค้า</td>
+              <td>9023456321235</td>
+              <td>บริษัท ซี3</td>
+              <td>Cancel</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">11</td>
+              <td>01/01/2561</td>
+              <td>01012561000010</td>
+              <td>-</td>
+              <td>สมาคมและหอการค้า</td>
+              <td>9023456321236</td>
+              <td>บริษัท ซี4</td>
+              <td>Waiting Request Form</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

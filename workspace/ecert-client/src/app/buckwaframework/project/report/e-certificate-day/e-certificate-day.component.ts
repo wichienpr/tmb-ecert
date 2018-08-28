@@ -23,13 +23,13 @@ export class ECertificateDayComponent implements OnInit {
   ngOnInit() {
     $("#calendar1").calendar({    
       maxDate: new Date(),
-      type: "month",
+      type: "date",
       text: TextDateTH
   
     });
     $("#calendar2").calendar({    
       maxDate: new Date(),
-      type: "month",
+      type: "date",
       text: TextDateTH
   
     });
@@ -49,7 +49,14 @@ export class ECertificateDayComponent implements OnInit {
     setTimeout(() => {
       $("#table").DataTable({
         scrollX: true,
-        searching :false
+        searching :false,
+        "columnDefs": [{
+          "targets": 7,
+          "orderable": false
+        },{
+          "targets": 8,
+          "orderable": false
+        }]
       });
     }, 200);
   }

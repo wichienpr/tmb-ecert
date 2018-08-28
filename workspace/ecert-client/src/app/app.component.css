@@ -13,6 +13,11 @@
   box-sizing: border-box;
 }
 
+.visible.transition {
+  height: auto !important;
+  position: absolute;
+}
+
 .wireframe {
   margin-top: 2em;
 }

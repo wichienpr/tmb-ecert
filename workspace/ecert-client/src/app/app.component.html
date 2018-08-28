@@ -1,4 +1,4 @@
-<div id="modal" class="ui modal small hidden transition" style="height: 0;z-index: 99999999;">
+<div id="modal" class="ui modal small hidden transition" style="height: 0;">
     <i class="close icon"></i>
     <div class="header">
         Request Form สำหรับลูกค้าทำรายการเอง
@@ -35,10 +35,11 @@
     </div>
 </div>
 
-<div id="modal1" class="ui modal small hidden transition" style="height: 0;z-index: 99999999;">
+<div id="modal1" class="ui modal small hidden transition" style="height: 0;">
         <i class="close icon"></i>
         <div class="header">
-            ระบุหลักฐานที่ใช้ในการยื่นคำขอเอกสารรับรอง
+                ระบุหลักฐานที่ใช้ในการยื่นคำขอเอกสารรับรอง
+        </div>
         <div class="content">
             <div class="ui form">
                 <div class="inline fields">
@@ -59,7 +60,7 @@
         <div class="actions">
             <div class="ui center aligned grid">
                 <div class="six wide column">
-                    <button class="ui mini primary button" [routerLink]="[ '/client-signed']" (click)="closePopupAdd1()">
+                    <button class="ui mini primary button" [routerLink]="['/client-signed']" (click)="closePopupAdd1()">
                         ตกลง
                     </button>
                     &nbsp;&nbsp; &nbsp;&nbsp;
@@ -101,6 +102,26 @@
             <a class="item " [routerLink]="[ '/output-VAT']" routerLinkActive="active ">รายงาน Output VAT
 
             </a>
+        </div>
+    </div>
+    <div class="right menu ">
+          
+            <div class="ui simple  item " style=" color:rgb(0, 0, 0)">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                    
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    &nbsp;&nbsp;
+                     42307 สรุเดช แสนสมบูรณ์สุข Maker <br>
+                    วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ TH/EN
+
+            </div>
+
+        <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
+            Login
         </div>
     </div>
 </div>

@@ -27,7 +27,14 @@ export class ECertificateMonthlyComponent implements OnInit {
     setTimeout(() => {
       $("#table").DataTable({
         scrollX: true,
-        searching :false
+        searching :false,
+        "columnDefs": [{
+          "targets": 5,
+          "orderable": false
+        },{
+          "targets": 6,
+          "orderable": false
+        }]
       });
     }, 200);
   }
