@@ -48,7 +48,6 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-
         <button class="ui mini primary button" (click)="searchData()">
           <i class="search icon"></i>
           ค้นหา
@@ -63,9 +62,7 @@
       <br>
       <br>
       <div class="ui segment" *ngIf="showData">
-
-        <h4>ผลการค้นหา
-        </h4>
+        <h4>ผลการค้นหา </h4>
         <br>
         <div class="ui form">
           <div class="inline fields">
@@ -74,9 +71,8 @@
             <div class="three wide field ">
               <h5>ชื่อผู้ประกอบการ
               </h5>
-              &nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            
             <div class="three wide field ">
               นาย ประกอบการ ร่ำรวย
             </div>
@@ -89,122 +85,111 @@
               1234567843762
             </div>
           </div>
+
           <div class="inline fields">
-            <div class="one wide field "></div>
-            &nbsp;&nbsp;&nbsp;
-            <div class="three wide field ">
-              <h5>ชื่อสถานประกอบการ
-              </h5>
+              <div class="one wide field "></div>
+              &nbsp;&nbsp;&nbsp;
+              <div class="three wide field ">
+                <h5>ชื่อสถานประกอบการ
+                </h5>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+              <div class="three wide field ">
+                  บริษัท ตั้งเจริญ
+              </div>
+              <div class="five wide field ">
+                <h5>สำนักงานใหญ่/สาขา
+                </h5>
+              </div>
+              <div class="one wide field "></div>
+              <div class="five wide field ">
+                -
+              </div>
             </div>
-            <div class="three wide field ">
-              บริษัท ตั้งเจริญ
-            </div>
-            <div class="five wide field ">
-              <h5>สำนักงานใหญ่/สาขา
-              </h5>
-            </div>
-            <div class="one wide field "></div>
-            <div class="five wide field ">
-              -
-            </div>
-          </div>
-          <div class="inline fields">
-            <div class="one wide field "></div>
-            <div class="three wide field ">
-              <h5>ที่อยู่สถานประกอบการ
-              </h5>
-            </div>
-            <div class="seven wide field ">
-              เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234
-            </div>
-          </div>
+
+            <div class="inline fields">
+                <div class="one wide field "></div>            
+                <div class="three wide field ">
+                  <h5>ที่อยู่สถานประกอบการ
+                  </h5>                
+                </div>
+                <div class="seven wide field ">
+                    เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234
+                </div>
+                <div class="six wide field "></div>
+              </div>
         </div>
         <br>
 
         <br>
         <div style="overflow-x: scroll">
-          <table class="ui small celled table" style="width: 120%">
+          <table class="ui small celled table" style="width: 170%">
             <thead>
               <tr style="text-align: center;">
                 <th rowspan="2">ลำดับ</th>
-                <th rowspan="2">วันที่</th>
-                <th rowspan="2">เลขที่คำขอ</th>
-                <th rowspan="2"> เลขที่นิติบุคคล</th>
-                <th rowspan="2">ชื่อนิติบุคคล</th>
-                <th rowspan="2">Segment</th>
-                <th rowspan="2">ประเภทคำขอ</th>
-                <th colspan="2">จำนวนเงิน : บาท</th>
-                <th rowspan="2">รวม</th>
-                <th rowspan="2">Marker</th>
-                <th rowspan="2">Checker</th>
-                <th rowspan="2">หมายเหตุ</th>
+                <th colspan="2">ใบกำกับภาษี</th>
+                <th rowspan="2">ชื่อผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                <th rowspan="2">เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                <th rowspan="2">สถานประกอบการ</th>
+                <th rowspan="2">สำนักงานใหญ่/สาขา</th>
+                <th rowspan="2">มูลค่าสินค้า/บริการ</th>
+                <th rowspan="2">จำนวนเงินภาษีมูลค่าเพิ่ม</th>
+                <th rowspan="2">จำนวนเงินรวม</th>
               </tr>
               <tr>
-                <th>DBD </th>
-                <th>TMB</th>
+                <th style="border-left: 1px solid rgba(34,36,38,.1) !important">เลขที่</th>
+                <th>ที่วัน</th>
               </tr>
             </thead>
             <tbody>
 
               <tr>
-                <td style="text-align: center;">1</td>
+                <td>1</td>
+                <td>0120180000000001</td>
                 <td>01/01/2561</td>
-                <td>61100920717022</td>
-                <td>1023456321234</td>
-                <td>บริษัท เอ</td>
-                <td>Segment1</td>
-                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                <td>200.00</td>
+                <td>นาย ประกอบการ ร่ำรวย</td>
+                <td>1234567843762</td>
+                <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                <td>สำนักงานใหญ่</td>
+                <td>140.19</td>
+                <td>9.81</td>
                 <td>150.00</td>
-                <td>350.00</td>
-                <td>นาย ก maker</td>
-                <td>นาย ข checker</td>
-                <td>&nbsp;</td>
               </tr>
               <tr>
-                <td style="text-align: center;">2</td>
-                <td>01/01/2561</td>
-                <td>61100920717023</td>
-                <td>2023456321234</td>
-                <td>บริษัท บี</td>
-                <td>Segment1</td>
-                <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                <td>200.00</td>
+                <td>2</td>
+                <td>0120180000000002</td>
+                <td>02/01/2561</td>
+                <td>นาย ประกอบการ ร่ำรวย</td>
+                <td>1234567843762</td>
+                <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                <td>สำนักงานใหญ่</td>
+                <td>140.19</td>
+                <td>9.81</td>
                 <td>150.00</td>
-                <td>350.00</td>
-                <td>นาย ก maker</td>
-                <td>นาย ข checker</td>
-                <td>&nbsp;</td>
               </tr>
               <tr>
-                <td style="text-align: center;">3</td>
-                <td>01/01/2561</td>
-                <td>61100920717024</td>
-                <td>3023456321234</td>
-                <td>บริษัท ซี</td>
-                <td>Segment1</td>
-                <td>สมาคมและหอการค้า</td>
-                <td>200.00</td>
+                <td>3</td>
+                <td>0120180000000003</td>
+                <td>03/01/2561</td>
+                <td>นาย ประกอบการ ร่ำรวย</td>
+                <td>1234567843762</td>
+                <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                <td>สำนักงานใหญ่</td>
+                <td>140.19</td>
+                <td>9.81</td>
                 <td>150.00</td>
-                <td>350.00</td>
-                <td>นาย ก maker</td>
-                <td>นาย ข checker</td>
-                <td>&nbsp;</td>
               </tr>
               <tr>
-                <td style="text-align: center;">4</td>
-                <td>01/01/2561</td>
-                <td>61100920717025</td>
-                <td>4023456321234</td>
-                <td>บริษัท เอ1</td>
-                <td>Segment1</td>
-                <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                <td>200.00</td>
+                <td>4</td>
+                <td>0120180000000004</td>
+                <td>04/01/2561</td>
+                <td>นาย ประกอบการ ร่ำรวย</td>
+                <td>1234567843762</td>
+                <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                <td>สำนักงานใหญ่</td>
+                <td>140.19</td>
+                <td>9.81</td>
                 <td>150.00</td>
-                <td>350.00</td>
-                <td>นาย ก maker</td>
-                <td>นาย ข checker</td>
-                <td>&nbsp;</td>
               </tr>
             </tbody>
           </table>
@@ -212,7 +197,16 @@
         <br>
         <br>
 
-
+        <div class="ui center aligned grid">
+          <button class="ui mini primary button">
+            <i class="search icon"></i>
+            Export to Excel
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui mini primary button">
+            Export to PDF
+          </button>
+          <br>
+        </div>
         <br>
         <br>
 

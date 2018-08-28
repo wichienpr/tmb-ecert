@@ -44,4 +44,5 @@ export class ECertificateDayComponent implements OnInit {
     this.showData = false;
   }
 
+ 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+declare var $: any;
 @Component({
   selector: 'app-client-signed',
   templateUrl: './client-signed.component.html',
@@ -19,15 +19,27 @@ export class ClientSignedComponent implements OnInit {
   }
 
   ngOnInit() {
+    $("#table1").DataTable()
   }
 
   
   searchData(): void {
     this.showData = true;
+    $('#table1').DataTable( {
+      order: [[ 1, "desc" ]]
+  } );
   }
   
   clearData(): void {
     this.showData = false;
+  }
+
+  popupAddData() {
+    $('#modal2').modal('show');
+  }
+
+  closePopupAdd() {
+    $('#modal2').modal('hide');
   }
 
 }
