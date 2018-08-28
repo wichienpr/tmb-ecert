@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TextDateTH } from '../../../common/\u0E49helper/datepicker';
 declare var $: any;
 @Component({
   selector: 'app-e-certificate-day',
@@ -20,6 +21,18 @@ export class ECertificateDayComponent implements OnInit {
   }
 
   ngOnInit() {
+    $("#calendar1").calendar({    
+      maxDate: new Date(),
+      type: "month",
+      text: TextDateTH
+  
+    });
+    $("#calendar2").calendar({    
+      maxDate: new Date(),
+      type: "month",
+      text: TextDateTH
+  
+    });
   }
 
   ngAfterViewInit() {
@@ -35,7 +48,8 @@ export class ECertificateDayComponent implements OnInit {
     this.showData = true;
     setTimeout(() => {
       $("#table").DataTable({
-        scrollX: true
+        scrollX: true,
+        searching :false
       });
     }, 200);
   }
