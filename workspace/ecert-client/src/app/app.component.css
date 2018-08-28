@@ -7,10 +7,9 @@
   border-bottom: solid 1px #c5d6de;
 }
 
-.main.container {
+.main.container-fluid {
+  padding: 90px 1em calc(64px + 1em) 1em;
   min-height: 100%;
-  padding-top: 90px;
-  padding-bottom: 64px;
   box-sizing: border-box;
 }
 
