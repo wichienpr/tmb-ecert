@@ -16,4 +16,12 @@ export class AppComponent {
   closePopupAdd() {
     $('#modal').modal('hide');
   }
+
+  popupAddData1() {
+    $('#modal1').modal('show');
+  }
+
+  closePopupAdd1() {
+    $('#modal1').modal('hide');
+  }
 }

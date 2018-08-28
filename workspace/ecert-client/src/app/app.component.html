@@ -35,6 +35,44 @@
     </div>
 </div>
 
+<div id="modal1" class="ui modal small hidden transition" style="height: 0;z-index: 99999999;">
+        <i class="close icon"></i>
+        <div class="header">
+                Request Form สำหรับทำรายการให้ลูกค้าลงนาม
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="eight wide field">
+                        <label class="custom-label-w-15">บัตรประชาชน</label>
+                        <input type="file" value="" />
+                    </div>
+                </div>
+            </div>
+    
+            <div class="ui grid">
+                <div class="three wide column"></div>
+                <div class="eight wide column">
+    
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui center aligned grid">
+                <div class="six wide column">
+                    <button class="ui mini primary button" [routerLink]="[ '/client-signed']" (click)="closePopupAdd1()">
+                        ตกลง
+                    </button>
+                    &nbsp;&nbsp; &nbsp;&nbsp;
+                    <button class="ui mini primary button" (click)="closePopupAdd1()">
+                        ยกเลิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
 <div class="ui borderless menu fixed" style="background: 	rgb(255, 255, 255);z-index: 999;height: 75px;">
     <img class="logo" src="assets/image/TMBLogo.png" style="width: 240px; height:65px; margin-left: 100px ;">
     <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
@@ -47,7 +85,7 @@
             <a class="item " (click)="popupAddData()" routerLinkActive="active ">Request Form สำหรับลูกค้าทำรายการเอง
 
             </a>
-            <a class="item " routerLinkActive="active" [routerLink]="[ '/client-signed']">Request Form สำหรับทำรายการให้ลูกค้าลงนาม
+            <a class="item " (click)="popupAddData1()"  routerLinkActive="active" >Request Form สำหรับทำรายการให้ลูกค้าลงนาม
             </a>
         </div>
     </div>
