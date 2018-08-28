@@ -266,7 +266,7 @@
             <button class="ui mini primary button">
                 ดำเนินการต่อ
             </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="ui mini primary button">
+            <button class="ui mini primary button" (click)="popupAddData()">
                 ดำเนินการชำระเงิน
               </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
               <button class="ui mini primary button">
@@ -293,4 +293,51 @@
    
   
     </div>
+  </div>
+
+  <div id="modal1" class="ui modal small hidden transition" style="height: 0;">
+      <i class="close icon"></i>
+      <div class="header">
+          ดำเนินการชำระเงิน  
+      </div>  
+      <div class="content">
+          <div class="ui form">
+              <div class="inline fields">
+                  <div class="eight wide field">
+                      <label class="custom-label-w-15">เลขที่คำขอ (Ref1)</label>
+                      <input type="text" value="" />
+                  </div>
+              </div>
+              <div class="inline fields">
+                  <div class="eight wide field">
+                      <label class="custom-label-w-15">เลขที่ตรวจสอบ (Ref2)</label>
+                      <input type="text" value="" />
+                  </div>
+              </div>
+              <div class="inline fields">
+                  <div class="eight wide field">
+                      <label class="custom-label-w-15">จำนวนเงิน</label>
+                      <input type="text" value="" />
+                  </div>
+              </div>
+          </div>  
+          <div class="ui grid">
+              <div class="three wide column"></div>
+              <div class="eight wide column">  
+              </div>
+          </div>
+      </div>
+      <div class="actions">
+          <div class="ui center aligned grid">
+              <div class="six wide column">
+                  <button class="ui mini primary button"  (click)="closePopupAdd()">
+                      ชำระเงิน
+                  </button>
+                  &nbsp;&nbsp; &nbsp;&nbsp;
+                  <button class="ui mini primary button" (click)="closePopupAdd()">
+                      ยกเลิก
+                  </button>
+              </div>
+          </div>
+      </div>
   </div>
