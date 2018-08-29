@@ -35,4 +35,5 @@
 .menu.fixed {
   border: 0 !important;
 }
+img:focus {outline:0;}
   
