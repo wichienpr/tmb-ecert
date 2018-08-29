@@ -34,6 +34,12 @@ export class ECertificateMonthlyComponent implements OnInit {
         },{
           "targets": 6,
           "orderable": false
+        },{
+          "targets": 7,
+          "orderable": false
+        },{
+          "targets": 10,
+          "orderable": false
         }]
       });
     }, 200);
