@@ -17,7 +17,7 @@
   width: 100%;
   padding-top: 0.5em;
   z-index: 999;
-  height: 136px;
+  height: 152px;
 }
 
 .footer .container-fluid {
@@ -43,7 +43,7 @@ a.bold {
 
 .text-content {
   position: relative;
-  height: calc(100vh - 211px);
+  height: calc(100vh - 227px);
 }
 
 .logo {
