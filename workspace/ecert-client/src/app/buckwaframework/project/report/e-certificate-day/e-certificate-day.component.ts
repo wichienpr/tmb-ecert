@@ -56,6 +56,13 @@ export class ECertificateDayComponent implements OnInit {
         },{
           "targets": 8,
           "orderable": false
+        }
+        ,{
+          "targets": 9,
+          "orderable": false
+        },{
+          "targets": 12,
+          "orderable": false
         }]
       });
     }, 200);

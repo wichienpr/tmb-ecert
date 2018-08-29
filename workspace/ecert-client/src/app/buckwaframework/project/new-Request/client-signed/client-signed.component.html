@@ -44,10 +44,10 @@
         </div>
 
         <br>
+
         
-        
-        <div style="overflow-x: scroll">
-          <table class="ui small celled table display" id="table1" style="width: 120%">
+        <div>
+          <table class="ui small celled table nowrap" id="table1" style="width: 100%">
             <thead>
               <tr style="text-align: center;">
                 <th>เอกสารที่ให้บริการ</th>
@@ -68,7 +68,7 @@
                 <td>ฉบับละ 200 บาท</td>
                 <td>ฉบับละ 150 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -76,7 +76,7 @@
                 <td>ฉบับละ 50 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -84,7 +84,7 @@
                 <td>ฉบับละ 50 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -92,7 +92,7 @@
                 <td>ฉบับละ 50 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -106,7 +106,7 @@
                 <td>ฉบับละ 300-500 บาท</td>
                 <td>ฉบับละ 150 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -114,7 +114,7 @@
                 <td>หน้าละ 100 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -122,7 +122,7 @@
                 <td>หน้าละ 50 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
 
@@ -137,7 +137,7 @@
                 <td>เรื่องละ 20 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
               <tr>
@@ -145,7 +145,7 @@
                 <td>เรื่องละ 20 บาท</td>
                 <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
                 <td>
-                  <input type="text">
+                  <input type="text" style="width: 85%;">
                 </td>
               </tr>
             </tbody>
@@ -232,14 +232,14 @@
             <label>หมายเหตุ
             </label>
           </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+           <div class="five wide field ">
+                  <textarea rows="2"></textarea>
+              </div>  
         </div>
         <br>
         <br>
         <div class="ui center aligned grid">
-          <button class="ui mini primary button" (click)="popupAddData()">
+          <button class="ui mini primary button"  (click)="popupAddData()">
             ยื่นใบคำขอ
           </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <button class="ui mini primary button">
@@ -294,7 +294,7 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="six wide column">
-        <button class="ui mini primary button" (click)="closePopupAdd()">
+        <button class="ui mini primary button" [routerLink]="[ '/performa']" (click)="closePopupAdd()">
           บันทึกคำขอ
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;

@@ -29,7 +29,29 @@ export class OutputVATComponent implements OnInit {
     setTimeout(() => {
       $("#table").DataTable({
         scrollX: true,
-        searching :false
+        searching :false,
+        "columnDefs": [{
+          "targets": 1,
+          "orderable": false
+        },{
+          "targets": 2,
+          "orderable": false
+        },{
+          "targets": 5,
+          "orderable": false
+        },{
+          "targets": 6,
+          "orderable": false
+        },{
+          "targets": 7,
+          "orderable": false
+        },{
+          "targets": 8,
+          "orderable": false
+        },{
+          "targets": 9,
+          "orderable": false
+        }]
       });
     }, 200);
   }
