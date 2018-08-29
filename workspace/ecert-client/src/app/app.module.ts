@@ -11,8 +11,7 @@ import { ECertificateMonthlyComponent } from './buckwaframework/project/report/e
 import { ClientSignedComponent } from './buckwaframework/project/new-Request/client-signed/client-signed.component';
 import { DescriptionComponent } from './buckwaframework/project/performa/description/description.component';
 import { OutputVATComponent } from './buckwaframework/project/report/output-vat/output-vat.component';
-
-
+import { ComponentsModule } from './buckwaframework/common/components/components.module';
 
 @NgModule({
   declarations: [
@@ -25,11 +24,12 @@ import { OutputVATComponent } from './buckwaframework/project/report/output-vat/
     ClientSignedComponent,
     DescriptionComponent,
     OutputVATComponent,
-  
- 
   ],
   imports: [
-    BrowserModule, SuiModule,AppRoutingModule
+    BrowserModule,
+    SuiModule,
+    ComponentsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

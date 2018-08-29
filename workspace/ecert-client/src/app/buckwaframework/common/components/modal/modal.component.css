@@ -1,0 +1,21 @@
+.modal {
+    position: absolute;
+}
+
+.mini.modal {
+    top: 15%;
+    left: 50%;
+    margin-left: -12.5%;
+}
+
+.tiny.modal {
+    top: 15%;
+}
+
+.small.modal {
+    top: 15%;
+}
+
+.large.modal {
+    top: 20%;
+}

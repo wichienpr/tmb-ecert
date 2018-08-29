@@ -9,23 +9,19 @@ export class AppComponent implements OnInit {
 
   title = 'ecert-client';
 
-  ngOnInit() {
-   // $('.ui.modal').modal('refresh');
+  /**
+   * modal_ids for toggle show/hide
+  */
+  modal: string[] = ["modal1", "modal2"];
+
+  ngOnInit() { }
+
+  openModal(id) {
+    $('#' + id).modal('show');
   }
 
-  popupAddData() {
-    $('#modal').modal('show');
+  closeModal(id) {
+    $('#' + id).modal('hide');
   }
 
-  closePopupAdd() {
-    $('#modal').modal('hide');
-  }
-
-  popupAddData1() {
-    $('#modal1').modal('show');
-  }
-
-  closePopupAdd1() {
-    $('#modal1').modal('hide');
-  }
 }

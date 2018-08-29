@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "../../project/pages/login/login.component";
 import { HomeComponent } from "../../project/pages/home/home.component";
-import { AppComponent } from "src/app/app.component";
 import { MonitoringPerformaComponent } from "../../project/performa/monitoring-performa/monitoring-performa.component";
 import { ECertificateDayComponent } from "../../project/report/e-certificate-day/e-certificate-day.component";
 import { ECertificateMonthlyComponent } from "../../project/report/e-certificate-monthly/e-certificate-monthly.component";
@@ -45,8 +44,6 @@ const routes: Routes = [
     path: "output-VAT",
     component: OutputVATComponent    
   }
-
-
   
 ];
 

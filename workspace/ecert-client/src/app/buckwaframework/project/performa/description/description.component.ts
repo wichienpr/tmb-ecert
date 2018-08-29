@@ -7,16 +7,19 @@ declare var $: any;
 })
 export class DescriptionComponent implements OnInit {
 
+  modal: string[] = ['desp'];
+
   constructor() { }
 
   ngOnInit() {
   }
-  popupAddData() {
-    $('#modal1').modal('show');
+
+  openModal(id) {
+    $(`#${id}`).modal('show');
   }
 
-  closePopupAdd() {
-    $('#modal1').modal('hide');
+  closeModal(id) {
+    $(`#${id}`).modal('hide');
   }
 
 }
