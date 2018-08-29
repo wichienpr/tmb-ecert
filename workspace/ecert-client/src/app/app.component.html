@@ -43,7 +43,7 @@
         </div>
 
         <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
-            Login
+            Logout
         </div>
     </div>
 </div>
@@ -85,7 +85,8 @@
         </div>
         <!-- id modal[0] = `modal1` -->
     </modal>
-    <modal [id]="modal[1]" [size]="'small'" [type]="'custom'"><i class="close icon"></i>
+    <modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
+        <i class="close icon"></i>
         <div class="header">
             ระบุหลักฐานที่ใช้ในการยื่นคำขอเอกสารรับรอง
         </div>
@@ -94,7 +95,7 @@
                 <div class="inline fields">
                     <div class="eight wide field">
                         <label class="custom-label-w-15">บัตรประชาชน</label>
-                        <input type="file" value="" />
+                        <input type="file" value="">
                     </div>
                 </div>
             </div>
@@ -111,9 +112,6 @@
                     </button>
                 </div>
             </div>
-
-        <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
-            Logout
         </div>
         <!-- id modal[1] = `modal2` -->
     </modal>
