@@ -6,40 +6,72 @@ declare var $: any;
   styleUrls: ['./client-signed.component.css']
 })
 export class ClientSignedComponent implements OnInit {
-  products: String[];  
-  showData: boolean = false;  
+  products: String[];
+  paid: String[];
+
+  debitMethod: String[];
+  showData: boolean = false;
+  modal: string[] = ["modal5"];
   selectProduct: String;
-  constructor() { 
+  selectpaid: String;
+  selectdebitMethod: String;
+  constructor() {
     this.products = [
-      "ทั้งหมด",
-      "ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด",    
+      "กรุณาเลือก",
+      "ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด",
       "การประกอบธุรกิจของคนต่างด้าว",
-      "สมาคมและหอการค้า",       
+      "สมาคมและหอการค้า",
     ];
+
+    this.paid = ["กรุณาเลือก",
+      "หัก บช.ลูกค้า/เงินฝาก หรือกระแสรายวัน", "บัญชีของธนาคาร TMB"];
+
+    this.debitMethod = ["กรุณาเลือก",
+      "ธนาคารกุล่ม SE"];
   }
 
   ngOnInit() {
-    $("#table1").DataTable()
+    //$('#table1').DataTable();
+    $('#table1').DataTable({
+      searching: false,
+    
+      scrollX: true
+    });
   }
 
-  
   searchData(): void {
     this.showData = true;
-    $('#table1').DataTable( {
-      order: [[ 1, "desc" ]]
-  } );
+    $('#table1').DataTable({
+      ordering: false,
+      searching: false,
+      scrollX: true
+    });
   }
-  
+
   clearData(): void {
     this.showData = false;
   }
 
-  popupAddData() {
-    $('#modal2').modal('show');
+  onSelectProducts = event => {
+    this.selectProduct = this.products[event.target.value];
+  };
+  onSelectpaid = event => {
+    this.selectdebitMethod = this.paid[event.target.value];
+  };
+
+  onSelectdebitMethod = event => {
+    this.selectpaid = this.debitMethod[event.target.value];
+  };
+
+  openModal(id) {
+    $('#' + id).modal('show');
   }
 
-  closePopupAdd() {
-    $('#modal2').modal('hide');
+  closeModal(id) {
+    $('#' + id).modal('hide');
   }
+
+
+
 
 }

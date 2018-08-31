@@ -1,5 +1,5 @@
 <div class="ui borderless menu fixed" style="background:rgb(255, 255, 255);z-index: 999;height: 75px;">
-    <img class="logo" src="assets/image/TMBLogo.png" style="width: 240px; height:65px; margin-left: 100px ;">
+    <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 240px; height:65px;margin-left:0%">
     <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
         ตรวจสอบสถานะคำขอ
     </div>
@@ -7,10 +7,10 @@
         ทำคำขอใหม่
         <i class="dropdown icon "></i>
         <div class="menu ">
-            <a class="item " (click)="openModal(modal[0])" routerLinkActive="active ">
+            <a class="item " outerLinkActive="active ">
                 Request Form สำหรับลูกค้าทำรายการเอง
             </a>
-            <a class="item " (click)="openModal(modal[1])" routerLinkActive="active">
+            <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
                 Request Form สำหรับทำรายการให้ลูกค้าลงนาม
             </a>
         </div>
@@ -34,11 +34,11 @@
     </div>
     <div class="right menu ">
 
-        <div class="ui simple  item " style=" color:rgb(0, 0, 0)">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp; 42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
-            TH/EN
+        <div class="ui simple  item " style=" color:rgb(0, 0, 0);line-height: 150%;">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+           42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
+           
 
         </div>
 
@@ -49,73 +49,11 @@
 </div>
 
 <div class="ui main container-fluid">
-
-    <!-- content each Pages -->
+  
     <router-outlet></router-outlet>
-    <!-- content each Pages -->
 
-    <!-- Modal Components Initial..//~ -->
-    <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
-        <i class="close icon"></i>
-        <div class="header">
-            Request Form สำหรับลูกค้าทำรายการเอง
-        </div>
-        <div class="content">
-            <div class="ui form">
-                <div class="inline fields">
-                    <div class="eight wide field">
-                        <label class="custom-label-w-15">บัตรประชาชน</label>
-                        <input type="file" value="" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui center aligned grid">
-                <div class="six wide column">
-                    <button class="ui mini primary button" [routerLink]="['/performa']" (click)="closeModal(modal[0])">
-                        ตกลง
-                    </button>
-                    &nbsp;&nbsp; &nbsp;&nbsp;
-                    <button class="ui mini primary button" (click)="closeModal(modal[0])">
-                        ยกเลิก
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- id modal[0] = `modal1` -->
-    </modal>
-    <modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
-        <i class="close icon"></i>
-        <div class="header">
-            ระบุหลักฐานที่ใช้ในการยื่นคำขอเอกสารรับรอง
-        </div>
-        <div class="content">
-            <div class="ui form">
-                <div class="inline fields">
-                    <div class="eight wide field">
-                        <label class="custom-label-w-15">บัตรประชาชน</label>
-                        <input type="file" value="">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui center aligned grid">
-                <div class="six wide column">
-                    <button class="ui mini primary button" [routerLink]="['/client-signed']" (click)="closeModal(modal[1])">
-                        ตกลง
-                    </button>
-                    &nbsp;&nbsp; &nbsp;&nbsp;
-                    <button class="ui mini primary button" (click)="closeModal(modal[1])">
-                        ยกเลิก
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- id modal[1] = `modal2` -->
-    </modal>
-    <!-- Modal Components Initial..//~ -->
+
+   
 </div>
 
 <div class="ui vertical footer">

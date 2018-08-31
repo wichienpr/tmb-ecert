@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TextDateTH } from '../../../common/\u0E49helper/datepicker';
+import {  formatter, TextDateTH } from '../../../common/\u0E49helper/datepicker';
 declare var $: any;
 @Component({
   selector: 'app-e-certificate-monthly',
@@ -13,8 +13,10 @@ export class ECertificateMonthlyComponent implements OnInit {
   ngOnInit() {
     $("#calendar1").calendar({    
       maxDate: new Date(),
-      type: "month",
-      text: TextDateTH
+      type: "month",   
+      text: TextDateTH,   
+      formatter: formatter('month-year')
+       
   
     });
   }

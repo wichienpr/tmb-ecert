@@ -1,4 +1,4 @@
-<!-- modal component id modal[0] = `desp` -->
+
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
   <div class="header">
@@ -38,7 +38,7 @@
           ชำระเงิน
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button class="ui mini primary button" (click)="closeModal(modal[0])">
+        <button class="ui mini  button" (click)="closeModal(modal[0])">
           ยกเลิก
         </button>
       </div>
@@ -46,7 +46,7 @@
   </div>
 </modal>
 
-<!-- contents -->
+
 <div class="ui grid">
   <div class="sixteen wide column">
 
@@ -90,13 +90,14 @@
 
       <br>
       <br>
-      <div style="overflow-x: scroll">
-        <table class="ui small celled table" style="width: 120%">
+      <div>
+        <table class="ui small celled table nowrap" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
-              <th rowspan="2">เอกสารที่ให้บริการ</th>
-              <th rowspan="2">ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</th>
-              <th rowspan="2">ค่าบริการของธนาคาร</th>
+           
+              <th rowspan="2" colspan="2">รายละเอียด </th>
+              <th rowspan="2">ค่าธรรมเนียมของ DBD </th>
+              <th rowspan="2">ค่าบริการของธนาคาร     </th>
               <th rowspan="2">จำนวน (ฉบับ/หน้า/เรื่อง) </th>
             </tr>
           </thead>
@@ -108,25 +109,37 @@
             </tr>
 
             <tr>
-              <td>หนังสือรับรองนิติบุคคล</td>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
+              <td> หนังสือรับรองนิติบุคคล</td>
               <td>ฉบับละ 200 บาท</td>
               <td>ฉบับละ 150 บาท</td>
               <td> 1 ฉบับ </td>
 
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนาเอกสารทะเบียน</td>
               <td>ฉบับละ 50 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
               <td> 1 หน้า </td>
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนางบการเงิน</td>
               <td>ฉบับละ 50 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
               <td> 1 หน้า </td>
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนาบัญชีรายชื่อผู้ถือหุ้น</td>
               <td>ฉบับละ 50 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
@@ -134,42 +147,55 @@
             </tr>
             <tr>
               <td colspan="4">
-                <h5>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</h5>
+                <h5>การประกอบธุรกิจของคนต่างด้าว</h5>
               </td>
             </tr>
 
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>หนังสือรับรองข้อความที่กรมทะเบียนเก็บรักษาไว้ของการประกอบธุรกิจของคนต่างด้าว</td>
               <td>ฉบับละ 300-500 บาท</td>
               <td>ฉบับละ 150 บาท</td>
               <td> 1 ฉบับ </td>
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนาเอกสารทะเบียน</td>
               <td>หน้าละ 100 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
               <td> 1 หน้า </td>
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนางบการเงิน</td>
               <td>หน้าละ 50 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
               <td> 1 หน้า </td>
             </tr>
-
             <tr>
               <td colspan="4">
-                <h5>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</h5>
+                <h5>สมาคมและหอการค้า</h5>
               </td>
             </tr>
-
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนาเอกสารทะเบียน</td>
               <td>เรื่องละ 20 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
               <td> 1 เรื่อง </td>
             </tr>
             <tr>
+              <td>
+                <input type="checkbox" checked="true" disabled="true">
+              </td>
               <td>รับรองสำเนางบการเงิน</td>
               <td>เรื่องละ 20 บาท</td>
               <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
@@ -229,23 +255,63 @@
 
       <div class="inline fields">
         <div class="one wide field "></div>
-        <div class="three wide field ">
+        <div class="four wide field ">
           <label>วิธีการรับชำระ
           </label>
         </div>
-        <div class="one wide field "></div>
-        <div class="ui radio checkbox">
-          <input type="radio" name="example2" checked="checked">
-          <label> หัก บช.ลูกค้า/เงินฝาก หรือกระแสรายวัน</label>
+        <div class="five wide field ">        
+          <label>บัญชีของธนาคาร TMB</label>
         </div>
       </div>
       <div class="inline fields">
-        <div class="five wide field "></div>
-        <div class="ui radio checkbox">
-          <input type="radio" name="example2">
-          <label>ระบุเลขที่บัญชี (บัญชีของธนาคาร TMB)</label>
+          <div class="one wide field "></div>
+          <div class="four wide field ">
+            <label>วิธีตัดบัญชี
+            </label>
+          </div>
+          <div class="five wide field ">        
+            <label>ธนาคารกลุ่ม SE</label>
+          </div>
         </div>
+        <div class="inline fields">
+            <div class="one wide field "></div>
+            <div class="four wide field ">
+              <label>Tran Code
+              </label>
+            </div>
+            <div class="five wide field ">        
+              <label>8880</label>
+            </div>
+          </div>
+
+          <div class="inline fields">
+              <div class="one wide field "></div>
+              <div class="four wide field ">
+                <label>GL Type
+                </label>
+              </div>
+              <div class="five wide field ">        
+                <label>B533</label>
+              </div>
+            </div>
+            
+            <div class="inline fields">
+                <div class="one wide field "></div>
+                <div class="four wide field ">
+                  <label>Account Type
+                  </label>
+                </div>
+                <div class="five wide field ">        
+                  <label>OOA</label>
+                </div>
+              </div>
+
+      <div class="inline fields">    
         <div class="one wide field "></div>
+        <div class="four wide field ">
+            <label>ระบุเลขที่บัญชี
+            </label>
+          </div>
         <div class="three wide field ">
           <p>1045324356</p>
         </div>
@@ -279,7 +345,7 @@
       <div class="inline fields">
         <div class="one wide field "></div>
         <div class="four wide field ">
-          <label>ใบคำขอหนังสือรับรองนิติบุคคล
+          <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
           </label>
         </div>
         <div class="two wide field ">
@@ -291,7 +357,7 @@
       <div class="inline fields">
         <div class="one wide field "></div>
         <div class="four wide field ">
-          <label>หนังสือยินยอมให้หักเงินจากบัญชีเงินฝากเพื่อชำระค่าธรรมเนียมฯ
+          <label>สำเนาบัตรประชาชน
           </label>
         </div>
         <div class="two wide field ">
@@ -312,13 +378,19 @@
       </div>
       <br>
       <br>
-      <div class="ui center aligned grid">
+      <div class="ui center aligned grid">        
         <button class="ui mini primary button">
-          ดำเนินการต่อ
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            อนุมัติการชำระเงิน
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui mini primary button">
+              ไม่อนุมัติการชำระเงิน
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
         <button class="ui mini primary button" (click)="openModal(modal[0])">
           ดำเนินการชำระเงิน
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui mini primary button">
+            ข้อมูลไม่ถูกต้อง
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
         <button class="ui mini primary button">
           ยกเลิกคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;

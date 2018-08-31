@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TextDateTH } from '../../../common/\u0E49helper/datepicker';
+import { TextDateTH, formatter } from '../../../common/\u0E49helper/datepicker';
 declare var $: any;
 @Component({
   selector: 'app-output-vat',
@@ -13,8 +13,9 @@ export class OutputVATComponent implements OnInit {
   ngOnInit() {
     $("#calendar1").calendar({    
       maxDate: new Date(),
-      type: "month",
-      text: TextDateTH
+      type: "month",      
+      text: TextDateTH,
+      formatter: formatter('month-year')
   
     });
 

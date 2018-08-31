@@ -10,20 +10,21 @@
       <br>
 
       <div class=" ui grid">
-        <a (click)="searchData()" class=" aligned  four wide  column" style="color: #000;  cursor: pointer">
-
+        <a (click)="searchData()" class=" aligned  three wide  column" style="color: #000;  cursor: pointer">
           <u>New (1)</u>
-
         </a>
+        
+        <a (click)="searchData()" class=" aligned three wide  column " style="color: #000;  cursor: pointer">
+            <u>Approve Payment (1)</u>  
+          </a>
 
-        <a (click)="searchData()" class=" aligned four wide  column " style="color: #000;  cursor: pointer">
-          <u>In Process (1)</u>
-
+        <a (click)="searchData()" class=" aligned three wide  column " style="color: #000;  cursor: pointer">
+          <u>Reiect Payment (1)</u>
         </a>
-        <a (click)="searchData()" class=" aligned four wide  column" style="color: #000;  cursor: pointer">
+        <a (click)="searchData()" class=" aligned three wide  column" style="color: #000;  cursor: pointer">
           <u>Waiting Payment  (1)</u>
         </a>
-        <a (click)="searchData()" class="  aligned four wide  column" style="color: #000; cursor: pointer">
+        <a (click)="searchData()" class="  aligned three wide  column" style="color: #000; cursor: pointer">
           <u>Payment Incomplete  (1)</u>
         </a>
       </div>
@@ -62,14 +63,14 @@
 
         <div class="inline fields">
           <div class="two wide field ">
-            <label>เลขที่อ้างอิง
+            <label>TMB Req. No.
             </label>
           </div>
           <div class="five wide field ">
             <input type="text" placeholder="" value="">
           </div>
           <div class="two wide field ">
-            <label>เลขที่คำขอ
+            <label>เลขที่คำขอ (Ref.1)
             </label>
           </div>
           <div class="five wide field ">
@@ -138,8 +139,10 @@
             <tr style="text-align: center;">
               <th class="collapsing">ลำดับ</th>
               <th>วันที่ยื่นคำขอ</th>
-              <th>เลขที่อ้างอิง</th>
-              <th>เลขที่คำขอ</th>
+              <th>TMB Req. No.</th>
+              <th>เลขที่คำขอ (Ref.1)</th>
+              <th>เลขที่ตรวจสอบ (Ref.2)</th>
+              <th>จำนวนเงิน</th>
               <th>ประเภทคำขอ</th>
               <th>เลขที่นิติบุคคล </th>
               <th>ชื่อบริษัท</th>
@@ -154,6 +157,8 @@
               <td> 01/01/2561</td>
               <td>01012561000001</td>
               <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
               <td>1023456321234</td>
               <td>บริษัท เอ</td>
@@ -167,10 +172,27 @@
               <td>01/01/2561</td>
               <td>01012561000002</td>
               <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>การประกอบธุรกิจของคนต่างด้าว</td>
               <td>2023456321234</td>
               <td>บริษัท บี</td>
-              <td>In Process</td>
+              <td>Approve Payment</td>
+              <td>
+                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right">2</td>
+              <td>01/01/2561</td>
+              <td>01012561000002</td>
+              <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
+              <td>การประกอบธุรกิจของคนต่างด้าว</td>
+              <td>2023456321234</td>
+              <td>บริษัท บี</td>
+              <td>Reiect Payment </td>
               <td>
                 <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
               </td>
@@ -180,6 +202,8 @@
               <td>01/01/2561</td>
               <td>01012561000003</td>
               <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>สมาคมและหอการค้า</td>
               <td>3023456321234</td>
               <td>บริษัท ซี</td>
@@ -193,6 +217,8 @@
               <td>01/01/2561</td>
               <td>01012561000004</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
               <td>4023456321234</td>
               <td>บริษัท เอ1</td>
@@ -206,6 +232,8 @@
               <td>01/01/2561</td>
               <td>01012561000005</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>การประกอบธุรกิจของคนต่างด้าว</td>
               <td>5023456321234</td>
               <td>บริษัท บี1</td>
@@ -219,6 +247,8 @@
               <td>01/01/2561</td>
               <td>01012561000006</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>สมาคมและหอการค้า</td>
               <td>6023456321234</td>
               <td>บริษัท ซี1</td>
@@ -232,6 +262,8 @@
               <td>01/01/2561</td>
               <td>01012561000007</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
               <td>7023456321234</td>
               <td>บริษัท เอ2</td>
@@ -245,6 +277,8 @@
               <td>01/01/2561</td>
               <td>01012561000008</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>การประกอบธุรกิจของคนต่างด้าว</td>
               <td>8023456321234</td>
               <td>บริษัท บี2</td>
@@ -258,6 +292,8 @@
               <td>01/01/2561</td>
               <td>01012561000009</td>
               <td>61100920717022</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>สมาคมและหอการค้า</td>
               <td>9023456321234</td>
               <td>บริษัท ซี2</td>
@@ -271,6 +307,8 @@
               <td>01/01/2561</td>
               <td>01012561000010</td>
               <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>สมาคมและหอการค้า</td>
               <td>9023456321235</td>
               <td>บริษัท ซี3</td>
@@ -284,6 +322,8 @@
               <td>01/01/2561</td>
               <td>01012561000010</td>
               <td>-</td>
+              <td>0101256100000125</td>
+              <td>300.00</td>
               <td>สมาคมและหอการค้า</td>
               <td>9023456321236</td>
               <td>บริษัท ซี4</td>

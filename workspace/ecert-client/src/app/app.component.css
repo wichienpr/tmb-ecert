@@ -2,6 +2,10 @@
   margin-right: 1.5em;
 }
 
+div.a{
+  line-height: 200%;
+}
+
 .ui.menu {
   background-color: #ffffff;
   border-bottom: solid 1px #c5d6de;

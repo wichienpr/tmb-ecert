@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TextDateTH } from '../../../common/\u0E49helper/datepicker';
+import { TextDateTH, formatter } from '../../../common/\u0E49helper/datepicker';
 declare var $: any;
 @Component({
   selector: 'app-e-certificate-day',
@@ -24,13 +24,17 @@ export class ECertificateDayComponent implements OnInit {
     $("#calendar1").calendar({    
       maxDate: new Date(),
       type: "date",
-      text: TextDateTH
+      text: TextDateTH,
+     formatter: formatter()
+      
   
     });
     $("#calendar2").calendar({    
       maxDate: new Date(),
       type: "date",
-      text: TextDateTH
+      text: TextDateTH,
+      formatter: formatter()
+       
   
     });
   }

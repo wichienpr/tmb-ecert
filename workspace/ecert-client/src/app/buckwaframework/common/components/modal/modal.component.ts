@@ -14,4 +14,5 @@ export class ModalComponent {
     @Input() type: string = "alert"; // alert confirm custom
 
     constructor() { } // on create component
+    
 }

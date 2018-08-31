@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TextDateTH } from '../../../common/\u0E49helper/datepicker';
+import { TextDateTH, formatter } from '../../../common/\u0E49helper/datepicker';
 declare var $: any;
 @Component({
   selector: 'app-monitoring-performa',
@@ -14,18 +14,18 @@ export class MonitoringPerformaComponent implements OnInit {
   selectactionStatus: String;
   constructor() {
     this.products = [
-      "ทั้งหมด",
+      "กรุณาเลือก",
       "ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด",
       "การประกอบธุรกิจของคนต่างด้าว",
       "สมาคมและหอการค้า",
     ];
     this.actionStatus = [
-      "ทั้งหมด",
+      "กรุณาเลือก",
       "New",
-      "In Process",
+      "Approve Payment",
+      "Reiect Payment",
       "Waiting Payment",
       "Payment Complete",
-
       "Payment Incomplete",
       "Upload to ECM Complete",
       "Upload to ECM Incomplete",
@@ -45,14 +45,16 @@ export class MonitoringPerformaComponent implements OnInit {
     $("#calendar1").calendar({
       maxDate: new Date(),
       type: "date",
-      text: TextDateTH
+      text: TextDateTH,
+     formatter: formatter()
 
     });
 
     $("#calendar2").calendar({
       maxDate: new Date(),
       type: "date",
-      text: TextDateTH
+      text: TextDateTH,
+     formatter: formatter()
 
     });
 
