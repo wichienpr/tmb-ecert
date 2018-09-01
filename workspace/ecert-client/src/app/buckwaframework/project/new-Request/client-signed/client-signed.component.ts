@@ -11,7 +11,7 @@ export class ClientSignedComponent implements OnInit {
 
   debitMethod: String[];
   showData: boolean = false;
-  modal: string[] = ["modal5"];
+  modal: string[] = ["modal5","modal5"];
   selectProduct: String;
   selectpaid: String;
   selectdebitMethod: String;
@@ -44,6 +44,7 @@ export class ClientSignedComponent implements OnInit {
     $('#table1').DataTable({
       ordering: false,
       searching: false,
+     
       scrollX: true
     });
   }

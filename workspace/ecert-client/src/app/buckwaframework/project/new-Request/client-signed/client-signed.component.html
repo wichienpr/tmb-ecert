@@ -1,3 +1,35 @@
+
+<modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
+  <i class="close icon"></i>
+  <div class="header">
+   แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ
+  </div>
+  <div class="content">
+    <div class="ui form">    
+      <div class="inline fields">
+        <label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น<br> 
+          ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ" <br>  หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>
+      </div>
+    </div>  
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="six wide column">
+        <button class="ui mini primary button" (click)="closeModal(modal[2])" [routerLink]="['/performa']" >
+         ดำเนินการต่อ
+        </button>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <button class="ui mini  button" (click)="closeModal(modal[2])">
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</modal>
+
+
+
+
 <div class="ui grid">
   <div class="sixteen wide column">
     <div class="ui form segment">
@@ -44,7 +76,7 @@
 
 
       <div>
-        <table class="ui small celled table nowrap" id="table1" style="width: 100%">
+        <table class="ui small celled table nowrap"  style="width: 100%">
           <thead>
             <tr style="text-align: center;">
               <th rowspan="1" colspan="2">รายละเอียด
@@ -329,7 +361,10 @@
           </div>
           <div class="five wide field ">
             <input type="file"  value="">
-          </div>       
+          </div>  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui mini primary button">
+            พิมพ์ใบคำขอ
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
 
         <div class="inline fields">
@@ -354,12 +389,10 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-        <button class="ui mini primary button" [routerLink]="['/performa']"  >
+        <button class="ui mini primary button"  (click)="openModal(modal[1])"  >
           ยื่นใบคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class="ui mini primary button">
-          พิมพ์ใบคำขอ
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+     
         <button class="ui mini  button">
           ยกเลิก
         </button>
@@ -411,4 +444,4 @@
     </div>
   </div>
   <!-- id modal[0] = `modal1` -->
-<!-- </modal> --> -->
+<!-- </modal> -->

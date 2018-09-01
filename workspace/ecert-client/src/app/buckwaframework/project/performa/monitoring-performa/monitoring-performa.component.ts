@@ -73,7 +73,8 @@ export class MonitoringPerformaComponent implements OnInit {
     this.showData = true;
     setTimeout(() => {
       $("#table").DataTable({
-        // scrollX: true,
+         scrollX: true, 
+         
         searching: false,
         "columnDefs": [{
           "targets": 8,

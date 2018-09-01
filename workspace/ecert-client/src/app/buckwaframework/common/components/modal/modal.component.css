@@ -19,3 +19,6 @@
 .large.modal {
     top: 20%;
 }
+.hidden {
+    display: none !important;
+}
