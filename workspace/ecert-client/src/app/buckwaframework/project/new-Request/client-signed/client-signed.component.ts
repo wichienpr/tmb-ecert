@@ -38,6 +38,7 @@ export class ClientSignedComponent implements OnInit {
       scrollX: true
     });
   }
+ 
 
   searchData(): void {
     this.showData = true;

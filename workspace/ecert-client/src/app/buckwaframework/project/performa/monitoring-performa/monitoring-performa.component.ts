@@ -57,6 +57,11 @@ export class MonitoringPerformaComponent implements OnInit {
      formatter: formatter()
 
     });
+    $("#table").DataTable({
+      scrollX: true,       
+     searching: false,
+  
+   });
 
   }
   onSelectProducts = event => {
@@ -74,10 +79,10 @@ export class MonitoringPerformaComponent implements OnInit {
     setTimeout(() => {
       $("#table").DataTable({
          scrollX: true, 
-         
+
         searching: false,
         "columnDefs": [{
-          "targets": 8,
+          "targets": [10],
           "orderable": false
         }]
       });

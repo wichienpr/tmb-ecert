@@ -7,7 +7,7 @@ declare var $: any;
 })
 export class DescriptionComponent implements OnInit, OnDestroy {
   allowed: string[];
-
+  show:0;
   selectallowed: string;
   modal: string[] = ['desp', 'allowed', 'document'];
 
@@ -19,24 +19,29 @@ export class DescriptionComponent implements OnInit, OnDestroy {
       "อื่นๆ",
     ];
   }
-
+  clickT=s=>{
+    console.log("onClick : ",s);       
+  this.show =s;
+    
+  }
   ngOnInit() {
-    $('.ui.dropdown').dropdown();
-    $('.menu .item')
-      .tab();
+    $('.ui.dropdown').dropdown();    
+      $("#table").DataTable({
+        scrollX: true,
+        searching: false,   
+        bScrollCollapse: true,
+        
+        "columnDefs": [{
+          "targets": 1,
+          "orderable": false
+        }]
+      });
 
-    $("#table").DataTable({
-      scrollX: true,
-      searching: false,   
-      bAutoWidth: true,  
-      "columnDefs": [{
-        "targets": 1,
-        "orderable": false
-      }]
-    });
+    
   }
   ngAfterViewInit() {
     $("#table").DataTable();
+    $('.menu .item').tab();
   }
 
   ngOnDestroy() {
