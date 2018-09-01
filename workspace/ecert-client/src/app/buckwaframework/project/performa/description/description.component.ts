@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 declare var $: any;
 @Component({
   selector: 'app-description',
   templateUrl: './description.component.html',
   styleUrls: ['./description.component.css']
 })
-export class DescriptionComponent implements OnInit, OnDestroy {
+export class DescriptionComponent implements OnInit {
   allowed: string[];
-  show:0;
+  show: 0;
   selectallowed: string;
   modal: string[] = ['desp', 'allowed', 'document'];
 
@@ -19,35 +19,29 @@ export class DescriptionComponent implements OnInit, OnDestroy {
       "อื่นๆ",
     ];
   }
-  clickT=s=>{
-    console.log("onClick : ",s);       
-  this.show =s;
-    
-  }
-  ngOnInit() {
-    $('.ui.dropdown').dropdown();    
-      $("#table").DataTable({
-        scrollX: true,
-        searching: false,   
-        bScrollCollapse: true,
-        
-        "columnDefs": [{
-          "targets": 1,
-          "orderable": false
-        }]
-      });
 
-    
+  ngOnInit() {
+    $('.ui.dropdown').dropdown();
+    $("#table").DataTable({
+      scrollX: true,
+      searching: false,
+      bScrollCollapse: true,
+
+      "columnDefs": [{
+        "targets": 1,
+        "orderable": false
+      }]
+    });
   }
+
   ngAfterViewInit() {
     $("#table").DataTable();
     $('.menu .item').tab();
   }
 
-  ngOnDestroy() {
-    this.modal.forEach(element => {
-      $(`#${element}`).remove();
-    });
+  clickT = s => {
+    console.log("onClick : ", s);
+    this.show = s;
   }
 
   openModal(id) {

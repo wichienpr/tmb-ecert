@@ -1,63 +1,58 @@
 <div class="ui borderless menu fixed" style="background:rgb(255, 255, 255);z-index: 999;height: 75px;">
+
     <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 240px; height:65px;margin-left:0%">
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
+
+    <div class="ui simple dropdown item" style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
         ตรวจสอบสถานะคำขอ
     </div>
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
+
+    <div class="ui simple dropdown item" style=" color:rgb(0, 0, 0)">
         ทำคำขอใหม่
-        <i class="dropdown icon "></i>
-        <div class="menu ">
-            <a class="item " outerLinkActive="active ">
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" outerLinkActive="active">
                 Request Form สำหรับลูกค้าทำรายการเอง
             </a>
-            <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
+            <a class="item" [routerLink]="['/client-signed']" routerLinkActive="active">
                 Request Form สำหรับทำรายการให้ลูกค้าลงนาม
             </a>
         </div>
     </div>
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
+
+    <div class="ui simple dropdown item" style=" color:rgb(0, 0, 0)">
         รายงาน
-        <i class="dropdown icon "></i>
-        <div class="menu ">
-            <a class="item " [routerLink]="[ '/e-certificate-day'] " routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" [routerLink]="[ '/e-certificate-day']" routerLinkActive="active">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล
                 ( e-Certificate ) - Day
-
             </a>
-            <a class="item " [routerLink]="[ '/e-certificate-monthly']" routerLinkActive="active ">รายงานสรุปการให้บริการ
-                ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Monthly
-
+            <a class="item" [routerLink]="[ '/e-certificate-monthly']" routerLinkActive="active">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล
+                ( e-Certificate ) - Monthly
             </a>
-            <a class="item " [routerLink]="[ '/output-VAT']" routerLinkActive="active ">รายงาน Output VAT
-
+            <a class="item" [routerLink]="[ '/output-VAT']" routerLinkActive="active">รายงาน Output VAT
             </a>
         </div>
     </div>
-    <div class="right menu ">
 
-        <div class="ui simple  item " style=" color:rgb(0, 0, 0);line-height: 150%;">
+    <div class="right menu">
+        <div class="ui simple  item" style=" color:rgb(0, 0, 0);line-height: 150%;">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-           42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
-           
-
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561
+            เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
         </div>
-
-        <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
+        <div class="ui simple dropdown item" style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
             Logout
         </div>
     </div>
+
 </div>
 
 <div class="ui main container-fluid">
-  
     <router-outlet></router-outlet>
-
-
-   
 </div>
 
 <div class="ui vertical footer">
-    <div class="ui center aligned container ">
+    <div class="ui center aligned container">
         <p>© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
     </div>
 </div>
