@@ -3,7 +3,6 @@ declare var $: any;
 @Component({
   selector: 'app-description',
   templateUrl: './description.component.html',
-  styleUrls: ['./description.component.css']
 })
 export class DescriptionComponent implements OnInit, OnDestroy {
   allowed: string[];
@@ -22,21 +21,15 @@ export class DescriptionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     $('.ui.dropdown').dropdown();
-    $('.menu .item')
-      .tab();
-
-    $("#table").DataTable({
-      scrollX: true,
-      searching: false,   
-      bAutoWidth: true,  
-      "columnDefs": [{
-        "targets": 1,
-        "orderable": false
-      }]
-    });
+    $('.menu .item').tab();               
   }
-  ngAfterViewInit() {
-    $("#table").DataTable();
+  ngAfterViewInit() {   
+     
+  }
+
+  callTable = () => {
+    
+    setTimeout(this.dataTable,20);
   }
 
   ngOnDestroy() {
@@ -57,11 +50,11 @@ export class DescriptionComponent implements OnInit, OnDestroy {
     this.selectallowed = this.allowed[event.target.value];
   };
 
-  searchData(): void {
-    setTimeout(() => {
-      $("#table").DataTable({
+  dataTable(): void {
+     $("#table").DataTable({
         scrollX: true,
         searching: false,
+        sScrollXInner: "100%",
         "columnDefs": [{
           "targets": 1,
           "orderable": false
@@ -70,6 +63,5 @@ export class DescriptionComponent implements OnInit, OnDestroy {
           "orderable": false
         }]
       });
-    }, 200);
   }
 }

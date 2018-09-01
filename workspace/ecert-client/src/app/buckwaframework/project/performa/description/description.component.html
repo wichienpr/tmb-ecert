@@ -283,10 +283,10 @@
       <br>
 
       <div class="ui top attached tabular menu">
-        <a class="item active" data-tab="first">รายละเอียดลูกค้า</a>
-        <a class="item" data-tab="second"> ประวัติการทำรายการ</a>
+        <a class="item active" id="tab1" data-tab="first">รายละเอียดลูกค้า</a>
+        <a class="item" id="tab2" data-tab="second" (click)="callTable()"> ประวัติการทำรายการ</a>
       </div>
-      <div class="ui bottom attached tab segment active" data-tab="first">
+      <div class="ui bottom attached tab segment active" id="subTap1" data-tab="first">
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
@@ -492,8 +492,8 @@
         <br>
         <br>
       </div>
-      <div class="ui bottom attached tab segment" data-tab="second">
-          <table class="ui small celled table  nowrap" cellpadding="0"  cellspacing="0" id="table" style="width: 100% ; ">
+      <div class="ui bottom attached tab segment" id="subTap2" data-tab="second">
+          <table class="ui small celled table nowrap" cellpadding="0"  cellspacing="0" id="table" >
               <thead>
                 <tr>
                   <th >ลำดับ</th>
