@@ -55,10 +55,7 @@ export class DescriptionComponent implements OnInit {
         searching: false,
         sScrollXInner: "100%",
         "columnDefs": [{
-          "targets": 1,
-          "orderable": false
-        }, {
-          "targets": 2,
+          "targets": 12,
           "orderable": false
         }]
       });
