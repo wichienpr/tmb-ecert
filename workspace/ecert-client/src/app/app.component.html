@@ -1,3 +1,35 @@
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+    <i class="close icon"></i>
+    <div class="header">
+        Request Form สำหรับลูกค้าทำรายการเอง  
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="five wide field">
+            <label>ทำรายการสำเร็จ TMB Req. No : </label>       
+          </div>
+          <div class="four wide field">
+            <label>01012561000010</label>           
+          </div>
+        </div>           
+      </div>    
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="six wide column">
+          <button class="ui mini primary button" (click)="closeModal(modal[0])" [routerLink]="[ '/performa']">
+            ตกลง
+          </button>
+          &nbsp;&nbsp; &nbsp;&nbsp;          
+        </div>
+      </div>
+    </div>
+  </modal>
+  
+
+
+
 <div class="ui borderless menu fixed" style="background:rgb(255, 255, 255);z-index: 999;height: 75px;">
     <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 240px; height:65px;margin-left:0%">
     <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
@@ -7,7 +39,7 @@
         ทำคำขอใหม่
         <i class="dropdown icon "></i>
         <div class="menu ">
-            <a class="item " outerLinkActive="active ">
+            <a class="item " outerLinkActive="active " (click)="openModal(modal[0])">
                 Request Form สำหรับลูกค้าทำรายการเอง
             </a>
             <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
