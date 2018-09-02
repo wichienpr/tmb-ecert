@@ -31,6 +31,7 @@ div1 {
 
 .bg-login {
     background:#0A6197;
+    height: 105% !important;
     box-shadow: none !important;
     border: 0 !important;
 }
@@ -50,6 +51,6 @@ div1 {
 }
 
 .floated.image {
-    height: 100% !important;
+    height: 105% !important;
     width: 100% !important;
 }

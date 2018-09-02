@@ -43,8 +43,7 @@ export class ClientSignedComponent implements OnInit {
     this.showData = true;
     $('#table1').DataTable({
       ordering: false,
-      searching: false,
-     
+      searching: false,     
       scrollX: true
     });
   }
