@@ -37,9 +37,7 @@ export class MonitoringPerformaComponent implements OnInit {
 
   }
 
-  ngAfterViewInit() {
-    $("#table").DataTable();
-  }
+ 
   ngOnInit() {
 
     $("#calendar1").calendar({
@@ -68,18 +66,23 @@ export class MonitoringPerformaComponent implements OnInit {
   };
 
 
+  ngAfterViewInit() {
+    $("#table").DataTable();
+  }
 
   searchData(): void {
     this.showData = true;
     setTimeout(() => {
       $("#table").DataTable({
          scrollX: true, 
-         
-        searching: false,
-        "columnDefs": [{
-          "targets": 8,
+         ordering: true, 
+         searching: false,  
+         "columnDefs": [{
+          "targets": 10,
           "orderable": false
-        }]
+        }]   
+           
+      
       });
     }, 200);
   }
