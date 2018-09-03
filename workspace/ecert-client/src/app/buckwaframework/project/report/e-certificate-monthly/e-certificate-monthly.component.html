@@ -1,6 +1,6 @@
 <div class="ui grid">
   <div class="sixteen wide column">
-    <h2 class="ui header">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) - Monthly
+    <h2 class="ui header">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly
     </h2>
 
     <div class="ui top attached header segment">
@@ -53,6 +53,7 @@
                 <th rowspan="2">จำนวนคำขอ</th>
                 <th colspan="2">ประเภทคำขอ : ราย</th>
                 <th colspan="2">จำนวนเงิน : บาท</th>
+                <th  rowspan="2">จำนวนเงิน</th>               
                 <th colspan="2">สถานะ : จำนวนราย</th>
                 <th rowspan="2">หมายเหตุ</th>
               </tr>
@@ -61,34 +62,90 @@
                 <th>รับรองสำเนา</th>
                 <th style="border-left: 1px solid rgba(34,36,38,.1) !important">DBD </th>
                 <th>TMB</th>
-                <th style="border-left: 1px solid rgba(34,36,38,.1) !important">Success </th>
+                <th >Success </th>
                 <th>Fail</th>
               </tr>
             </thead>
-            <tbody>         
-                <tr>
-                    <td >SE</td>
-                    <td style="text-align: right;">20</td>
-                    <td style="text-align: right;">10</td>
-                    <td style="text-align: right">10</td>
-                    <td style="text-align: right">4000.00</td>
-                    <td style="text-align: right">3000.00</td>
-                    <td style="text-align: right">20</td>
-                    <td style="text-align: right">0</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>AE</td>
-                    <td style="text-align: right">20</td>
-                    <td style="text-align: right">10</td>
-                    <td style="text-align: right">10</td>
-                    <td style="text-align: right">4000.00</td>
-                    <td style="text-align: right">3000.00</td>
-                    <td style="text-align: right">20</td>
-                    <td style="text-align: right">0</td>
-                    <td></td>
-                </tr>
-            </tbody>
+            <tbody>
+              
+              <tr>
+                  <td style="text-align: center">Retail</td>
+                  <td style="text-align: right">56</td>
+                  <td  style="text-align: right">30</td>
+                  <td  style="text-align: right">26</td>
+                  <td  style="text-align: right">11,200.00</td>
+                  <td  style="text-align: right">5,600.00</td>
+                  <td  style="text-align: right">16,800.00</td>
+                  <td  style="text-align: right">56</td>
+                  <td  style="text-align: right">0</td>
+                  <td>&nbsp;</td>
+                
+              </tr>
+              <tr>
+                  <td style="text-align: center">SE</td>
+                  <td  style="text-align: right">57</td>
+                  <td  style="text-align: right">45</td>
+                  <td  style="text-align: right">12</td>
+                  <td  style="text-align: right">11,400.00</td>
+                  <td  style="text-align: right">5,700.00</td>
+                  <td  style="text-align: right">17,100.00</td>
+                  <td  style="text-align: right">57</td>
+                  <td  style="text-align: right">0</td>
+                  <td>&nbsp;</td>
+                 
+              </tr>
+              <tr>
+                  <td style="text-align: center">BB</td>
+                  <td  style="text-align: right">98</td>
+                  <td  style="text-align: right">77</td>
+                  <td  style="text-align: right">21</td>
+                  <td  style="text-align: right">19,600.00</td>
+                  <td  style="text-align: right">9,800.00</td>
+                  <td  style="text-align: right">29,400.00</td>
+                  <td  style="text-align: right">95</td>
+                  <td style="text-align: right"><a  [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">3</a></td>
+                  <td></td>
+                 
+              </tr>
+              <tr>
+                  <td style="text-align: center">CB</td>
+                  <td  style="text-align: right">93</td>
+                  <td  style="text-align: right">55</td>
+                  <td  style="text-align: right">38</td>
+                  <td  style="text-align: right">18,600.00</td>
+                  <td  style="text-align: right">9,300.00</td>
+                  <td  style="text-align: right">27,900.00</td>
+                  <td  style="text-align: right">83</td>
+                  <td style="text-align: right"><a  [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">10</a></td>
+                  <td></td>
+                
+              </tr>
+              <tr>
+                  <td style="text-align: center">MB</td>
+                  <td  style="text-align: right">61</td>
+                  <td  style="text-align: right">50</td>
+                  <td  style="text-align: right">11</td>
+                  <td  style="text-align: right">12,200.00</td>
+                  <td  style="text-align: right">6,100.00</td>
+                  <td  style="text-align: right">18,300.00</td>
+                  <td  style="text-align: right">60</td>
+                  <td style="text-align: right"><a  [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">1</a></td>
+                  <td></td>
+                 
+              </tr>
+              <tr>
+                  <td style="text-align: center">Etc.</td>
+                  <td  style="text-align: right">20</td>
+                  <td  style="text-align: right">5</td>
+                  <td  style="text-align: right">15</td>
+                  <td style="text-align: right">4,000.00</td>
+                  <td style="text-align: right">2,000.00</td>
+                  <td style="text-align: right">6,000.00</td>
+                  <td style="text-align: right">20</td>
+                  <td style="text-align: right">0</td>
+                  <td>&nbsp;</td>                  
+              </tr>
+          </tbody>
           </table>
         </div>
         <br>

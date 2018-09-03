@@ -8,6 +8,7 @@ import { ECertificateMonthlyComponent } from "../../project/report/e-certificate
 import { ClientSignedComponent } from "../../project/new-Request/client-signed/client-signed.component";
 import { DescriptionComponent } from "../../project/performa/description/description.component";
 import { OutputVATComponent } from "../../project/report/output-vat/output-vat.component";
+import { CauseMonthlyComponent } from "../../project/report/e-certificate-monthly/cause-monthly/cause-monthly.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/login", pathMatch: "full" },
@@ -43,7 +44,12 @@ const routes: Routes = [
   {
     path: "output-VAT",
     component: OutputVATComponent    
+  },{
+    path: "cause-monthly",
+    component: CauseMonthlyComponent    
   }
+
+ 
   
 ];
 
