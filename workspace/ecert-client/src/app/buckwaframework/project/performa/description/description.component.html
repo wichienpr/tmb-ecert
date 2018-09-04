@@ -31,8 +31,8 @@
 
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
-  <div class="header">
-    ดำเนินการชำระเงิน
+  <div class="header" style="background:#1678C2">
+   <div style="color: rgb(255, 255, 255)">ดำเนินการชำระเงิน</div> 
   </div>
   <div class="content">
     <div class="ui form">
@@ -64,7 +64,7 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="six wide column">
-        <button class="ui mini primary button" (click)="closeModal(modal[0])" style="background: rgb(231, 185, 58)">
+        <button class="ui mini primary button" (click)="closeModal(modal[0])" >
           ชำระเงิน
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
@@ -78,8 +78,8 @@
 
 <modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
-  <div class="header">
-    ระบุสาเหตุ
+  <div class="header"  style="background:#1678C2">
+   <diV style="color: rgb(255, 255, 255)">ระบุสาเหตุ</diV> 
   </div>
   <div class="content">
     <div class="ui form">
@@ -109,11 +109,11 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="six wide column">
-        <button class="ui mini primary button" (click)="closeModal(modal[0])" style="background: rgb(231, 185, 58)">
+        <button class="ui mini primary button" (click)="closeModal(modal[1])">
           ตกลง
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button class="ui mini  button" (click)="closeModal(modal[0])">
+        <button class="ui mini  button" (click)="closeModal(modal[1])">
           ยกเลิก
         </button>
       </div>
@@ -123,8 +123,8 @@
 
 <modal [id]="modal[2]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
-  <div class="header">
-    ระบุเอกสาร  Certificate
+  <div class="header"  style="background:#1678C2">
+      <diV style="color: rgb(255, 255, 255)">ระบุเอกสาร Certificate</diV> 
   </div>
   <div class="content">
     <div class="ui form">
@@ -142,7 +142,7 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="six wide column">
-        <button class="ui mini primary button" (click)="closeModal(modal[2])" style="background: rgb(231, 185, 58)">
+        <button class="ui mini primary button" (click)="closeModal(modal[2])" >
           ตกลง
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
