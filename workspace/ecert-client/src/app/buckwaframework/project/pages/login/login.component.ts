@@ -6,14 +6,26 @@ declare var $: any;
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string  = "";
-  password: string  = "";
+  username: string = "";
+  password: string = "";
   modal: string[] = ["modal"];
+  errorMessage: any = false;
+
 
   constructor() { }
 
-  ngOnInit() {  
+  ngOnInit() {
 
+  }
+  ngAfterViewInit() {
+    $('.message .close')
+      .on('click', function () {
+        $(this)
+          .closest('.message')
+          .transition('fade')
+          ;
+      })
+      ;
   }
 
   openModal(id) {
@@ -24,12 +36,14 @@ export class LoginComponent implements OnInit {
     $('#' + id).modal('hide');
   }
 
-  onClickSubmit(){
-    if(this.username =="admin" && this.password == "password"){      
-   $("#modal").modal('show');
-    }else{
-      window.alert("รหัสไม่ถูกต้อง");
+  onClickSubmit() {
+    if (this.username == "admin" && this.password == "password") {
+      $("#modal").modal('show');
+    } else {
+      this.errorMessage = true;
     }
   }
 
 }
+
+

@@ -1,13 +1,13 @@
-<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'"  >
     <i class="close icon"></i>
-    <div class="header">
+    <div class="header" style="background: rgb(231, 185, 58)">
       แจ้งเตือนการเข้าใช้งาน
     </div>
     <div class="content">
       <div class="ui form">
         <div class="inline fields">
-          <div class="nine wide field">
-            <label>ระบบตรวจสอบพบว่าผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>       
+          <div class="ten wide field">
+            <label>ระบบตรวจสอบพบว่ามีผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>       
           </div>       
         </div>           
       </div>    
@@ -15,7 +15,7 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="six wide column">
-          <button class="ui mini primary button" (click)="closeModal(modal[0])" [routerLink]="[ '/home']">
+          <button class="ui mini  button" style="background: rgb(231, 185, 58);" (click)="closeModal(modal[0])" [routerLink]="[ '/home']">
             ดำเนินการต่อ
           </button>
           &nbsp;&nbsp; &nbsp;&nbsp;   
@@ -41,12 +41,20 @@
 </div>
 <div class="ui container" style="margin-top: -14px;">
   <div class="ui one column grid login-page">  
-   
+
     <div class="ui five wide column bg-login login">
       <b>
         <font color="#F0FFFF"> เข้าสู่ระบบ </font>
       </b>
-      <div class="ui form segment bg-login form-login">      
+      <div class="ui form segment bg-login form-login">    
+           
+  <div class="ui negative message" *ngIf="errorMessage">
+      <i class="close icon"></i>
+      <div class="header">               
+      </div>
+      <p>ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
+    </p></div>
+
         <div class="inline-fields">
           <div class="ui left labeled icon input input-login">
             <input type="text"  placeholder="Username"  id="username" name="username" [(ngModel)]="username" >
