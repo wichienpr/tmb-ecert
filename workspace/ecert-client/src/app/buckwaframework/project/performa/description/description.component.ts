@@ -8,7 +8,7 @@ export class DescriptionComponent implements OnInit {
   allowed: string[];
   show: 0;
   selectallowed: string;
-  modal: string[] = ['desp', 'allowed', 'document'];
+  modal: string[] = ['desp', 'allowed', 'document','approve'];
 
   constructor() {
     this.allowed = [

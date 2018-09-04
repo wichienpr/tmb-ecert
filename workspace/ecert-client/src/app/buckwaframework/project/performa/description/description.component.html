@@ -1,3 +1,34 @@
+
+
+<modal [id]="modal[3]" [size]="'small'" [type]="'custom'">
+    <i class="close icon"></i>
+    <div class="header" style="background: rgb(231, 185, 58)">
+       <div  style="color: white" >แจ้งเตือนการอนุมัติการชำระเงินค่าธรรมเนียม </div> 
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="nine wide field">
+            <label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>       
+          </div>        
+        </div>           
+      </div>    
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="six wide column">
+          <button class="ui mini primary button" style="background: rgb(231, 185, 58)" (click)="closeModal(modal[3])" >
+         ยืนยัน
+          </button>
+          &nbsp;&nbsp; &nbsp;&nbsp;    
+          <button class="ui mini  button"  (click)="closeModal(modal[3])" >
+            ยกเลิก
+            </button>      
+        </div>
+      </div>
+    </div>
+  </modal>
+
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
   <div class="header">
@@ -502,7 +533,7 @@
         <br>
         <br>
         <div class="ui center aligned grid">
-          <button class="ui mini primary button">
+          <button class="ui mini primary button"  (click)="openModal(modal[3])">
             อนุมัติการชำระเงิน
           </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <button class="ui mini primary button" (click)="openModal(modal[1])">
