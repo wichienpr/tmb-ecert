@@ -1,7 +1,7 @@
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'"  >
     <i class="close icon"></i>
     <div class="header" style="background: rgb(231, 185, 58)">
-      แจ้งเตือนการเข้าใช้งาน
+     <div style="color: white">แจ้งเตือนการเข้าใช้งาน</div> 
     </div>
     <div class="content">
       <div class="ui form">
@@ -15,7 +15,7 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="six wide column">
-          <button class="ui mini  button" style="background: rgb(231, 185, 58);" (click)="closeModal(modal[0])" [routerLink]="[ '/home']">
+          <button class="ui mini  button" style="background: rgb(231, 185, 58);color: white" (click)="closeModal(modal[0])" [routerLink]="[ '/home']">
             ดำเนินการต่อ
           </button>
           &nbsp;&nbsp; &nbsp;&nbsp;   
