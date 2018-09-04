@@ -14,6 +14,8 @@ import { OutputVATComponent } from './buckwaframework/project/report/output-vat/
 import { ComponentsModule } from './buckwaframework/common/components/components.module';
 import { CauseMonthlyComponent } from './buckwaframework/project/report/e-certificate-monthly/cause-monthly/cause-monthly.component';
 
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,9 @@ import { CauseMonthlyComponent } from './buckwaframework/project/report/e-certif
     BrowserModule,
     SuiModule,
     ComponentsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

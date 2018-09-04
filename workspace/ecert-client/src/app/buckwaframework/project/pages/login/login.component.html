@@ -1,3 +1,35 @@
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+    <i class="close icon"></i>
+    <div class="header">
+      แจ้งเตือนการเข้าใช้งาน
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="nine wide field">
+            <label>ระบบตรวจสอบพบว่าผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>       
+          </div>       
+        </div>           
+      </div>    
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="six wide column">
+          <button class="ui mini primary button" (click)="closeModal(modal[0])" [routerLink]="[ '/home']">
+            ดำเนินการต่อ
+          </button>
+          &nbsp;&nbsp; &nbsp;&nbsp;   
+          <button class="ui mini  button" (click)="closeModal(modal[0])">
+            ยกเลิก
+          </button>       
+        </div>
+      </div>
+    </div>
+  </modal>
+  
+
+
+
 <div class="ui borderless menu fixed" style="background: 	#fff;z-index: 999;height: 75px;">
   <div class="ui container">
     <div class="ui one column grid">
@@ -8,31 +40,33 @@
   </div>
 </div>
 <div class="ui container" style="margin-top: -14px;">
-  <div class="ui one column grid login-page">
+  <div class="ui one column grid login-page">  
+   
     <div class="ui five wide column bg-login login">
       <b>
         <font color="#F0FFFF"> เข้าสู่ระบบ </font>
       </b>
-      <div class="ui form segment bg-login form-login">
+      <div class="ui form segment bg-login form-login">      
         <div class="inline-fields">
           <div class="ui left labeled icon input input-login">
-            <input type="text" placeholder="Username">
+            <input type="text"  placeholder="Username"  id="username" name="username" [(ngModel)]="username" >
             <i class="user icon"></i>
           </div>
         </div>
         <div class="inline-fields">
           <div class="ui left labeled icon input input-login">
-            <input type="password" placeholder="Password">
+            <input type="password" placeholder="Password" id="password" name="password" [(ngModel)]="password">
             <i class="lock icon"></i>
           </div>
         </div>
         <div class="inline-fields">
-          <button class="ui button btn-login" [routerLink]="[ '/home']">
+          <button class="ui button btn-login"  (click)="onClickSubmit()">
             <font color="#F0FFFF"> เข้าสู่ระบบ </font>
           </button>
         </div>
       </div>
     </div>
+   
     <div class="ui eleven wide column frame-img">
       <img class="ui small floated image" src="assets/image/Background.png">
     </div>
