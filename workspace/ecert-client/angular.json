@@ -26,6 +26,7 @@
               "node_modules/semantic-ui/dist/semantic.min.css",
               "node_modules/semantic-ui-calendar/dist/calendar.css",
               "node_modules/datatables.net-se/css/dataTables.semanticui.css",
+              "src/assets/font/fonts.css",
               "src/styles.css"
             ],
             "scripts": [

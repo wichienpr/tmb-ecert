@@ -30,12 +30,12 @@
 
 
 
-<div class="ui borderless menu fixed" style="background:rgb(255, 255, 255);z-index: 999;height: 75px;">
-    <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 240px; height:65px;margin-left:0%">
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/performa']">
+<div class="ui borderless menu fixed" style="background:#0079c0;z-index: 999;height: 75px;">
+    <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 105px;">
+    <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" [routerLink]="[ '/performa']">
         ตรวจสอบสถานะคำขอ
     </div>
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
+    <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)">
         ทำคำขอใหม่
         <i class="dropdown icon "></i>
         <div class="menu ">
@@ -47,48 +47,36 @@
             </a>
         </div>
     </div>
-    <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)">
+
+    <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)">
         รายงาน
         <i class="dropdown icon "></i>
         <div class="menu ">
             <a class="item " [routerLink]="[ '/e-certificate-day'] " routerLinkActive="active ">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day
-
             </a>
             <a class="item " [routerLink]="[ '/e-certificate-monthly']" routerLinkActive="active ">รายงานสรุปการให้บริการ
                 ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly
-
             </a>
             <a class="item " [routerLink]="[ '/output-VAT']" routerLinkActive="active ">รายงาน Output VAT
-
             </a>
         </div>
-    </div>
+    </div>  
     <div class="right menu ">
-
-        <div class="ui simple  item " style=" color:rgb(0, 0, 0);line-height: 150%;">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-           42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
-           
+        <div class="ui simple  item " style=" color:rgb(255, 255, 255);line-height: 150%;margin-right: 20px">   
+           42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ       
 
         </div>
-
-        <div class="ui simple dropdown item " style=" color:rgb(0, 0, 0)" [routerLink]="[ '/login']">
-            Logout
+        <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" [routerLink]="[ '/login']">
+            ออกจากระบบ
         </div>
     </div>
 </div>
 
-<div class="ui main container-fluid">
-  
-    <router-outlet></router-outlet>
-
-
-   
+<div class="ui main container-fluid">  
+    <router-outlet></router-outlet>   
 </div>
-
-<div class="ui vertical footer">
-    <div class="ui center aligned container ">
+<div class="ui vertical footer" style="background:#0079c0">
+    <div class="ui center aligned container" style="color: #FFF;">
         <p>© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
     </div>
 </div>

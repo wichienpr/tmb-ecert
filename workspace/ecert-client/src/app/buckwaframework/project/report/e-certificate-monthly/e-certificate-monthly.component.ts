@@ -30,9 +30,8 @@ export class ECertificateMonthlyComponent implements OnInit {
       $("#table").DataTable({
         scrollX: true,
         searching: false,
-        ordering: false,
+        ordering: true,
         paging: true,
-
         "columnDefs": [{
           "targets": [2,3,4,5,7,8,9],
           "orderable": false
