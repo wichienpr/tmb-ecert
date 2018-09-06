@@ -1,4 +1,31 @@
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+        <i class="close icon"></i>
+        <div class="header"   style="background:#1678C2">
+           <div style="color: rgb(255, 255, 255)" >ยืนยันทำรายการ ?</div> 
+        </div>
+        <div class="content">
+          <div class="ui form">
+                   
+          </div>    
+        </div>
+        <div class="actions">
+          <div class="ui center aligned grid">
+            <div class="six wide column">
+              <button class="ui blue basic button" (click)="openModal(modal[1])">
+                ตกลง
+              </button>
+              &nbsp;&nbsp; &nbsp;&nbsp;   
+              <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+                ยกเลิก
+              </button>       
+            </div>
+          </div>
+        </div>
+      </modal>
+
+
+
+<modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
     <i class="close icon"></i>
     <div class="header"   style="background:#1678C2">
        <div style="color: rgb(255, 255, 255)" >Request Form สำหรับลูกค้าทำรายการเอง </div> 
@@ -18,7 +45,7 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="six wide column">
-          <button class="ui mini primary button" (click)="closeModal(modal[0])" [routerLink]="[ '/performa']">
+          <button class="ui mini primary button" (click)="closeModal(modal[1])" [routerLink]="[ '/performa']">
             ตกลง
           </button>
           &nbsp;&nbsp; &nbsp;&nbsp;          
@@ -45,6 +72,14 @@
             <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
                 Request Form สำหรับทำรายการให้ลูกค้าลงนาม
             </a>
+            <div class="ui simple dropdown item">
+                <i class="dropdown icon "></i> Request Form สำหรับการยกเว้นค่าธรรมเนียม/ค่าบริการ
+                <div class="menu ">
+                    <a class="item "  routerLinkActive="active ">Request Form ยกเว้นค่าบริการ TMB จ่ายเฉพาะค่าธรรมเนียม DBD</a>
+                    <a class="item " routerLinkActive="active ">Request Form ยกเว้นค่าบริการ TMB และค่าธรรมเนียม DBD</a>
+                   
+                </div>
+            </div>
         </div>
     </div>
 

@@ -8,6 +8,8 @@ declare var $: any;
 export class ClientSignedComponent implements OnInit {
   products: String[];
   paid: String[];
+  customerSegment : String[];
+  selectcustomerSegment : String;
 
   debitMethod: String[];
   showData: boolean = false;
@@ -24,11 +26,14 @@ export class ClientSignedComponent implements OnInit {
     ];
 
     this.paid = ["กรุณาเลือก",
-      "หัก บช.ลูกค้า/เงินฝาก หรือกระแสรายวัน", "บัญชีของธนาคาร TMB"];
+      "เงินสด", "ตัดบัญชี"];
 
     this.debitMethod = ["กรุณาเลือก",
-      "ธนาคารกุล่ม SE"];
+      "บ/ช ลูกค้า","บ/ช BU "];
+      this.customerSegment =["กรุณาเลือก","BB","CB","Etc","MB","Retail","SE"]
   }
+    
+
 
   ngOnInit() {
     //$('#table1').DataTable();
@@ -61,6 +66,9 @@ export class ClientSignedComponent implements OnInit {
 
   onSelectdebitMethod = event => {
     this.selectpaid = this.debitMethod[event.target.value];
+  };
+  onselectcustomerSegment = event => {
+    this. selectcustomerSegment = this.customerSegment[event.target.value];
   };
 
   openModal(id) {

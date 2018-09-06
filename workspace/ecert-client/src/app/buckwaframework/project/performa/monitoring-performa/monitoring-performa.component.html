@@ -70,62 +70,32 @@
           </div>
           <div class="five wide field ">
             <input type="text" placeholder="" value="">
-          </div>
+          </div> 
           <div class="two wide field ">
-            <label>เลขที่คำขอ (Ref.1)
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+              <label>ชื่อนิติบุคคล</label>
+            </div>
+            <div class="five wide field ">
+              <input type="text" placeholder="" value="">
+            </div>        
         </div>
 
-        <div class="inline fields">
-          <div class="two wide field ">
-            <label>ชื่อนิติบุคคล</label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+        <div class="inline fields">        
           <div class="two wide field ">
             <label>เลขที่นิติบุคคล </label>
           </div>
           <div class="five wide field ">
             <input type="text" placeholder="" value="">
           </div>
-        </div>
-
-        <div class="inline fields">
-          <div class="two wide field ">
-            <label>ประเภทคำขอ</label>
-          </div>
-          <div class="five wide field">
-            <select id="products" name="products" class="ui search dropdown" (change)="onSelectProducts($event)">
-              <option *ngFor="let product of products; let i = index" value="{{i}}">
-                {{product}}
-              </option>
-            </select>
-          </div>
-          <div class="two wide field ">
-            <label>สถานะการดำเนินการ</label>
-          </div>
-          <div class="five wide field">
-            <select id="actionStatus" name="actionStatus" class="ui search dropdown" (change)="onSelectactionStatus($event)">
-              <option *ngFor="let actionStatus of actionStatus; let i = index" value="{{i}}">
-                {{actionStatus}}
-              </option>
-            </select>
-          </div>
-        </div>
+        </div>     
       </div>
       <br>
       <br>
       <div class="ui center aligned grid">
-        <button class="ui mini primary button" (click)="searchData()">
+          <button  class="ui blue basic button" (click)="searchData()">
           <i class="search icon"></i>
           ค้นหา
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class="ui mini button" (click)="clearData()">
+        <button  class="ui grey  basic button" (click)="clearData()">
           ล้างข้อมูล
         </button>
         <br>
@@ -166,7 +136,7 @@
               <td>บริษัท เอ</td>
               <td>New</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -181,7 +151,7 @@
               <td>บริษัท บี</td>
               <td>Approve Payment</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -196,7 +166,7 @@
               <td>บริษัท บี</td>
               <td>Reiect Payment </td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -211,7 +181,7 @@
               <td>บริษัท ซี</td>
               <td>Waiting Payment</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button"[routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -226,7 +196,7 @@
               <td>บริษัท เอ1</td>
               <td>Payment Complete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -241,7 +211,7 @@
               <td>บริษัท บี1</td>
               <td>Payment Incomplete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -256,7 +226,7 @@
               <td>บริษัท ซี1</td>
               <td>Upload to ECM Complete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -271,7 +241,7 @@
               <td>บริษัท เอ2</td>
               <td>Upload to ECM Incomplete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -286,7 +256,7 @@
               <td>บริษัท บี2</td>
               <td>Upload to e-Certificate Complete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -301,7 +271,7 @@
               <td>บริษัท ซี2</td>
               <td>Upload to e-Certificate Incomplete</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -316,7 +286,7 @@
               <td>บริษัท ซี3</td>
               <td>Cancel</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/description']">แสดง</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง</button>
               </td>
             </tr>
             <tr>
@@ -331,7 +301,7 @@
               <td>บริษัท ซี4</td>
               <td>Waiting Request Form</td>
               <td>
-                <button class="ui mini primary button" [routerLink]="[ '/client-signed']">ยื่นคำขอ</button>
+                  <button  class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง</button>
               </td>
             </tr>
           </tbody>

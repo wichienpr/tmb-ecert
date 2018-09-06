@@ -203,7 +203,7 @@
               <th rowspan="2" colspan="2">รายละเอียด </th>
               <th rowspan="2">ค่าธรรมเนียมของ DBD </th>
               <th rowspan="2">ค่าบริการของธนาคาร </th>
-              <th rowspan="2">จำนวน (ฉบับ/หน้า/เรื่อง) </th>
+              <th rowspan="2">  จำนวน : ชุด</th>
             </tr>
           </thead>
           <tbody>
@@ -533,33 +533,27 @@
         <br>
         <br>
         <div class="ui center aligned grid">
-          <button class="ui mini primary button"  (click)="openModal(modal[3])">
+            <button  class="ui blue basic button" (click)="openModal(modal[0])">
+                ดำเนินการชำระเงิน
+              </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button  class="ui blue basic button"  (click)="openModal(modal[3])">
             อนุมัติการชำระเงิน
           </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button" (click)="openModal(modal[1])">
+          <button  class="ui blue basic button">
+              รออนุมัติการชำระเงิน
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button  class="ui blue basic button" (click)="openModal(modal[1])">
             ไม่อนุมัติการชำระเงิน
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;        
+          <button  class="ui blue basic button" (click)="openModal(modal[1])">
+              ปฎิเสธการชำระเงิน
           </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button" (click)="openModal(modal[0])">
-            ดำเนินการชำระเงิน
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button" (click)="openModal(modal[1])">
-            ข้อมูลไม่ถูกต้อง
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button" (click)="openModal(modal[1])">
-            ยกเลิกคำขอ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button">
-            พิมพ์ใบเสร็จ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button">
-            พิมพ์ Cover Sheet
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button" (click)="openModal(modal[2])">
-            Upload Certificate
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini  button">
-            ยกเลิก
-          </button>
+          <button  class="ui blue basic button" (click)="openModal(modal[2])">
+              Upload Certificate
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;        
+          <button  class="ui grey  basic button">
+            ถอยหลัง
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;      
           <br>
         </div>
         <br>

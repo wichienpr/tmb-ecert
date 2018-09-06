@@ -15,11 +15,11 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="six wide column">
-        <button class="ui mini primary button" (click)="closeModal(modal[1])" [routerLink]="['/performa']" style="background: rgb(231, 185, 58)" >
+          <button  class="ui blue basic button" (click)="closeModal(modal[1])" [routerLink]="['/performa']" style="background: rgb(231, 185, 58)" >
          ดำเนินการต่อ
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button class="ui mini  button" (click)="closeModal(modal[1])">
+        <button  class="ui blue basic button" (click)="closeModal(modal[1])">
           ยกเลิก
         </button>
       </div>
@@ -84,7 +84,7 @@
               <th rowspan="2">ค่าธรรมเนียมของ DBD
               </th>
               <th rowspan="2">ค่าบริการของธนาคาร</th>
-              <th rowspan="2">จำนวน (ฉบับ/หน้า/เรื่อง) </th>
+              <th rowspan="2">จำนวน : ชุด</th>
             </tr>
             <tr style="display: none">
               <th>1</th>
@@ -246,9 +246,13 @@
         <div class="four wide field ">
           <label>Customer Segment
           </label>
-        </div>
-        <div class="five wide field ">
-          <input type="text" placeholder="" value="">
+        </div>       
+        <div class="five wide field">
+          <select id="customerSegment" name="customerSegment" class="ui search dropdown" (change)="onselectcustomerSegment($event)">
+            <option *ngFor="let customerSegment of customerSegment; let i = index" value="{{i}}">
+              {{customerSegment}}
+            </option>
+          </select>
         </div>
         <div class="two wide field ">
           <label>เลขที่ CA/มติอนุมัติ
@@ -273,10 +277,10 @@
       </div>
 
       <div class="inline fields">
-        <div class="two wide field ">
-          <label>วิธีตัดบัญชี</label>
+        <div class="four wide field ">
+          <label>ขอ Confirm ประเภทการตัด</label>
         </div>
-        <div class="two wide field"></div>
+       
         <div class="five wide field">
           <select id="debitMethod" name="debitMethod" class="ui search dropdown" (change)=" onSelectdebitMethod($event)">
             <option *ngFor="let debitMethod of debitMethod; let i = index" value="{{i}}">
@@ -338,7 +342,7 @@
 
       <div class="inline fields">
         <div class="four wide field ">
-          <label>ชื่อผู้ขอที่ต้องการแสดงบนใบเสร็จ
+          <label>ชื่อบนใบเสร็จธนาคาร TMB
           </label>
         </div>
         <div class="five wide field ">
@@ -360,11 +364,16 @@
           </div>
           <div class="five wide field ">
             <input type="file"  value="">
-          </div>  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui mini primary button">
-            พิมพ์ใบคำขอ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
+          </div>                  
+              <div class="two wide field ">
+                <label>ที่อยู่
+                </label>
+              </div>
+              <div class="five wide field ">
+                <textarea rows="2"></textarea>
+              </div>
+            </div>
+        
 
         <div class="inline fields">
             <div class="four wide field ">
@@ -375,6 +384,15 @@
               <input type="file"  value="" >
             </div>             
           </div>
+          <div class="inline fields">
+              <div class="four wide field ">
+                <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี) 
+                </label>
+              </div>
+              <div class="five wide field ">
+                <input type="file"  value="" >
+              </div>             
+            </div>
 
       <div class="inline fields">
         <div class="four wide field ">
@@ -388,10 +406,13 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-        <button class="ui mini primary button"  (click)="openModal(modal[1])"  >
+          <button  class="ui blue basic button">
+              พิมพ์ใบคำขอ
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <button  class="ui blue basic button" (click)="openModal(modal[1])"  >
           ยื่นใบคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     
-        <button class="ui mini  button">
+        <button  class="ui blue basic button">
           ยกเลิก
         </button>
         <br>
