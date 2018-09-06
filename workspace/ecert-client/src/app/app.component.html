@@ -10,12 +10,14 @@
         </div>
         <div class="actions">
           <div class="ui center aligned grid">
-            <div class="six wide column">
+            <div class="seven wide column">
               <button class="ui blue basic button" (click)="openModal(modal[1])">
+                    <i class="check circle outline icon"></i>
                 ตกลง
               </button>
               &nbsp;&nbsp; &nbsp;&nbsp;   
               <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+                    <i class="times circle outline icon"></i>
                 ยกเลิก
               </button>       
             </div>
@@ -45,8 +47,9 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="six wide column">
-          <button class="ui mini primary button" (click)="closeModal(modal[1])" [routerLink]="[ '/performa']">
-            ตกลง
+            <button  class="ui blue  basic button"(click)="closeModal(modal[1])" [routerLink]="[ '/performa']">
+                <i class="check circle outline icon"></i>
+                ตกลง
           </button>
           &nbsp;&nbsp; &nbsp;&nbsp;          
         </div>

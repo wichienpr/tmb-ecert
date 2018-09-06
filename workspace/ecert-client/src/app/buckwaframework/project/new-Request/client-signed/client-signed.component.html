@@ -349,7 +349,7 @@
           <input type="text" placeholder="" value="">
         </div>
         <div class="two wide field ">
-          <label>เบอร์โทรลูกค้า
+          <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)
           </label>
         </div>
         <div class="five wide field ">
@@ -407,12 +407,15 @@
       <br>
       <div class="ui center aligned grid">
           <button  class="ui blue basic button">
+              <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <button  class="ui blue basic button" (click)="openModal(modal[1])"  >
+            <button  class="ui blue basic button" (click)="openModal(modal[1])">       
+                <i class="file alternate outline icon"></i>       
           ยื่นใบคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     
-        <button  class="ui blue basic button">
+        <button  class="ui grey basic button">
+            <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
         <br>
