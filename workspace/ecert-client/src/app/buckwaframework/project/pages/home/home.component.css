@@ -12,10 +12,15 @@
 .ig{
   margin-top: -11px;
   margin-left: -15px;
+  width: 16vw !important;
+  min-height: calc(100vh - 227px);
+  max-height: calc(100vh - 227px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
-  
- 
-
+.ig > .ui.menu {
+  width: 16vw !important;
 }
 
 .ui.footer {
