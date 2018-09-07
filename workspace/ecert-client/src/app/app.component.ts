@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   /**
    * modal_ids for toggle show/hide
   */
-  modal: string[] = ["modal1", "modal2",];
+  modal: string[] = ["modal1", "modal2","modal3"];
 
   ngOnInit() { }
 

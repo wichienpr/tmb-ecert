@@ -1,27 +1,27 @@
-
 <modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
   <div class="header" style="background: rgb(231, 185, 58)">
-  <div style="color: white">แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ</div> 
+    <div style="color: white">แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ</div>
   </div>
   <div class="content">
-    <div class="ui form">    
+    <div class="ui form">
       <div class="inline fields">
-        <label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น<br> 
-          ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ" <br>  หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>
+        <label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+          <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+          <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>
       </div>
-    </div>  
+    </div>
   </div>
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="seven wide column">
-          <button  class="ui blue basic button" (click)="closeModal(modal[1])" [routerLink]="['/performa']" style="background: rgb(231, 185, 58)" >
-            <i class="check circle outline icon"></i>
-         ดำเนินการต่อ
+        <button class="ui blue basic button" (click)="closeModal(modal[1])" [routerLink]="['/performa']" style="background: rgb(231, 185, 58)">
+          <i class="check circle outline icon"></i>
+          ดำเนินการต่อ
         </button>
-        &nbsp;&nbsp; 
-        <button  class="ui grey basic button" (click)="closeModal(modal[1])">
-            <i class="times circle outline icon"></i>
+        &nbsp;&nbsp;
+        <button class="ui grey basic button" (click)="closeModal(modal[1])">
+          <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
       </div>
@@ -56,7 +56,7 @@
           </label>
         </div>
         <div class="five wide field ">
-          <p>1012561000000001</p>
+          <p>20180900001</p>
         </div>
       </div>
 
@@ -78,7 +78,7 @@
 
 
       <div>
-        <table class="ui small celled table nowrap"  style="width: 100%">
+        <table class="ui small celled table nowrap" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
               <th rowspan="1" colspan="2">รายละเอียด
@@ -248,7 +248,7 @@
         <div class="four wide field ">
           <label>Customer Segment
           </label>
-        </div>       
+        </div>
         <div class="five wide field">
           <select id="customerSegment" name="customerSegment" class="ui search dropdown" (change)="onselectcustomerSegment($event)">
             <option *ngFor="let customerSegment of customerSegment; let i = index" value="{{i}}">
@@ -280,9 +280,9 @@
 
       <div class="inline fields">
         <div class="four wide field ">
-          <label>ขอ Confirm ประเภทการตัด</label>
+          <label>วิธีหักบัญชีจาก</label>
         </div>
-       
+
         <div class="five wide field">
           <select id="debitMethod" name="debitMethod" class="ui search dropdown" (change)=" onSelectdebitMethod($event)">
             <option *ngFor="let debitMethod of debitMethod; let i = index" value="{{i}}">
@@ -292,44 +292,51 @@
         </div>
       </div>
       <div class="inline fields">
-          <div class="four wide field ">
-            <label>Tran Code
-            </label>
-          </div>
-          <div class="five wide field ">
-              <p>8880
-              </p>
-          </div>         
-        </div>
-
-        <div class="inline fields">
-            <div class="four wide field ">
-              <label>GL Type
-              </label>
-            </div>
-            <div class="five wide field ">
-                <p>B533
-                </p>
-            </div>         
-          </div>
-
-          <div class="inline fields">
-              <div class="four wide field ">
-                <label>Account Type
-                </label>
-              </div>
-              <div class="five wide field ">
-                  <p>OOA
-                  </p>
-              </div>         
-            </div>
-
-      <div class="inline fields">
         <div class="four wide field ">
-          <label>ระบุเลขที่บัญชี
+          <label>Tran Code
           </label>
         </div>
         <div class="five wide field ">
+          <p>8880
+          </p>
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>GL Type
+          </label>
+        </div>
+        <div class="five wide field ">
+          <p>B533
+          </p>
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>Account Type
+          </label>
+        </div>
+        <div class="five wide field ">
+          <p>OOA
+          </p>
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>เลขที่บัญชี
+          </label>
+        </div>
+        <div class="one wide field ">
+           <input type="checkbox" >
+          </div>
+        <div class="one wide field ">
+            <label>ชื่อนิติบุคคล
+            </label>
+          </div>
+        <div class="three wide field ">
           <input type="text" placeholder="" value="">
         </div>
         <div class="two wide field ">
@@ -360,41 +367,41 @@
       </div>
 
       <div class="inline fields">
-          <div class="four wide field ">
-            <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="file"  value="">
-          </div>                  
-              <div class="two wide field ">
-                <label>ที่อยู่
-                </label>
-              </div>
-              <div class="five wide field ">
-                <textarea rows="2"></textarea>
-              </div>
-            </div>
-        
+        <div class="four wide field ">
+          <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+        <div class="two wide field ">
+          <label>ที่อยู่
+          </label>
+        </div>
+        <div class="five wide field ">
+          <textarea rows="3"></textarea>
+        </div>
+      </div>
 
-        <div class="inline fields">
-            <div class="four wide field ">
-              <label>สำเนาบัตรประชาชน
-              </label>
-            </div>
-            <div class="five wide field ">
-              <input type="file"  value="" >
-            </div>             
-          </div>
-          <div class="inline fields">
-              <div class="four wide field ">
-                <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี) 
-                </label>
-              </div>
-              <div class="five wide field ">
-                <input type="file"  value="" >
-              </div>             
-            </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>สำเนาบัตรประชาชน
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+      </div>
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+      </div>
 
       <div class="inline fields">
         <div class="four wide field ">
@@ -408,16 +415,16 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-          <button  class="ui blue basic button">
-              <i class="print icon"></i>
-              พิมพ์ใบคำขอ
-            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <button  class="ui blue basic button" (click)="openModal(modal[1])">       
-                <i class="file alternate outline icon"></i>       
+        <button class="ui blue basic button">
+          <i class="print icon"></i>
+          พิมพ์ใบคำขอ
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui blue basic button" (click)="openModal(modal[1])">
+          <i class="file alternate outline icon"></i>
           ยื่นใบคำขอ
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     
-        <button  class="ui grey basic button">
-            <i class="times circle outline icon"></i>
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui grey basic button">
+          <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
         <br>

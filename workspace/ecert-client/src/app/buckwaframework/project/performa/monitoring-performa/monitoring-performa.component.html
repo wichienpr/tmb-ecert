@@ -2,103 +2,135 @@
   <div class="sixteen wide column">
     <h2 class="ui header">ตรวจสอบสถานะคำขอ
     </h2>
+    <div class="ui one column grid">
+     
 
-    <div class="ui top attached header segment">
-      <span>สถานะการทำงาน </span>
-    </div>
-    <div class="ui attached segment">
-      <br>
-
-      <div class=" ui grid">
-        <a (click)="searchData()" class=" aligned  two wide  column" style="color: #000;  cursor: pointer">
-          <u>New (1)</u>
-        </a>
-        
-        <a (click)="searchData()" class=" aligned three wide  column " style="color: #000;  cursor: pointer">
-            <u>Approve Payment (1)</u>  
-          </a>
-
-        <a (click)="searchData()" class=" aligned three wide  column " style="color: #000;  cursor: pointer">
-          <u>Reiect Payment (1)</u>
-        </a>
-        <a (click)="searchData()" class=" aligned three wide  column" style="color: #000;  cursor: pointer">
-          <u>Waiting Payment  (1)</u>
-        </a>
-        <a (click)="searchData()" class="  aligned three wide  column" style="color: #000; cursor: pointer">
-          <u>Payment Incomplete  (1)</u>
-        </a>
-      </div>
-      <br>
-    </div>
-
-    <div class="ui top attached header segment">
-      <span>ระบุเงื่อนไขในการค้นหา </span>
-    </div>
-
-    <div class="ui attached segment">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="two wide field">
-            <label class="custom-label-w-22">วันที่ขอ</label>
-          </div>
-          <div class="five wide field">
-            <div class="ui calendar" id="calendar1" style="width:100%">
-              <div class="ui input left icon">
-                <i class="time icon"></i>
-                <input type="text" name="startDate" id="startDate">
-              </div>
-            </div>
-          </div>
-          <div class="two wide field ">
-            <label>ถึงวันที่
-            </label>
-          </div>
-          <div class="five wide field">
-            <div class="ui calendar" id="calendar2" style="width:100%">
-              <div class="ui input left icon">
-                <i class="time icon"></i>
-                <input type="text" name="endDate" id="endDate">
-              </div>
-            </div>
+      <div class="ui three wide column">
+        <div class="ig">
+          <div class="ui vertical menu">
+            <a class="  item " style="font-size: 13px;color:#2185D0;">
+              คำขอใหม่
+              <div class="ui  label blue" style="font-size: 13px">1</div>
+            </a>
+            <a class=" item" style="font-size: 13px;">
+              ดำเนินการชำระเงิน
+              <div class="ui label ">2</div>
+            </a>
+            <a class="item" style="font-size: 13px;color:red;">
+              ปฏิเสธคำขอ
+              <div class="ui label red">1</div>
+            </a>
+            <a class="item teal item red" style="font-size: 13px;color:red;">
+              ยกเลิกคำขอ
+              <div class="ui label red ">1</div>
+            </a>
+            <a class=" item" style="font-size: 13px;color:#2185D0;">
+              รออนุมัติการชำระเงิน
+              <div class="ui label blue">1</div>
+            </a>
+            <a class="item" style="font-size: 13px;">
+              อนุมัติการชำระเงิน
+              <div class="ui label ">1</div>
+            </a>
+            <a class="item" style="font-size: 13px;color:red;">
+              ปฏิเสธการชำระเงิน
+              <div class="ui label red">1</div>
+            </a>
+            <a class="item" style="font-size: 13px;color:red;">
+              ชำระเงินไม่สำเร็จ
+              <div class="ui label red">1</div>
+            </a>
+            <a class="item" style="font-size: 13px;color:#2185D0;">
+              รออัพโหลด Certificate
+              <div class="ui label blue">1</div>
+            </a>
+            <a class="item" style="font-size: 13px;">
+              ดำเนินการสำเร็จ
+              <div class="ui label ">2</div>
+            </a>
+            <a class="item" style="font-size: 13px;color:#2185D0;">
+              รอบันทึกคำขอ
+              <br>(ลูกค้าทำรายเอง)
+              <div class="ui label blue">1</div>
+            </a>
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="two wide field ">
-            <label>TMB Req. No.
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div> 
-          <div class="two wide field ">
-              <label>ชื่อนิติบุคคล</label>
-            </div>
-            <div class="five wide field ">
-              <input type="text" placeholder="" value="">
-            </div>        
+
+      </div>
+      <div class="ui thirteen wide  aligned column ">
+        <div class="ui top attached header segment">
+          <span>ระบุเงื่อนไขในการค้นหา </span>
         </div>
 
-        <div class="inline fields">        
-          <div class="two wide field ">
-            <label>เลขที่นิติบุคคล </label>
+        <div class="ui attached segment">
+          <div class="ui form">
+            <div class="inline fields">
+              <div class="two wide field">
+                <label class="custom-label-w-22">วันที่ขอ</label>
+              </div>
+              <div class="five wide field">
+                <div class="ui calendar" id="calendar1" style="width:100%">
+                  <div class="ui input left icon">
+                    <i class="time icon"></i>
+                    <input type="text" name="startDate" id="startDate">
+                  </div>
+                </div>
+              </div>
+              <div class="two wide field ">
+                <label>ถึงวันที่
+                </label>
+              </div>
+              <div class="five wide field">
+                <div class="ui calendar" id="calendar2" style="width:100%">
+                  <div class="ui input left icon">
+                    <i class="time icon"></i>
+                    <input type="text" name="endDate" id="endDate">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inline fields">
+              <div class="two wide field ">
+                <label>TMB Req. No.
+                </label>
+              </div>
+              <div class="five wide field ">
+                <input type="text" placeholder="" value="">
+              </div>
+              <div class="two wide field ">
+                <label>ชื่อนิติบุคคล</label>
+              </div>
+              <div class="five wide field ">
+                <input type="text" placeholder="" value="">
+              </div>
+            </div>
+
+            <div class="inline fields">
+              <div class="two wide field ">
+                <label>เลขที่นิติบุคคล </label>
+              </div>
+              <div class="five wide field ">
+                <input type="text" placeholder="" value="">
+              </div>
+            </div>
           </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
+          <br>
+          <br>
+          <div class="ui center aligned grid">
+            <button class="ui blue basic button" (click)="searchData()">
+              <i class="search icon"></i>
+              ค้นหา
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="ui grey  basic button" (click)="clearData()">
+              <i class="trash alternate outline icon"></i>
+              ล้างข้อมูล
+            </button>
+            <br>
           </div>
-        </div>     
-      </div>
-      <br>
-      <br>
-      <div class="ui center aligned grid">
-          <button  class="ui blue basic button" (click)="searchData()">
-          <i class="search icon"></i>
-          ค้นหา
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button  class="ui grey  basic button" (click)="clearData()">
-            <i class="trash alternate outline icon"></i>
-          ล้างข้อมูล
-        </button>
+          <br>
+        </div>
         <br>
       </div>
       <br>
@@ -109,18 +141,18 @@
         </div>
         <table class="ui small celled table nowrap" id="table" style="width: 100%">
           <thead>
-            <tr style="text-align: center;">
-              <th class="collapsing">ลำดับ</th>
-              <th>วันที่ยื่นคำขอ</th>
-              <th>TMB Req. No.</th>
-              <th>เลขที่คำขอ (Ref.1)</th>
-              <th>เลขที่ตรวจสอบ (Ref.2)</th>
-              <th>จำนวนเงิน</th>
-              <th>ประเภทคำขอ</th>
-              <th>เลขที่นิติบุคคล </th>
-              <th>ชื่อบริษัท</th>
-              <th>สถานะดำเนินการ</th>
-              <th>Action</th>
+            <tr style="text-align: center; background: #1C71B1">
+              <th class="collapsing" style="background:#0079C0 ;color: #FFF">ลำดับ</th>
+              <th style="background:#0079C0;color: #FFF">วันที่ยื่นคำขอ</th>
+              <th style="background:#0079C0;color: #FFF">TMB Req. No.</th>
+              <th style="background:#0079C0;color: #FFF">เลขที่คำขอ (Ref.1)</th>
+              <th style="background:#0079C0;color: #FFF">เลขที่ตรวจสอบ (Ref.2)</th>
+              <th style="background:#0079C0;color: #FFF">จำนวนเงิน</th>
+              <th style="background:#0079C0;color: #FFF">ประเภทคำขอ</th>
+              <th style="background:#0079C0;color: #FFF">เลขที่นิติบุคคล </th>
+              <th style="background:#0079C0;color: #FFF">ชื่อบริษัท</th>
+              <th style="background:#0079C0;color: #FFF">สถานะดำเนินการ</th>
+              <th style="background:#0079C0;color: #FFF">Action</th>
 
             </tr>
           </thead>
@@ -128,7 +160,7 @@
             <tr>
               <td style="text-align: right">1</td>
               <td> 01/01/2561</td>
-              <td>01012561000001</td>
+              <td>20180900001</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -137,13 +169,15 @@
               <td>บริษัท เอ</td>
               <td>New</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">2</td>
               <td>01/01/2561</td>
-              <td>01012561000002</td>
+              <td>20180900002</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -152,13 +186,15 @@
               <td>บริษัท บี</td>
               <td>Approve Payment</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">2</td>
               <td>01/01/2561</td>
-              <td>01012561000002</td>
+              <td>20180900003</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -167,13 +203,15 @@
               <td>บริษัท บี</td>
               <td>Reiect Payment </td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">3</td>
               <td>01/01/2561</td>
-              <td>01012561000003</td>
+              <td>20180900004</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -182,13 +220,15 @@
               <td>บริษัท ซี</td>
               <td>Waiting Payment</td>
               <td>
-                  <button  class="ui blue basic button"[routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">4</td>
               <td>01/01/2561</td>
-              <td>01012561000004</td>
+              <td>20180900005</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -197,13 +237,15 @@
               <td>บริษัท เอ1</td>
               <td>Payment Complete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">5</td>
               <td>01/01/2561</td>
-              <td>01012561000005</td>
+              <td>20180900006</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -212,13 +254,15 @@
               <td>บริษัท บี1</td>
               <td>Payment Incomplete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">6</td>
               <td>01/01/2561</td>
-              <td>01012561000006</td>
+              <td>20180900007</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -227,13 +271,15 @@
               <td>บริษัท ซี1</td>
               <td>Upload to ECM Complete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">7</td>
               <td>01/01/2561</td>
-              <td>01012561000007</td>
+              <td>20180900008</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -242,13 +288,15 @@
               <td>บริษัท เอ2</td>
               <td>Upload to ECM Incomplete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">8</td>
               <td>01/01/2561</td>
-              <td>01012561000008</td>
+              <td>20180900009</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -257,13 +305,15 @@
               <td>บริษัท บี2</td>
               <td>Upload to e-Certificate Complete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">9</td>
               <td>01/01/2561</td>
-              <td>01012561000009</td>
+              <td>20180900010</td>
               <td>61100920717022</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -272,13 +322,15 @@
               <td>บริษัท ซี2</td>
               <td>Upload to e-Certificate Incomplete</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">10</td>
               <td>01/01/2561</td>
-              <td>01012561000010</td>
+              <td>20180900011</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -287,13 +339,15 @@
               <td>บริษัท ซี3</td>
               <td>Cancel</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/description']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
             <tr>
               <td style="text-align: right">11</td>
               <td>01/01/2561</td>
-              <td>01012561000010</td>
+              <td>20180900012</td>
               <td>-</td>
               <td>0101256100000125</td>
               <td style="text-align: right">300.00</td>
@@ -302,7 +356,9 @@
               <td>บริษัท ซี4</td>
               <td>Waiting Request Form</td>
               <td>
-                  <button  class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง <i class="arrow alternate circle right outline icon"></i></button>
+                <button class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button>
               </td>
             </tr>
           </tbody>

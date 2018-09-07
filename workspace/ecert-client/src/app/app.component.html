@@ -1,3 +1,32 @@
+<modal [id]="modal[2]" [size]="'small'" [type]="'custom'">
+        <i class="close icon"></i>
+        <div class="header"   style="background:#1678C2">
+           <div style="color: rgb(255, 255, 255)" >ยืนยันการออกจากระบบ ?</div> 
+        </div>
+        <div class="content">
+          <div class="ui form">
+                   
+          </div>    
+        </div>
+        <div class="actions">
+          <div class="ui center aligned grid">
+            <div class="seven wide column">
+              <button class="ui blue basic button"  (click)="closeModal(modal[2])" [routerLink]="[ '/login']">
+                    <i class="check circle outline icon"></i>
+                ตกลง
+              </button>
+              &nbsp;&nbsp; &nbsp;&nbsp;   
+              <button class="ui grey  basic button" (click)="closeModal(modal[2])">
+                    <i class="times circle outline icon"></i>
+                ยกเลิก
+              </button>       
+            </div>
+          </div>
+        </div>
+      </modal>
+
+
+
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
         <i class="close icon"></i>
         <div class="header"   style="background:#1678C2">
@@ -36,22 +65,26 @@
       <div class="ui form">
         <div class="inline fields">
           <div class="five wide field">
-            <label>ทำรายการสำเร็จ TMB Req. No : </label>       
+            <label> TMB Req. No : </label>       
           </div>
           <div class="four wide field">
-            <label>01012561000010</label>           
+            <label>20180900001</label>           
           </div>
         </div>           
       </div>    
     </div>
     <div class="actions">
       <div class="ui center aligned grid">
-        <div class="six wide column">
+        <div class="seven wide column">
             <button  class="ui blue  basic button"(click)="closeModal(modal[1])" [routerLink]="[ '/performa']">
                 <i class="check circle outline icon"></i>
                 ตกลง
           </button>
-          &nbsp;&nbsp; &nbsp;&nbsp;          
+          &nbsp;&nbsp; 
+          <button  class="ui blue  basic button"(click)="closeModal(modal[1])" [routerLink]="[ '/performa']">
+            <i class="print icon"></i>
+            พิมพ์ใบคำขอ
+      </button>        
         </div>
       </div>
     </div>
@@ -61,30 +94,26 @@
 
 
 <div class="ui borderless menu fixed" style="background:#0079c0;z-index: 999;height: 75px;">
+   
+   
     <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 105px;">
+    <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)">
+            ทำคำขอใหม่
+            <i class="dropdown icon "></i>
+            <div class="menu ">
+                <a class="item " outerLinkActive="active " (click)="openModal(modal[0])">
+                    Request Form สำหรับลูกค้าทำรายการเอง
+                </a>
+                <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
+                    Request Form สำหรับทำรายการให้ลูกค้าลงนาม
+                </a>
+                
+            </div>
+        </div>
     <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" [routerLink]="[ '/performa']">
         ตรวจสอบสถานะคำขอ
     </div>
-    <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)">
-        ทำคำขอใหม่
-        <i class="dropdown icon "></i>
-        <div class="menu ">
-            <a class="item " outerLinkActive="active " (click)="openModal(modal[0])">
-                Request Form สำหรับลูกค้าทำรายการเอง
-            </a>
-            <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
-                Request Form สำหรับทำรายการให้ลูกค้าลงนาม
-            </a>
-            <div class="ui simple dropdown item">
-                <i class="dropdown icon "></i> Request Form สำหรับการยกเว้นค่าธรรมเนียม/ค่าบริการ
-                <div class="menu ">
-                    <a class="item "  routerLinkActive="active ">Request Form ยกเว้นค่าบริการ TMB จ่ายเฉพาะค่าธรรมเนียม DBD</a>
-                    <a class="item " routerLinkActive="active ">Request Form ยกเว้นค่าบริการ TMB และค่าธรรมเนียม DBD</a>
-                   
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)">
         รายงาน
@@ -99,14 +128,15 @@
             </a>
         </div>
     </div>  
+    <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" (click)="openModal(modal[2])" >
+        ออกจากระบบ
+    </div>
     <div class="right menu ">
         <div class="ui simple  item " style=" color:rgb(255, 255, 255);line-height: 150%;margin-right: 20px">   
            42307 สรุเดช แสนสมบูรณ์สุข Maker <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ       
 
         </div>
-        <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" [routerLink]="[ '/login']">
-            ออกจากระบบ
-        </div>
+        
     </div>
 </div>
 

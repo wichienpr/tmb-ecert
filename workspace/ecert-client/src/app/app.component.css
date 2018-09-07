@@ -12,7 +12,7 @@ div.a{
 }
 
 .main.container-fluid {
-  padding: 90px 1em calc(64px + 1em) 1em;
+  padding: 88px 1em calc(64px + 1em) 1em;
   min-height: 100%;
   box-sizing: border-box;
 }

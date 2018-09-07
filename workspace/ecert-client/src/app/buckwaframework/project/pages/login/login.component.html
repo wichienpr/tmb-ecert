@@ -1,59 +1,62 @@
-<modal [id]="modal[0]" [size]="'small'" [type]="'custom'"  >
-    <i class="close icon"></i>
-    <div class="header" style="background: rgb(231, 185, 58)">
-     <div style="color: #FFF;">แจ้งเตือนการเข้าใช้งาน</div> 
-    </div>
-    <div class="content">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="ten wide field">
-            <label >ระบบตรวจสอบพบว่ามีผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>       
-          </div>       
-        </div>           
-      </div>    
-    </div>
-    <div class="actions">
-      <div class="ui center aligned grid">
-        <div class="nine wide column">
-            <button  class="ui blue  basic button" (click)="closeModal(modal[0])" >
-              <i class="check circle outline icon"></i>
-            ดำเนินการต่อ
-          </button>
-          &nbsp;&nbsp; &nbsp;&nbsp; 
-          <button  class="ui grey  basic button" (click)="closeModal(modal[0])">
-              <i class="times circle outline icon"></i>
-            ยกเลิก
-          </button>       
-       </div>
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+  <i class="close icon"></i>
+  <div class="header" style="background: rgb(231, 185, 58)">
+    <div style="color: #FFF;">แจ้งเตือนการเข้าใช้งาน</div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="ten wide field">
+          <label>ระบบตรวจสอบพบว่ามีผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>
+        </div>
       </div>
     </div>
-  </modal>
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="nine wide column">
+        <button class="ui blue  basic button" (click)="closeModal(modal[0])">
+          <i class="check circle outline icon"></i>
+          ดำเนินการต่อ
+        </button>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+          <i class="times circle outline icon"></i>
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</modal>
 
 
 
 <div class="ui borderless menu fixed" style="background:#0079c0;z-index: 999;height: 75px;">
- <div> <img class="logo" src="assets/image/TMBLogo.png" style="width: 105px;"></div>
+  <div>
+    <img class="logo" src="assets/image/TMBLogo.png" style="width: 105px;">
+  </div>
 </div>
 
 <div class="ui container" style="margin-top: -14px;">
-  <div class="ui one column grid login-page">  
+  <div class="ui one column grid login-page">
 
     <div class="ui five wide column bg-login login">
       <b>
         <font color="#F0FFFF"> เข้าสู่ระบบ </font>
       </b>
-      <div class="ui form segment bg-login form-login">    
-           
-  <div class="ui negative message" *ngIf="errorMessage">
-      <i class="close icon"></i>
-      <div class="header">               
-      </div>
-      <p>ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
-    </p></div>
+      <div class="ui form segment bg-login form-login">
+
+        <div class="ui negative message" *ngIf="errorMessage">
+          <i class="close icon"></i>
+          <div class="header">
+          </div>
+          <p>ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง
+          </p>
+        </div>
 
         <div class="inline-fields">
           <div class="ui left labeled icon input input-login">
-            <input type="text"  placeholder="Username"  id="username" name="username" [(ngModel)]="username" >
+            <input type="text" placeholder="Username" id="username" name="username" [(ngModel)]="username">
             <i class="user icon"></i>
           </div>
         </div>
@@ -64,13 +67,13 @@
           </div>
         </div>
         <div class="inline-fields">
-          <button class="ui button btn-login"  (click)="onClickSubmit()">
+          <button class="ui button btn-login" (click)="onClickSubmit()">
             <font color="#F0FFFF"> เข้าสู่ระบบ </font>
           </button>
         </div>
       </div>
     </div>
-   
+
     <div class="ui eleven wide column frame-img">
       <img class="ui small floated image" src="assets/image/Background.png">
     </div>
