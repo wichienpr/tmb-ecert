@@ -11,18 +11,29 @@
     <div class="ui attached segment">
       <div class="ui form">
         <div class="inline fields">
-          <div class="five wide field"></div>
+          <div class="two wide field"></div>
           <div class="one wide field">
-            <label class="custom-label-w-25">เดือน</label>
+            <label class="custom-label-w-25">ตั้งแต่เดือน</label>
           </div>
           <div class="five wide field">
-            <div class="ui calendar" id="calendar1" style="width:100%">
+            <div class="ui calendar" id="calendar2" style="width:100%">
               <div class="ui input left icon">
                 <i class="time icon"></i>
                 <input type="text" name="startDate" id="startDate">
               </div>
             </div>
           </div>
+          <div class="one wide field">
+              <label class="custom-label-w-25">ถึงเดือน</label>
+            </div>
+            <div class="five wide field">
+              <div class="ui calendar" id="calendar1" style="width:100%">
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="startDate" id="startDate">
+                </div>
+              </div>
+            </div>
         </div>
 
       </div>
@@ -55,7 +66,7 @@
                 <th colspan="2">จำนวนเงิน : บาท</th>
                 <th rowspan="2">จำนวนเงิน</th>
                 <th colspan="2">สถานะ : จำนวนราย</th>
-                <th rowspan="2">หมายเหตุ</th>
+                <th rowspan="2">สาเหตุ</th>
               </tr>
               <tr style="text-align: center;">
                 <th style="border-left: 1px solid rgba(34,36,38,.1) !important">หนังสือรับรอง </th>
@@ -81,7 +92,7 @@
                 <td>&nbsp;</td>
 
               </tr>
-              <tr>
+              <tr style="background: 	#F8F8FF">
                 <td style="text-align: center">SE</td>
                 <td style="text-align: right">57</td>
                 <td style="text-align: right">45</td>
@@ -104,12 +115,14 @@
                 <td style="text-align: right">29,400.00</td>
                 <td style="text-align: right">95</td>
                 <td style="text-align: right">
-                  <a [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">3</a>
+                 3
                 </td>
-                <td></td>
+                <td style="text-align: center">  <button class="ui blue basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button></td>
 
               </tr>
-              <tr>
+              <tr style="background: 	#F8F8FF">
                 <td style="text-align: center">CB</td>
                 <td style="text-align: right">93</td>
                 <td style="text-align: right">55</td>
@@ -119,9 +132,11 @@
                 <td style="text-align: right">27,900.00</td>
                 <td style="text-align: right">83</td>
                 <td style="text-align: right">
-                  <a [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">10</a>
+                 10
                 </td>
-                <td></td>
+                <td style="text-align: center">  <button class="ui blue basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button></td>
 
               </tr>
               <tr>
@@ -134,12 +149,14 @@
                 <td style="text-align: right">18,300.00</td>
                 <td style="text-align: right">60</td>
                 <td style="text-align: right">
-                  <a [routerLink]="[ '/cause-monthly']" routerLinkActive="active ">1</a>
+                 1
                 </td>
-                <td></td>
+                <td style="text-align: center">  <button class="ui blue basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button></td>
 
               </tr>
-              <tr>
+              <tr style="background: 	#F8F8FF">
                 <td style="text-align: center">Etc</td>
                 <td style="text-align: right">20</td>
                 <td style="text-align: right">5</td>

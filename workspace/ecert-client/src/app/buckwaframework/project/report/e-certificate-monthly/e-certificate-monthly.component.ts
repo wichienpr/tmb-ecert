@@ -18,6 +18,13 @@ export class ECertificateMonthlyComponent implements OnInit {
       formatter: formatter('month-year')
 
     });
+    $("#calendar2").calendar({
+      maxDate: new Date(),
+      type: "month",
+      text: TextDateTH,
+      formatter: formatter('month-year')
+
+    });
 
 
   }

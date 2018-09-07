@@ -56,6 +56,7 @@ export class MonitoringPerformaComponent implements OnInit {
 
     });
 
+
   }
   onSelectProducts = event => {
     this.selectProduct = this.products[event.target.value];
