@@ -2,12 +2,13 @@
   <div class="sixteen wide column">
     <h2 class="ui header">ตรวจสอบสถานะคำขอ
     </h2>
-    <div class="ui one column grid">
-     
+    <br>
+    
+    <div class="ui one column grid">     
 
       <div class="ui three wide column">
         <div class="ig">
-          <div class="ui vertical menu">
+          <div class="ui vertical fluid menu">
             <a class="  item " style="font-size: 13px;color:#2185D0;">
               คำขอใหม่
               <div class="ui  label blue" style="font-size: 13px">1</div>
@@ -130,239 +131,243 @@
             <br>
           </div>
           <br>
+          <div class="ui ten wide  segment" *ngIf="showData">
+              <div class="two wide field ">
+                <b>ผลการค้นหา</b>
+              </div>
+              <table class="ui small celled table nowrap" id="table" style="width: 100%">
+                <thead>
+                  <tr style="text-align: center; background: #1C71B1">
+                    <th class="collapsing" style="background:#0079C0 ;color: #FFF">ลำดับ</th>
+                    <th style="background:#0079C0;color: #FFF">วันที่ยื่นคำขอ</th>
+                    <th style="background:#0079C0;color: #FFF">TMB Req. No.</th>
+                    <th style="background:#0079C0;color: #FFF">เลขที่คำขอ (Ref.1)</th>
+                    <th style="background:#0079C0;color: #FFF">เลขที่ตรวจสอบ (Ref.2)</th>
+                    <th style="background:#0079C0;color: #FFF">จำนวนเงิน</th>
+                    <th style="background:#0079C0;color: #FFF">ประเภทคำขอ</th>
+                    <th style="background:#0079C0;color: #FFF">เลขที่นิติบุคคล </th>
+                    <th style="background:#0079C0;color: #FFF">ชื่อบริษัท</th>
+                    <th style="background:#0079C0;color: #FFF">สถานะดำเนินการ</th>
+                    <th style="background:#0079C0;color: #FFF">Action</th>
+      
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align: right">1</td>
+                    <td> 01/01/2561</td>
+                    <td>20180900001</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                    <td>1023456321234</td>
+                    <td>บริษัท เอ</td>
+                    <td>คำขอใหม่</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td style="text-align: right">2</td>
+                      <td>01/01/2561</td>
+                      <td>20180900002</td>
+                      <td>-</td>
+                      <td>0101256100000125</td>
+                      <td style="text-align: right">300.00</td>
+                      <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                      <td>2023456321234</td>
+                      <td>บริษัท บี</td>
+                      <td>ดำเนินการชำระเงิน</td>
+                      <td>
+                        <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                          <i class="arrow alternate circle right outline icon"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right">2</td>
+                        <td>01/01/2561</td>
+                        <td>20180900002</td>
+                        <td>-</td>
+                        <td>0101256100000125</td>
+                        <td style="text-align: right">300.00</td>
+                        <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                        <td>2023456321234</td>
+                        <td>บริษัท บี</td>
+                        <td>ปฏิเสธคำขอ</td>
+                        <td>
+                          <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                            <i class="arrow alternate circle right outline icon"></i>
+                          </button>
+                        </td>
+                      </tr>
+                  <tr>
+                    <td style="text-align: right">2</td>
+                    <td>01/01/2561</td>
+                    <td>20180900002</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                    <td>2023456321234</td>
+                    <td>บริษัท บี</td>
+                    <td>อนุมัติการชำระเงิน</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right">2</td>
+                    <td>01/01/2561</td>
+                    <td>20180900003</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                    <td>2023456321234</td>
+                    <td>บริษัท บี</td>
+                    <td>ปฏิเสธการชำระเงิน</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right">3</td>
+                    <td>01/01/2561</td>
+                    <td>20180900004</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>สมาคมและหอการค้า</td>
+                    <td>3023456321234</td>
+                    <td>บริษัท ซี</td>
+                    <td>รออนุมัติการชำระเงิน</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+               
+                  <tr>
+                    <td style="text-align: right">5</td>
+                    <td>01/01/2561</td>
+                    <td>20180900006</td>
+                    <td>61100920717022</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>การประกอบธุรกิจของคนต่างด้าว</td>
+                    <td>5023456321234</td>
+                    <td>บริษัท บี1</td>
+                    <td>ชำระเงินไม่สำเร็จ</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td style="text-align: right">6</td>
+                      <td>01/01/2561</td>
+                      <td>20180900007</td>
+                      <td>61100920717022</td>
+                      <td>0101256100000125</td>
+                      <td style="text-align: right">300.00</td>
+                      <td>สมาคมและหอการค้า</td>
+                      <td>6023456321234</td>
+                      <td>บริษัท ซี1</td>
+                      <td> รออัพโหลด Certificate </td>
+                      <td>
+                        <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                          <i class="arrow alternate circle right outline icon"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  <tr>
+                    <td style="text-align: right">6</td>
+                    <td>01/01/2561</td>
+                    <td>20180900007</td>
+                    <td>61100920717022</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>สมาคมและหอการค้า</td>
+                    <td>6023456321234</td>
+                    <td>บริษัท ซี1</td>
+                    <td>ดำเนินการสำเร็จ</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right">7</td>
+                    <td>01/01/2561</td>
+                    <td>20180900008</td>
+                    <td>61100920717022</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+                    <td>7023456321234</td>
+                    <td>บริษัท เอ2</td>
+                    <td>รอบันทึกคำขอ (ลูกค้าทำรายการเอง)</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                 
+                  <tr>
+                    <td style="text-align: right">10</td>
+                    <td>01/01/2561</td>
+                    <td>20180900011</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>สมาคมและหอการค้า</td>
+                    <td>9023456321235</td>
+                    <td>บริษัท ซี3</td>
+                    <td>Cancel</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right">11</td>
+                    <td>01/01/2561</td>
+                    <td>20180900012</td>
+                    <td>-</td>
+                    <td>0101256100000125</td>
+                    <td style="text-align: right">300.00</td>
+                    <td>สมาคมและหอการค้า</td>
+                    <td>9023456321236</td>
+                    <td>บริษัท ซี4</td>
+                    <td>Waiting Request Form</td>
+                    <td>
+                      <button class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
         </div>
         <br>
       </div>
       <br>
 
-      <div class="ui segment" *ngIf="showData">
-        <div class="two wide field ">
-          <b>ผลการค้นหา</b>
-        </div>
-        <table class="ui small celled table nowrap" id="table" style="width: 100%">
-          <thead>
-            <tr style="text-align: center; background: #1C71B1">
-              <th class="collapsing" style="background:#0079C0 ;color: #FFF">ลำดับ</th>
-              <th style="background:#0079C0;color: #FFF">วันที่ยื่นคำขอ</th>
-              <th style="background:#0079C0;color: #FFF">TMB Req. No.</th>
-              <th style="background:#0079C0;color: #FFF">เลขที่คำขอ (Ref.1)</th>
-              <th style="background:#0079C0;color: #FFF">เลขที่ตรวจสอบ (Ref.2)</th>
-              <th style="background:#0079C0;color: #FFF">จำนวนเงิน</th>
-              <th style="background:#0079C0;color: #FFF">ประเภทคำขอ</th>
-              <th style="background:#0079C0;color: #FFF">เลขที่นิติบุคคล </th>
-              <th style="background:#0079C0;color: #FFF">ชื่อบริษัท</th>
-              <th style="background:#0079C0;color: #FFF">สถานะดำเนินการ</th>
-              <th style="background:#0079C0;color: #FFF">Action</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: right">1</td>
-              <td> 01/01/2561</td>
-              <td>20180900001</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>1023456321234</td>
-              <td>บริษัท เอ</td>
-              <td>New</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">2</td>
-              <td>01/01/2561</td>
-              <td>20180900002</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>การประกอบธุรกิจของคนต่างด้าว</td>
-              <td>2023456321234</td>
-              <td>บริษัท บี</td>
-              <td>Approve Payment</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">2</td>
-              <td>01/01/2561</td>
-              <td>20180900003</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>การประกอบธุรกิจของคนต่างด้าว</td>
-              <td>2023456321234</td>
-              <td>บริษัท บี</td>
-              <td>Reiect Payment </td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">3</td>
-              <td>01/01/2561</td>
-              <td>20180900004</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>สมาคมและหอการค้า</td>
-              <td>3023456321234</td>
-              <td>บริษัท ซี</td>
-              <td>Waiting Payment</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">4</td>
-              <td>01/01/2561</td>
-              <td>20180900005</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>4023456321234</td>
-              <td>บริษัท เอ1</td>
-              <td>Payment Complete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">5</td>
-              <td>01/01/2561</td>
-              <td>20180900006</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>การประกอบธุรกิจของคนต่างด้าว</td>
-              <td>5023456321234</td>
-              <td>บริษัท บี1</td>
-              <td>Payment Incomplete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">6</td>
-              <td>01/01/2561</td>
-              <td>20180900007</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>สมาคมและหอการค้า</td>
-              <td>6023456321234</td>
-              <td>บริษัท ซี1</td>
-              <td>Upload to ECM Complete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">7</td>
-              <td>01/01/2561</td>
-              <td>20180900008</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>7023456321234</td>
-              <td>บริษัท เอ2</td>
-              <td>Upload to ECM Incomplete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">8</td>
-              <td>01/01/2561</td>
-              <td>20180900009</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>การประกอบธุรกิจของคนต่างด้าว</td>
-              <td>8023456321234</td>
-              <td>บริษัท บี2</td>
-              <td>Upload to e-Certificate Complete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">9</td>
-              <td>01/01/2561</td>
-              <td>20180900010</td>
-              <td>61100920717022</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>สมาคมและหอการค้า</td>
-              <td>9023456321234</td>
-              <td>บริษัท ซี2</td>
-              <td>Upload to e-Certificate Incomplete</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">10</td>
-              <td>01/01/2561</td>
-              <td>20180900011</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>สมาคมและหอการค้า</td>
-              <td>9023456321235</td>
-              <td>บริษัท ซี3</td>
-              <td>Cancel</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right">11</td>
-              <td>01/01/2561</td>
-              <td>20180900012</td>
-              <td>-</td>
-              <td>0101256100000125</td>
-              <td style="text-align: right">300.00</td>
-              <td>สมาคมและหอการค้า</td>
-              <td>9023456321236</td>
-              <td>บริษัท ซี4</td>
-              <td>Waiting Request Form</td>
-              <td>
-                <button class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง
-                  <i class="arrow alternate circle right outline icon"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    
     </div>
   </div>
