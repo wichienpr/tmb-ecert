@@ -37,14 +37,14 @@ export class MonitoringPerformaComponent implements OnInit {
 
   }
 
- 
+
   ngOnInit() {
 
     $("#calendar1").calendar({
       maxDate: new Date(),
       type: "date",
       text: TextDateTH,
-     formatter: formatter()
+      formatter: formatter()
 
     });
 
@@ -52,7 +52,7 @@ export class MonitoringPerformaComponent implements OnInit {
       maxDate: new Date(),
       type: "date",
       text: TextDateTH,
-     formatter: formatter()
+      formatter: formatter()
 
     });
 
@@ -68,26 +68,41 @@ export class MonitoringPerformaComponent implements OnInit {
 
   ngAfterViewInit() {
     $("#table").DataTable();
+    $('.ui.sidebar')
+      .sidebar({
+        context: '.ui.grid.pushable'
+      })
+      .sidebar('setting', 'transition', 'push')
+      .sidebar('toggle');
   }
 
   searchData(): void {
     this.showData = true;
     setTimeout(() => {
       $("#table").DataTable({
-         scrollX: true, 
-         ordering: true, 
-         searching: false,  
-         "columnDefs": [{
+        scrollX: true,
+        ordering: true,
+        searching: false,
+        "columnDefs": [{
           "targets": 10,
           "orderable": false
-        }]   
-           
-      
+        }]
+
+
       });
     }, 200);
   }
   clearData(): void {
     this.showData = false;
+  }
+
+  onToggle() {
+    $('.ui.sidebar')
+      .sidebar({
+        context: '.ui.grid.pushable'
+      })
+      .sidebar('setting', 'transition', 'push')
+      .sidebar('toggle');
   }
 
 }

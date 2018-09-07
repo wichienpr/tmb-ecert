@@ -10,24 +10,10 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
   modal: string[] = ["modal"];
-  errorMessage: any = false;
 
+  constructor(private router: Router) { }
 
-  constructor(private router:Router) { }
-
-  ngOnInit() {
-
-  }
-  ngAfterViewInit() {
-    $('.message .close')
-      .on('click', function () {
-        $(this)
-          .closest('.message')
-          .transition('fade')
-          ;
-      })
-      ;
-  }
+  ngOnInit() { }
 
   openModal(id) {
     $('#' + id).modal('show');
@@ -36,15 +22,25 @@ export class LoginComponent implements OnInit {
   closeModal(id) {
     $('#' + id).modal('hide');
     this.router.navigate(["/home"]);
-  
   }
 
 
-  onClickSubmit() {
+  onSubmit($event) {
     if (this.username == "admin" && this.password == "password") {
       $("#modal").modal('show');
     } else {
-      this.errorMessage = true;
+      let promise = new Promise((resolve, reject) => {
+        $(".message").show();
+        setTimeout(() => {
+          resolve(true);
+        });
+      }).then(resolve => {
+        if (resolve) {
+          $('.message .close').on('click', function () {
+            $(".message").hide();
+          });
+        }
+      });
     }
   }
 

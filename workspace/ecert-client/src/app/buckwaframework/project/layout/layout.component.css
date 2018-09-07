@@ -1,0 +1,35 @@
+.color-rainbow {
+    background: red;
+    background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet);
+    background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+    background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 20vw;
+}
+
+.ui.footer {
+    background-color: #fff;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    height: 64px;
+}
+
+.menu.fixed {
+    border: 0 !important;
+}
+
+img:focus {
+    outline:0;
+    cursor: pointer;
+}
+
+.main.container-fluid {
+    padding: 88px 1em calc(64px + 1em) 1em;
+    min-height: 100%;
+    box-sizing: border-box;
+}

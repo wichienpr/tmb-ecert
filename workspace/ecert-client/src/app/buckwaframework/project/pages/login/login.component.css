@@ -2,13 +2,18 @@ div1 {
     background-color: lightblue;
 }
 
+.ui.container.login-content {
+    height: 100vh;
+    padding: 75px 0 67px 0;
+}
+
 .ui.footer {
     background-color: #fff;
     position: absolute;
-    margin-top: -50px;
+    bottom: 0;
     left: 0;
-    width: 100%;
-    padding: 15px 0;
+    width: 100vw;
+    padding: 24px 0;
 }
 
 .login-icon {
@@ -18,7 +23,7 @@ div1 {
 .login-page {
     margin-top: 0 !important;
     padding-top: 0 !important;
-    height: calc(100vh - 154px);
+    height: calc(100vh - 75px - 67px);
 }
 
 .form-login {
@@ -31,19 +36,20 @@ div1 {
 
 .bg-login {
     background:#0A6197;
-    height: 105% !important;
+    height: calc(100vh - 75px - 67px);
     box-shadow: none !important;
     border: 0 !important;
 }
 
 .input-login {
     width: 100%;
-    margin-bottom: 1em;
+    margin: 7px 0 !important;
 }
 
 .btn-login {
     background-color: #007ABC;
     width: 100%;
+    margin: 7px 0 !important;
 }
 
 .frame-img {
@@ -51,6 +57,19 @@ div1 {
 }
 
 .floated.image {
-    height: 105% !important;
+    height: 100% !important;
     width: 100% !important;
+}
+
+.menu.fixed {
+    background:#0079c0;
+    height: 75px;
+}
+
+.i-logo {
+    padding: 0 !important;
+}
+
+.i-logo > img {
+    width: 105px !important;
 }
