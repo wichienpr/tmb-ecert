@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from "@angular/router";
 declare var $: any;
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   errorMessage: any = false;
 
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
 
@@ -34,7 +35,10 @@ export class LoginComponent implements OnInit {
 
   closeModal(id) {
     $('#' + id).modal('hide');
+    this.router.navigate(["/home"]);
+  
   }
+
 
   onClickSubmit() {
     if (this.username == "admin" && this.password == "password") {
