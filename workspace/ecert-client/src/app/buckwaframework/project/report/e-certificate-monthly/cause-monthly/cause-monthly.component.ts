@@ -13,7 +13,7 @@ export class CauseMonthlyComponent implements OnInit {
 
     setTimeout(() => {
       $("#table").DataTable({
-         scrollX: true, 
+        
          ordering: false, 
          searching: false,  
          "columnDefs": [{

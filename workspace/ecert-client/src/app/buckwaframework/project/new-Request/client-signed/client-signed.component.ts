@@ -26,7 +26,7 @@ export class ClientSignedComponent implements OnInit {
     ];
 
     this.paid = ["กรุณาเลือก",
-      "ตัดบัญชี (Saving , Current)", "ลูกค้าชำระค่าธรรมเนียม DBD,TMB","ลูกค้าชำระค่าธรรมเนียม DBD ยกเว้น TMB"];
+      "ลูกค้าชำระค่าธรรมเนียม DBD,TMB", "ลูกค้าชำระค่าธรรมเนียม DBD ยกเว้น TMB","TMB ชำระค่าธรรมเนียม DBD"];
 
     this.debitMethod = ["กรุณาเลือก",
       "ธนาคาร (กลุ่มรายย่อย)","ธนาคาร (กลุ่ม SE)","ธนาคาร (กลุ่ม CB/MB/BB)"];
