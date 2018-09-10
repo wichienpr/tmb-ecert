@@ -34,9 +34,9 @@
   height: 154px;
 }
 
-.footer .container-fluid {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+.footer .container.fluid {
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 a.underline {
