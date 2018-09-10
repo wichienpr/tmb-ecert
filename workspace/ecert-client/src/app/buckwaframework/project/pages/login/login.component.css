@@ -73,3 +73,14 @@ div1 {
 .i-logo > img {
     width: 105px !important;
 }
+
+.txt-warning {
+    position: relative;
+    height: calc(100vh - 352px);
+    color: #FFF;
+}
+
+.txt-warning > div {
+    position: absolute;
+    bottom: 0;
+}

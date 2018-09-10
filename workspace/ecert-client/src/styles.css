@@ -6,6 +6,7 @@ body {
 
 .dataTables_paginate>.ui.pagination {
     font-size: .78571429rem !important;
+  
 }
 
 .dataTables_info {
@@ -118,6 +119,14 @@ img.image-width-18 {
 .font-template{
     color:White 
 }
+
+
 .textarea {
     padding: 2px 0px 0px 2px;
 }
+
+.table{
+    background:#0079C0;
+    color: #FFF;
+  }
+
