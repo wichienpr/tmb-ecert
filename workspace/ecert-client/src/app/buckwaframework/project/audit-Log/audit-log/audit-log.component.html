@@ -1,0 +1,157 @@
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+    <i class="close icon"></i>
+    <div class="header" style="background: #1678C2">
+      <div style="color: white">สาเหตุ </div>
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="sixteen wide field">
+            <label>Cannot connect to the FTP server" error message when you access an FTP site in Office</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="seven wide column">
+          <button class="ui blue  basic button" (click)="closeModal(modal[0])">
+            <i class="check circle outline icon"></i>
+            ตกลง
+          </button>
+  
+        </div>
+      </div>
+    </div>
+  </modal>
+  
+  
+  <div class="ui grid">
+    <div class="sixteen wide column">
+      <h2 class="ui header">Audit Log
+      </h2>
+  
+      <div class="ui top attached header segment">
+        <span>ระบุเงื่อนไขในการค้นหา </span>
+      </div>
+  
+  
+      <div class="ui attached segment">
+        <div class="ui form">
+          <div class="inline fields">
+            <div class="two wide field"></div>
+            <div class="two wide field">
+              <label class="custom-label-w-25">วันที่ดำเนินการ</label>
+            </div>
+            <div class="four wide field">
+              <div class="ui calendar" id="calendar2" style="width:100%">
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="startDate" id="startDate">
+                </div>
+              </div>
+            </div>
+            <div class="one wide field">
+              <label class="custom-label-w-25">ถึงวันที่</label>
+            </div>
+            <div class="four wide field">
+              <div class="ui calendar" id="calendar1" style="width:100%">
+                <div class="ui input left icon">
+                  <i class="time icon"></i>
+                  <input type="text" name="startDate" id="startDate">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="two wide field"></div>
+            <div class="two wide field ">
+              <label>Action</label>
+            </div>
+            <div class="four wide field">
+              <select id="action" name="action" class="ui search dropdown" (change)="Onselectaction($event)">
+                <option *ngFor="let action of action; let i = index" value="{{i}}">
+                  {{action}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="inline fields">
+              <div class="two wide field"></div>
+              <div class="two wide field ">
+                <label>User ID</label>
+              </div>
+              <div class="four wide field ">
+                <input type="text" placeholder="" value="">
+              </div>
+            </div>
+        
+  
+        </div>
+        <br>
+        <br>
+        <div class="ui center aligned grid">
+          <button class="ui blue basic button" (click)="searchData()">
+            <i class="search icon"></i>
+            ค้นหา
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui gery basic button" (click)="clearData()">
+            <i class="trash alternate outline icon"></i>
+            ล้างข้อมูล
+          </button>
+          <br>
+        </div>
+        <br>
+        <div class="ui segment" *ngIf="showData">
+          <div class="two wide field ">
+            <b>ผลการค้นหา</b>
+          </div>
+          <br>
+          <table class="ui small celled table nowrap" id="table" style="width: 100%">
+            <thead>
+              <tr style="text-align: center;">
+                <th style="background:#0079C0;color: #FFF">ลำดับ</th>
+                <th style="background:#0079C0;color: #FFF">วันที่ดำเนินการ </th>
+                <th style="background:#0079C0;color: #FFF">User ID</th>
+                <th style="background:#0079C0;color: #FFF">Action  </th>
+                <th style="background:#0079C0;color: #FFF">รายละเอียด</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: right;">1</td>
+                    <td style="text-align: center;">01/01/2561 23:00:00</td>
+                    <td>10001</td>
+                    <td>เข้าใช้งานระบบ</td>
+                    <td>- User ID: 10001 เข้าใช้งานระบบ เมื่อวันที่ 01/01/2561 23:00:00</td>
+                </tr>
+                <tr style="background: 	#F8F8FF">
+                    <td style="text-align: right;">2</td>
+                    <td style="text-align: center;">01/01/2561 23:10:00</td>
+                    <td>10001</td>
+                    <td>ยื่นใบคำขอสำหรับทำรายการให้ลูกค้าลงนาม</td>
+                    <td>- User ID: 10001 ยื่นใบคำขอสำหรับทำรายการให้ลูกค้าลงนาม เมื่อวันที่ 01/01/2561 23:05:00</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">3</td>
+                    <td style="text-align: center;">01/01/2561 23:05:00</td>
+                    <td>10001</td>
+                    <td>ออกจากระบบ</td>
+                    <td>- User ID: 10001 ออกจากระบบ เมื่อวันที่ 01/01/2561 23:10:00</td>
+                </tr>
+            </tbody>
+          </table>
+          <br>
+          <br>
+          <div class="ui center aligned grid">
+              <button class="ui blue basic button">
+                <i class="file excel outline icon"></i>
+                Export to Excel
+              </button>
+            </div>
+            <br>
+  
+        </div>
+      </div>
+    </div>

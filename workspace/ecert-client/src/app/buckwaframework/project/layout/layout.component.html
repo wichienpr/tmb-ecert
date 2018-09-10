@@ -120,6 +120,22 @@
             </a>
         </div>
     </div>
+    <div class="ui simple dropdown item " [routerLink]="['/monitoring']" style=" color:rgb(255, 255, 255)">
+        Batch Monitoring
+    </div>
+    <div class="ui simple dropdown item "[routerLink]="['/auditLog']" style=" color:rgb(255, 255, 255)" >
+        Audit Log
+    </div>
+    <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)">
+        Setup
+        <i class="dropdown icon "></i>
+        <div class="menu "> 
+            <a class="item "   [routerLink]="['/role-Management']"  routerLinkActive="active ">Role Management  
+            </a>
+            <a class="item " [routerLink]="['/parameter-Configuration']"   routerLinkActive="active ">Parameter Configuration
+            </a>           
+        </div>
+    </div>
     <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" (click)="openModal(modal[2])">
         ออกจากระบบ
     </div>

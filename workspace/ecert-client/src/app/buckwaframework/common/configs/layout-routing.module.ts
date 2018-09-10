@@ -12,6 +12,10 @@ import { LayoutComponent } from "../../project/layout/layout.component";
 import { ComponentsModule } from "../../common/components/components.module";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
+import { ParameterConfigurationComponent } from "../../project/setup/parameter-configuration/parameter-configuration.component";
+import { RoleManagementComponent } from "../../project/setup/role-management/role-management.component";
+import { AuditLogComponent } from "../../project/audit-Log/audit-log/audit-log.component";
+import { MonitoringComponent } from "../../project/batch-Monitoring/monitoring/monitoring.component";
 const routes: Routes = [
     {
         path: "",
@@ -24,7 +28,12 @@ const routes: Routes = [
             { path: "client-signed", component: ClientSignedComponent },
             { path: "description", component: DescriptionComponent },
             { path: "output-VAT", component: OutputVATComponent },
-            { path: "cause-monthly", component: CauseMonthlyComponent }
+            { path: "cause-monthly", component: CauseMonthlyComponent },
+            { path: "parameter-Configuration", component: ParameterConfigurationComponent },
+            { path: "role-Management", component: RoleManagementComponent },
+            { path: "auditLog", component: AuditLogComponent },              
+            { path: "monitoring", component: MonitoringComponent },  
+
         ]
     },
 ];
@@ -44,7 +53,11 @@ const routes: Routes = [
         ClientSignedComponent,
         DescriptionComponent,
         OutputVATComponent,
-        CauseMonthlyComponent
+        CauseMonthlyComponent,
+        ParameterConfigurationComponent,
+        RoleManagementComponent,
+        AuditLogComponent,
+        MonitoringComponent
     ],
     exports: [RouterModule]
 })

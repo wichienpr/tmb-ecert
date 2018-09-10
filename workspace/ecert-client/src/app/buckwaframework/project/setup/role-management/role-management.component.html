@@ -1,0 +1,142 @@
+<modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+  <i class="close icon"></i>
+  <div class="header" style="background: #1678C2">
+    <div style="color: white">Import Role </div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="two wide field">
+          <label>เลือกไฟล์</label>
+        </div>
+        <div class="nine wide field">
+          <input type="file">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="seven wide column">
+        <button class="ui blue  basic button" (click)="closeModal(modal[0])">
+            <i class=" upload icon"></i>
+          Upload
+        </button>&nbsp;&nbsp;&nbsp;
+        <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+            <i class="times circle outline icon"></i>
+            Cancel
+          </button>
+
+      </div>
+    </div>
+  </div>
+</modal>
+
+
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <h2 class="ui header">
+    </h2>
+
+    <div class="ui top attached header segment">
+      <span>Parameter Configuration </span>
+    </div>
+
+
+    <div class="ui attached segment">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="two wide field"></div>
+          <div class="two wide field ">
+            <label>Property Name</label>
+          </div>
+          <div class="four wide field ">
+            <input type="text" placeholder="" value="">
+          </div>
+        </div>
+
+        <div class="inline fields">
+          <div class="two wide field"></div>
+          <div class="two wide field ">
+            <label>Action</label>
+          </div>
+          <div class="four wide field">
+            <select id="action" name="action" class="ui search dropdown" (change)="Onselectaction($event)">
+              <option *ngFor="let action of action; let i = index" value="{{i}}">
+                {{action}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+      <br>
+      <br>
+      <div class="ui center aligned grid">
+        <button class="ui blue basic button" (click)="searchData()">
+          <i class="search icon"></i>
+          Search
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui gery basic button" (click)="clearData()">
+          <i class="trash alternate outline icon"></i>
+          Clear
+        </button>
+        <br>
+      </div>
+      <br>
+      <div class="ui segment" *ngIf="showData">
+        <div class="two wide field ">
+          <b>Search Result</b>
+        </div>
+        <br>
+        <table class="ui small celled table nowrap" id="table" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th style="background:#0079C0;color: #FFF">No.</th>
+              <th style="background:#0079C0;color: #FFF">Role Name </th>
+              <th style="background:#0079C0;color: #FFF">Status</th>
+              <th style="background:#0079C0;color: #FFF">Action </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: right">1</td>
+              <td>Requester</td>
+              <td>Active</td>
+              <td>Edit Inactive</td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td style="text-align: right">2</td>
+              <td>Maker</td>
+              <td>Active</td>
+              <td>Edit Inactive</td>
+            </tr>
+            <tr>
+              <td style="text-align: right"> 3</td>
+              <td>Checker</td>
+              <td>Active</td>
+              <td>Edit Inactive</td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td style="text-align: right">4</td>
+              <td>Checker_Test</td>
+              <td>Inactive</td>
+              <td>Edit Active</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <div class="ui center aligned grid">
+          <button class="ui blue basic button" (click)="openModal(modal[0])">
+            <i class="file excel outline icon"></i>
+            Export Role
+          </button>
+        </div>
+        <br>
+
+      </div>
+    </div>
+  </div>
