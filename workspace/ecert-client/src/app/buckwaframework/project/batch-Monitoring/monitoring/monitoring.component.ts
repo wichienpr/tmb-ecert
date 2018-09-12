@@ -8,11 +8,11 @@ declare var $: any;
 })
 export class MonitoringComponent implements OnInit {
   showData: boolean = false;
-  actionStatus: string[];
-  category: string[];
-  selectcategory: string;
-  selectactionStatus: string;
-  modal: string[] = ['cause'];
+  actionStatus: any[];
+  category: any[];
+  selectcategory: any;
+  selectactionStatus: any;
+  modal: any[] = ['cause'];
   constructor() {
     this.category = [
       "ทั้งหมด",

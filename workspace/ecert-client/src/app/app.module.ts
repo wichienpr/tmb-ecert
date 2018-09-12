@@ -6,15 +6,15 @@ import { LoginComponent } from './buckwaframework/project/pages/login/login.comp
 import { AppRoutingModule } from './buckwaframework/common/configs/app-routing.module';
 import { ComponentsModule } from './buckwaframework/common/components/components.module';
 import { FormsModule } from '@angular/forms';
-import { RoleManagementComponent } from './buckwaframework/project/setup/role-management/role-management.component';
-import { ParameterConfigurationComponent } from './buckwaframework/project/setup/parameter-configuration/parameter-configuration.component';
-import { MonitoringComponent } from './buckwaframework/project/batch-Monitoring/monitoring/monitoring.component';
-import { AuditLogComponent } from './buckwaframework/project/audit-Log/audit-log/audit-log.component';
+import { EmailConfigurationComponent } from './buckwaframework/project/setup/email-configuration/email-configuration.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+
+    
   
     
   ],

@@ -1,40 +1,38 @@
-
-
 <modal [id]="modal[3]" [size]="'small'" [type]="'custom'">
-    <i class="close icon"></i>
-    <div class="header" style="background: #1678C2">
-       <div  style="color: white" >อนุมัติการชำระเงินค่าธรรมเนียม </div> 
-    </div>
-    <div class="content">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="nine wide field">
-            <label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>       
-          </div>        
-        </div>           
-      </div>    
-    </div>
-    <div class="actions">
-      <div class="ui center aligned grid">
-        <div class="seven wide column">
-          <button  class="ui blue  basic button" (click)="closeModal(modal[3])" >
-              <i class="check circle outline icon"></i>
-         ยืนยัน
-          </button>
-          &nbsp;&nbsp; &nbsp;&nbsp;    
-          <button  class="ui grey  basic button"  (click)="closeModal(modal[3])" >
-              <i class="times circle outline icon"></i>
-            ยกเลิก
-            </button>      
+  <i class="close icon"></i>
+  <div class="header" style="background: #1678C2">
+    <div style="color: white">อนุมัติการชำระเงินค่าธรรมเนียม </div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="nine wide field">
+          <label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>
         </div>
       </div>
     </div>
-  </modal>
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="seven wide column">
+        <button class="ui blue  basic button" (click)="closeModal(modal[3])">
+          <i class="check circle outline icon"></i>
+          ยืนยัน
+        </button>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <button class="ui grey  basic button" (click)="closeModal(modal[3])">
+          <i class="times circle outline icon"></i>
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</modal>
 
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
   <div class="header" style="background:#1678C2">
-   <div style="color: rgb(255, 255, 255)">ดำเนินการชำระเงิน</div> 
+    <div style="color: rgb(255, 255, 255)">ดำเนินการชำระเงิน</div>
   </div>
   <div class="content">
     <div class="ui form">
@@ -66,13 +64,13 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="seven wide column">
-          <button  class="ui blue  basic button"  (click)="closeModal(modal[0])" >
-              <i class="check circle outline icon"></i>
+        <button class="ui blue  basic button" (click)="closeModal(modal[0])">
+          <i class="check circle outline icon"></i>
           ชำระเงิน
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button  class="ui grey  basic button" (click)="closeModal(modal[0])">
-            <i class="times circle outline icon"></i>
+        <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+          <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
       </div>
@@ -82,8 +80,8 @@
 
 <modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
-  <div class="header"  style="background:#1678C2">
-   <diV style="color: rgb(255, 255, 255)">ระบุสาเหตุ</diV> 
+  <div class="header" style="background:#1678C2">
+    <diV style="color: rgb(255, 255, 255)">ระบุสาเหตุ</diV>
   </div>
   <div class="content">
     <div class="ui form">
@@ -113,13 +111,13 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="seven wide column">
-          <button  class="ui blue  basic button"  (click)="closeModal(modal[1])">
-              <i class="check circle outline icon"></i>
+        <button class="ui blue  basic button" (click)="closeModal(modal[1])">
+          <i class="check circle outline icon"></i>
           ตกลง
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button  class="ui grey  basic button" (click)="closeModal(modal[1])">
-            <i class="times circle outline icon"></i>
+        <button class="ui grey  basic button" (click)="closeModal(modal[1])">
+          <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
       </div>
@@ -129,8 +127,8 @@
 
 <modal [id]="modal[2]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
-  <div class="header"  style="background:#1678C2">
-      <diV style="color: rgb(255, 255, 255)">ระบุเอกสาร Certificate</diV> 
+  <div class="header" style="background:#1678C2">
+    <diV style="color: rgb(255, 255, 255)">ระบุเอกสาร Certificate</diV>
   </div>
   <div class="content">
     <div class="ui form">
@@ -148,13 +146,13 @@
   <div class="actions">
     <div class="ui center aligned grid">
       <div class="seven wide column">
-          <button  class="ui blue  basic button" (click)="closeModal(modal[2])" >
-              <i class="check circle outline icon"></i>
+        <button class="ui blue  basic button" (click)="closeModal(modal[2])">
+          <i class="check circle outline icon"></i>
           ตกลง
         </button>
         &nbsp;&nbsp; &nbsp;&nbsp;
-        <button  class="ui grey  basic button" (click)="closeModal(modal[2])">
-            <i class="times circle outline icon"></i>
+        <button class="ui grey  basic button" (click)="closeModal(modal[2])">
+          <i class="times circle outline icon"></i>
           ยกเลิก
         </button>
       </div>
@@ -177,7 +175,7 @@
           </label>
         </div>
         <div class="five wide field ">
-        01/01/2561
+          01/01/2561
         </div>
       </div>
 
@@ -188,7 +186,7 @@
           </label>
         </div>
         <div class="five wide field ">
-        2018090001
+          2018090001
         </div>
       </div>
 
@@ -198,7 +196,7 @@
           <label>ประเภทคำขอ</label>
         </div>
         <div class="five wide field ">
-         ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด
+          ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด
         </div>
       </div>
 
@@ -208,10 +206,10 @@
         <table class="ui small celled table nowrap" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
-              <th rowspan="2" colspan="2" style="background:#0079C0;color: #FFF" >รายละเอียด </th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าธรรมเนียมของ DBD </th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าบริการของธนาคาร </th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">  จำนวน : ชุด</th>
+              <th rowspan="2" colspan="2">รายละเอียด </th>
+              <th rowspan="2">ค่าธรรมเนียมของ DBD </th>
+              <th rowspan="2">ค่าบริการของธนาคาร </th>
+              <th rowspan="2"> จำนวน : ชุด</th>
             </tr>
           </thead>
           <tbody>
@@ -298,7 +296,7 @@
               </td>
             </tr>
             <tr style="background: 	#F8F8FF">
-              <td >
+              <td>
                 <input type="checkbox" checked="true" disabled="true">
               </td>
               <td>รับรองสำเนาเอกสารทะเบียน</td>
@@ -330,9 +328,9 @@
           <div class="three wide field ">
             <label>เลขที่นิติบุคคล
             </label>
-          </div>         
+          </div>
           <div class="five wide field ">
-           9023456321236
+            9023456321236
           </div>
         </div>
         <div class="inline fields">
@@ -340,9 +338,9 @@
           <div class="three wide field ">
             <label>ชื่อนิติบุคคล
             </label>
-          </div>        
+          </div>
           <div class="five wide field ">
-          บริษัท ซี4
+            บริษัท ซี4
           </div>
         </div>
         <div class="inline fields">
@@ -350,9 +348,9 @@
           <div class="three wide field ">
             <label>Customer Segment
             </label>
-          </div>         
+          </div>
           <div class="five wide field ">
-           Segment 1
+            Segment 1
           </div>
         </div>
 
@@ -362,7 +360,7 @@
             <label>เลขที่ CA/มติอนุมัติ
             </label>
           </div>
-       
+
           <div class="five wide field ">
             -
           </div>
@@ -386,7 +384,7 @@
             </label>
           </div>
           <div class="five wide field ">
-           ธนาคารกลุ่ม SE
+            ธนาคารกลุ่ม SE
           </div>
         </div>
         <div class="inline fields">
@@ -407,7 +405,7 @@
             </label>
           </div>
           <div class="five wide field ">
-           B533
+            B533
           </div>
         </div>
 
@@ -418,7 +416,7 @@
             </label>
           </div>
           <div class="five wide field ">
-           OOA
+            OOA
           </div>
         </div>
 
@@ -429,13 +427,13 @@
             </label>
           </div>
           <div class="three wide field ">
-          1045324356
+            001-2-543698-1
           </div>
           <div class="one wide field ">
             <label>ชื่อบัญชี</label>
           </div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <div class="two wide field ">
-          นาย ก ใจดี
+            นาย ก ใจดี
           </div>
         </div>
         <div class="inline fields">
@@ -445,7 +443,7 @@
             </label>
           </div>
           <div class="five wide field ">
-           61100920717022
+            61100920717022
           </div>
         </div>
 
@@ -456,7 +454,7 @@
             </label>
           </div>
           <div class="five wide field ">
-          0101256100000125
+            0101256100000125
           </div>
         </div>
         <div class="inline fields">
@@ -466,7 +464,7 @@
             </label>
           </div>
           <div class="five wide field ">
-           300.00
+            300.00
           </div>
         </div>
         <div class="inline fields">
@@ -476,7 +474,7 @@
             </label>
           </div>
           <div class="two wide field ">
-           นายขอยื่น แทนบริษัท
+            นายขอยื่น แทนบริษัท
           </div>
         </div>
         <div class="inline fields">
@@ -486,13 +484,14 @@
             </label>
           </div>
           <div class="two wide field ">
-           0987654345
+            0987654345
           </div>
         </div>
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>ใบคำขอหนังสือรับรองนิติบุคคลและ<br>หนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+            <label>ใบคำขอหนังสือรับรองนิติบุคคลและ
+              <br>หนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
             </label>
           </div>
           <div class="two wide field ">
@@ -514,17 +513,17 @@
           </div>
         </div>
         <div class="inline fields">
-            <div class="one wide field "></div>
-            <div class="three wide field ">
-              <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
-              </label>
-            </div>
-            <div class="two wide field ">
-              <a style="color: #000;">
-                <u>Download</u>
-              </a>
-            </div>
+          <div class="one wide field "></div>
+          <div class="three wide field ">
+            <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
+            </label>
           </div>
+          <div class="two wide field ">
+            <a style="color: #000;">
+              <u>Download</u>
+            </a>
+          </div>
+        </div>
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
@@ -550,123 +549,123 @@
         <br>
         <br>
         <div class="ui center aligned grid">
-            <button  class="ui blue basic button" (click)="openModal(modal[0])">
-                <i class="check circle outline icon"></i>
-                ดำเนินการชำระเงิน
-              </button> &nbsp;&nbsp; 
-          <button  class="ui blue basic button"  (click)="openModal(modal[3])">
-              <i class="check circle outline icon"></i>
-            อนุมัติการชำระเงิน
-          </button> &nbsp;&nbsp;       
-        
-          <button  class="ui blue basic button" (click)="openModal(modal[1])">
-              <i class="undo icon"></i>
-              ปฏิเสธ
-          </button> &nbsp;&nbsp; 
-          <button  class="ui blue basic button" >
-              <i class="print icon"></i>
-              พิมพ์ใบเสร็จ
-          </button> &nbsp;&nbsp; 
-          <button  class="ui blue basic button" >
-              <i class="print icon"></i>
-              พิมพ์ Cover Sheet
+          <button class="ui blue basic button" (click)="openModal(modal[0])">
+            <i class="check circle outline icon"></i>
+            ดำเนินการชำระเงิน
           </button> &nbsp;&nbsp;
-          <button  class="ui blue basic button" (click)="openModal(modal[2])">
-              <i class=" upload icon"></i>
-              Upload Certificate
-            </button> &nbsp;&nbsp;        
-          <button  class="ui grey  basic button">
-              <i class="arrow alternate circle left outline icon"></i>
+          <button class="ui blue basic button" (click)="openModal(modal[3])">
+            <i class="check circle outline icon"></i>
+            อนุมัติการชำระเงิน
+          </button> &nbsp;&nbsp;
+
+          <button class="ui blue basic button" (click)="openModal(modal[1])">
+            <i class="undo icon"></i>
+            ปฏิเสธ
+          </button> &nbsp;&nbsp;
+          <button class="ui blue basic button">
+            <i class="print icon"></i>
+            พิมพ์ใบเสร็จ
+          </button> &nbsp;&nbsp;
+          <button class="ui blue basic button">
+            <i class="print icon"></i>
+            พิมพ์ Cover Sheet
+          </button> &nbsp;&nbsp;
+          <button class="ui blue basic button" (click)="openModal(modal[2])">
+            <i class=" upload icon"></i>
+            Upload Certificate
+          </button> &nbsp;&nbsp;
+          <button class="ui grey  basic button">
+            <i class="arrow alternate circle left outline icon"></i>
             ย้อนกลับ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;      
+          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <br>
         </div>
         <br>
         <br>
       </div>
       <div class="ui bottom attached tab segment" id="subTap2" data-tab="second">
-          <table class="ui small celled table nowrap" cellpadding="0"  cellspacing="0" id="table" >
-              <thead>
-                <tr  style="text-align: center;">
-                  <th style="background:#0079C0;color: #FFF">ลำดับ</th>
-                  <th style="background:#0079C0;color: #FFF">วันเวลาที่ดำเนินการ</th>
-                  <th style="background:#0079C0;color: #FFF">ผู้ดำเนินการ </th>
-                  <th style="background:#0079C0;color: #FFF">วันที่ยื่นคำขอ</th>
-                  <th style="background:#0079C0;color: #FFF">TMB Req. No</th>
-                  <th style="background:#0079C0;color: #FFF">เลขที่คำขอ (Ref.1)</th>
-                  <th style="background:#0079C0;color: #FFF">เลขที่ตรวจสอบ (Ref.2)</th>
-                  <th style="background:#0079C0;color: #FFF">จำนวนเงิน </th>
-                  <th style="background:#0079C0;color: #FFF">ประเภทคำขอ</th>
-                  <th style="background:#0079C0;color: #FFF">เลขที่นิติบุคคล</th>
-                  <th style="background:#0079C0;color: #FFF">ชื่อบริษัท</th>
-                  <th style="background:#0079C0;color: #FFF">สถานะการดำเนินการ</th>
-                  <th style="background:#0079C0;color: #FFF">สาเหตุ</th>    
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td style="text-align: center">1</td>
-                      <td>01/01/2561 09:00</td>
-                      <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-                      <td>01/01/2561</td>
-                      <td>20180900001</td>
-                      <td>-</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                      <td>1023456321234</td>
-                      <td>บริษัท เอ</td>
-                      <td>คำขอใหม่</td>
-                      <td>-</td>
-                  </tr>
-                  <tr style="background: 	#F8F8FF">
-                      <td style="text-align: center">2</td>
-                      <td>01/01/2561 09:10</td>
-                      <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-                      <td>01/01/2561</td>
-                      <td>20180900002</td>
-                      <td>-</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                      <td>1023456321234</td>
-                      <td>บริษัท เอ</td>
-                      <td>ดำเนินการชำระเงิน</td>
-                      <td>-</td>
-                  </tr>
-                  <tr>
-                      <td style="text-align: center">3</td>
-                      <td>01/01/2561 09:20</td>
-                      <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-                      <td>01/01/2561</td>
-                      <td>20180900003</td>
-                      <td>61100920717022</td>
-                      <td>6110092071702211</td>
-                      <td style="text-align: right">350.00</td>
-                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                      <td>1023456321234</td>
-                      <td>บริษัท เอ</td>
-                      <td>รออัพโหลด Certificate</td>
-                      <td>-</td>
-                  </tr>
-                  <tr style="background: 	#F8F8FF">
-                      <td style="text-align: center">4</td>
-                      <td>01/01/2561 09:25</td>
-                      <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-                      <td>01/01/2561</td>
-                      <td>20180900004</td>
-                      <td>61100920717022</td>
-                      <td>6110092071702211</td>
-                      <td style="text-align: right">350.00</td>
-                      <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                      <td>1023456321234</td>
-                      <td>บริษัท เอ</td>
-                      <td>ดำเนินการสำเร็จ</td>
-                      <td>-</td>
-                  </tr>
-                 
-              </tbody>
-             </table>
+        <table class="ui small celled table nowrap" cellpadding="0" cellspacing="0" id="table">
+          <thead>
+            <tr style="text-align: center;">
+              <th>ลำดับ</th>
+              <th>วันเวลาที่ดำเนินการ</th>
+              <th>ผู้ดำเนินการ </th>
+              <th>วันที่ยื่นคำขอ</th>
+              <th>TMB Req. No</th>
+              <th>เลขที่คำขอ (Ref.1)</th>
+              <th>เลขที่ตรวจสอบ (Ref.2)</th>
+              <th>จำนวนเงิน </th>
+              <th>ประเภทคำขอ</th>
+              <th>เลขที่นิติบุคคล</th>
+              <th>ชื่อบริษัท</th>
+              <th>สถานะการดำเนินการ</th>
+              <th>สาเหตุ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center">1</td>
+              <td>01/01/2561 09:00</td>
+              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
+              <td>01/01/2561</td>
+              <td>20180900001</td>
+              <td>-</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>1023456321234</td>
+              <td>บริษัท เอ</td>
+              <td>คำขอใหม่</td>
+              <td>-</td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td style="text-align: center">2</td>
+              <td>01/01/2561 09:10</td>
+              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
+              <td>01/01/2561</td>
+              <td>20180900002</td>
+              <td>-</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>1023456321234</td>
+              <td>บริษัท เอ</td>
+              <td>ดำเนินการชำระเงิน</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td style="text-align: center">3</td>
+              <td>01/01/2561 09:20</td>
+              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
+              <td>01/01/2561</td>
+              <td>20180900003</td>
+              <td>61100920717022</td>
+              <td>6110092071702211</td>
+              <td style="text-align: right">350.00</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>1023456321234</td>
+              <td>บริษัท เอ</td>
+              <td>รออัพโหลด Certificate</td>
+              <td>-</td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td style="text-align: center">4</td>
+              <td>01/01/2561 09:25</td>
+              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
+              <td>01/01/2561</td>
+              <td>20180900004</td>
+              <td>61100920717022</td>
+              <td>6110092071702211</td>
+              <td style="text-align: right">350.00</td>
+              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
+              <td>1023456321234</td>
+              <td>บริษัท เอ</td>
+              <td>ดำเนินการสำเร็จ</td>
+              <td>-</td>
+            </tr>
+
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

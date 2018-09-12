@@ -55,7 +55,7 @@ export class ECertificateDayComponent implements OnInit {
         scrollX: true,
         searching :false,
         "columnDefs": [{
-          "targets": [8,9,10,15,14,15],
+          "targets": [8,9,10,11,17],
           "orderable": false
         }]
       });

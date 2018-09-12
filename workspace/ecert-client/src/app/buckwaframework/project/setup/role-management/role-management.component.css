@@ -1,0 +1,11 @@
+.import{
+    margin-bottom: -65px;
+    height: 45px;
+    width: 100%;
+}
+
+.import > .floated {
+    right: 14px;
+    position: absolute;
+    z-index: 997;
+}

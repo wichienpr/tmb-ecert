@@ -128,5 +128,12 @@ img.image-width-18 {
 .table{
     background:#0079C0;
     color: #FFF;
-  }
+}
+
+.table th{
+    background:#0079C0 !important;
+    color: #FFF !important;
+}
+
+
 

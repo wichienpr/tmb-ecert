@@ -30,7 +30,7 @@ export class ClientSignedComponent implements OnInit {
 
     this.debitMethod = ["กรุณาเลือก",
       "ธนาคาร (กลุ่มรายย่อย)","ธนาคาร (กลุ่ม SE)","ธนาคาร (กลุ่ม CB/MB/BB)"];
-      this.customerSegment =["กรุณาเลือก","BB","CB","Etc","MB","Retail","SE","Legil"]
+      this.customerSegment =["กรุณาเลือก","BB","CB","Etc","MB","Retail","SE"," Legal "]
   }
     
 

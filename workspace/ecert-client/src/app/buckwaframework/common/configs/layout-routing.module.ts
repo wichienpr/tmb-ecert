@@ -16,6 +16,8 @@ import { ParameterConfigurationComponent } from "../../project/setup/parameter-c
 import { RoleManagementComponent } from "../../project/setup/role-management/role-management.component";
 import { AuditLogComponent } from "../../project/audit-Log/audit-log/audit-log.component";
 import { MonitoringComponent } from "../../project/batch-Monitoring/monitoring/monitoring.component";
+import { AddRoleComponent } from "../../project/setup/role-management/add-role/add-role.component";
+import { EmailConfigurationComponent } from "../../project/setup/email-configuration/email-configuration.component";
 const routes: Routes = [
     {
         path: "",
@@ -33,7 +35,9 @@ const routes: Routes = [
             { path: "role-Management", component: RoleManagementComponent },
             { path: "auditLog", component: AuditLogComponent },              
             { path: "monitoring", component: MonitoringComponent },  
-
+            { path: "add-Role", component: AddRoleComponent },  
+            { path: "email-configuration", component:  EmailConfigurationComponent } 
+           
         ]
     },
 ];
@@ -57,7 +61,9 @@ const routes: Routes = [
         ParameterConfigurationComponent,
         RoleManagementComponent,
         AuditLogComponent,
-        MonitoringComponent
+        MonitoringComponent,
+        AddRoleComponent,
+        EmailConfigurationComponent
     ],
     exports: [RouterModule]
 })
