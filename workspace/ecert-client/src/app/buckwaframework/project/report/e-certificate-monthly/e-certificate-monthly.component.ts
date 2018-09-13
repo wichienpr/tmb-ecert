@@ -23,7 +23,6 @@ export class ECertificateMonthlyComponent implements OnInit {
       type: "month",
       text: TextDateTH,
       formatter: formatter('month-year')
-
     });
 
 
