@@ -264,13 +264,23 @@
           <input type="text" placeholder="" value="">
         </div>
       </div>
+
+      <div class="inline fields" >
+        <div class="four wide field ">
+          <label>ชื่อหน่วยงาน
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
+        </div>      
+      </div>
       <div class="inline fields">
         <div class="two wide field ">
           <label>วิธีการรับชำระ</label>
         </div>
         <div class="two wide field"></div>
         <div class="five wide field">
-          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)">
+          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)" (change)="onChangeDropdown">
             <option *ngFor="let paid of paid; let i = index" value="{{i}}">
               {{paid}}
             </option>
@@ -331,7 +341,7 @@
         </div>
 
         <div class="five wide field ">
-          <input type="text" placeholder="" value="123-x-xxxxxx-9">
+          <input type="text" placeholder="" value="123-1-12345-9">
         </div>
         <div class="two wide field ">
           <label>ชื่อบัญชี

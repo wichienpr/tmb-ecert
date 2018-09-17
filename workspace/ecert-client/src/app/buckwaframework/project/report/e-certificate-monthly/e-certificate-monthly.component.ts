@@ -8,6 +8,8 @@ declare var $: any;
 })
 export class ECertificateMonthlyComponent implements OnInit {
   showData: boolean = false;
+
+  modal: string[] = ["modal"];
   constructor() { }
 
   ngOnInit() {
@@ -30,6 +32,16 @@ export class ECertificateMonthlyComponent implements OnInit {
   ngAfterViewInit() {
 
   }
+
+
+  openModal(id) {
+    $('#' + id).modal('show');
+  }
+
+  closeModal(id) {
+    $('#' + id).modal('hide');
+  }
+
   searchData(): void {
     this.showData = true;
     setTimeout(() => {
@@ -39,7 +51,7 @@ export class ECertificateMonthlyComponent implements OnInit {
         ordering: true,
         paging: true,
         "columnDefs": [{
-          "targets": [2,3,4,5,7,8,9],
+          "targets": [2, 3, 4, 5, 7, 8, 9],
           "orderable": false
         }]
       });

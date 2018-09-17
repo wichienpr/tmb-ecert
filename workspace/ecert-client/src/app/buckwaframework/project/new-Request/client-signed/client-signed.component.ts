@@ -10,7 +10,8 @@ export class ClientSignedComponent implements OnInit {
   paid: String[];
   customerSegment : String[];
   selectcustomerSegment : String;
-
+  sengment: any = "";
+  flag :boolean = true;
   debitMethod: String[];
   showData: boolean = false;
   modal: string[] = ["modal5","modal5"];
@@ -26,12 +27,13 @@ export class ClientSignedComponent implements OnInit {
     ];
 
     this.paid = ["กรุณาเลือก",
-      "ลูกค้าชำระค่าธรรมเนียม DBD,TMB", "ลูกค้าชำระค่าธรรมเนียม DBD ยกเว้น TMB","TMB ชำระค่าธรรมเนียม DBD"];
+      "ลูกค้าชำระค่าธรรมเนียม DBD,TMB", "ลูกค้าชำระค่าธรรมเนียม DBD ยกเว้น TMB","TMB ชำระค่าธรรมเนียม DBD ทั้งหมด"];
 
     this.debitMethod = ["กรุณาเลือก",
       "ธนาคาร (กลุ่มรายย่อย)","ธนาคาร (กลุ่ม SE)","ธนาคาร (กลุ่ม CB/MB/BB)"];
-      this.customerSegment =["กรุณาเลือก","BB","CB","Etc","MB","Retail","SE"," Legal "]
+      this.customerSegment =["กรุณาเลือก","Retail","SE","BB","CB","MB","Legal"," ETC "]
   }
+
     
 
 
@@ -42,6 +44,14 @@ export class ClientSignedComponent implements OnInit {
     
       scrollX: true
     });
+  }
+
+  onChangeDropdown(){
+    if (this.sengment == 'ETC') {
+      this.flag = true;
+  }
+
+
   }
 
   searchData(): void {
