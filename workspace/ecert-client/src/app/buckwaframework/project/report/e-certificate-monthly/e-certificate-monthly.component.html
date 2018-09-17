@@ -2,7 +2,7 @@
 <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
   <i class="close icon"></i>
   <div class="header" style="background:#1678C2">
-      <div style="color: rgb(255, 255, 255)">รายระเอียด</div>
+      <div style="color: rgb(255, 255, 255)">รายละเอียด</div>
   </div>
   <div class="content">
       <div class="ui form">
@@ -99,7 +99,7 @@
                 <th rowspan="2" >จำนวนเงิน</th>
                 <th colspan="2" >สถานะ : จำนวนราย</th>
                 <th rowspan="2">สาเหตุ</th>
-                <th rowspan="2">รายระเอียด</th>
+                <th rowspan="2">รายละเอียด</th>
               </tr>
               <tr style="text-align: center;">
                 <th style="border-left: 1px solid rgba(34,36,38,.1) !important;">หนังสือรับรอง </th>
@@ -220,7 +220,9 @@
                 <td style="text-align: right">
                  7
                 </td>            
-                <td>&nbsp;</td>
+                <td style="text-align: center">  <button class="ui red basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
+                  <i class="arrow alternate circle right outline icon"></i>
+                </button></td>
                 <td style="text-align: center">  <button class="ui blue basic button"  (click)="openModal(modal[0])"> รายละเอียด
                   <i class="arrow alternate circle right outline icon"></i>
                 </button></td>
