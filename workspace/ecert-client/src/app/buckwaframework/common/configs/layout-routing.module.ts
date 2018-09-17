@@ -18,6 +18,9 @@ import { AuditLogComponent } from "../../project/audit-Log/audit-log/audit-log.c
 import { MonitoringComponent } from "../../project/batch-Monitoring/monitoring/monitoring.component";
 import { AddRoleComponent } from "../../project/setup/role-management/add-role/add-role.component";
 import { EmailConfigurationComponent } from "../../project/setup/email-configuration/email-configuration.component";
+import { EditRoleComponent } from "../../project/setup/role-management/edit-role/edit-role.component";
+
+
 const routes: Routes = [
     {
         path: "",
@@ -36,10 +39,12 @@ const routes: Routes = [
             { path: "auditLog", component: AuditLogComponent },              
             { path: "monitoring", component: MonitoringComponent },  
             { path: "add-Role", component: AddRoleComponent },  
-            { path: "email-configuration", component:  EmailConfigurationComponent } 
-           
+            { path: "email-configuration", component:  EmailConfigurationComponent } ,
+            { path: "edit-role", component:  EditRoleComponent } ,
+          
+            
         ]
-    },
+    }, 
 ];
 @NgModule({
     imports: [
@@ -63,7 +68,9 @@ const routes: Routes = [
         AuditLogComponent,
         MonitoringComponent,
         AddRoleComponent,
-        EmailConfigurationComponent
+        EmailConfigurationComponent,
+        EditRoleComponent
+  
     ],
     exports: [RouterModule]
 })

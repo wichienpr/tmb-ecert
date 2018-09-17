@@ -26,7 +26,6 @@
           <i class="times circle outline icon"></i>
           Cancel
         </button>
-
       </div>
     </div>
   </div>
@@ -34,13 +33,13 @@
 
 
 <div class="ui grid">
-  <div class="sixteen wide column">   
-    <h2 class="ui header">
-        Role Management
+  <div class="sixteen wide column">
+    <h2 class="ui header"> Role Management
     </h2>
-   
+
+
     <div class="ui attached segment">
-        <br>
+      <br>
       <div class="ui form">
         <div class="inline fields">
           <div class="four wide field"></div>
@@ -79,6 +78,10 @@
           <i class="trash alternate outline icon"></i>
           ล้างข้อมูล
         </button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="ui green basic button" (click)="openModal(modal[0])">
+          <i class="download icon"></i>
+          Import Role </button>
         <br>
       </div>
       <br>
@@ -87,11 +90,7 @@
           <b>Search Result</b>
         </div>
         <div class="import">
-          <div class="floated">
-            <button class="ui green basic button" (click)="openModal(modal[0])">
-                <i class="download icon"></i>
-              Import Role </button>
-            &nbsp;&nbsp;
+          <div class="floated">    
             <button class="ui green basic button" [routerLink]="['/add-Role']">
               <i class="add icon"></i>
               เพิ่ม Role </button>
@@ -114,10 +113,8 @@
               <td>Requester</td>
               <td>Active</td>
               <td style="text-align: center">
-                <button class="ui blue basic button" [routerLink]="['/add-Role']">แก้ไข
-                </button>&nbsp;&nbsp;
-                <button class="ui blue basic button" >InActive
-                </button>
+                <button class="ui blue basic button" [routerLink]="['/edit-role']">แก้ไข
+                </button>                
               </td>
             </tr>
             <tr style="background: 	#F8F8FF">
@@ -125,9 +122,7 @@
               <td>Maker</td>
               <td>Active</td>
               <td style="text-align: center">
-                <button class="ui blue basic button"[routerLink]="['/add-Role']">แก้ไข
-                </button>&nbsp;&nbsp;
-                <button class="ui blue basic button">InActive
+                <button class="ui blue basic button" [routerLink]="['/edit-role']">แก้ไข
                 </button>
               </td>
             </tr>
@@ -136,9 +131,7 @@
               <td>Checker</td>
               <td>Active</td>
               <td style="text-align: center">
-                <button class="ui blue basic button" [routerLink]="['/add-Role']">แก้ไข
-                </button>&nbsp;&nbsp;
-                <button class="ui blue basic button" >InActive
+                <button class="ui blue basic button" [routerLink]="['/edit-role']">แก้ไข
                 </button>
               </td>
             </tr>
@@ -147,9 +140,7 @@
               <td>Checker_Test</td>
               <td>Inactive</td>
               <td style="text-align: center">
-                <button class="ui blue basic button"[routerLink]="['/add-Role']">แก้ไข
-                </button>&nbsp;&nbsp;
-                <button class="ui blue basic button" style="width: 55px" >Active
+                <button class="ui blue basic button" [routerLink]="['/edit-role']">แก้ไข
                 </button>
               </td>
             </tr>

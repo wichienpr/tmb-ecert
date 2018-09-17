@@ -1,12 +1,7 @@
-<div class="ui huge breadcrumb">
-  <div class="section">New</div>
-  <i class="angle right icon"></i>
-  <div class="active section">Edit Row</div>
-</div>
+<h2 class="ui header"> เพิ่ม Role
+</h2>
 <div class="ui segment ">
   <div class="ui form">
-    <br>
-    <br>
     <br>
 
     <div class="inline fields">
@@ -18,6 +13,25 @@
         <input type="text" placeholder="" value="">
       </div>
     </div>
+    <div class="inline fields">
+      <div class="four wide field "></div>
+      <div class="two wide field ">
+        <label>สถานะ</label>
+      </div>
+      <div class=" one wide  field">
+        <div class="ui radio checkbox">
+          <input type="radio" name="frequency" >
+          <label>Active</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input type="radio" name="frequency">
+          <label>InActive</label>
+        </div>
+      </div>
+
+    </div>
     <br>
     <div class="ui grid ">
       <div class="row">
@@ -27,132 +41,320 @@
             <thead>
               <tr style="text-align: center;">
                 <th>Screen</th>
+                <th>Active/InActive</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="true">&nbsp;UI-00002 - ยินดีต้อนรับ</td>
+                  &nbsp;UI-00002 - ยินดีต้อนรับ</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00003 - ตรวจสอบสถานะคำขอ</td>
+                &nbsp;UI-00003 - ตรวจสอบสถานะคำขอ</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;แสดงรายละเอียด</td>
+                &nbsp;แสดงรายละเอียด</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00004 - รายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม</td>
+                 
+                &nbsp;UI-00004 - รายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp; ดำเนินการชำระเงิน</td>
+                &nbsp; ดำเนินการชำระเงิน</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;อนุมัติการชำระเงิน</td>
+                &nbsp;อนุมัติการชำระเงิน</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;ปฏิเสธ</td>
+                &nbsp;ปฏิเสธ</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;พิมพ์ใบเสร็จ</td>
+                &nbsp;พิมพ์ใบเสร็จ</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;พิมพ์ Cover Sheet</td>
+                &nbsp;พิมพ์ Cover Sheet</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Upload Certificate</td>
+                &nbsp;Upload Certificate</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;ดาวน์โหลดใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก</td>
+                &nbsp;ดาวน์โหลดใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;ดาวน์โหลดสำเนาบัตรประชาชน</td>
+                &nbsp;ดาวน์โหลดสำเนาบัตรประชาชน</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp; ดาวน์โหลดสำเนาใบเปลี่ยนชื่อหรือนามสกุล</td>
+                &nbsp; ดาวน์โหลดสำเนาใบเปลี่ยนชื่อหรือนามสกุล</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;ดาวน์โหลดเอกสาร Certificate</td>
+                &nbsp;ดาวน์โหลดเอกสาร Certificate</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp; UI-00005 - Request Form สำหรับลูกค้าทำรายการเอง</td>
+                &nbsp; UI-00005 - Request Form สำหรับลูกค้าทำรายการเอง</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00006 - Request Form สำหรับทำรายการให้ลูกค้าลงนาม</td>
+                &nbsp;UI-00006 - Request Form สำหรับทำรายการให้ลูกค้าลงนาม</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00007 - รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day</td>
+                &nbsp;UI-00007 - รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Export to Excel</td>
+                &nbsp;Export to Excel</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00008 - รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly</td>
+                &nbsp;UI-00008 - รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Export to Excel</td>
+                &nbsp;Export to Excel</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00009 - รายงาน Output VAT</td>
+                &nbsp;UI-00009 - รายงาน Output VAT</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp; Export to Excel</td>
+                &nbsp; Export to Excel</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp;UI-00011 - Batch Monitoring</td>
+                &nbsp;UI-00011 - Batch Monitoring</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Rerun</td>
+                &nbsp;Rerun</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp; UI-00012 - Audit Log</td>
+                &nbsp; UI-00012 - Audit Log</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Export to Excel</td>
+                &nbsp;Export to Excel</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp;
-                  <input type="checkbox" checked="">&nbsp; UI-00013 - Role Manament</td>
+                &nbsp; UI-00013 - Role Manament</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;เพิ่ม Role</td>
+                &nbsp;เพิ่ม Role</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp; แก้ไข</td>
+                &nbsp; แก้ไข</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp; Import Role</td>
+                &nbsp; Import Role</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
               <tr>
                 <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="checkbox" checked="">&nbsp;Export Role</td>
+                &nbsp;Export Role</td>
+                  <td style="text-align: center">
+                      <div class="ui toggle  checkbox">
+                        <input type="checkbox" >
+                        <label></label>
+                      </div>
+                  </td>
               </tr>
             </tbody>
           </table>

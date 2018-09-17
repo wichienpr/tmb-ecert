@@ -8,11 +8,12 @@ import { ComponentsModule } from './buckwaframework/common/components/components
 import { FormsModule } from '@angular/forms';
 import { EmailConfigurationComponent } from './buckwaframework/project/setup/email-configuration/email-configuration.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+
+   
 
     
   
