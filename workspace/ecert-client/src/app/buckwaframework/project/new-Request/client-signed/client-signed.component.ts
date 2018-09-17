@@ -78,7 +78,9 @@ export class ClientSignedComponent implements OnInit {
     this.selectpaid = this.debitMethod[event.target.value];
   };
   onselectcustomerSegment = event => {
-    this. selectcustomerSegment = this.customerSegment[event.target.value];
+    //this. selectcustomerSegment = this.customerSegment[event.target.value];
+    if("")
+    console.log(event.target.value);
   };
 
   openModal(id) {

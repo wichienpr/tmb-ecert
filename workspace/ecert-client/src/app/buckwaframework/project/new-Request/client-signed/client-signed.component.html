@@ -265,7 +265,7 @@
         </div>
       </div>
 
-      <div class="inline fields" >
+      <div class="inline fields" *ngIf="flag" >
         <div class="four wide field ">
           <label>ชื่อหน่วยงาน
           </label>
@@ -280,7 +280,7 @@
         </div>
         <div class="two wide field"></div>
         <div class="five wide field">
-          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)" (change)="onChangeDropdown">
+          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)">
             <option *ngFor="let paid of paid; let i = index" value="{{i}}">
               {{paid}}
             </option>
