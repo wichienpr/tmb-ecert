@@ -54,7 +54,7 @@
         <div class="inline fields">
           <div class="four wide field"></div>
           <div class="two wide field ">
-            <label>Action</label>
+            <label>Status</label>
           </div>
           <div class="four wide field">
             <select id="action" name="action" class="ui search dropdown" (change)="Onselectaction($event)">
@@ -89,16 +89,10 @@
       </div>
       <br>
       <div class="ui segment" *ngIf="showData">
-        <div class="two wide field " style="margin-bottom: 40px">
+        <div class="two wide field " style="margin-bottom: 20px">
           <b>Search Result</b>
         </div>
-        <div class="import">
-          <div class="floated">    
-            
-          </div>
-        </div>
-
-        <br>
+      
         <table class="ui small celled table nowrap" id="table" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
