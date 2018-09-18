@@ -73,7 +73,7 @@
         <button class="ui blue basic button" (click)="searchData()">
           <i class="search icon"></i>
           ค้นหา
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        </button>&nbsp;&nbsp; &nbsp;
         <button class="ui gery basic button" (click)="clearData()">
           <i class="trash alternate outline icon"></i>
           ล้างข้อมูล
@@ -81,7 +81,10 @@
         &nbsp;&nbsp;&nbsp;
         <button class="ui green basic button" (click)="openModal(modal[0])">
           <i class="download icon"></i>
-          Import Role </button>
+          Import Role </button> &nbsp;&nbsp;&nbsp;
+          <button class="ui green basic button" [routerLink]="['/add-Role']">
+            <i class="add icon"></i>
+            เพิ่ม Role </button>
         <br>
       </div>
       <br>
@@ -91,9 +94,7 @@
         </div>
         <div class="import">
           <div class="floated">    
-            <button class="ui green basic button" [routerLink]="['/add-Role']">
-              <i class="add icon"></i>
-              เพิ่ม Role </button>
+            
           </div>
         </div>
 
