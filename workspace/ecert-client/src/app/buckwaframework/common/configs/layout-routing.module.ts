@@ -19,6 +19,7 @@ import { MonitoringComponent } from "../../project/batch-Monitoring/monitoring/m
 import { AddRoleComponent } from "../../project/setup/role-management/add-role/add-role.component";
 import { EmailConfigurationComponent } from "../../project/setup/email-configuration/email-configuration.component";
 import { EditRoleComponent } from "../../project/setup/role-management/edit-role/edit-role.component";
+import { EditEmailComponent } from "../../project/setup/email-configuration/edit-email/edit-email.component";
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
             { path: "add-Role", component: AddRoleComponent },  
             { path: "email-configuration", component:  EmailConfigurationComponent } ,
             { path: "edit-role", component:  EditRoleComponent } ,
+            { path: "edit-email", component:  EditEmailComponent } ,
           
             
         ]
@@ -69,7 +71,8 @@ const routes: Routes = [
         MonitoringComponent,
         AddRoleComponent,
         EmailConfigurationComponent,
-        EditRoleComponent
+        EditRoleComponent,
+        EditEmailComponent
   
     ],
     exports: [RouterModule]
