@@ -10,10 +10,18 @@ import { LoginComponent } from 'projects/pages/login/login.component';
 // Custom Component Modules
 import { ModalModule } from "components/index";
 
+// Store
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { testReducer } from "reducers/index"
+import { TestComponent } from 'projects/pages/test/test.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent, 
+    LoginComponent,
+    TestComponent
   ],
   imports: [
     // Common Modules
@@ -22,7 +30,15 @@ import { ModalModule } from "components/index";
     FormsModule,
 
     // Custom Component Modules
-    ModalModule
+    ModalModule,
+
+    // Store Module
+    StoreModule.forRoot({
+      test: testReducer
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

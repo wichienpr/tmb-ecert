@@ -1,0 +1,57 @@
+<div class="ui container">
+    <div class="ui grid">
+        <div class="sixteen wide column">
+
+            <!-- ADD -->
+            <div class="ui top attached header">Add</div>
+            <div class="ui bottom attached segment">
+                <div class="ui centered grid">
+                    <div class="ten wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="four wide field">
+                                    <label class="text-right full-width">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="eight wide field">
+                                    <div class="ui input">
+                                        <input type="text" [(ngModel)]="name">
+                                        <input type="hidden" [(ngModel)]="id">
+                                        <input type="hidden" [(ngModel)]="index">
+                                    </div>
+                                </div>
+                                <div class="four wide field">
+                                    <button class="ui button" *ngIf="selected == 'update'" type="button" (click)="upd(index, id, name)">Update</button>
+                                    <button class="ui button" *ngIf="selected == 'add'" type="button" (click)="add(name)">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ADD -->
+
+            <!-- SHOW -->
+            <div class="ui top attached header">Show</div>
+            <div class="ui bottom attached segment">
+                <div class="ui items" *ngIf="tests">
+                    <div class="item" *ngFor="let test of tests | async; let i = index">
+                        <a class="ui tiny image">
+                            <img src="http://placehold.it/32x32">
+                        </a>
+                        <div class="middle aligned content">
+                            <div class="header">
+                                <i class="edit icon" (click)="edt(i)"></i>
+                                <i class="trash icon" (click)="del(i)"></i>
+                                {{ test.name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SHOW -->
+
+        </div>
+    </div>
+</div>

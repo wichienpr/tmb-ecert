@@ -1,0 +1,10 @@
+i {
+  cursor: pointer;  
+}
+
+i.trash {
+  color: darkred;
+}
+i.edit {
+  color: grey;
+}

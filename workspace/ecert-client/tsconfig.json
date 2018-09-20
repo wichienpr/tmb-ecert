@@ -18,6 +18,9 @@
       "dom"
     ],
     "paths": {
+      "actions/*": ["src/app/buckwaframework/common/actions/*"],
+      "reducers/*": ["src/app/buckwaframework/common/reducers/*"],
+      "stores/*": ["src/app/buckwaframework/common/stores/*"],
       "commons/*": ["src/app/buckwaframework/common/*"],
       "projects/*": ["src/app/buckwaframework/project/*"],
       "components/*": ["src/app/buckwaframework/common/components/*"],
