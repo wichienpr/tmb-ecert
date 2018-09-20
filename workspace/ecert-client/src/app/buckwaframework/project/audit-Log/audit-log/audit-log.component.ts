@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { formatter, TextDateTH } from '../../../common/\u0E49helper/datepicker';
+import { formatter, TextDateTH } from "helpers/index";
 declare var $: any;
 @Component({
   selector: 'app-audit-log',

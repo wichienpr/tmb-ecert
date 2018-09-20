@@ -1,30 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { SuiModule } from 'ng2-semantic-ui';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './buckwaframework/project/pages/login/login.component';
-import { AppRoutingModule } from './buckwaframework/common/configs/app-routing.module';
-import { ComponentsModule } from './buckwaframework/common/components/components.module';
 import { FormsModule } from '@angular/forms';
+
+// Components
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from 'configs/app-routing.module';
+import { LoginComponent } from 'projects/pages/login/login.component';
+
+// Custom Component Modules
+import { ModalModule } from "components/index";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-   
-
-   
-
-    
-  
-    
+    LoginComponent, 
   ],
   imports: [
-    BrowserModule,
-    SuiModule,
-    ComponentsModule,
+    // Common Modules
     AppRoutingModule,
-    FormsModule
+    BrowserModule,
+    FormsModule,
+
+    // Custom Component Modules
+    ModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

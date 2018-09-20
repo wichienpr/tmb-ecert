@@ -1,6 +1,3 @@
-
-
-
 export var TextDateTH = {
   days: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
   months: [

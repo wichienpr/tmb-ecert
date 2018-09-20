@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TextDateTH, formatter } from '../../../common/\u0E49helper/datepicker';
+import { TextDateTH, formatter } from 'helpers/index';
 declare var $: any;
 @Component({
   selector: 'app-monitoring-performa',

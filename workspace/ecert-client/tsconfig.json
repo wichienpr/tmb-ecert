@@ -16,6 +16,15 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "commons/*": ["src/app/buckwaframework/common/*"],
+      "projects/*": ["src/app/buckwaframework/project/*"],
+      "components/*": ["src/app/buckwaframework/common/components/*"],
+      "configs/*": ["src/app/buckwaframework/common/configs/*"],
+      "models/*": ["src/app/buckwaframework/common/models/*"],
+      "helpers/*": ["src/app/buckwaframework/common/helpers/*"],
+      "services/*": ["src/app/buckwaframework/common/services/*"]
+    }
   }
 }
