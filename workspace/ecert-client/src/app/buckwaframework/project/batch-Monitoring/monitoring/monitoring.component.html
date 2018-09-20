@@ -25,6 +25,57 @@
   </div>
 </modal>
 
+<modal [id]="modal[1]" [size]="'small'" [type]="'custom'">
+    <i class="close icon"></i>
+    <div class="header" style="background: #1678C2">
+      <div style="color: white">ระบุวันนที่ต้องการ Rerun job  </div>
+    </div>
+    <div class="content">
+      <div class="ui form">
+          <div class="inline fields">        
+              <div class="two wide field">
+                <label class="custom-label-w-25">จากวันที่</label>
+              </div>
+              <div class="six wide field">
+                <div class="ui calendar" id="modlecalendar1" style="width:100%">
+                  <div class="ui input left icon">
+                    <i class="time icon"></i>
+                    <input type="text" >
+                  </div>
+                </div>
+              </div>
+              <div class="two wide field">
+                <label class="custom-label-w-25">ถึงวันที่</label>
+              </div>
+              <div class="six wide field">
+                <div class="ui calendar" id="modlecalendar2" style="width:100%">
+                  <div class="ui input left icon">
+                    <i class="time icon"></i>
+                    <input type="text" >
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="ten wide column">
+          <button class="ui blue  basic button" (click)="closeModal(modal[1])">
+            <i class="check circle outline icon"></i>
+           ดำเนินการต่อ
+          </button> &nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="ui gery  basic button" (click)="closeModal(modal[1])">
+              <i class="times circle outline icon"></i>
+             ยกเลิก
+            </button>
+  
+        </div>
+      </div>
+    </div>
+  </modal>
+  
+
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header"> Batch Monitoring
@@ -46,7 +97,7 @@
             <div class="ui calendar" id="calendar2" style="width:100%">
               <div class="ui input left icon">
                 <i class="time icon"></i>
-                <input type="text" name="startDate" id="startDate">
+                <input type="text" >
               </div>
             </div>
           </div>
@@ -57,7 +108,7 @@
             <div class="ui calendar" id="calendar1" style="width:100%">
               <div class="ui input left icon">
                 <i class="time icon"></i>
-                <input type="text" name="startDate" id="startDate">
+                <input type="text" >
               </div>
             </div>
           </div>
@@ -152,7 +203,7 @@
               </td>
               <td style="text-align: center">
                 
-                <button class="ui blue basic button" ><i class="undo alternate icon"></i> Rerun
+                <button class="ui blue basic button"  (click)="openModal(modal[1])" ><i class="undo alternate icon"></i> Rerun
 
                 </button>
               </td>

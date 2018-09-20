@@ -12,7 +12,7 @@ export class MonitoringComponent implements OnInit {
   category: any[];
   selectcategory: any;
   selectactionStatus: any;
-  modal: any[] = ['cause'];
+  modal: any[] = ['cause','rerun'];
   constructor() {
     this.category = [
       "ทั้งหมด",
@@ -28,13 +28,14 @@ export class MonitoringComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  calendar=()=>{
     $("#calendar1").calendar({
       maxDate: new Date(),
       type: "date",
       text: TextDateTH,
       formatter: formatter()
     });
+    
     $("#calendar2").calendar({
       maxDate: new Date(),
       type: "date",
@@ -42,11 +43,36 @@ export class MonitoringComponent implements OnInit {
       formatter: formatter()
     });
 
+    $("#modlecalendar1").calendar({
+      maxDate: new Date(),
+      type: "date",
+      text: TextDateTH,
+      formatter: formatter()
+    });
+
+    $("#modlecalendar2").calendar({
+      maxDate: new Date(),
+      type: "date",
+      text: TextDateTH,
+      formatter: formatter()
+    });
+  }
+  ngOnInit() {
+   
+    this.calendar();
 
   }
 
   openModal(id) {
-    $(`#${id}`).modal('show');
+    $(`#${id}`).modal({
+      autofocus : false,
+      onShow : () =>{
+        this.calendar();
+        
+      }
+
+    }).modal('show');
+
   }
 
   closeModal(id) {
