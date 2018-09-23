@@ -1,5 +1,6 @@
 # ecert-tmb
-Font end
-	Angular6
-		semetic UI
-		Ngrx
+##Font end
+======
+##Angular6
+	*Semantic UI
+	*Ngrx
