@@ -1,0 +1,5 @@
+.main.container-fluid {
+    padding: 88px 1em calc(64px + 1em) 1em;
+    min-height: 100%;
+    box-sizing: border-box;
+}

@@ -4,7 +4,7 @@ import { LoginComponent } from './baiwa/login/login.component';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: 'index',
     loadChildren: './baiwa/baselayout/baselayout.module#BaselayoutModule'
   },
   { path: 'login', component: LoginComponent },

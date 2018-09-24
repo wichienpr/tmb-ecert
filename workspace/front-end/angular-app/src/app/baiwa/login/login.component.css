@@ -1,0 +1,87 @@
+div1 {
+    background-color: lightblue;
+}
+
+.ui.container.login-content {
+    height: 100vh;
+    padding: 75px 0 67px 0;
+}
+
+.ui.footer {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    padding: 24px 0;
+}
+
+.login-icon {
+    padding-left: 0;
+}
+
+.login-page {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    height: calc(100vh - 75px - 67px);
+}
+
+.form-login {
+    padding: 0 !important;
+}
+
+.login {
+    min-height: 100%;
+}
+
+.bg-login {
+    background:#0A6197;
+    height: calc(100vh - 75px - 67px);
+    box-shadow: none !important;
+    border: 0 !important;
+}
+
+.input-login {
+    width: 100%;
+    margin: 7px 0 !important;
+}
+
+.btn-login {
+    background-color: #007ABC;
+    width: 100%;
+    margin: 7px 0 !important;
+}
+
+.frame-img {
+    padding: 0!important;
+}
+
+.floated.image {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.menu.fixed {
+    background:#0079c0;
+    height: 75px;
+}
+
+.i-logo {
+    padding: 0 !important;
+}
+
+.i-logo > img {
+    width: 105px !important;
+}
+
+.txt-warning {
+    position: relative;
+    height: calc(100vh - 352px);
+    color: #FFF;
+}
+
+.txt-warning > div {
+    position: absolute;
+    bottom: 0;
+}
+
