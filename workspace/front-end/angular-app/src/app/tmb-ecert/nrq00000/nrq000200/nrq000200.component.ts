@@ -13,18 +13,7 @@ export class Nrq000200Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    $('#modal-confirm').modal({centered: false}).modal('show');
+   
   }
-  modalConfirm(){
-    $('#modal-confirm').modal('hide');
-    // setTimeout(() => {
-    //   $('#modal-request').modal({centered: false}).modal('show');
-    // }, 300);
-    
-  }
-  modalCancel() {
-    $('#modal-confirm').modal('hide');
-  }
-
 
 }
