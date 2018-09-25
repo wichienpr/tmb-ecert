@@ -10,9 +10,7 @@ declare var $: any;
 export class SemanticMenuComponent implements OnInit {
 
   routes: Routing[];
-  constructor() { }
-
-  async ngOnInit() {
+  constructor() {
     this.routes = [
       { // Main Menu 1
         label: "ทำคำขอใหม่",
@@ -23,6 +21,7 @@ export class SemanticMenuComponent implements OnInit {
             child: [
               { label: "Example 1", url: "./examples/ex1" },
               { label: "Example 2", url: "./examples/ex2" },
+              { label: "Example 3", url: "./examples/ex3" }
             ]
           },
           { label: "New Request00100", url: "./nrq00000/nrq00100" },
@@ -79,6 +78,9 @@ export class SemanticMenuComponent implements OnInit {
       } // Main Menu test
       */
     ];
+  }
+
+  ngOnInit() {
     $(".ui.dropdown").dropdown();
   }
 
