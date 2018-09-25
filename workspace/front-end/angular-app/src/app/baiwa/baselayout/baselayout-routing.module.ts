@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     component : SemanticBodyComponent,
     children: [
-      // { path: 'customers',  loadChildren: '../customers/customers.module#CustomersModule'},
+       { path: 'nrq00000',  loadChildren: '../../tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module'},
       // { path: 'orders',  loadChildren: '../orders/orders.module#OrdersModule'}
     ]
   }
