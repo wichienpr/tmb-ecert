@@ -6,3 +6,7 @@ img:focus {
     outline:0;
     cursor: pointer;
 }
+
+.hidden {
+    display: none !important;
+}

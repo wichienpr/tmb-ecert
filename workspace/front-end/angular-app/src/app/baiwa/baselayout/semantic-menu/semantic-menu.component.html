@@ -1,63 +1,56 @@
 <div class="ui borderless menu fixed" style="background:#0079c0;z-index: 999;height: 75px;">
   <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 105px;">
-  <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)">
-    ทำคำขอใหม่
-    <i class="dropdown icon "></i>
-    <div class="menu ">
-      <a class="item " outerLinkActive="active " routerLink="./nrq00000/nrq00100">
-        Example
-      </a>
-      <a class="item " outerLinkActive="active " routerLink="./nrq00000/nrq00200">
-        Request Form สำหรับลูกค้าทำรายการเอง
-      </a>
-      <a class="item " [routerLink]="['/client-signed']" routerLinkActive="active">
-        Request Form สำหรับทำรายการให้ลูกค้าลงนาม
-      </a>
-    </div>
-  </div>
-  <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" [routerLink]="[ '/performa']">
-    ตรวจสอบสถานะคำขอ
-  </div>
-  <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)">
-    รายงาน
-    <i class="dropdown icon "></i>
-    <div class="menu ">
-      <a class="item " [routerLink]="[ '/e-certificate-day'] " routerLinkActive="active ">รายงานสรุปการให้บริการ
-        ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day
-      </a>
-      <a class="item " [routerLink]="[ '/e-certificate-monthly']" routerLinkActive="active ">รายงานสรุปการให้บริการ
-        ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly
-      </a>
-      <a class="item " [routerLink]="[ '/output-VAT']" routerLinkActive="active ">รายงาน Output VAT
-      </a>
-    </div>
-  </div>
-  <div class="ui simple dropdown item " [routerLink]="['/monitoring']" style=" color:rgb(255, 255, 255)">
-    Batch Monitoring
-  </div>
-  <div class="ui simple dropdown item " [routerLink]="['/auditLog']" style=" color:rgb(255, 255, 255)">
-    Audit Log
-  </div>
-  <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)">
-    Setup
-    <i class="dropdown icon "></i>
-    <div class="menu ">
-      <a class="item " [routerLink]="['/role-Management']" routerLinkActive="active ">Role Management
-      </a>
-      <a class="item " [routerLink]="['/parameter-Configuration']" routerLinkActive="active ">Parameter Configuration
-      </a>
-      <a class="item " [routerLink]="['/email-configuration']" routerLinkActive="active ">Email Configuration
+  <div class="ui simple dropdown item {{ main.url == null ? '' : 'hidden' }}" style="color:White;" *ngFor="let main of routes">
+    {{ main.label }}
+    <i class="dropdown icon" *ngIf="main.child && main.child.length > 0"></i>
+    <div class="menu" *ngIf="main.child && main.child.length > 0">
+      <div class="ui simple dropdown item {{ sub1.url == null ? '' : 'hidden' }}" *ngFor="let sub1 of main.child">
+        <i class="dropdown icon" *ngIf="sub1.child && sub1.child.length > 0"></i>
+        {{ sub1.label }}
+        <div class="menu" *ngIf="sub1.child && sub1.child.length > 0">
+          <div class="ui simple dropdown item {{ sub2.url == null ? '' : 'hidden' }}" *ngFor="let sub2 of sub1.child">
+            <i class="dropdown icon" *ngIf="sub2.child && sub2.child.length > 0"></i>
+            {{ sub2.label }}
+            <div class="menu" *ngIf="sub2.child && sub2.child.length > 0">
+              <div class="ui simple dropdown item {{ sub3.url == null ? '' : 'hidden' }}" *ngFor="let sub3 of sub2.child">
+                <i class="dropdown icon" *ngIf="sub3.child && sub3.child.length > 0"></i>
+                {{ sub3.label }}
+                <div class="menu" *ngIf="sub3.child && sub3.child.length > 0">
+                  <a class="item" routerLink="{{ sub4.url != null ? sub4.url : '/index' }}" *ngFor="let sub4 of sub3.child"
+                    routerLinkActive="active">
+                    {{ sub4.label }}
+                  </a>
+                </div>
+              </div>
+              <a class="ui simple dropdown item {{ sub3.url != null ? '' : 'hidden' }}" routerLink="{{ sub3.url != null ? sub3.url : '/index' }}"
+                *ngFor="let sub3 of sub2.child" routerLinkActive="active">
+                {{ sub3.label }}
+              </a>
+            </div>
+          </div>
+          <a class="ui simple dropdown item {{ sub2.url != null ? '' : 'hidden' }}" routerLink="{{ sub2.url != null ? sub2.url : '/index' }}"
+            *ngFor="let sub2 of sub1.child" routerLinkActive="active">
+            {{ sub2.label }}
+          </a>
+        </div>
+      </div>
+      <a class="ui simple dropdown item {{ sub1.url != null ? '' : 'hidden' }}" routerLink="{{ sub1.url != null ? sub1.url : '/index' }}"
+        *ngFor="let sub1 of main.child" routerLinkActive="active">
+        {{ sub1.label }}
       </a>
     </div>
   </div>
-  <div class="ui simple dropdown item " style=" color:rgb(255, 255, 255)" (click)="openModal(modal[2])">
+  <a class="ui simple dropdown item {{ main.url != null ? '' : 'hidden' }}" style="color:White;" routerLink="{{ main.url != null ? main.url : '/index' }}"
+    routerLinkActive="active" *ngFor="let main of routes">
+    {{ main.label }}
+  </a>
+  <div class="ui simple dropdown item" style=" color:rgb(255, 255, 255)" (click)="openModal(modal[2])">
     ออกจากระบบ
   </div>
-  <div class="right menu ">
+  <div class="right menu">
     <div class="ui simple  item " style=" color:rgb(255, 255, 255);line-height: 150%;margin-right: 20px">
       42307 สุรเดช แสนสมบูรณ์สุข Maker
       <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
-
     </div>
 
   </div>

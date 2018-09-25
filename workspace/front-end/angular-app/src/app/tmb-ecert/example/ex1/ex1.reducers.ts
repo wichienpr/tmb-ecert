@@ -15,7 +15,7 @@ export function ex1Reducer(state: Ex1[] = [initialState], action: Ex1Actions.Act
 
         case Ex1Actions.UPDATE:
             const { index, data } = action.payload;
-            state[index] = data;
+            state[index] = Object.assign({}, data);
             return state;
 
         case Ex1Actions.DELETE:
