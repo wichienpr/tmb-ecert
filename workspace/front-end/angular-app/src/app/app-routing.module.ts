@@ -8,11 +8,7 @@ const routes: Routes = [
     loadChildren: './baiwa/baselayout/baselayout.module#BaselayoutModule'
   },
   { path: 'login', component: LoginComponent },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  }
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

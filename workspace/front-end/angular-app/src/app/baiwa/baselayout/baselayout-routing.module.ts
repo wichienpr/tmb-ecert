@@ -5,10 +5,12 @@ import { SemanticBodyComponent } from './semantic-body/semantic-body.component';
 const routes: Routes = [
   {
     path: '',
-    component : SemanticBodyComponent,
+    component: SemanticBodyComponent,
     children: [
-       { path: 'nrq00000',  loadChildren: '../../tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module'},
-      // { path: 'orders',  loadChildren: '../orders/orders.module#OrdersModule'}
+      // For Examples
+      { path: 'examples', loadChildren: 'app/tmb-ecert/example/example.module#ExampleModule' },
+      // TMB Modules
+      { path: 'nrq00000', loadChildren: 'app/tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module' },
     ]
   }
 ];

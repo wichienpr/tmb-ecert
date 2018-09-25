@@ -11,7 +11,8 @@
     "experimentalDecorators": true,
     "target": "es5",
     "paths": {
-      "app/*": ["src/app/*"]
+      "app/*": ["src/app/*"],
+      "common/*": ["src/app/baiwa/common/*"]
     },
     "typeRoots": [
       "node_modules/@types"

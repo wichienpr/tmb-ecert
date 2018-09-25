@@ -1,0 +1,39 @@
+<div class="ui container">
+  <div class="ui one grid">
+    <div class="row">
+      <div class="one column">
+        <p *ngFor="let e of ex1 | async; let i = index">{{ i+1 }}. {{ e.name }} <> {{ e.value }} <i (click)="delete(i)" class="times icon"></i></p>
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="one column">
+        <form class="ui form" (submit)="add(form)" #form="ngForm">
+          <div class="inline fields">
+            <div class="field">
+              <label>id</label>
+              <div class="ui input">
+                <input type="text" name="id" ngModel>
+              </div>
+            </div>
+            <div class="field">
+              <label>name</label>
+              <div class="ui input">
+                <input type="text" name="name" ngModel>
+              </div>
+            </div>
+            <div class="field">
+              <label>value</label>
+              <div class="ui input">
+                <input type="text" name="value" ngModel>
+              </div>
+            </div>
+            <div class="field">
+              <button class="ui mini button" type="submit">ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
