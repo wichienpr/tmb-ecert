@@ -74,14 +74,8 @@ div1 {
     width: 105px !important;
 }
 
-.txt-warning {
-    position: relative;
-    height: calc(100vh - 352px);
-    color: #FFF;
+.warning {
+    position: absolute !important;
+    bottom: 67px !important;
+    color: #fff !important;
 }
-
-.txt-warning > div {
-    position: absolute;
-    bottom: 0;
-}
-

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { UserDetail } from '../../../user.reducer';
 import { Observable } from 'rxjs';
+import { UserDetail } from 'app/user.model';
 
-interface AppState {}
+import * as UserActions from 'app/user.action';
+
+interface AppState { }
 
 @Component({
   selector: 'app-nrq000100',
@@ -19,9 +21,16 @@ export class Nrq000100Component implements OnInit {
 
   ngOnInit() {
     this.users = this.store.select('user');
-    this.users.subscribe((u : UserDetail)=>{
-      console.log(u.username);
-    })
+  }
+
+  change() {
+    let data: UserDetail = { // Mock User Detail to Update
+      username: "RyanGek",
+      firstName: "Arthit",
+      lastName: "Kanjai",
+      roles: ["user"]
+    };
+    this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
   }
 
 }
