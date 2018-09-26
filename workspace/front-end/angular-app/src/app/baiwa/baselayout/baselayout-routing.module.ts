@@ -10,11 +10,11 @@ const routes: Routes = [
       // For Examples
       { path: 'examples', loadChildren: 'app/tmb-ecert/example/example.module#ExampleModule' },
       // TMB Modules
-      { path: 'nrq00000', loadChildren: 'app/tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module' },
+      { path: 'home', loadChildren: 'app/tmb-ecert/home/home.module#HomeModule' },
+      { path: 'nrq', loadChildren: 'app/tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module' },
     ]
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

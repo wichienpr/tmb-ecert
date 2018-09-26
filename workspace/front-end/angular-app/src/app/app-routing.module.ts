@@ -3,12 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './baiwa/login/login.component';
 
 const routes: Routes = [
-  {
-    path: 'index',
-    loadChildren: './baiwa/baselayout/baselayout.module#BaselayoutModule'
-  },
+  { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: '', loadChildren: './baiwa/baselayout/baselayout.module#BaselayoutModule' },
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   closeModal(id) {
     $('#' + id).modal('hide');
-    this.router.navigate(["/index"]);
+    this.router.navigate(["/home"]);
   }
 
   onSubmit($event) {

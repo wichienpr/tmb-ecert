@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: 'app-nrq000200',
-  templateUrl: './nrq000200.component.html',
-  styleUrls: ['./nrq000200.component.css']
+  selector: 'app-nrq02000',
+  templateUrl: './nrq02000.component.html',
+  styleUrls: ['./nrq02000.component.css']
 })
-export class Nrq000200Component implements OnInit {
+export class Nrq02000Component implements OnInit {
 
   constructor() { }
 

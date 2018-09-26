@@ -27,7 +27,9 @@ export class Ex3Component implements OnInit {
 
   onSubmit(form: NgForm) {
     const { name, no } = form.controls;
-    this.store.dispatch(new Ex3Actions.SearchEx3({ name: name.value, no: no.value }));
+    let _name = name.value ? name.value : '';
+    let _no = no.value ? no.value : '';
+    this.store.dispatch(new Ex3Actions.SearchEx3({ name: _name, no: _no }));
   }
 
 }

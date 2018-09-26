@@ -8,11 +8,11 @@ import * as UserActions from 'app/user.action';
 interface AppState { }
 
 @Component({
-  selector: 'app-nrq000100',
-  templateUrl: './nrq000100.component.html',
-  styleUrls: ['./nrq000100.component.css']
+  selector: 'app-nrq01000',
+  templateUrl: './nrq01000.component.html',
+  styleUrls: ['./nrq01000.component.css']
 })
-export class Nrq000100Component implements OnInit {
+export class Nrq01000Component implements OnInit {
 
   users: Observable<UserDetail>;
   constructor(private store: Store<AppState>) {
@@ -25,12 +25,17 @@ export class Nrq000100Component implements OnInit {
 
   change() {
     let data: UserDetail = { // Mock User Detail to Update
-      username: "RyanGek",
-      firstName: "Arthit",
-      lastName: "Kanjai",
-      roles: ["user"]
+      userId: "99999",
+      username: "kimjaeha",
+      firstName: "อาทิตย์",
+      lastName: "แก่นใจ",
+      roles: ["Developer"]
     };
     this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
+  }
+
+  reset() {
+    this.store.dispatch(new UserActions.ResetUser(true));
   }
 
 }

@@ -10,3 +10,7 @@ img:focus {
 .hidden {
     display: none !important;
 }
+
+.item {
+    color: white !important;
+}

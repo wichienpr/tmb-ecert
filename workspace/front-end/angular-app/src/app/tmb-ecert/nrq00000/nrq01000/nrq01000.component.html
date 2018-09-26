@@ -1,0 +1,10 @@
+<div class="ui header">User Details</div>
+<p>
+  UserId: {{(users|async).userId}}<br>
+  Username: {{(users|async).username}}<br>
+  Firstname: {{(users|async).firstName}}<br>
+  Lastname: {{(users|async).lastName}}<br>
+  Roles: {{(users|async).roles}}<br>
+</p>
+<button class="ui primary mini button" type="button" (click)="change()">change</button>
+<button class="ui mini button" type="button" (click)="reset()">reset</button>

@@ -13,8 +13,8 @@ export function ex3Reducer(state: Ex3[] = initialState, action: Ex3Actions.Actio
             let data = initialState.slice(0);
             const { name, no } = action.payload;
             return data.filter(obj => {
-                if (name && no) {
-                    return obj.name.search(name) > -1 && obj.no.search(no) > -1;
+                if (name || no) {
+                    return obj.name.search(name) !== -1 && obj.no.search(no) !== -1;
                 } else {
                     return true;
                 }

@@ -24,6 +24,6 @@
     </div>
 </div>
 
-<div class="ui {{ size || '' }}} hidden transition modal" id="{{modalId}}" *ngIf="type=='custom'">
+<div class="ui {{ size || '' }} modal {{ class || '' }}" id="{{modalId}}" *ngIf="type=='custom'">
     <ng-template [ngTemplateOutlet]="templateRef"></ng-template>
 </div>
