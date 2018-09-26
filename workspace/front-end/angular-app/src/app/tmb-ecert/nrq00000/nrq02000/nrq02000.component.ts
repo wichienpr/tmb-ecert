@@ -10,8 +10,17 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() { }
+
+  send() {
+    $('#send-req').modal('show');
+  }
+
+  redirect() {
+    $('#send-req').modal('hide');
+    this.router.navigate(['performa']);
+  }
 
 }

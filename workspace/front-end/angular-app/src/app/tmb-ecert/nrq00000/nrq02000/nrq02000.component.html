@@ -1,7 +1,6 @@
 <!-- modal -->
 <ui-modal modalId="send-req" size="small" type="custom">
   <ng-template>
-    <i class="close icon"></i>
     <div class="header" style="background: rgb(231, 185, 58)">
       <div style="color: white">แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ</div>
     </div>
@@ -17,12 +16,12 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="seven wide column">
-          <button class="ui blue basic button" (click)="closeModal(modal[1])" [routerLink]="['/performa']" style="background: rgb(231, 185, 58)">
+          <button class="ui blue positive basic button" type="button" (click)="redirect()" style="background: rgb(231, 185, 58)">
             <i class="check circle outline icon"></i>
             ดำเนินการต่อ
           </button>
           &nbsp;&nbsp;
-          <button class="ui grey basic button" (click)="closeModal(modal[1])">
+          <button class="ui grey negative basic button" type="button">
             <i class="times circle outline icon"></i>
             ยกเลิก
           </button>
@@ -431,7 +430,7 @@
           <i class="print icon"></i>
           พิมพ์ใบคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class="ui blue basic button" (click)="openModal(modal[1])">
+        <button class="ui blue basic button" (click)="send()">
           <i class="file alternate outline icon"></i>
           ยื่นใบคำขอ
         </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;

@@ -29,8 +29,7 @@ export class SemanticMenuComponent implements OnInit {
               { label: "Example 3", url: "/examples/ex3" }
             ]
           },
-          { label: "New Request00100", url: "/nrq/nrq01000" },
-          { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq" },
+          { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq01000" },
           { label: "Request Form สำหรับทำรายการให้ลูกค้าลงนาม", url: "/nrq/nrq02000" },
         ]
       },
