@@ -35,7 +35,7 @@ export class SemanticMenuComponent implements OnInit {
       },
       { // Main Menu 2
         label: "ตรวจสอบสถานะคำขอ",
-        url: "/performa"
+        url: "/crs/crs01000"
       },
       { // Main Menu 3
         label: "รายงาน",

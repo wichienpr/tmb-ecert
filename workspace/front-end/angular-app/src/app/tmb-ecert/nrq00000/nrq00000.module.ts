@@ -7,12 +7,15 @@ import { StoreModule } from '@ngrx/store';
 import { nrq00000Reducer } from 'app/tmb-ecert/nrq00000/nrq00000.reducer';
 import { Nrq02000Component } from './nrq02000/nrq02000.component';
 import { ModalModule } from 'components/modal/modal.module';
+import { DropdownModule } from 'components/dropdown/dropdown.module';
 
 @NgModule({
   imports: [
     CommonModule,
     Nrq00000RoutingModule,
+    // Components
     ModalModule,
+    DropdownModule,
     // StoreModule.forRoot({ nrq01000: nrqReducer })
     StoreModule.forFeature('nrq01000', nrq00000Reducer),
   ],
