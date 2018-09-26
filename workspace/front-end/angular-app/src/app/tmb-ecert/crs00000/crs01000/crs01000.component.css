@@ -1,0 +1,21 @@
+.ui.grid.pushable {
+    min-height: calc(100vh - 75px - 64px);
+}
+.ui.left.vertical {
+    padding: 0;
+}
+.ui.button.icon {
+    padding: 7px;
+}
+.list.icon {
+    cursor: pointer;
+}
+.ui.header.side-menu {
+    padding: 14px 0 14px 0;
+}
+
+
+/* .table{
+    background:#0079C0;
+    color: #FFF;
+  } */
