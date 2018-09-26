@@ -41,9 +41,9 @@ export class SemanticMenuComponent implements OnInit {
         label: "รายงาน",
         url: null,
         child: [ // Sub Menu 3.1
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day", url: "/e-certificate-day" },
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly", url: "/e-certificate-monthly" },
-          { label: "รายงาน Output VAT", url: "/output-VAT" },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day", url: "/rep/rep01000" },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly", url: "/rep/rep02000" },
+          { label: "รายงาน Output VAT", url: "/rep/rep03000" },
         ]
       },
       { // Main Menu 4
