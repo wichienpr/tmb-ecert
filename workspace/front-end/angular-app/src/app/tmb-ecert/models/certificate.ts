@@ -3,4 +3,6 @@ export interface Certificate {
     typeCode: string;
     typeDesc: string;
     certificate: string;
+    feeDbd: string;
+    feeTmb: string;
 }

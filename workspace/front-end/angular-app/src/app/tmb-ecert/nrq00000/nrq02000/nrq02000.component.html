@@ -247,11 +247,8 @@
           </label>
         </div>
         <div class="five wide field">
-          <select id="customerSegment" name="customerSegment" class="ui search dropdown" (change)="onselectcustomerSegment($event)">
-            <option *ngFor="let customerSegment of customerSegment; let i = index" value="{{i}}">
-              {{customerSegment}}
-            </option>
-          </select>
+          <ui-dropdown dropdownId="customSeg" dropdownName="customSeg" type="search" [values]="customSeg | async"
+            valueName="code" labelName="name" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field ">
           <label>เลขที่ CA/มติอนุมัติ
@@ -277,11 +274,8 @@
         </div>
         <div class="two wide field"></div>
         <div class="five wide field">
-          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)">
-            <option *ngFor="let paid of paid; let i = index" value="{{i}}">
-              {{paid}}
-            </option>
-          </select>
+          <ui-dropdown dropdownId="payMethod" dropdownName="payMethod" type="search" [values]="payMethod | async"
+            valueName="code" labelName="name" (valueChange)="payMethodChange($event)"></ui-dropdown>
         </div>
       </div>
 
@@ -291,11 +285,8 @@
         </div>
 
         <div class="five wide field">
-          <select id="debitMethod" name="debitMethod" class="ui search dropdown" (change)=" onSelectdebitMethod($event)">
-            <option *ngFor="let debitMethod of debitMethod; let i = index" value="{{i}}">
-              {{debitMethod}}
-            </option>
-          </select>
+          <ui-dropdown dropdownId="subAccMethod" dropdownName="subAccMethod" type="search" [values]="subAccMethod | async"
+            valueName="code" labelName="name" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
       <div class="inline fields">
@@ -321,125 +312,123 @@
       </div>
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>Account Type
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           OOA
 
         </div>
       </div>
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>เลขที่บัญชี
           </label>
         </div>
 
-        <div class="five wide field ">
-          <input type="text" placeholder="" value="123-1-12345-9">
+        <div class="five wide field">
+          <input type="text" placeholder="123-1-12345-9">
         </div>
-        <div class="two wide field ">
+        <div class="two wide field">
           <label>ชื่อบัญชี
           </label>
         </div>
-        <div class="five wide field ">
-          <input type="text" placeholder="" value="">
+        <div class="five wide field">
+          <input type="text">
         </div>
       </div>
 
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB
           </label>
         </div>
         <input type="checkbox">
         &nbsp;&nbsp;
-        <div class="one wide field ">
+        <div class="one wide field">
           <label>ชื่อนิติบุคคล
           </label>
         </div>
 
-        <div class="four wide field " style="margin-left: -15px">
+        <div class="four wide field" style="margin-left: -15px">
           <input type="text" placeholder="" value="">
         </div>
-        <div class="two wide field ">
+        <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <input type="text" placeholder="" value="">
         </div>
       </div>
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <input type="file" value="">
         </div>
-        <div class="two wide field ">
+        <div class="two wide field">
           <label>ที่อยู่
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <textarea rows="3"></textarea>
         </div>
       </div>
 
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>สำเนาบัตรประชาชน
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <input type="file" value="">
         </div>
       </div>
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <input type="file" value="">
         </div>
       </div>
 
       <div class="inline fields">
-        <div class="four wide field ">
+        <div class="four wide field">
           <label>หมายเหตุ
           </label>
         </div>
-        <div class="five wide field ">
+        <div class="five wide field">
           <textarea rows="2"></textarea>
         </div>
       </div>
-      <br>
-      <br>
-      <div class="ui center aligned grid">
-        <button class="ui blue basic button">
-          <i class="print icon"></i>
-          พิมพ์ใบคำขอ
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class="ui blue basic button" (click)="send()">
-          <i class="file alternate outline icon"></i>
-          ยื่นใบคำขอ
-        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class="ui grey basic button">
-          <i class="times circle outline icon"></i>
-          ยกเลิก
-        </button>
-        <br>
+      <div class="inline field">
+        <div class="ui one grid">
+          <div class="center aligned one column">
+            <button class="ui blue basic button">
+              <i class="print icon"></i>
+              พิมพ์ใบคำขอ
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="ui blue basic button" (click)="send()">
+              <i class="file alternate outline icon"></i>
+              ยื่นใบคำขอ
+            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="ui grey basic button">
+              <i class="times circle outline icon"></i>
+              ยกเลิก
+            </button>
+          </div>
+        </div>
       </div>
-      <br>
-      <br>
     </div>
-    <br>
   </div>
 </div>

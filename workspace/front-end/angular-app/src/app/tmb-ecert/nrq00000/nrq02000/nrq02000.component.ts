@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Nrq02000Service } from './nrq02000.service';
 import { Observable } from 'rxjs';
 import { Lov } from 'app/tmb-ecert/models/lov';
+import { Certificate } from 'app/tmb-ecert/models/index';
 
 declare var $: any;
 
@@ -20,10 +21,14 @@ export class Nrq02000Component implements OnInit {
   payMethod: Observable<Lov[]>;
   subAccMethod: Observable<Lov[]>;
 
+  reqTypeChanged: Certificate[];
+
   constructor(
     private router: Router,
     private nrq02000: Nrq02000Service
-    ) { }
+  ) {
+    this.reqTypeChanged = [];
+  }
 
   ngOnInit() {
     this.reqType = this.nrq02000.getReqType();
@@ -42,7 +47,7 @@ export class Nrq02000Component implements OnInit {
   }
 
   reqTypeChange(e) {
-    console.log(e);
+    this.reqTypeChanged = this.nrq02000.reqTypeChange(e);
   }
 
 }
