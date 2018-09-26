@@ -12,7 +12,8 @@
     "target": "es5",
     "paths": {
       "app/*": ["src/app/*"],
-      "common/*": ["src/app/baiwa/common/*"]
+      "common/*": ["src/app/baiwa/common/*"],
+      "components/*": ["src/app/baiwa/common/components/*"]
     },
     "typeRoots": [
       "node_modules/@types"

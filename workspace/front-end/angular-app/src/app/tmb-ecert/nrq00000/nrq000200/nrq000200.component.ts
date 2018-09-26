@@ -12,8 +12,6 @@ export class Nrq000200Component implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-   
-  }
+  ngOnInit() { }
 
 }

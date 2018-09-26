@@ -1,416 +1,414 @@
 <div class="ui grid">
-    <div class="sixteen wide column">
-      <div class="ui form segment">
-        <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
-        <br>
-  
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="two wide field ">
-            <label>วันที่ขอ
-            </label>
-          </div>
-          <div class="five wide field ">
-            01/01/2561
-          </div>
+  <div class="sixteen wide column">
+    <div class="ui form segment">
+      <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
+      <br>
+
+      <div class="inline fields">
+        <div class="one wide field "></div>
+        <div class="two wide field ">
+          <label>วันที่ขอ
+          </label>
         </div>
-  
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="two wide field ">
-            <label>TMB Req. No.
-            </label>
-          </div>
-          <div class="five wide field ">
-            20180900001
-          </div>
+        <div class="five wide field ">
+          01/01/2561
         </div>
-  
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="two wide field ">
-            <label>ประเภทคำขอ</label>
-          </div>
-          <div class="five wide field">
-            <select id="products" name="products" class="ui search dropdown" (change)="onSelectProducts($event)">
-              <option *ngFor="let product of products; let i = index" value="{{i}}">
-                {{product}}
-              </option>
-            </select>
-          </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="one wide field "></div>
+        <div class="two wide field ">
+          <label>TMB Req. No.
+          </label>
         </div>
-  
-        <br>
-  
-  
-        <div>
-          <table class="ui small celled table nowrap" style="width: 100%">
-            <thead>
-              <tr style="text-align: center;">
-                <th rowspan="1" colspan="2" style="background:#0079C0;color: #FFF">รายละเอียด
-                </th>
-                <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าธรรมเนียมของ DBD
-                </th>
-                <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าบริการของธนาคาร</th>
-                <th rowspan="2" style="background:#0079C0;color: #FFF">จำนวน : ชุด</th>
-              </tr>
-              <tr style="display: none">
-                <th>1</th>
-                <th>2</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="5">
-                  <h5>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</h5>
-                </td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-              </tr>
-              <tr style="background: 	#F8F8FF">
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>หนังสือรับรองนิติบุคคล</td>
-                <td>ฉบับละ 200 บาท</td>
-                <td>ฉบับละ 150 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนาเอกสารทะเบียน</td>
-                <td>ฉบับละ 50 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width: 95%;">
-                </td>
-              </tr>
-              <tr style="background: 	#F8F8FF">
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนางบการเงิน</td>
-                <td>ฉบับละ 50 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนาบัญชีรายชื่อผู้ถือหุ้น</td>
-                <td>ฉบับละ 50 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <h5>การประกอบธุรกิจของคนต่างด้าว</h5>
-                </td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-              </tr>
-  
-              <tr style="background: 	#F8F8FF">
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>หนังสือรับรองข้อความที่กรมทะเบียนเก็บรักษาไว้ของการประกอบธุรกิจของคนต่างด้าว</td>
-                <td>ฉบับละ 300-500 บาท</td>
-                <td>ฉบับละ 150 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนาเอกสารทะเบียน</td>
-                <td>หน้าละ 100 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-              <tr style="background: 	#F8F8FF">
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนางบการเงิน</td>
-                <td>หน้าละ 50 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width:  95%;">
-                </td>
-              </tr>
-  
-              <tr>
-                <td colspan="5">
-                  <h5>สมาคมและหอการค้า</h5>
-                </td>
-                <td style="display: none"></td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-                <td style="display: none">s</td>
-              </tr>
-  
-              <tr style="background: 	#F8F8FF">
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนาเอกสารทะเบียน</td>
-                <td>เรื่องละ 20 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width: 95%;">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
-                <td>รับรองสำเนางบการเงิน</td>
-                <td>เรื่องละ 20 บาท</td>
-                <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-                <td>
-                  <input type="text" style="width: 95%;">
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="five wide field ">
+          20180900001
         </div>
-        <br>
-        <br>
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>เลขที่นิติบุคคล
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
-          <div class="two wide field ">
-            <label>ชื่อนิติบุคคล
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="one wide field "></div>
+        <div class="two wide field ">
+          <label>ประเภทคำขอ</label>
         </div>
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>Customer Segment
-            </label>
-          </div>
-          <div class="five wide field">
-            <select id="customerSegment" name="customerSegment" class="ui search dropdown" (change)="onselectcustomerSegment($event)">
-              <option *ngFor="let customerSegment of customerSegment; let i = index" value="{{i}}">
-                {{customerSegment}}
-              </option>
-            </select>
-          </div>
-          <div class="two wide field ">
-            <label>เลขที่ CA/มติอนุมัติ
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+        <div class="five wide field">
+          <select id="products" name="products" class="ui search dropdown" (change)="onSelectProducts($event)">
+            <option *ngFor="let product of products; let i = index" value="{{i}}">
+              {{product}}
+            </option>
+          </select>
         </div>
-  
-        <div class="inline fields" *ngIf="flag" >
-          <div class="four wide field ">
-            <label>ชื่อหน่วยงาน
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>      
+      </div>
+
+      <br>
+
+
+      <div>
+        <table class="ui small celled table nowrap" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th rowspan="1" colspan="2" style="background:#0079C0;color: #FFF">รายละเอียด
+              </th>
+              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าธรรมเนียมของ DBD
+              </th>
+              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าบริการของธนาคาร</th>
+              <th rowspan="2" style="background:#0079C0;color: #FFF">จำนวน : ชุด</th>
+            </tr>
+            <tr style="display: none">
+              <th>1</th>
+              <th>2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5">
+                <h5>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</h5>
+              </td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>หนังสือรับรองนิติบุคคล</td>
+              <td>ฉบับละ 200 บาท</td>
+              <td>ฉบับละ 150 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนาเอกสารทะเบียน</td>
+              <td>ฉบับละ 50 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width: 95%;">
+              </td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนางบการเงิน</td>
+              <td>ฉบับละ 50 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนาบัญชีรายชื่อผู้ถือหุ้น</td>
+              <td>ฉบับละ 50 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <h5>การประกอบธุรกิจของคนต่างด้าว</h5>
+              </td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+            </tr>
+
+            <tr style="background: 	#F8F8FF">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>หนังสือรับรองข้อความที่กรมทะเบียนเก็บรักษาไว้ของการประกอบธุรกิจของคนต่างด้าว</td>
+              <td>ฉบับละ 300-500 บาท</td>
+              <td>ฉบับละ 150 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนาเอกสารทะเบียน</td>
+              <td>หน้าละ 100 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+            <tr style="background: 	#F8F8FF">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนางบการเงิน</td>
+              <td>หน้าละ 50 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width:  95%;">
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="5">
+                <h5>สมาคมและหอการค้า</h5>
+              </td>
+              <td style="display: none"></td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+              <td style="display: none">s</td>
+            </tr>
+
+            <tr style="background: 	#F8F8FF">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนาเอกสารทะเบียน</td>
+              <td>เรื่องละ 20 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width: 95%;">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>รับรองสำเนางบการเงิน</td>
+              <td>เรื่องละ 20 บาท</td>
+              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
+              <td>
+                <input type="text" style="width: 95%;">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <br>
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>เลขที่นิติบุคคล
+          </label>
         </div>
-        <div class="inline fields">
-          <div class="two wide field ">
-            <label>วิธีการรับชำระ</label>
-          </div>
-          <div class="two wide field"></div>
-          <div class="five wide field">
-            <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)">
-              <option *ngFor="let paid of paid; let i = index" value="{{i}}">
-                {{paid}}
-              </option>
-            </select>
-          </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>วิธีหักบัญชีจาก</label>
-          </div>
-  
-          <div class="five wide field">
-            <select id="debitMethod" name="debitMethod" class="ui search dropdown" (change)=" onSelectdebitMethod($event)">
-              <option *ngFor="let debitMethod of debitMethod; let i = index" value="{{i}}">
-                {{debitMethod}}
-              </option>
-            </select>
-          </div>
+        <div class="two wide field ">
+          <label>ชื่อนิติบุคคล
+          </label>
         </div>
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>Tran Code
-            </label>
-          </div>
-          <div class="five wide field ">
-            8880
-  
-          </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>GL Type
-            </label>
-          </div>
-          <div class="five wide field ">
-            B533
-  
-          </div>
+      </div>
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>Customer Segment
+          </label>
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>Account Type
-            </label>
-          </div>
-          <div class="five wide field ">
-            OOA
-  
-          </div>
+        <div class="five wide field">
+          <select id="customerSegment" name="customerSegment" class="ui search dropdown" (change)="onselectcustomerSegment($event)">
+            <option *ngFor="let customerSegment of customerSegment; let i = index" value="{{i}}">
+              {{customerSegment}}
+            </option>
+          </select>
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>เลขที่บัญชี
-            </label>
-          </div>
-  
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="123-1-12345-9">
-          </div>
-          <div class="two wide field ">
-            <label>ชื่อบัญชี
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+        <div class="two wide field ">
+          <label>เลขที่ CA/มติอนุมัติ
+          </label>
         </div>
-  
-       
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>ชื่อบนใบเสร็จธนาคาร TMB
-            </label>              
-          </div>       
-            <input type="checkbox">
-            &nbsp;&nbsp;
-           <div class="one wide field " >
-              <label>ชื่อนิติบุคคล
-              </label>
-          </div>
-  
-          <div class="four wide field " style="margin-left: -15px">
-            <input type="text" placeholder="" value="">
-          </div>
-          <div class="two wide field ">
-            <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="text" placeholder="" value="">
-          </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="file" value="">
-          </div>
-          <div class="two wide field ">
-            <label>ที่อยู่
-            </label>
-          </div>
-          <div class="five wide field ">
-            <textarea rows="3"></textarea>
-          </div>
+      </div>
+
+      <div class="inline fields" *ngIf="flag">
+        <div class="four wide field ">
+          <label>ชื่อหน่วยงาน
+          </label>
         </div>
-  
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>สำเนาบัตรประชาชน
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="file" value="">
-          </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
         </div>
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
-            </label>
-          </div>
-          <div class="five wide field ">
-            <input type="file" value="">
-          </div>
+      </div>
+      <div class="inline fields">
+        <div class="two wide field ">
+          <label>วิธีการรับชำระ</label>
         </div>
-  
-        <div class="inline fields">
-          <div class="four wide field ">
-            <label>หมายเหตุ
-            </label>
-          </div>
-          <div class="five wide field ">
-            <textarea rows="2"></textarea>
-          </div>
+        <div class="two wide field"></div>
+        <div class="five wide field">
+          <select id="paid" name="paid" class="ui search dropdown" (change)="onSelectpaid($event)">
+            <option *ngFor="let paid of paid; let i = index" value="{{i}}">
+              {{paid}}
+            </option>
+          </select>
         </div>
-        <br>
-        <br>
-        <div class="ui center aligned grid">
-          <button class="ui blue basic button">
-            <i class="print icon"></i>
-            พิมพ์ใบคำขอ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui blue basic button" (click)="openModal(modal[1])">
-            <i class="file alternate outline icon"></i>
-            ยื่นใบคำขอ
-          </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-          <button class="ui grey basic button">
-            <i class="times circle outline icon"></i>
-            ยกเลิก
-          </button>
-          <br>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>วิธีหักบัญชีจาก</label>
         </div>
-        <br>
+
+        <div class="five wide field">
+          <select id="debitMethod" name="debitMethod" class="ui search dropdown" (change)=" onSelectdebitMethod($event)">
+            <option *ngFor="let debitMethod of debitMethod; let i = index" value="{{i}}">
+              {{debitMethod}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>Tran Code
+          </label>
+        </div>
+        <div class="five wide field ">
+          8880
+
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>GL Type
+          </label>
+        </div>
+        <div class="five wide field ">
+          B533
+
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>Account Type
+          </label>
+        </div>
+        <div class="five wide field ">
+          OOA
+
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>เลขที่บัญชี
+          </label>
+        </div>
+
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="123-1-12345-9">
+        </div>
+        <div class="two wide field ">
+          <label>ชื่อบัญชี
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
+        </div>
+      </div>
+
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>ชื่อบนใบเสร็จธนาคาร TMB
+          </label>
+        </div>
+        <input type="checkbox">
+        &nbsp;&nbsp;
+        <div class="one wide field ">
+          <label>ชื่อนิติบุคคล
+          </label>
+        </div>
+
+        <div class="four wide field " style="margin-left: -15px">
+          <input type="text" placeholder="" value="">
+        </div>
+        <div class="two wide field ">
+          <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="text" placeholder="" value="">
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+        <div class="two wide field ">
+          <label>ที่อยู่
+          </label>
+        </div>
+        <div class="five wide field ">
+          <textarea rows="3"></textarea>
+        </div>
+      </div>
+
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>สำเนาบัตรประชาชน
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+      </div>
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
+          </label>
+        </div>
+        <div class="five wide field ">
+          <input type="file" value="">
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field ">
+          <label>หมายเหตุ
+          </label>
+        </div>
+        <div class="five wide field ">
+          <textarea rows="2"></textarea>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="ui center aligned grid">
+        <button class="ui blue basic button">
+          <i class="print icon"></i>
+          พิมพ์ใบคำขอ
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui blue basic button" (click)="openModal(modal[1])">
+          <i class="file alternate outline icon"></i>
+          ยื่นใบคำขอ
+        </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="ui grey basic button">
+          <i class="times circle outline icon"></i>
+          ยกเลิก
+        </button>
         <br>
       </div>
       <br>
+      <br>
     </div>
+    <br>
   </div>
-  
-  
+</div>

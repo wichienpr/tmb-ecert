@@ -9,7 +9,7 @@ import { SemanticFooterComponent } from './semantic-footer/semantic-footer.compo
 @NgModule({
   imports: [
     CommonModule,
-    BaselayoutRoutingModule
+    BaselayoutRoutingModule,
   ],
   declarations: [SemanticBodyComponent, SemanticMenuComponent, SemanticFooterComponent]
 })

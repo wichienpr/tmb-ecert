@@ -21,12 +21,12 @@ export class LoginComponent implements OnInit {
 
   closeModal(id) {
     $('#' + id).modal('hide');
-    this.router.navigate(["/home"]);
+    this.router.navigate(["/index"]);
   }
 
   onSubmit($event) {
     if (this.username == "admin" && this.password == "password") {
-      $("#modal").modal('show');
+      $("#login-modal").modal('show');
     } else {
       let promise = new Promise((resolve, reject) => {
         $(".message").show();
