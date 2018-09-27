@@ -1,4 +1,4 @@
-package com.tmb.ecert.common.lov.dao;
+package com.tmb.ecert.common.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,8 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.domain.LabelValueBean;
-import com.tmb.ecert.domain.ListOfValue;
+import com.tmb.ecert.common.domain.ListOfValue;
 
 @Repository
 public class ListOfValueDao {
@@ -21,25 +20,11 @@ public class ListOfValueDao {
 
 	private static String template = " SELECT * FROM ECERT_LISTOFVALUE WHERE 1=1 ";
 
-	public List<LabelValueBean> lov(String type) {
-		String query = "SELECT  * FROM ECERT_LISTOFVALUE WHERE TYPE = ? ";
-
-		List<Object> params = new ArrayList<>();
-		params.add(type);
-
-		StringBuilder sql = new StringBuilder(query);
-		sql.append("ORDER BY SEQUENCE ASC");
-		List<LabelValueBean> list = jdbcTemplate.query(sql.toString(), params.toArray(), lovTypeRowmapper);
-
-		return list;
-
-	}
-
 	public List<ListOfValue> lovAllType() {
 		String str = " SELECT DISTINCT TYPE FROM ECERT_LISTOFVALUE WHERE 1=1 ";
 		StringBuilder sql = new StringBuilder(template);
 		sql.append(" ORDER BY TYPE ASC ");
-		List<ListOfValue> result = jdbcTemplate.query(sql.toString(), lovMapper);
+		List<ListOfValue> result = jdbcTemplate.query(sql.toString(), typeMapper);
 		return result;
 	}
 
@@ -56,11 +41,12 @@ public class ListOfValueDao {
 		return result;
 	}
 
-	private RowMapper<LabelValueBean> lovTypeRowmapper = new RowMapper<LabelValueBean>() {
+	private RowMapper<ListOfValue> typeMapper = new RowMapper<ListOfValue>() {
 		@Override
-		public LabelValueBean mapRow(ResultSet rs, int arg1) throws SQLException {
-
-			return new LabelValueBean(rs.getString("NAME"), rs.getString("CODE"));
+		public ListOfValue mapRow(ResultSet rs, int arg1) throws SQLException {
+			ListOfValue list = new ListOfValue();
+			list.setType(rs.getInt("TYPE"));
+			return list;
 		}
 	};
 

@@ -1,9 +1,6 @@
-package com.tmb.ecert.domain;
+package com.tmb.ecert.common.domain;
 
-import java.io.Serializable;
-
-public class ListOfValue implements Serializable {
-	private static final long serialVersionUID = 3807386286525119881L;
+public class ListOfValue {
 	private String code;
 	private Integer type;
 	private String typeDesc;
