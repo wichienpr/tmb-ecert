@@ -11,6 +11,9 @@ import { StoreModule } from '@ngrx/store';
 import { ModalModule } from 'components/modal/modal.module';
 import { AjaxService } from 'services/ajax.service';
 
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +23,9 @@ import { AjaxService } from 'services/ajax.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    
+    HttpClientModule,
+    HttpModule,
+
     // Components
     ModalModule,
     // Store

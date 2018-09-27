@@ -16,6 +16,11 @@ export class AjaxService {
 
   constructor(private http: Http) { }
 
+  private handleError(error: any): Promise<any> {
+    console.error("An error occurred", error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
+
   post(url: string, body: any, success: any, error?: any, header?: Headers) {
     if (AjaxService.isDebug) {
       console.log("URL : ", AjaxService.CONTEXT_PATH + url);
@@ -46,11 +51,6 @@ export class AjaxService {
       .toPromise()
       .then(success)
       .catch(errorFn);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error("An error occurred", error); // for demo purposes only
-    return Promise.reject(error.message || error);
   }
 
   delete(url: string, success: any, error?: any) {

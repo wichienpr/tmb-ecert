@@ -49,4 +49,16 @@ export class Nrq02000Component implements OnInit {
     this.reqTypeChanged = this.nrq02000.reqTypeChange(e);
   }
 
+  customSegChange(e) {
+    console.log('customSegChange => ', e);
+  }
+
+  payMethodChange(e) {
+    console.log('payMethodChange => ', e);
+  }
+
+  subAccMethodChange(e) {
+    console.log('subAccMethodChange => ', e);
+  }
+
 }

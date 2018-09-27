@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Lov, Certificate } from "tmb-ecert/models";
 import { Observable } from "rxjs";
+import { AjaxService } from "services/";
+
+const URL = {
+    LOV_BY_TYPE: "lov/type"
+}
 
 @Injectable()
 export class Nrq02000Service {
@@ -10,7 +15,7 @@ export class Nrq02000Service {
     private payMethod: Lov[]; // Payment Method
     private subAccMethod: Lov[]; // Subtract from Account Method
 
-    constructor() {
+    constructor(private ajax: AjaxService) {
         this.reqType = reqTypeMock;
         this.customSeg = customSegMock;
         this.payMethod = payMethodMock;
@@ -19,25 +24,37 @@ export class Nrq02000Service {
 
     getReqType(): Observable<Lov[]> { // reqType
         return new Observable(obs => {
-            obs.next(this.reqType);
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 5 }, result => {
+                this.reqType = result.json();
+                obs.next(this.reqType);
+            });
         });
     }
 
     getCustomSeg(): Observable<Lov[]> { // customSeg
         return new Observable(obs => {
-            obs.next(this.customSeg);
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 2 }, result => {
+                this.customSeg = result.json();
+                obs.next(this.customSeg);
+            });
         });
     }
 
     getpayMethod(): Observable<Lov[]> { // payMethod
         return new Observable(obs => {
-            obs.next(this.payMethod);
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 3 }, result => {
+                this.payMethod = result.json();
+                obs.next(this.payMethod);
+            });
         });
     }
 
     getsubAccMethod(): Observable<Lov[]> { // subAccMethod
         return new Observable(obs => {
-            obs.next(this.subAccMethod);
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 4 }, result => {
+                this.subAccMethod = result.json();
+                obs.next(this.subAccMethod);
+            });
         });
     }
 
