@@ -91,135 +91,46 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colspan="5">
-                <h5>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</h5>
-              </td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-            </tr>
-            <tr style="background: 	#F8F8FF">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>หนังสือรับรองนิติบุคคล</td>
-              <td>ฉบับละ 200 บาท</td>
-              <td>ฉบับละ 150 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนาเอกสารทะเบียน</td>
-              <td>ฉบับละ 50 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width: 95%;">
-              </td>
-            </tr>
-            <tr style="background: 	#F8F8FF">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนางบการเงิน</td>
-              <td>ฉบับละ 50 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนาบัญชีรายชื่อผู้ถือหุ้น</td>
-              <td>ฉบับละ 50 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-            <tr>
-              <td colspan="5">
-                <h5>การประกอบธุรกิจของคนต่างด้าว</h5>
-              </td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-            </tr>
-
-            <tr style="background: 	#F8F8FF">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>หนังสือรับรองข้อความที่กรมทะเบียนเก็บรักษาไว้ของการประกอบธุรกิจของคนต่างด้าว</td>
-              <td>ฉบับละ 300-500 บาท</td>
-              <td>ฉบับละ 150 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนาเอกสารทะเบียน</td>
-              <td>หน้าละ 100 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-            <tr style="background: 	#F8F8FF">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนางบการเงิน</td>
-              <td>หน้าละ 50 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width:  95%;">
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="5">
-                <h5>สมาคมและหอการค้า</h5>
-              </td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-              <td style="display: none">s</td>
-            </tr>
-
-            <tr style="background: 	#F8F8FF">
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนาเอกสารทะเบียน</td>
-              <td>เรื่องละ 20 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width: 95%;">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>รับรองสำเนางบการเงิน</td>
-              <td>เรื่องละ 20 บาท</td>
-              <td>1-5 หน้าแรก 100 บาทหน้าถัดไปหน้าละ 20 บาท</td>
-              <td>
-                <input type="text" style="width: 95%;">
-              </td>
-            </tr>
+            <ng-container *ngIf="!reqTypeChanged || reqTypeChanged.length == 0">
+              <tr class="center aligned">
+                <td colspan="5">
+                  <h5> ไม่มีข้อมูลประเภทคำขอ </h5>
+                </td>
+                <td style="display: none">&nbsp;</td>
+                <td style="display: none">&nbsp;</td>
+                <td style="display: none">&nbsp;</td>
+                <td style="display: none">&nbsp;</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngFor="let req of reqTypeChanged; let i = index">
+              <ng-container *ngIf="!req.code">
+                <tr>
+                  <td colspan="5">
+                    <h5>{{ req.typeDesc }}</h5>
+                  </td>
+                  <td style="display: none">&nbsp;</td>
+                  <td style="display: none">&nbsp;</td>
+                  <td style="display: none">&nbsp;</td>
+                  <td style="display: none">&nbsp;</td>
+                </tr>
+              </ng-container>
+              <ng-container *ngIf="req.code">
+                <tr>
+                  <td class="center aligned">
+                    <div class="ui checkbox">
+                      <input type="checkbox">
+                      <label></label>
+                    </div>
+                  </td>
+                  <td>{{ req.certificate }}</td>
+                  <td>{{ req.feeDbd }}</td>
+                  <td>{{ req.feeTmb }}</td>
+                  <td>
+                    <input type="text" style="width:  95%;">
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
           </tbody>
         </table>
       </div>

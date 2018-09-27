@@ -12,8 +12,13 @@
     "target": "es5",
     "paths": {
       "app/*": ["src/app/*"],
-      "common/*": ["src/app/baiwa/common/*"],
-      "components/*": ["src/app/baiwa/common/components/*"]
+      "components/*": ["src/app/baiwa/common/components/index"],
+      "directives/*": ["src/app/baiwa/common/directives/index"],
+      "pipes/*": ["src/app/baiwa/common/pipes/index"],
+      "services/*": ["src/app/baiwa/common/services/index"],
+      // Change when new project
+      "tmb-ecert/*": ["src/app/tmb-ecert/*"],
+      "tmb-ecert/models/*": ["src/app/tmb-ecert/models/index"]
     },
     "typeRoots": [
       "node_modules/@types"

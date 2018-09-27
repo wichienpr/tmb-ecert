@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Lov, Certificate } from "app/tmb-ecert/models/index";
+import { Lov, Certificate } from "tmb-ecert/models";
 import { Observable } from "rxjs";
 
 @Injectable()

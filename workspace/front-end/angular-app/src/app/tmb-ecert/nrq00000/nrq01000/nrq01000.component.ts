@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { UserDetail } from 'app/user.model';
 
+import { UserDetail } from 'app/user.model';
 import * as UserActions from 'app/user.action';
 
 interface AppState { }

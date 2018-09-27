@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Observable } from 'rxjs';
-import { Lov } from 'app/tmb-ecert/models/lov';
-import { Certificate } from 'app/tmb-ecert/models/index';
+import { Certificate, Lov } from 'tmb-ecert/models';
 
 declare var $: any;
 
