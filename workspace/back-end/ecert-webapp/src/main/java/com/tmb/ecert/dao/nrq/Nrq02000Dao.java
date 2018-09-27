@@ -1,5 +1,5 @@
 package com.tmb.ecert.dao.nrq;
 
-public class NewRequestDao {
+public class Nrq02000Dao {
 
 }
