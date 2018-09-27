@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.lov.dao.ListOfValueDao;
 import com.tmb.ecert.domain.LabelValueBean;
+import com.tmb.ecert.domain.ListOfValue;
 
 @Service
 public class ListOfValueService {
@@ -16,5 +17,13 @@ public class ListOfValueService {
 	
 	public List<LabelValueBean> lov(String type){
 		return listOfValueDao.lov(type);
+	}
+	
+	public List<ListOfValue> lovByType(Integer type) {
+		return listOfValueDao.lovByType(type);
+	}
+
+	public List<ListOfValue> lovAllType() {
+		return listOfValueDao.lovAllType();
 	}
 }

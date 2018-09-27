@@ -1,5 +1,9 @@
 package th.co.baiwa.buckwaframework.support;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -7,11 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tmb.ecert.common.lov.service.ListOfValueService;
+import com.tmb.ecert.domain.ListOfValue;
+
 @Component
 public class ApplicationCache {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ApplicationCache.class);
-	
+	private static final ConcurrentHashMap<Integer, List<ListOfValue>> LOV_GROUP_VALUE = new ConcurrentHashMap<Integer, List<ListOfValue>>();
+	private static final List<ListOfValue> LOV_TYPE_VALUE = new ArrayList<ListOfValue>();
 //	private static final ConcurrentHashMap<String, ParameterGroupWrapper> PARAMETER_GROUP_MAP = new ConcurrentHashMap<String, ParameterGroupWrapper>();
 //	private static final ConcurrentHashMap<Long, ParameterInfo> PARAMETER_INFO_MAP = new ConcurrentHashMap<Long, ParameterInfo>();
 //	private static final ConcurrentHashMap<String, Message> MESSAGE_MAP = new ConcurrentHashMap<String, Message>();
@@ -20,17 +28,20 @@ public class ApplicationCache {
 //	private final ParameterGroupRepository parameterGroupRepository;
 //	private final ParameterInfoRepository parameterInfoRepository;
 //	private final MessageRepository messageRepository;
+	private final ListOfValueService lovService;
 	
 	@Autowired
 	public ApplicationCache(
 //			ParameterGroupRepository parameterGroupRepository,
 //			ParameterInfoRepository parameterInfoRepository,
-//			MessageRepository messageRepository
+//			MessageRepository messageRepository,
+			ListOfValueService lovService
 			) {
 		super();
 //		this.parameterGroupRepository = parameterGroupRepository;
 //		this.parameterInfoRepository = parameterInfoRepository;
 //		this.messageRepository = messageRepository;
+		this.lovService = lovService;
 	}
 	
 	/********************* Method for Get Cache - Start *********************/
@@ -48,6 +59,19 @@ public class ApplicationCache {
 //	public static ParameterInfo getParameterInfoByCode(String paramGroupCode, String paramInfoCode) {
 //		return PARAMETER_GROUP_MAP.get(paramGroupCode).getParameterInfoCodeMap().get(paramInfoCode);
 //	}
+	/** ListOfValue */
+	public static List<Object> getLovAll() {
+		List<ListOfValue> types = LOV_TYPE_VALUE;
+		List<Object> lovs = new ArrayList<>();
+		for(ListOfValue type: types) {
+			lovs.add(LOV_GROUP_VALUE.get(type.getType()));
+		}
+		return lovs;
+	}
+	
+	public static List<ListOfValue> getLovByType(Integer type) {
+		return LOV_GROUP_VALUE.get(type);
+	}
 	
 	static final class ParameterGroupWrapper {
 		
@@ -106,54 +130,24 @@ public class ApplicationCache {
 	
 	/********************* Method for Get Cache - End *********************/
 	
-	
 	/** Reload */
 	@PostConstruct
 	public synchronized void reloadCache() {
 		logger.info("ApplicationCache Reloading...");
-		
-//		loadParameterGroup();
-		
-//		loadMessage();
-		
+		loadLov();
 		logger.info("ApplicationCache Reloaded");
 	}
 	
-//	private void loadParameterGroup() {
-//		logger.info("load ParamterGroup-Info loading...");
-//		
-//		PARAMETER_GROUP_MAP.clear();
-//		PARAMETER_INFO_MAP.clear();
-//		
-//		List<ParameterGroup> paramGroupList = parameterGroupRepository.findAll();
-//		List<ParameterInfo> paramInfoList = null;
-//		for (ParameterGroup paramGroup : paramGroupList) {
-//			logger.debug("load ParameterGroup [id] : " + paramGroup.getParamGroupId() + ",\t[parameterGroupCode] : " + paramGroup.getParamGroupCode());
-//			
-//			paramInfoList = parameterInfoRepository.findByParamGroupId(paramGroup.getParamGroupId());
-//			for (ParameterInfo paramInfo : paramInfoList) {
-//				PARAMETER_INFO_MAP.put(paramInfo.getParamInfoId(), paramInfo);
-//			}
-//
-//			PARAMETER_GROUP_MAP.put(paramGroup.getParamGroupCode(), new ParameterGroupWrapper(paramGroup, paramInfoList));
-//		}
-//		
-//		logger.info("load ParamterGroup-Info loaded [" + PARAMETER_GROUP_MAP.size() + "-" + PARAMETER_INFO_MAP.size() + "]");
-//	}
-	
-	
-	
-//	private void loadMessage() {
-//		logger.info("load Message loading...");
-//		
-//		MESSAGE_MAP.clear();
-//		
-//		List<Message> messageList = messageRepository.findAll();
-//		for (Message message : messageList) {
-//			MESSAGE_MAP.put(message.getMessageCode(), message);
-//		}
-//		
-//		logger.info("load Message loaded [" + MESSAGE_MAP.size() + "]");
-//	}
+	private void loadLov() {
+		logger.info("load `ListOfValue` loading...");
+		LOV_GROUP_VALUE.clear();
+		List<ListOfValue> types = lovService.lovAllType();
+		List<ListOfValue> lovs = new ArrayList<>();
+		for(ListOfValue type: types) {
+			lovs = lovService.lovByType(type.getType());
+			LOV_TYPE_VALUE.add(type);
+			LOV_GROUP_VALUE.put(type.getType(), lovs);
+		}
+	}
 	
 }
