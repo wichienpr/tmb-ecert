@@ -1,1 +1,214 @@
-<div class="ui header">Report03000</div>
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <h2 class="ui header">รายงาน Output VAT
+        </h2>
+
+        <div class="ui top attached header segment">
+            <span>ระบุเงื่อนไขในการค้นหา </span>
+        </div>
+
+
+        <div class="ui attached segment">
+            <div class="ui form">
+
+
+                <div class="inline fields">
+                    <div class="one wide field "></div>
+                    <div class="two wide field ">
+                        <label>เดือนปีภาษี
+                        </label>
+                    </div>
+                    <div class="five wide field">
+                        <div class="ui calendar" id="calendar1" style="width:100%">
+                            <div class="ui input left icon">
+                                <i class="time icon"></i>
+                                <input type="text" name="startDate" id="startDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two wide field ">
+                        <label>เลขประจำตัวผู้เสียภาษีอากร
+                        </label>
+                    </div>
+                    <div class="five wide field ">
+                        <input type="text" placeholder="" value="">
+                    </div>
+
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field "></div>
+                    <div class="two wide field ">
+                        <label>ชื่อผู้ประกอบการ </label>
+                    </div>
+                    <div class="five wide field ">
+                        <input type="text" placeholder="" value="">
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <br>
+            <div class="ui center aligned grid">
+                <button class="ui blue  basic button" (click)="searchData()">
+                    <i class="search icon"></i>
+                    ค้นหา
+                </button>
+                <button class="ui grey  basic button" (click)="clearData()">
+                    <i class="trash alternate outline icon"></i>
+                    ล้างข้อมูล
+                </button>
+                <br>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+<br>
+<div class="sixteen wide column" *ngIf="showData">
+    <div class="ui top attached header segment">
+        <span>ผลการค้นหา </span>
+    </div>
+    <div class="ui attached segment">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="one wide field "></div>
+
+                <div class="three wide field ">
+                    <h5>ชื่อผู้ประกอบการ
+                    </h5>
+
+                </div>
+                <div class="three wide field ">
+                    นาย ประกอบการ ร่ำรวย
+                </div>
+                <div class="five wide field ">
+                    <h5>เลขประจำตัวผู้เสียภาษีอากรชื่อผู้ประกอบการ
+                    </h5>
+                </div>
+                <div class="one wide field "></div>
+                <div class="five wide field ">
+                    1234567843762
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <div class="one wide field "></div>
+
+                <div class="three wide field ">
+                    <h5>ชื่อสถานประกอบการ</h5>
+
+                </div>
+                <div class="three wide field ">
+                    บริษัท ตั้งเจริญ
+                </div>
+                <div class="five wide field ">
+                    <h5>สำนักงานใหญ่/สาขา
+                    </h5>
+                </div>
+                <div class="one wide field "></div>
+                <div class="five wide field ">
+                    -
+                </div>
+            </div>
+            <div class="inline fields">
+                <div class="one wide field "></div>
+
+                <div class="three wide field ">
+                    <h5>ที่อยู่สถานประกอบการ</h5>
+                </div>
+                <div class="eight wide field ">
+                    เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234
+                </div>
+                <div class="one wide field "></div>
+                <div class="five wide field ">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <div>
+            <table class="ui small celled table nowrap" id="table" style="width: 100%">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th rowspan="2">ลำดับ</th>
+                        <th colspan="2">ใบกำกับภาษี</th>
+                        <th rowspan="2">ชื่อผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                        <th rowspan="2">เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                        <th rowspan="2" style="width: 200px">สถานประกอบการ</th>
+                        <th rowspan="2">สำนักงานใหญ่/สาขา</th>
+                        <th rowspan="2">มูลค่าสินค้า/บริการ</th>
+                        <th rowspan="2">จำนวนเงินภาษีมูลค่าเพิ่ม</th>
+                        <th rowspan="2">จำนวนเงินรวม</th>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <th>เลขที่</th>
+                        <th>วันที่</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td style="text-align: center">1</td>
+                        <td style="text-align: center">0120180000000001</td>
+                        <td style="text-align: center">01/01/2561</td>
+                        <td style="text-align: left">นาย ประกอบการ ร่ำรวย</td>
+                        <td style="text-align: center">1234567843762</td>
+                        <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                        <td>สำนักงานใหญ่</td>
+                        <td style="text-align: right">140.19</td>
+                        <td style="text-align: right">9.81</td>
+                        <td style="text-align: right">150.00</td>
+                    </tr>
+                    <tr style="background: 	#F8F8FF">
+                        <td style="text-align: center">2</td>
+                        <td style="text-align: center">0120180000000002</td>
+                        <td style="text-align: center"> 02/01/2561</td>
+                        <td style="text-align: left">นาย ประกอบการ ร่ำรวย</td>
+                        <td style="text-align: center">1234567843762</td>
+                        <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                        <td>สำนักงานใหญ่</td>
+                        <td style="text-align: right ">140.19</td>
+                        <td style="text-align: right ">9.81</td>
+                        <td style="text-align: right ">150.00</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">3</td>
+                        <td style="text-align: center">0120180000000003</td>
+                        <td style="text-align: center" d>03/01/2561</td>
+                        <td style="text-align: left">นาย ประกอบการ ร่ำรวย</td>
+                        <td style="text-align: center">1234567843762</td>
+                        <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                        <td>สำนักงานใหญ่</td>
+                        <td style="text-align: right ">140.19</td>
+                        <td style="text-align: right ">9.81</td>
+                        <td style="text-align: right ">150.00</td>
+                    </tr>
+                    <tr style="background: 	#F8F8FF">
+                        <td style="text-align: center">4</td>
+                        <td style="text-align: center">0120180000000004</td>
+                        <td style="text-align: center">04/01/2561</td>
+                        <td style="text-align: left">นาย ประกอบการ ร่ำรวย</td>
+                        <td style="text-align: center">1234567843762</td>
+                        <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
+                        <td>สำนักงานใหญ่</td>
+                        <td style="text-align: right ">140.19</td>
+                        <td style="text-align: right ">9.81</td>
+                        <td style="text-align: right ">150.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+        <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+                <button class="ui blue basic button">
+                    <i class="file excel outline icon"></i>Export to Excel</button>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
