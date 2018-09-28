@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserDetail } from 'app/user.model';
 import { Router } from '@angular/router';
+import { ModalService, Modal } from 'app/baiwa/common/services';
 
 declare var $: any;
 
@@ -15,7 +16,7 @@ export class SemanticMenuComponent implements OnInit {
 
   routes: Routing[];
   user: Observable<UserDetail>;
-  constructor(private store: Store<{}>, private router: Router) {
+  constructor(private store: Store<{}>, private router: Router, private modal: ModalService) {
     this.routes = [
       { // Main Menu 1
         label: "ทำคำขอใหม่",
@@ -89,12 +90,15 @@ export class SemanticMenuComponent implements OnInit {
   }
 
   logout() {
-    $("#logout-modal").modal("show");
+    const modal: Modal = {
+      msg: "...",
+      title: "ยืนยันการออกจากระบบ ?"
+    };
+    this.modal.confirm((e) => { this.logoutConfirm(e) }, modal);
   }
 
   logoutConfirm(e: boolean) {
     if (e == true) {
-      $("#logout-modal").modal("hide");
       this.router.navigate(['login']);
     }
   }

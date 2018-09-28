@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
+import { ModalService, Modal } from 'app/baiwa/common/services';
 declare var $: any;
 @Component({
   selector: 'app-login',
@@ -9,24 +10,24 @@ declare var $: any;
 export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
-  modal: string[] = ["modal"];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private modal: ModalService) { }
 
   ngOnInit() { }
 
-  openModal(id) {
-    $('#' + id).modal('show');
-  }
-
-  closeModal(id) {
-    $('#' + id).modal('hide');
-    this.router.navigate(["/home"]);
-  }
-
-  onSubmit($event) {
+  onSubmit(event) {
     if (this.username == "admin" && this.password == "password") {
-      $("#login-modal").modal('show');
+      const modal: Modal = {
+        msg: `ระบบตรวจสอบพบว่ามีผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่`,
+        title: "แจ้งเตือนการเข้าใช้งาน",
+        color: "notification",
+        approveMsg: "ดำเนินการต่อ"
+      }
+      this.modal.confirm((e) => {
+        if (e) {
+          this.router.navigate(["/home"]);
+        }
+      }, modal);
     } else {
       let promise = new Promise((resolve, reject) => {
         $(".message").show();

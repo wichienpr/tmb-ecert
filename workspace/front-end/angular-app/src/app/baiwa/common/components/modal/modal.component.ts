@@ -13,7 +13,8 @@ declare var $: any;
 
 @Component({
     selector: "ui-modal",
-    templateUrl: "./modal.component.html"
+    templateUrl: "./modal.component.html",
+    styleUrls: ["./modal.component.css"]
 })
 export class ModalComponent implements AfterViewInit, OnDestroy {
     /**

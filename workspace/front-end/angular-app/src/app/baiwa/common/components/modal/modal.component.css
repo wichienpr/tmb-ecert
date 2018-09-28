@@ -1,0 +1,10 @@
+.color {
+    color: white !important;
+    background:#1678C2 !important;
+}
+.color.notification {
+    background: rgb(231, 185, 58) !important;
+}
+.content {
+    color: black !important;
+}

@@ -1,12 +1,23 @@
-<div class="ui header">User Details</div>
-<p>
-  UserId: {{(users|async).userId}}<br>
-  Username: {{(users|async).username}}<br>
-  Firstname: {{(users|async).firstName}}<br>
-  Lastname: {{(users|async).lastName}}<br>
-  Roles: {{(users|async).roles}}<br>
-</p>
-<button class="ui primary mini button" type="button" (click)="change()">change</button>
-<button class="ui mini button" type="button" (click)="reset()">reset</button>
-
-<ui-calendar calendarId="hello"></ui-calendar>
+<div class="ui container">
+  <div class="ui one grid">
+    <div class="row">
+      <div class="one column">
+        <div class="ui header">User Details</div>
+        <p>
+          UserId: {{(users|async).userId}}<br>
+          Username: {{(users|async).username}}<br>
+          Firstname: {{(users|async).firstName}}<br>
+          Lastname: {{(users|async).lastName}}<br>
+          Roles: {{(users|async).roles}}<br>
+        </p>
+        <button class="ui primary mini button" type="button" (click)="change()">change</button>
+        <button class="ui mini button" type="button" (click)="reset()">reset</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one column">
+        <ui-calendar calendarId="hello"></ui-calendar>
+      </div>
+    </div>
+  </div>
+</div>

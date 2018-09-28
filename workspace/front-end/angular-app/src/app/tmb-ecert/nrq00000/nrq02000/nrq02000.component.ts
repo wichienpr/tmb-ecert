@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Lov } from 'tmb-ecert/models';
-import { DropdownService } from 'services/';
+import { DropdownService, ModalService, Modal } from 'services/';
 
 declare var $: any;
 
@@ -33,7 +33,8 @@ export class Nrq02000Component implements OnInit {
     private store: Store<{}>,
     private router: Router,
     private dropdown: DropdownService,
-    private service: Nrq02000Service
+    private service: Nrq02000Service,
+    private modal: ModalService
   ) {
     this.reqTypeChanged = [];
   }
@@ -51,11 +52,24 @@ export class Nrq02000Component implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    const modal: Modal = {
+      msg: "...?",
+      success: true
+    };
+    this.modal.confirm((e) => { },modal);
     this.service.certificateUpdate(this.reqTypeChanged);
   }
 
   send() {
-    $('#send-req').modal('show');
+    const modal: Modal = {
+      msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+      <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+      <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+      title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+      approveMsg: "ดำเนินการต่อ",
+      color: "notification"
+    }
+    this.modal.confirm((e) => { }, modal);
   }
 
   redirect() {
@@ -77,6 +91,10 @@ export class Nrq02000Component implements OnInit {
 
   subAccMethodChange(e) {
     console.log('subAccMethodChange => ', e);
+  }
+
+  toggleChk(index: number) {
+    this.reqTypeChanged[index].value = null;
   }
 
 }

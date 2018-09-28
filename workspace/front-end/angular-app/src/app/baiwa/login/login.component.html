@@ -1,43 +1,18 @@
 <!-- modal -->
-<ui-modal modalId="login-modal" class="bg-alert" size="small" type="custom">
-  <ng-template>
-    <div class="header" style="background: rgb(231, 185, 58)">
-      <div style="color: #FFF;">แจ้งเตือนการเข้าใช้งาน</div>
-    </div>
-    <div class="content">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="ten wide field">
-            <label>ระบบตรวจสอบพบว่ามีผู้กำลังใช้งานอยู่ ต้องการใช้งานต่อหรือไม่ </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="actions">
-      <div class="ui center aligned grid">
-        <div class="nine wide column">
-          <button class="ui blue positive basic button" (click)="closeModal('login-modal')">
-            <i class="check circle outline icon"></i>
-            ดำเนินการต่อ
-          </button>
-          &nbsp;&nbsp; &nbsp;&nbsp;
-          <button class="ui grey negative basic button">
-            <i class="times circle outline icon"></i>
-            ยกเลิก
-          </button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
+<ui-modal modalId="confirm" size="small" title="การยืนยัน" type="confirm">
+  <ng-template>...</ng-template>
 </ui-modal>
 <!-- modal -->
 
+<!-- menu -->
 <div class="ui borderless menu fixed">
   <div class="item i-logo">
     <img class="logo" src="assets/image/TMBLogo.png">
   </div>
 </div>
+<!-- menu -->
 
+<!-- content -->
 <div class="ui container login-content">
   <div class="ui one column grid login-page">
 
@@ -85,8 +60,12 @@
     </div>
   </div>
 </div>
+<!-- content -->
+
+<!-- footer -->
 <div class="ui footer" style="background:#0079c0">
   <div class="ui center aligned container" style="color: #FFF;">
     <p>© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
   </div>
 </div>
+<!-- footer -->
