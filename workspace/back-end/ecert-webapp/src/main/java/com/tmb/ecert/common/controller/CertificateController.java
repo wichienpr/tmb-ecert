@@ -13,7 +13,7 @@ import com.tmb.ecert.common.domain.Certificate;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
-@RequestMapping("cer")
+@RequestMapping("api/cer")
 @Controller
 public class CertificateController {
 

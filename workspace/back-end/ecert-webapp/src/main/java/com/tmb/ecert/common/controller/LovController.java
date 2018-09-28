@@ -13,7 +13,7 @@ import com.tmb.ecert.common.domain.ListOfValue;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
-@RequestMapping("lov")
+@RequestMapping("api/lov")
 @Controller
 public class LovController {
 
