@@ -16,7 +16,10 @@
     </div>
     <div class="row">
       <div class="one column">
-        <ui-calendar calendarId="hello"></ui-calendar>
+        <form (submit)="calendarValue($event)" class="ui form" ngNativeValidate>
+          <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
+          <button type="submit">ปุ่ม</button>
+        </form>
       </div>
     </div>
   </div>

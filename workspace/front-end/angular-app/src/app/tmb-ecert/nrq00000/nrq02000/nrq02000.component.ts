@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Lov } from 'tmb-ecert/models';
-import { DropdownService, ModalService, Modal } from 'services/';
+import { DropdownService, ModalService } from 'services/';
+import { Modal } from 'models/';
+import { convertAccNo } from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -18,12 +19,21 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
-  @ViewChild("form") form: NgForm;
+  form: FormGroup = new FormGroup({
+    reqTyped: new FormControl('', Validators.required)
+  });
 
-  reqType: Observable<Lov[]>;
-  customSeg: Observable<Lov[]>;
-  payMethod: Observable<Lov[]>;
-  subAccMethod: Observable<Lov[]>;
+  // reqType: Observable<Lov[]>;
+  // customSeg: Observable<Lov[]>;
+  // payMethod: Observable<Lov[]>;
+  // subAccMethod: Observable<Lov[]>;
+
+  reqType: Lov[];
+  customSeg: Lov[];
+  payMethod: Lov[];
+  subAccMethod: Lov[];
+
+  dropdownObj: any;
 
   reqTypeChanged: Certificate[];
 
@@ -37,18 +47,58 @@ export class Nrq02000Component implements OnInit {
     private modal: ModalService
   ) {
     this.reqTypeChanged = [];
+    this.dropdownObj = {
+      reqType: {
+        dropdownId: "reqtype",
+        formControlName: "reqTyped",
+        dropdownName: "reqtype",
+        type: "search",
+        values: [],
+        valueName: "code",
+        labelName: "name"
+      },
+      customSeg: {
+        dropdownId: "customSeg",
+        formControlName: "customSegd",
+        dropdownName: "customSeg",
+        type: "search",
+        values: [],
+        valueName: "code",
+        labelName: "name"
+      },
+      payMethod: {
+        dropdownId: "payMethod",
+        formControlName: "payMethodd",
+        dropdownName: "payMethod",
+        type: "search",
+        values: [],
+        valueName: "code",
+        labelName: "name"
+      },
+      subAccMethod: {
+        dropdownId: "subAccMethod",
+        formControlName: "subAccMethodd",
+        dropdownName: "subAccMethod",
+        type: "search",
+        values: [],
+        valueName: "code",
+        labelName: "name"
+      },
+    };
   }
 
   ngOnInit() {
+    console.log(convertAccNo(1234567890));
     // Current Date
     this.reqDate = this.service.getReqDate();
     // Dropdowns
-    this.reqType = this.dropdown.getReqType();
-    this.customSeg = this.dropdown.getCustomSeg();
-    this.payMethod = this.dropdown.getpayMethod();
-    this.subAccMethod = this.dropdown.getsubAccMethod();
+    this.dropdown.getReqType().subscribe((obj: Lov[]) => this.dropdownObj.reqType.values = obj);
+    this.dropdown.getCustomSeg().subscribe((obj: Lov[]) => this.dropdownObj.customSeg.values = obj);
+    this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.payMethod.values = obj);
+    this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
+
     // Certificate
-    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result );
+    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result);
   }
 
   onSubmit(form: NgForm) {
@@ -56,8 +106,11 @@ export class Nrq02000Component implements OnInit {
       msg: "...?",
       success: true
     };
-    this.modal.confirm((e) => { },modal);
-    this.service.certificateUpdate(this.reqTypeChanged);
+    this.modal.confirm((e) => {
+      if (e) {
+        this.service.certificateUpdate(this.reqTypeChanged);
+      }
+    }, modal);
   }
 
   send() {

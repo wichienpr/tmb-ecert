@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { ModalService, Modal } from 'app/baiwa/common/services';
+import { ModalService } from 'app/baiwa/common/services';
+import { Modal } from 'models/';
 declare var $: any;
 @Component({
   selector: 'app-login',
@@ -10,10 +11,18 @@ declare var $: any;
 export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
+  modalObj: Modal;
 
   constructor(private router: Router, private modal: ModalService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.modalObj = {
+      modalId: "confirm",
+      size: "small",
+      title: "การยืนยัน",
+      type: "confirm"
+    };
+  }
 
   onSubmit(event) {
     if (this.username == "admin" && this.password == "password") {

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { UserDetail } from 'app/user.model';
 import * as UserActions from 'app/user.action';
+import { Calendar } from 'models/';
+import { NgForm, FormControl, Validators } from '@angular/forms';
 
 interface AppState { }
 
@@ -14,9 +16,15 @@ interface AppState { }
 })
 export class Nrq01000Component implements OnInit {
 
+  calendar: Calendar;
+
   users: Observable<UserDetail>;
   constructor(private store: Store<AppState>) {
-
+    this.calendar = {
+      calendarId: "example",
+      calendarName: "example",
+      type: "date"
+    };
   }
 
   ngOnInit() {
@@ -36,6 +44,10 @@ export class Nrq01000Component implements OnInit {
 
   reset() {
     this.store.dispatch(new UserActions.ResetUser(true));
+  }
+
+  calendarValue(e) {
+    console.log(e);
   }
 
 }

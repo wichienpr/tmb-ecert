@@ -3,13 +3,13 @@
 <!-- menu -->
 
 <!-- modal -->
-<ui-modal modalId="alert" size="small" title="แจ้งเตือน" class="notification" type="alert" for="notify">
+<ui-modal [modal]="modalAlert">
   <ng-template>...</ng-template>
 </ui-modal>
-<ui-modal modalId="alert-success" size="small" title="แจ้งเตือน" class="notification" type="alert" for="confirm">
+<ui-modal [modal]="modalAlertSuccess">
   <ng-template>...</ng-template>
 </ui-modal>
-<ui-modal modalId="confirm" size="small" title="การยืนยัน" type="confirm">
+<ui-modal [modal]="modalConfirm">
   <ng-template>...</ng-template>
 </ui-modal>
 <!-- modal -->

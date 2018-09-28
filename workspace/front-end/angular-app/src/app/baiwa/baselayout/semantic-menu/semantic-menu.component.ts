@@ -3,7 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserDetail } from 'app/user.model';
 import { Router } from '@angular/router';
-import { ModalService, Modal } from 'app/baiwa/common/services';
+import { ModalService } from 'app/baiwa/common/services';
+import { Modal } from 'models/';
 
 declare var $: any;
 

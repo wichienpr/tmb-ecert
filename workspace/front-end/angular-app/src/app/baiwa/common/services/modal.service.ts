@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Modal } from "models/";
 
 declare var $: any;
 
@@ -49,14 +50,4 @@ export class ModalService {
             .modal("show");
     }
 
-}
-
-export interface Modal {
-    msg: string;
-    title?: string;
-    color?: string;
-    success?: boolean;
-    size?: string;
-    approveMsg?: string;
-    rejectMsg?: string;
 }

@@ -1,4 +1,5 @@
 import { Component, Input, AfterViewInit, Output, EventEmitter } from "@angular/core";
+import { Calendar } from "models/";
 
 declare var $: any;
 
@@ -9,21 +10,20 @@ declare var $: any;
 })
 export class CalendarComponent implements AfterViewInit {
 
-    @Input() calendarId: string;
+    @Input() calendar: Calendar;
 
     @Output() calendarValue: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() { }
 
     ngAfterViewInit() {
-        $(`#${this.calendarId}`).calendar({
-            type: "date",
+        $(`#${this.calendar.calendarId}`).calendar({
+            type: this.calendar.type || 'date',
             onChange:  this.onChange
         });
     }
 
-    onChange(date, text, mode) {
-        console.log(text);
-        //this.calendarValue.emit(text);
+    onChange = (date, text, mode) => {
+        this.calendarValue.emit(text);
     }
 }

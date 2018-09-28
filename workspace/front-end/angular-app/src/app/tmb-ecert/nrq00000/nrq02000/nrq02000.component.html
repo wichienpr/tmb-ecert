@@ -30,8 +30,7 @@
           <label>ประเภทคำขอ</label>
         </div>
         <div class="five wide field">
-          <ui-dropdown dropdownId="reqtype" dropdownName="reqtype" type="search" [values]="reqType | async" valueName="code"
-            labelName="name" (valueChange)="reqTypeChange($event)"></ui-dropdown>
+          <ui-dropdown [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
       <div class="inline field ui-table">
@@ -116,8 +115,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <ui-dropdown dropdownId="customSeg" dropdownName="customSeg" type="search" [values]="customSeg | async"
-            valueName="code" labelName="name" (valueChange)="customSegChange($event)"></ui-dropdown>
+          <ui-dropdown [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field">
           <label>เลขที่ CA/มติอนุมัติ
@@ -143,8 +141,7 @@
         </div>
         <div class="two wide field"></div>
         <div class="five wide field">
-          <ui-dropdown dropdownId="payMethod" dropdownName="payMethod" type="search" [values]="payMethod | async"
-            valueName="code" labelName="name" (valueChange)="payMethodChange($event)"></ui-dropdown>
+          <ui-dropdown [dropdown]="dropdownObj.payMethod" (valueChange)="payMethodChange($event)"></ui-dropdown>
         </div>
       </div>
 
@@ -154,8 +151,7 @@
         </div>
 
         <div class="five wide field">
-          <ui-dropdown dropdownId="subAccMethod" dropdownName="subAccMethod" type="search" [values]="subAccMethod | async"
-            valueName="code" labelName="name" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
+          <ui-dropdown [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
       <div class="inline fields">

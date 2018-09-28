@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, Input, Output } from "@angular/core";
 import { EventEmitter } from '@angular/core';
+import { Dropdown } from "models/";
 
 declare var $: any;
 
@@ -12,28 +13,19 @@ declare var $: any;
         }`
     ],
     host: {
-        "[style.width.%]" : "100"
+        "[style.width.%]": "100"
     }
 })
 export class DropdownComponent implements AfterViewInit {
 
 
-    @Input() type: string;
-
-    @Input() dropdownId: string;
-    @Input() dropdownName: string;
-    @Input() placehold: string;
-
-    @Input() values: any[];
-    @Input() valueName: string;
-    @Input() labelName: string;
-
+    @Input() dropdown: Dropdown;
     @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor() {}
+    constructor() { }
 
     ngAfterViewInit() {
-        $(`#${this.dropdownId}`).dropdown().css('width', '100%');
+        $(`#${this.dropdown.dropdownId}`).dropdown().css('width', '100%');
     }
 
     onChange(e) {
