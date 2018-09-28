@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Observable } from 'rxjs';
 import { Certificate, Lov } from 'tmb-ecert/models';
+import { DropdownService } from 'services/';
 
 declare var $: any;
 
@@ -15,6 +18,8 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
+  @ViewChild("form") form: NgForm;
+
   reqType: Observable<Lov[]>;
   customSeg: Observable<Lov[]>;
   payMethod: Observable<Lov[]>;
@@ -22,18 +27,31 @@ export class Nrq02000Component implements OnInit {
 
   reqTypeChanged: Certificate[];
 
+  reqDate: string;
+
   constructor(
+    private store: Store<{}>,
     private router: Router,
-    private nrq02000: Nrq02000Service
+    private dropdown: DropdownService,
+    private service: Nrq02000Service
   ) {
     this.reqTypeChanged = [];
   }
 
   ngOnInit() {
-    this.reqType = this.nrq02000.getReqType();
-    this.customSeg = this.nrq02000.getCustomSeg();
-    this.payMethod = this.nrq02000.getpayMethod();
-    this.subAccMethod = this.nrq02000.getsubAccMethod();
+    // Current Date
+    this.reqDate = this.service.getReqDate();
+    // Dropdowns
+    this.reqType = this.dropdown.getReqType();
+    this.customSeg = this.dropdown.getCustomSeg();
+    this.payMethod = this.dropdown.getpayMethod();
+    this.subAccMethod = this.dropdown.getsubAccMethod();
+    // Certificate
+    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result );
+  }
+
+  onSubmit(form: NgForm) {
+    this.service.certificateUpdate(this.reqTypeChanged);
   }
 
   send() {
@@ -46,7 +64,7 @@ export class Nrq02000Component implements OnInit {
   }
 
   reqTypeChange(e) {
-    this.reqTypeChanged = this.nrq02000.reqTypeChange(e);
+    this.service.reqTypeChange(e);
   }
 
   customSegChange(e) {

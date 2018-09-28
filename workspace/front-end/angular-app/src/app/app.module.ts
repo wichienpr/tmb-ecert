@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { userReducer } from './user.reducer';
 import { StoreModule } from '@ngrx/store';
 import { ModalModule } from 'components/modal/modal.module';
-import { AjaxService } from 'services/ajax.service';
+import { AjaxService, DropdownService } from 'services/ajax.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
@@ -34,7 +34,10 @@ import { HttpModule } from '@angular/http';
       maxAge: 25, // Retains last 25 states      
     }),
   ],
-  providers: [AjaxService],
+  providers: [
+    AjaxService,
+    DropdownService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

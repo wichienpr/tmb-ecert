@@ -1,4 +1,5 @@
 export interface Certificate {
+    [x: string]: any;
     code: string;
     typeCode: string;
     typeDesc: string;

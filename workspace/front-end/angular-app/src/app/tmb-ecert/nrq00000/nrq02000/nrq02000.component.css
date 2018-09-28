@@ -1,2 +1,7 @@
-tr:nth-child(odd) {background-color: white;}
-tr:nth-child(even) {background-color: #F8F8FF;}
+.ui-table {
+    margin: 2em 0 !important;
+}
+
+.btn-group > button {
+    margin-right: 2em !important;
+}

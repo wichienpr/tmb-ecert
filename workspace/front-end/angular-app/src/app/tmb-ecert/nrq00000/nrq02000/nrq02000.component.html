@@ -34,18 +34,17 @@
 
 <div class="ui grid">
   <div class="sixteen wide column">
-    <div class="ui form segment">
+    <form class="ui form segment" (submit)="onSubmit(form)" #form="ngForm">
       <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
       <br>
 
       <div class="inline fields">
         <div class="one wide field "></div>
         <div class="two wide field ">
-          <label>วันที่ขอ
-          </label>
+          <label>วันที่ขอ</label>
         </div>
         <div class="five wide field ">
-          01/01/2561
+          {{ reqDate || '01/01/2561' }}
         </div>
       </div>
 
@@ -70,20 +69,14 @@
             labelName="name" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
-
-      <br>
-
-
-      <div>
-        <table class="ui small celled table nowrap" style="width: 100%">
+      <div class="inline field ui-table">
+        <table class="ui small celled table" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
-              <th rowspan="1" colspan="2" style="background:#0079C0;color: #FFF">รายละเอียด
-              </th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าธรรมเนียมของ DBD
-              </th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">ค่าบริการของธนาคาร</th>
-              <th rowspan="2" style="background:#0079C0;color: #FFF">จำนวน : ชุด</th>
+              <th rowspan="1" colspan="2">รายละเอียด</th>
+              <th rowspan="2">ค่าธรรมเนียมของ DBD</th>
+              <th rowspan="2">ค่าบริการของธนาคาร</th>
+              <th rowspan="2" style="width: 12%">จำนวน : ชุด</th>
             </tr>
             <tr style="display: none">
               <th>1</th>
@@ -118,7 +111,7 @@
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
-                      <input type="checkbox">
+                      <input type="checkbox" name="check{{i}}" [(ngModel)]="reqTypeChanged[i].checked">
                       <label></label>
                     </div>
                   </td>
@@ -126,7 +119,9 @@
                   <td>{{ req.feeDbd }}</td>
                   <td>{{ req.feeTmb }}</td>
                   <td>
-                    <input type="text" style="width:  95%;">
+                    <div class="ui input {{ reqTypeChanged[i].checked ? '' : 'disabled' }}">
+                      <input type="number" name="value{{i}}" style="width: 100%;" [(ngModel)]="reqTypeChanged[i].value">
+                    </div>
                   </td>
                 </tr>
               </ng-container>
@@ -134,8 +129,6 @@
           </tbody>
         </table>
       </div>
-      <br>
-      <br>
       <div class="inline fields">
         <div class="four wide field ">
           <label>เลขที่นิติบุคคล
@@ -207,7 +200,6 @@
         </div>
         <div class="five wide field ">
           8880
-
         </div>
       </div>
 
@@ -218,7 +210,6 @@
         </div>
         <div class="five wide field ">
           B533
-
         </div>
       </div>
 
@@ -229,22 +220,19 @@
         </div>
         <div class="five wide field">
           OOA
-
         </div>
       </div>
 
       <div class="inline fields">
         <div class="four wide field">
-          <label>เลขที่บัญชี
-          </label>
+          <label>เลขที่บัญชี</label>
         </div>
 
         <div class="five wide field">
           <input type="text" placeholder="123-1-12345-9">
         </div>
         <div class="two wide field">
-          <label>ชื่อบัญชี
-          </label>
+          <label>ชื่อบัญชี</label>
         </div>
         <div class="five wide field">
           <input type="text">
@@ -254,22 +242,19 @@
 
       <div class="inline fields">
         <div class="four wide field">
-          <label>ชื่อบนใบเสร็จธนาคาร TMB
-          </label>
+          <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
         <input type="checkbox">
         &nbsp;&nbsp;
         <div class="one wide field">
-          <label>ชื่อนิติบุคคล
-          </label>
+          <label>ชื่อนิติบุคคล</label>
         </div>
 
         <div class="four wide field" style="margin-left: -15px">
           <input type="text" placeholder="" value="">
         </div>
         <div class="two wide field">
-          <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)
-          </label>
+          <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
         <div class="five wide field">
           <input type="text" placeholder="" value="">
@@ -285,8 +270,7 @@
           <input type="file" value="">
         </div>
         <div class="two wide field">
-          <label>ที่อยู่
-          </label>
+          <label>ที่อยู่</label>
         </div>
         <div class="five wide field">
           <textarea rows="3"></textarea>
@@ -296,8 +280,7 @@
 
       <div class="inline fields">
         <div class="four wide field">
-          <label>สำเนาบัตรประชาชน
-          </label>
+          <label>สำเนาบัตรประชาชน</label>
         </div>
         <div class="five wide field">
           <input type="file" value="">
@@ -305,8 +288,7 @@
       </div>
       <div class="inline fields">
         <div class="four wide field">
-          <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)
-          </label>
+          <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
         <div class="five wide field">
           <input type="file" value="">
@@ -315,8 +297,7 @@
 
       <div class="inline fields">
         <div class="four wide field">
-          <label>หมายเหตุ
-          </label>
+          <label>หมายเหตุ</label>
         </div>
         <div class="five wide field">
           <textarea rows="2"></textarea>
@@ -324,15 +305,15 @@
       </div>
       <div class="inline field">
         <div class="ui one grid">
-          <div class="center aligned one column">
+          <div class="center aligned one column btn-group">
             <button class="ui blue basic button">
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
-            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
             <button class="ui blue basic button" (click)="send()">
               <i class="file alternate outline icon"></i>
               ยื่นใบคำขอ
-            </button> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
             <button class="ui grey basic button">
               <i class="times circle outline icon"></i>
               ยกเลิก
@@ -340,6 +321,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

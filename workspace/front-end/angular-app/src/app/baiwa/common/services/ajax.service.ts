@@ -11,7 +11,7 @@ export class AjaxService {
     "Content-Type": "application/x-www-form-urlencoded"
   });
 
-  public static CONTEXT_PATH = "/ecert-webapp/";
+  public static CONTEXT_PATH = "/ecert-webapp/api/";
   public static isDebug = true;
 
   constructor(private http: Http) { }

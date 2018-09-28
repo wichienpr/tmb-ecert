@@ -14,6 +14,7 @@
       "app/*": ["src/app/*"],
       "components/*": ["src/app/baiwa/common/components/index"],
       "directives/*": ["src/app/baiwa/common/directives/index"],
+      "helpers/*": ["src/app/baiwa/common/helpers/index"],
       "pipes/*": ["src/app/baiwa/common/pipes/index"],
       "services/*": ["src/app/baiwa/common/services/index"],
       // Change when new project
