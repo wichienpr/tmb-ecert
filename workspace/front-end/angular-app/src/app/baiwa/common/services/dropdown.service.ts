@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Lov } from "tmb-ecert/models";
 import { Observable } from "rxjs";
-import { AjaxService } from "services/";
+import { AjaxService } from "./ajax.service";
 
 const URL = {
     LOV_BY_TYPE: "lov/type"
