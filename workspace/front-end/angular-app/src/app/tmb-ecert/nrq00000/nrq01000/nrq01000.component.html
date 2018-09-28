@@ -1,7 +1,7 @@
 <div class="ui container">
   <div class="ui one grid">
     <div class="row">
-      <div class="one column">
+      <div class="one center aligned column">
         <div class="ui header">User Details</div>
         <p>
           UserId: {{(users|async).userId}}<br>
@@ -15,10 +15,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="one column">
+      <div class="one center aligned column">
         <form (submit)="calendarValue($event)" class="ui form" ngNativeValidate>
-          <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
-          <button type="submit">ปุ่ม</button>
+          <div class="ui centered inline fields grid">
+            <div class="field">
+                <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
+            </div>
+            <div class="field">
+                <button class="ui button" type="submit">ปุ่ม</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

@@ -28,7 +28,8 @@ export class SemanticMenuComponent implements OnInit {
             child: [
               { label: "Example 1", url: "/examples/ex1" },
               { label: "Example 2", url: "/examples/ex2" },
-              { label: "Example 3", url: "/examples/ex3" }
+              { label: "Example 3", url: "/examples/ex3" },
+              { label: "Example 4", url: "/examples/ex4" },
             ]
           },
           { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq01000" },

@@ -1,6 +1,6 @@
 <div class="ui grid">
   <div class="sixteen wide column">
-    <form class="ui form segment" (submit)="onSubmit(form)" #form="ngForm">
+    <form class="ui form segment" [formGroup]="form" (submit)="onSubmit()" >
       <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
 
       <div class="inline fields">
@@ -190,7 +190,7 @@
         </div>
 
         <div class="five wide field">
-          <input type="text" placeholder="123-1-12345-9">
+          <input type="text" placeholder="123-1-12345-9" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()" (focus)="accNoFocus()" formControlName="accNo">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>

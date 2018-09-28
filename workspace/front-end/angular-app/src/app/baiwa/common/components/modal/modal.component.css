@@ -8,3 +8,7 @@
 .content {
     color: black !important;
 }
+
+.basic.button {
+    margin-right: 2em;
+}

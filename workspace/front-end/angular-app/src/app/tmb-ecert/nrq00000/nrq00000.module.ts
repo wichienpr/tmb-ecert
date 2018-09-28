@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 
 // Routing
@@ -17,6 +17,7 @@ import { ModalModule, CalendarModule, DropdownModule } from 'components/';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     // Routing
     Nrq00000RoutingModule,
     // Components
