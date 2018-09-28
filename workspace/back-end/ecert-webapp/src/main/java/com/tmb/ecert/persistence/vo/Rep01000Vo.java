@@ -5,29 +5,35 @@ import java.math.BigInteger;
 
 public class Rep01000Vo {
 
-	public BigInteger id;
+	public Long id;
 	public String requestDate;
 	public String tmbRequestno;
 	public String organizeId;
 	public String companyName;
 	public String custsegmentCode;
-	public String requestType;
+	public String custsegmentDesc;
+	public String requestTypeCode;
+	public String requestTypeDesc;
 	public String certypeCode;
+	public String certypeDesc;
 	public String accountNo;
 	public BigDecimal amountDbd;
 	public BigDecimal amountTmb;
 	public BigDecimal amount;
 	public BigDecimal totalAmount;
 	public String makerById;
+	public String makerByName;
 	public String checkerById;
+	public String checkerByName;
 	public String status;
 	public String remark;
 
-	public BigInteger getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -71,12 +77,28 @@ public class Rep01000Vo {
 		this.custsegmentCode = custsegmentCode;
 	}
 
-	public String getRequestType() {
-		return requestType;
+	public String getCustsegmentDesc() {
+		return custsegmentDesc;
 	}
 
-	public void setRequestType(String requestType) {
-		this.requestType = requestType;
+	public void setCustsegmentDesc(String custsegmentDesc) {
+		this.custsegmentDesc = custsegmentDesc;
+	}
+
+	public String getRequestTypeCode() {
+		return requestTypeCode;
+	}
+
+	public void setRequestTypeCode(String requestTypeCode) {
+		this.requestTypeCode = requestTypeCode;
+	}
+
+	public String getRequestTypeDesc() {
+		return requestTypeDesc;
+	}
+
+	public void setRequestTypeDesc(String requestTypeDesc) {
+		this.requestTypeDesc = requestTypeDesc;
 	}
 
 	public String getCertypeCode() {
@@ -85,6 +107,14 @@ public class Rep01000Vo {
 
 	public void setCertypeCode(String certypeCode) {
 		this.certypeCode = certypeCode;
+	}
+
+	public String getCertypeDesc() {
+		return certypeDesc;
+	}
+
+	public void setCertypeDesc(String certypeDesc) {
+		this.certypeDesc = certypeDesc;
 	}
 
 	public String getAccountNo() {
@@ -135,12 +165,28 @@ public class Rep01000Vo {
 		this.makerById = makerById;
 	}
 
+	public String getMakerByName() {
+		return makerByName;
+	}
+
+	public void setMakerByName(String makerByName) {
+		this.makerByName = makerByName;
+	}
+
 	public String getCheckerById() {
 		return checkerById;
 	}
 
 	public void setCheckerById(String checkerById) {
 		this.checkerById = checkerById;
+	}
+
+	public String getCheckerByName() {
+		return checkerByName;
+	}
+
+	public void setCheckerByName(String checkerByName) {
+		this.checkerByName = checkerByName;
 	}
 
 	public String getStatus() {
