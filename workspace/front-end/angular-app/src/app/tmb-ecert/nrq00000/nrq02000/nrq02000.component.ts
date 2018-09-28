@@ -7,7 +7,7 @@ import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Lov } from 'tmb-ecert/models';
 import { DropdownService, ModalService } from 'services/';
 import { Modal } from 'models/';
-import { convertAccNo } from 'app/baiwa/common/helpers';
+import { convertAccNo, revertAccNo } from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -88,7 +88,6 @@ export class Nrq02000Component implements OnInit {
   }
 
   ngOnInit() {
-    console.log(convertAccNo(1234567890));
     // Current Date
     this.reqDate = this.service.getReqDate();
     // Dropdowns
