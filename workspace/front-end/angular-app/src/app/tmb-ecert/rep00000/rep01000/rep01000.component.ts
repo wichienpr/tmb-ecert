@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AjaxService } from 'app/baiwa/common/services/ajax.service';
+import { forEach } from '@angular/router/src/utils/collection';
 declare var $: any;
-
+const URL = {
+  export:"rep/rep01000/exportFile"
+}
 @Component({
   selector: 'app-rep01000',
   templateUrl: './rep01000.component.html',
@@ -10,55 +14,50 @@ export class Rep01000Component implements OnInit {
   products: String[];  
   showData: boolean = false; 
   selectProduct: String;
-  constructor() { 
-    
-    this.products = [
-      "ทั้งหมด",
-      "ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด",    
-      "การประกอบธุรกิจของคนต่างด้าว",
-      "สมาคมและหอการค้า",       
-    ];
+  dataT: any[]= [];
+  loading: boolean = false;
+  
+
+  constructor(
+    private ajax: AjaxService,
+  ) { 
+   
   }
 
-  ngOnInit() {
-    $("#calendar1").calendar({    
-      maxDate: new Date(),
-      type: "date"
-      
-  
-    });
-    $("#calendar2").calendar({    
-      maxDate: new Date(),
-      type: "date"
-  
-    });
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit() {
-    $("#table").DataTable();
-  }
+  ngAfterViewInit() {}
 
   onSelectProducts = event => {
     this.selectProduct = this.products[event.target.value];
   };
   
+  getData=()=>{
+    this.dataT=[];
+    const URL = "rep/rep01000/list";
+    this.ajax.post(URL,{},async res => {
+      const data = await res.json();
+      data.forEach(element => {
+        this.dataT.push(element);
+      });
+    console.log("getData True : Data s",this.dataT);
+    });
+  }
 
   searchData(): void {
+    console.log("searchData");
     this.showData = true;
-    setTimeout(() => {
-      $("#table").DataTable({
-        scrollX: true,
-        searching :false,
-        "columnDefs": [{
-          "targets": [8,9,10,11,17,15,16],
-          "orderable": false
-        }]
-      });
-    }, 1000);
+    this.getData();
   }
   
   clearData(): void {
+    console.log("clearData");
     this.showData = false;
+  }
+
+  exportFile=()=>{
+    console.log("exportFile");
+    this.ajax.download(URL.export);
   }
 
  

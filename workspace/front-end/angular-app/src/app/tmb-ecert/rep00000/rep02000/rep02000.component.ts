@@ -12,19 +12,7 @@ export class Rep02000Component implements OnInit {
   modal: string[] = ["modal"];
   constructor() { }
 
-  ngOnInit() {
-    $("#calendar1").calendar({
-      maxDate: new Date(),
-      type: "month"
-
-    });
-    $("#calendar2").calendar({
-      maxDate: new Date(),
-      type: "month"
-    });
-
-
-  }
+  ngOnInit() { }
   ngAfterViewInit() {
 
   }
@@ -40,19 +28,6 @@ export class Rep02000Component implements OnInit {
 
   searchData(): void {
     this.showData = true;
-    setTimeout(() => {
-      $("#table").DataTable({
-        scrollX: true,
-        searching: false,
-        ordering: true,
-        paging: true,
-        "columnDefs": [{
-          "targets": [2, 3, 4, 5, 7, 8, 9],
-          "orderable": false
-        }]
-      });
-    });
-
   }
 
   clearData(): void {
