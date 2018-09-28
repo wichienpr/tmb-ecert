@@ -32,15 +32,15 @@ public class Rep01000Controller {
 	@PostMapping("/list")
 	@ResponseBody
 	public List<Rep01000Vo> list(@RequestBody Rep01000FormVo formVo){
-		List<Rep01000Vo> rep01000Vo = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
 		try {
-			rep01000Vo = rep01000tService.findAll(formVo);
+			rep01000VoList = rep01000tService.findAll(formVo);
 			
 		} catch (Exception e) {
 			log.error("Error ! ==> Rep01000Controller method list",e);
 		}
 		
-		return rep01000Vo;
+		return rep01000VoList;
 	}
 	@GetMapping("/exportFile")
 	@ResponseBody

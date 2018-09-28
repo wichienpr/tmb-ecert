@@ -36,13 +36,14 @@ public class Rep01000Repository {
 	public List<Rep01000Vo> getData(Rep01000FormVo formVo) {
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM);
 		List<Object> params = new ArrayList<>();
-		List<Rep01000Vo> rep01000Vo = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
+		sql.append(" ORDER BY a.REQUEST_DATE DESC ");
+		rep01000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
 		
-		rep01000Vo = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
-		
-		return rep01000Vo;
+		return rep01000VoList;
 	}
 	
+
 	 private RowMapper<Rep01000Vo> rep01000RowMapper = new RowMapper<Rep01000Vo>() {
 	    	@Override
 	    	public Rep01000Vo mapRow(ResultSet rs, int arg1) throws SQLException {
