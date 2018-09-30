@@ -1,29 +1,38 @@
-<div class="ui {{ size || '' }} modal {{ class || '' }}" id="{{modalId}}" *ngIf="type!='custom'">
-    <i class="close icon" *ngIf="type!='confirm'"></i>
-    <div class="header">{{ title || '' }}</div>
+<div class="ui {{ modal.size || '' }} modal" id="{{modal.modalId}}" *ngIf="modal.type!='custom'">
+    <div class="header color {{ modal.class || '' }}">{{ title || '' }}</div>
     <div class="content">
         <ng-template [ngTemplateOutlet]="templateRef"></ng-template>
     </div>
-    <div class="actions" *ngIf="type=='alert'">
-        <div class="ui mini green cancel button center floated" *ngIf="for == 'confirm'">
-            <i class="check icon"></i> ยืนยัน
-        </div>
-        <div class="ui mini red cancel button center floated" *ngIf="for == 'notify'">
-            <i class="remove icon"></i> ปิด
+    <div class="actions" *ngIf="modal.type=='alert'">
+        <div class="ui center aligned grid">
+            <div class="one column">
+                <button class="ui blue cancel basic button" type="button" *ngIf="modal.for == 'confirm'">
+                    <i class="check circle outline icon"></i>
+                    ยืนยัน
+                </button>
+                <button class="ui grey cancel basic button" type="button" *ngIf="modal.for == 'notify'">
+                    <i class="remove circle icon"></i>
+                    ปิด
+                </button>
+            </div>
         </div>
     </div>
-    <div class="actions" *ngIf="type=='confirm'">
-        <div class="ui positive mini button" (click)="onApproved()">
-            <i class="check circle outline icon"></i>
-            {{ approveMsg || 'ยืนยัน' }}
-        </div>
-        <div class="ui negative mini button" (click)="onRejected()">
-            <i class="times circle outline icon"></i>
-            {{ rejectMsg || 'ยกเลิก' }}
+    <div class="actions" *ngIf="modal.type=='confirm'">
+        <div class="ui center aligned grid">
+            <div class="one column">
+                <div class="ui blue positive basic button" (click)="onApproved()">
+                    <i class="check circle outline icon"></i>
+                    {{ modal.approveMsg || 'ยืนยัน' }}
+                </div>
+                <div class="ui grey negative basic button" (click)="onRejected()">
+                    <i class="times circle outline icon"></i>
+                    {{ modal.rejectMsg || 'ยกเลิก' }}
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="ui {{ size || '' }} modal {{ class || '' }}" id="{{modalId}}" *ngIf="type=='custom'">
+<div class="ui {{ modal.size || '' }} modal {{ modal.class || '' }}" id="{{modal.modalId}}" *ngIf="modal.type=='custom'">
     <ng-template [ngTemplateOutlet]="templateRef"></ng-template>
 </div>

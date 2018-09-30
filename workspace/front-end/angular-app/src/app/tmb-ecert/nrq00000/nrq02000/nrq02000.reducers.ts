@@ -9,6 +9,9 @@ export function certificateReducer(state: Certificate[] = [], action: Nrq02000Ac
         case Nrq02000Actions.CER_UDT:
             state = [...action.payload];
             return state;
+        case Nrq02000Actions.CER_RST:
+            state = [];
+            return state;
         default:
             return state;
     }

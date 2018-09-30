@@ -9,6 +9,7 @@ import { reducers } from './example.reducer';
 import { Ex1Component } from './ex1/ex1.component';
 import { Ex2Component } from './ex2/ex2.component';
 import { Ex3Component } from './ex3/ex3.component';
+import { Ex4Component } from './ex4/ex4.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { Ex3Component } from './ex3/ex3.component';
     // NGRX
     StoreModule.forFeature('examples', reducers)
   ],
-  declarations: [Ex1Component, Ex2Component, Ex3Component]
+  declarations: [Ex1Component, Ex2Component, Ex3Component, Ex4Component]
 })
 export class ExampleModule { }

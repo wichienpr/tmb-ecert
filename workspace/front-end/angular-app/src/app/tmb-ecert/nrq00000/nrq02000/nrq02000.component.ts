@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Lov } from 'tmb-ecert/models';
 import { DropdownService } from 'services/';
+import { convertAccNo, revertAccNo } from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -18,21 +18,20 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
-  @ViewChild("form") form: NgForm;
+  form: FormGroup = new FormGroup({
+    reqTyped: new FormControl('', Validators.required),
 
-  reqType: Observable<Lov[]>;
-  customSeg: Observable<Lov[]>;
-  payMethod: Observable<Lov[]>;
-  subAccMethod: Observable<Lov[]>;
-
-  reqTypeChanged: Certificate[];
+    accNo: new FormControl('', Validators.required),
+  });
 
   reqDate: string;
+  dropdownObj: any;
+
+  reqTypeChanged: Certificate[];
 
   constructor(
     private store: Store<{}>,
     private router: Router,
-    private dropdown: DropdownService,
     private service: Nrq02000Service
   ) {
     this.reqTypeChanged = [];
@@ -41,26 +40,20 @@ export class Nrq02000Component implements OnInit {
   ngOnInit() {
     // Current Date
     this.reqDate = this.service.getReqDate();
-    // Dropdowns
-    this.reqType = this.dropdown.getReqType();
-    this.customSeg = this.dropdown.getCustomSeg();
-    this.payMethod = this.dropdown.getpayMethod();
-    this.subAccMethod = this.dropdown.getsubAccMethod();
+    this.dropdownObj = this.service.getDropdownObj();
+
     // Certificate
-    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result );
+    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result);
   }
 
-  onSubmit(form: NgForm) {
-    this.service.certificateUpdate(this.reqTypeChanged);
+  onSubmit() {
+    let form = new NgForm([],[]);
+    console.log(this.form);
+    this.service.save(form, this.reqTypeChanged);
   }
 
   send() {
-    $('#send-req').modal('show');
-  }
-
-  redirect() {
-    $('#send-req').modal('hide');
-    this.router.navigate(['performa']);
+    this.service.send();
   }
 
   reqTypeChange(e) {
@@ -77,6 +70,21 @@ export class Nrq02000Component implements OnInit {
 
   subAccMethodChange(e) {
     console.log('subAccMethodChange => ', e);
+  }
+
+  toggleChk(index: number) {
+    this.reqTypeChanged[index].value = null;
+  }
+
+  accNoBlur(): void {
+    const { accNo } = this.form.controls;
+    this.form.controls.accNo.setValidators([Validators.required, Validators.maxLength(13)]);
+    this.form.controls.accNo.setValue(convertAccNo(accNo.value));
+  }
+
+  accNoFocus(): void {
+    const { accNo } = this.form.controls;
+    this.form.controls.accNo.setValue(revertAccNo(accNo.value));
   }
 
 }

@@ -8,50 +8,25 @@ import {
     TemplateRef,
     AfterViewInit
 } from "@angular/core";
+import { Modal } from "models/";
 
 declare var $: any;
 
 @Component({
     selector: "ui-modal",
-    templateUrl: "./modal.component.html"
+    templateUrl: "./modal.component.html",
+    styleUrls: ["./modal.component.css"]
 })
 export class ModalComponent implements AfterViewInit, OnDestroy {
     /**
      * Contents inside selector
      */
     @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
+
     /**
      * string of modal
      */
-    @Input() modalId: string;
-    @Input() title: string;
-
-    /**
-     * custom class
-     */
-    @Input() class: string;
-
-    /**
-     * @enum alert confirm custom
-     */
-    @Input() type: string;
-
-    /**
-     * works on alert
-     * @enum confirm notify 
-     */
-    @Input() for: string;
-
-    /**
-     * @enum mini tiny small large
-     */
-    @Input() size: string;
-
-    /**
-     * works on type = 'confirm'
-     */
-    @Input() approveMsg: string;
-    @Input() rejectMsg: string;
+    @Input() modal: Modal;
 
     /**
      * works on type = 'confirm'
@@ -67,12 +42,12 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         // On initial modal
-        $(`#${this.modalId}`).modal({ centered: false, autofocus: false });
+        $(`#${this.modal.modalId}`).modal({ centered: false, autofocus: false });
     }
 
     ngOnDestroy() {
         // On leave page to remove modal
-        $(`#${this.modalId}`).remove();
+        $(`#${this.modal.modalId}`).remove();
     }
 
     onApproved(): void {

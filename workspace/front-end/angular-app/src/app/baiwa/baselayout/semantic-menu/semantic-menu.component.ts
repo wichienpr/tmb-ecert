@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserDetail } from 'app/user.model';
 import { Router } from '@angular/router';
+import { ModalService } from 'app/baiwa/common/services';
+import { Modal } from 'models/';
 
 declare var $: any;
 
@@ -15,7 +17,7 @@ export class SemanticMenuComponent implements OnInit {
 
   routes: Routing[];
   user: Observable<UserDetail>;
-  constructor(private store: Store<{}>, private router: Router) {
+  constructor(private store: Store<{}>, private router: Router, private modal: ModalService) {
     this.routes = [
       { // Main Menu 1
         label: "ทำคำขอใหม่",
@@ -26,7 +28,8 @@ export class SemanticMenuComponent implements OnInit {
             child: [
               { label: "Example 1", url: "/examples/ex1" },
               { label: "Example 2", url: "/examples/ex2" },
-              { label: "Example 3", url: "/examples/ex3" }
+              { label: "Example 3", url: "/examples/ex3" },
+              { label: "Example 4", url: "/examples/ex4" },
             ]
           },
           { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq01000" },
@@ -89,12 +92,15 @@ export class SemanticMenuComponent implements OnInit {
   }
 
   logout() {
-    $("#logout-modal").modal("show");
+    const modal: Modal = {
+      msg: "...",
+      title: "ยืนยันการออกจากระบบ ?"
+    };
+    this.modal.confirm((e) => { this.logoutConfirm(e) }, modal);
   }
 
   logoutConfirm(e: boolean) {
     if (e == true) {
-      $("#logout-modal").modal("hide");
       this.router.navigate(['login']);
     }
   }

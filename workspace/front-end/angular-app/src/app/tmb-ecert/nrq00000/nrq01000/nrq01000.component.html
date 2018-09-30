@@ -1,12 +1,32 @@
-<div class="ui header">User Details</div>
-<p>
-  UserId: {{(users|async).userId}}<br>
-  Username: {{(users|async).username}}<br>
-  Firstname: {{(users|async).firstName}}<br>
-  Lastname: {{(users|async).lastName}}<br>
-  Roles: {{(users|async).roles}}<br>
-</p>
-<button class="ui primary mini button" type="button" (click)="change()">change</button>
-<button class="ui mini button" type="button" (click)="reset()">reset</button>
-
-<ui-calendar calendarId="hello"></ui-calendar>
+<div class="ui container">
+  <div class="ui one grid">
+    <div class="row">
+      <div class="one center aligned column">
+        <div class="ui header">User Details</div>
+        <p>
+          UserId: {{(users|async).userId}}<br>
+          Username: {{(users|async).username}}<br>
+          Firstname: {{(users|async).firstName}}<br>
+          Lastname: {{(users|async).lastName}}<br>
+          Roles: {{(users|async).roles}}<br>
+        </p>
+        <button class="ui primary mini button" type="button" (click)="change()">change</button>
+        <button class="ui mini button" type="button" (click)="reset()">reset</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="one center aligned column">
+        <form (submit)="calendarValue($event)" class="ui form" ngNativeValidate>
+          <div class="ui centered inline fields grid">
+            <div class="field">
+                <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
+            </div>
+            <div class="field">
+                <button class="ui button" type="submit">ปุ่ม</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -31,7 +31,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                 if (data && data.length > 0) {
                     this.reqType = data;
                 }
-                obs.next(this.reqType);
+                obs.next([...this.reqType]);
             });
         });
     }
@@ -43,7 +43,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                 if (data && data.length > 0) {
                     this.customSeg = data;
                 }
-                obs.next(this.customSeg);
+                obs.next([...this.customSeg]);
             });
         });
     }
@@ -55,7 +55,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                 if (data && data.length > 0) {
                     this.payMethod = data;
                 }
-                obs.next(this.payMethod);
+                obs.next([...this.payMethod]);
             });
         });
     }
@@ -67,7 +67,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                 if (data && data.length > 0) {
                     this.subAccMethod = data;
                 }
-                obs.next(this.subAccMethod);
+                obs.next([...this.subAccMethod]);
             });
         });
     }

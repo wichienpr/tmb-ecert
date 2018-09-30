@@ -1,6 +1,6 @@
-<select id="{{ dropdownId }}" name="{{ dropdownName }}" class="ui {{ type ? type : '' }} dropdown" (change)="onChange($event)">
-    <option value="">{{ placehold || 'กรุณาเลือก' }}</option>
-    <option *ngFor="let val of values; let i = index" [value]="val[valueName]">
-        {{val[labelName]}}
+<select id="{{ dropdown.dropdownId }}" name="{{ dropdown.dropdownName }}" class="ui {{ dropdown.type ? dropdown.type : '' }} dropdown" (change)="onChange($event)">
+    <option value="">{{ dropdown.placehold || 'กรุณาเลือก' }}</option>
+    <option *ngFor="let val of dropdown.values; let i = index" [value]="val[dropdown.valueName]">
+        {{val[dropdown.labelName]}}
     </option>
 </select>

@@ -2,6 +2,18 @@
 <app-semantic-menu></app-semantic-menu>
 <!-- menu -->
 
+<!-- modal -->
+<ui-modal [modal]="modalAlert">
+  <ng-template>...</ng-template>
+</ui-modal>
+<ui-modal [modal]="modalAlertSuccess">
+  <ng-template>...</ng-template>
+</ui-modal>
+<ui-modal [modal]="modalConfirm">
+  <ng-template>...</ng-template>
+</ui-modal>
+<!-- modal -->
+
 <!-- body -->
 <div class="ui main container-fluid">
   <router-outlet></router-outlet>
