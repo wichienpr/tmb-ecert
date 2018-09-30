@@ -16,9 +16,9 @@
     </div>
     <div class="row">
       <div class="one center aligned column">
-        <form (submit)="calendarValue($event)" class="ui form" ngNativeValidate>
+        <form [formGroup]="form" #ngForm="ngForm" (submit)="formSubmit(form)" class="ui form">
           <div class="ui centered inline fields grid">
-            <div class="field">
+            <div class="field {{ form.controls.calendar.invalid && ngForm.submitted ? 'error' : '' }}">
                 <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
             </div>
             <div class="field">

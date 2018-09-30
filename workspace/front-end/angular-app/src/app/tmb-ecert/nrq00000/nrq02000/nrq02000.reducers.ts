@@ -1,21 +1,21 @@
 import { Certificate } from "tmb-ecert/models";
 import * as Nrq02000Actions from './nrq02000.actions';
 
-export function certificateReducer(state: Certificate[] = [], action: Nrq02000Actions.CertificateActions): Certificate[] {
-    switch(action.type) {
-        case Nrq02000Actions.CER_CRE:
-            state = [...action.payload];
-            return state;
-        case Nrq02000Actions.CER_UDT:
-            state = [...action.payload];
-            return state;
-        case Nrq02000Actions.CER_RST:
-            state = [];
-            return state;
-        default:
-            return state;
-    }
-}
+// export function certificateReducer(state: Certificate[] = [], action: Nrq02000Actions.CertificateActions): Certificate[] {
+//     switch(action.type) {
+//         case Nrq02000Actions.CER_CRE:
+//             state = [...action.payload];
+//             return state;
+//         case Nrq02000Actions.CER_UDT:
+//             state = [...action.payload];
+//             return state;
+//         case Nrq02000Actions.CER_RST:
+//             state = [];
+//             return state;
+//         default:
+//             return state;
+//     }
+// }
 
 /**
  * Initial Mock Data

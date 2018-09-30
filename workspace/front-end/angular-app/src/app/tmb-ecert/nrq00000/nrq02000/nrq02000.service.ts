@@ -3,9 +3,8 @@ import { Certificate, Lov } from "tmb-ecert/models";
 import { AjaxService, ModalService, DropdownService } from "services/";
 import { dateLocale } from "helpers/";
 
-import * as Actions from './nrq02000.actions';
 import { Store } from "@ngrx/store";
-import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Modal } from "models/";
 import { Observable } from "rxjs";
 
@@ -30,9 +29,13 @@ export class Nrq02000Service {
         corpName1: new FormControl('', Validators.required),            // ชื่อนิติบุคคล 1
         acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
         departmentName: new FormControl('', Validators.required),       // ชื่อหน่วยงาน
-        tmbReceiptName: new FormControl('', Validators.required),       // ชื่อบนใบเสร็จธนาคาร TMB
+        tmbReceiptChk: new FormControl('', Validators.required),        // ชื่อบนใบเสร็จธนาคาร TMB
         telReq: new FormControl('', Validators.required),               // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl('', Validators.required),              // ที่อยู่
+        note: new FormControl('', Validators.required),                 // หมายเหตุ
+        requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+        copyFile: new FormControl('', Validators.required),             // สำเนาบัตรประชาชน
+        changeNameFile: new FormControl('', Validators.required),       // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
     });
 
     constructor(
@@ -112,18 +115,20 @@ export class Nrq02000Service {
     /**
      * Forms Action
      */
-    save(form: FormGroup, reqTypeChanged: Certificate[]): void {
-        const modal: Modal = {
+    save(form: FormGroup): void {
+        const modalConf: Modal = {
             msg: "...?",
             success: true
         };
-        console.log(form.controls);
+        const modalAler: Modal = {
+            msg: "กรุณากรอกข้อมูลให้ครบ",
+            success: false
+        }
         if (form.valid) {
             this.modal.confirm((e) => {
-                if (e) {
-                    this.certificateUpdate(reqTypeChanged);
-                }
-            }, modal);
+            }, modalConf);
+        } else {
+            this.modal.alert(modalAler);
         }
     }
 
@@ -137,10 +142,6 @@ export class Nrq02000Service {
             color: "notification"
         }
         this.modal.confirm((e) => { }, modal);
-    }
-
-    certificateUpdate(data: Certificate[]): void {
-        this.store.dispatch(new Actions.CertificateUpdate(data));
     }
 
     reqTypeChange(e): Promise<any> {

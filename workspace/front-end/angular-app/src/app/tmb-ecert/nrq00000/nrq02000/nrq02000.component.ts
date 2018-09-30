@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate } from 'tmb-ecert/models';
-import { convertAccNo, revertAccNo } from 'app/baiwa/common/helpers';
+import { convertAccNo, revertAccNo, isValid } from 'helpers/';
 
 declare var $: any;
 
@@ -40,8 +40,8 @@ export class Nrq02000Component implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.service.save(this.form, this.reqTypeChanged);
+  formSubmit(form: FormGroup) {
+    this.service.save(form);
   }
 
   send() {
@@ -90,6 +90,25 @@ export class Nrq02000Component implements OnInit {
   accNoFocus(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValue(revertAccNo(accNo.value));
+  }
+
+  validate(input: string, submitted: boolean) {
+    return isValid(this.form, input, submitted);
+  }
+
+  validateChk() { // is invalid checkbox
+    let i = 0;
+    this.reqTypeChanged.forEach( (obj, index) => {
+      if (index != 0) {
+        if (this.form.controls['chk'+index].valid) {
+          i++;
+        }
+      }
+    });
+    if (i > 0) {
+      return false;
+    }
+    return true;
   }
 
 }
