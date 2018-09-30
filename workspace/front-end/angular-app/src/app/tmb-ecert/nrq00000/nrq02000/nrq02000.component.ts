@@ -41,8 +41,7 @@ export class Nrq02000Component implements OnInit {
   }
 
   onSubmit() {
-    let form = new NgForm([], []);
-    this.service.save(form, this.reqTypeChanged);
+    this.service.save(this.form, this.reqTypeChanged);
   }
 
   send() {

@@ -1,7 +1,7 @@
 <div class="ui grid">
   <div class="sixteen wide column">
     <form class="ui form segment" [formGroup]="form" (submit)="onSubmit()">
-      <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
+      <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h4>
 
       <div class="inline fields">
         <div class="one wide field"></div>
@@ -100,14 +100,14 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="เลขที่นิติบุคคล" value="">
+          <input type="text" formControlName="corpNo" placeholder="เลขที่นิติบุคคล">
         </div>
         <div class="two wide field">
           <label>ชื่อนิติบุคคล
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="ชื่อนิติบุคคล" value="">
+          <input type="text" formControlName="corpName" placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
       <div class="inline fields">
@@ -123,7 +123,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="เลขที่ CA/มติอนุมัติ" value="">
+          <input type="text" formControlName="acceptNo" placeholder="เลขที่ CA/มติอนุมัติ">
         </div>
       </div>
 
@@ -133,7 +133,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="ชื่อหน่วยงาน" value="">
+          <input type="text" formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
       <div class="inline fields">
@@ -191,14 +191,14 @@
         </div>
 
         <div class="five wide field">
-          <input type="text" placeholder="123-1-12345-9" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" formControlName="accNo">
+          <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
+            (focus)="accNoFocus()" placeholder="123-1-12345-9">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="ชื่อบัญชี">
+          <input type="text" formControlName="accName" placeholder="ชื่อบัญชี">
         </div>
       </div>
 
@@ -207,20 +207,20 @@
         <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
-        <input type="checkbox">
+        <input type="checkbox" formControlName="tmbReceiptName" placeholder="ชื่อบนใบเสร็จธนาคาร TMB">
         &nbsp;&nbsp;
         <div class="one wide field">
           <label>ชื่อนิติบุคคล</label>
         </div>
 
         <div class="four wide field" style="margin-left: -15px">
-          <input type="text" placeholder="ชื่อนิติบุคคล" value="">
+          <input type="text" formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="เบอร์โทรผู้ขอ/ลูกค้า" value="">
+          <input type="text" formControlName="telReq" placeholder="เบอร์โทรผู้ขอ/ลูกค้า">
         </div>
       </div>
 
@@ -230,13 +230,13 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="file" value="">
+          <input type="file">
         </div>
         <div class="two wide field">
           <label>ที่อยู่</label>
         </div>
         <div class="five wide field">
-          <textarea rows="3"></textarea>
+          <textarea formControlName="address" rows="3"></textarea>
         </div>
       </div>
 
@@ -246,7 +246,7 @@
           <label>สำเนาบัตรประชาชน</label>
         </div>
         <div class="five wide field">
-          <input type="file" value="">
+          <input type="file">
         </div>
       </div>
       <div class="inline fields">
@@ -254,7 +254,7 @@
           <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
         <div class="five wide field">
-          <input type="file" value="">
+          <input type="file">
         </div>
       </div>
 

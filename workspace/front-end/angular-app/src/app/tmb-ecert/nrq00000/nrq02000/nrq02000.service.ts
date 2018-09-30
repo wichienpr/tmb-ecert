@@ -19,11 +19,20 @@ export class Nrq02000Service {
 
     dropdownObj: any;
     form: FormGroup = new FormGroup({
-        reqTypeSelect: new FormControl('', Validators.required),
-        customSegSelect: new FormControl('', Validators.required),
-        payMethodSelect: new FormControl('', Validators.required),
-        subAccMethodSelect: new FormControl('', Validators.required),
-        accNo: new FormControl('', Validators.required),
+        reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
+        customSegSelect: new FormControl('', Validators.required),      // Customer Segment
+        payMethodSelect: new FormControl('', Validators.required),      // วิธีการรับชำระ
+        subAccMethodSelect: new FormControl('', Validators.required),   // วิธีหักบัญชีจาก
+        accNo: new FormControl('', Validators.required),                // เลขที่บัญชี
+        accName: new FormControl('', Validators.required),              // ชื่อบัญชี
+        corpNo: new FormControl('', Validators.required),               // เลขที่นิติบุคคล
+        corpName: new FormControl('', Validators.required),             // ชื่อนิติบุคคล
+        corpName1: new FormControl('', Validators.required),            // ชื่อนิติบุคคล 1
+        acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
+        departmentName: new FormControl('', Validators.required),       // ชื่อหน่วยงาน
+        tmbReceiptName: new FormControl('', Validators.required),       // ชื่อบนใบเสร็จธนาคาร TMB
+        telReq: new FormControl('', Validators.required),               // เบอร์โทรผู้ขอ/ลูกค้า
+        address: new FormControl('', Validators.required),              // ที่อยู่
     });
 
     constructor(
@@ -81,7 +90,7 @@ export class Nrq02000Service {
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
     }
 
-    
+
     /**
      * Initial Data
      */
@@ -103,16 +112,19 @@ export class Nrq02000Service {
     /**
      * Forms Action
      */
-    save(form: NgForm, reqTypeChanged: Certificate[]): void {
+    save(form: FormGroup, reqTypeChanged: Certificate[]): void {
         const modal: Modal = {
             msg: "...?",
             success: true
         };
-        this.modal.confirm((e) => {
-            if (e) {
-                this.certificateUpdate(reqTypeChanged);
-            }
-        }, modal);
+        console.log(form.controls);
+        if (form.valid) {
+            this.modal.confirm((e) => {
+                if (e) {
+                    this.certificateUpdate(reqTypeChanged);
+                }
+            }, modal);
+        }
     }
 
     send(): void {
