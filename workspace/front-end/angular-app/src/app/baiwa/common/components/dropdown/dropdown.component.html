@@ -1,6 +1,9 @@
-<select id="{{ dropdown.dropdownId }}" name="{{ dropdown.dropdownName }}" class="ui {{ dropdown.type ? dropdown.type : '' }} dropdown" (change)="onChange($event)">
-    <option value="">{{ dropdown.placehold || 'กรุณาเลือก' }}</option>
-    <option *ngFor="let val of dropdown.values; let i = index" [value]="val[dropdown.valueName]">
-        {{val[dropdown.labelName]}}
-    </option>
-</select>
+<ng-container [formGroup]="dropdown.formGroup">
+    <select id="{{ dropdown.dropdownId }}" name="{{ dropdown.dropdownName }}" [formControlName]="dropdown.formControlName"
+        class="ui {{ dropdown.type ? dropdown.type : '' }} dropdown" (change)="onChange($event)">
+        <option value="">{{ dropdown.placehold || 'กรุณาเลือก' }}</option>
+        <option *ngFor="let val of dropdown.values; let i = index" [value]="val[dropdown.valueName]">
+            {{val[dropdown.labelName]}}
+        </option>
+    </select>
+</ng-container>

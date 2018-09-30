@@ -12,6 +12,8 @@ import { Nrq02000Component } from './nrq02000/nrq02000.component';
 import { certificateReducer } from './nrq02000/nrq02000.reducers';
 // Module Components
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
+// Module Directives
+import { DisableControlModule } from 'directives/';
 
 @NgModule({
   imports: [
@@ -24,6 +26,8 @@ import { ModalModule, CalendarModule, DropdownModule } from 'components/';
     ModalModule,
     DropdownModule,
     CalendarModule,
+    // Directives
+    DisableControlModule,
     // StoreModule.forRoot({ nrq01000: nrqReducer })
     StoreModule.forFeature('certificate', certificateReducer),
   ],

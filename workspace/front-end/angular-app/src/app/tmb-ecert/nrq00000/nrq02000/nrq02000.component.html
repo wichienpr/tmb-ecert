@@ -1,6 +1,6 @@
 <div class="ui grid">
   <div class="sixteen wide column">
-    <form class="ui form segment" [formGroup]="form" (submit)="onSubmit()" >
+    <form class="ui form segment" [formGroup]="form" (submit)="onSubmit()">
       <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม </h4>
 
       <div class="inline fields">
@@ -75,7 +75,7 @@
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
-                      <input type="checkbox" name="check{{i}}" (change)="toggleChk(i)" [(ngModel)]="reqTypeChanged[i].checked">
+                      <input type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
                       <label></label>
                     </div>
                   </td>
@@ -83,8 +83,9 @@
                   <td>{{ req.feeDbd }}</td>
                   <td>{{ req.feeTmb }}</td>
                   <td>
-                    <div class="ui input {{ reqTypeChanged[i].checked ? '' : 'disabled' }}">
-                      <input type="number" name="value{{i}}" style="width: 100%;" [(ngModel)]="reqTypeChanged[i].value">
+                    <div class="ui input">
+                      <input type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
+                        formControlName="cer{{i}}" style="width: 100%;">
                     </div>
                   </td>
                 </tr>
@@ -99,14 +100,14 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="เลขที่นิติบุคคล" value="">
         </div>
         <div class="two wide field">
           <label>ชื่อนิติบุคคล
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="ชื่อนิติบุคคล" value="">
         </div>
       </div>
       <div class="inline fields">
@@ -122,7 +123,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="เลขที่ CA/มติอนุมัติ" value="">
         </div>
       </div>
 
@@ -132,7 +133,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="ชื่อหน่วยงาน" value="">
         </div>
       </div>
       <div class="inline fields">
@@ -190,13 +191,14 @@
         </div>
 
         <div class="five wide field">
-          <input type="text" placeholder="123-1-12345-9" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()" (focus)="accNoFocus()" formControlName="accNo">
+          <input type="text" placeholder="123-1-12345-9" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
+            (focus)="accNoFocus()" formControlName="accNo">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>
         </div>
         <div class="five wide field">
-          <input type="text">
+          <input type="text" placeholder="ชื่อบัญชี">
         </div>
       </div>
 
@@ -212,13 +214,13 @@
         </div>
 
         <div class="four wide field" style="margin-left: -15px">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="ชื่อนิติบุคคล" value="">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
         <div class="five wide field">
-          <input type="text" placeholder="" value="">
+          <input type="text" placeholder="เบอร์โทรผู้ขอ/ลูกค้า" value="">
         </div>
       </div>
 
