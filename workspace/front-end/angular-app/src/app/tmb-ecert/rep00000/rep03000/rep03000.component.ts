@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AjaxService } from 'app/baiwa/common/services/ajax.service';
+import { forEach } from '@angular/router/src/utils/collection';
+import { Certificate } from 'tmb-ecert/models';
 declare var $: any;
 @Component({
   selector: 'app-rep03000',
