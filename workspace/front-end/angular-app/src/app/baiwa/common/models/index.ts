@@ -1,3 +1,3 @@
 export { Modal } from './modal';
-export { Calendar } from './calendar';
+export { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from './calendar';
 export { Dropdown } from './dropdown';

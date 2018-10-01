@@ -21,7 +21,7 @@ export class CalendarComponent implements AfterViewInit {
         $(`#${this.calendar.calendarId}`).calendar({
             type: this.calendar.type || 'date',
             text: DateConstant.text,
-            formatter: DateConstant.formatter(this.calendar.formatter || ''),
+            formatter: DateConstant.formatter(this.calendar.formatter || '', this.calendar.local || 'en'),
             onChange: this.onChange
         });
     }
@@ -68,28 +68,39 @@ class DateConstant {
         pm: "หลังบ่าย"
     };
 
-    public static formatter = (txt: string = '') => {
+    public static formatter = (txt: string = '', local: string = 'en') => {
         switch (txt) {
+            case 'mmmm yyyy':
+                return {
+                    header: (date, mode, settings) => {
+                        return DateConstant[`${local}Date`]().split("/")[2];
+                    },
+                    date: (date, mode, settings) => {
+                        let month = date.getMonth();
+                        let _year = DateConstant[`${local}Date`](date).split("/")[2];
+                        return DateConstant.text.months[month] + " " + _year;
+                    }
+                };
             case 'dd/mm/yyyy':
                 return {
                     header: (date, mode, settings) => {
                         let month = date.getMonth();
-                        let _year = DateConstant.enDate(date).split("/")[2];
+                        let _year = DateConstant[`${local}Date`](date).split("/")[2];
                         return DateConstant.text.months[month] + " " + _year;
                     },
                     date: (date, settings) => {
-                        return DateConstant.enDate(date);
+                        return DateConstant[`${local}Date`](date);
                     }
                 };
             default:
                 return {
                     header: (date, mode, settings) => {
                         let month = date.getMonth();
-                        let _year = DateConstant.enDate(date).split("/")[2];
+                        let _year = DateConstant[`${local}Date`](date).split("/")[2];
                         return DateConstant.text.months[month] + " " + _year;
                     },
                     date: (date, settings) => {
-                        return DateConstant.enDate(date);
+                        return DateConstant[`${local}Date`](date);
                     }
                 };
         }

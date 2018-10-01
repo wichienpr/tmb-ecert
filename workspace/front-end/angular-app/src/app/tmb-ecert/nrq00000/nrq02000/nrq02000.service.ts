@@ -7,6 +7,7 @@ import { Store } from "@ngrx/store";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Modal } from "models/";
 import { Observable } from "rxjs";
+import { Nrq02000 } from "app/tmb-ecert/nrq00000/nrq02000/nrq02000.model";
 
 const URL = {
     LOV_BY_TYPE: "lov/type",
@@ -125,6 +126,9 @@ export class Nrq02000Service {
             success: false
         }
         if (form.valid) {
+            // const data: Nrq02000 = {
+            //     acceptNo: form.controls.acceptNo.value,
+            // };
             this.modal.confirm((e) => {
             }, modalConf);
         } else {

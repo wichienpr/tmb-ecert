@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate } from 'tmb-ecert/models';
-import { convertAccNo, revertAccNo, isValid } from 'helpers/';
+import { Acc, isValid } from 'helpers/';
 
 declare var $: any;
 
@@ -84,12 +84,12 @@ export class Nrq02000Component implements OnInit {
   accNoBlur(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValidators([Validators.required, Validators.maxLength(13)]);
-    this.form.controls.accNo.setValue(convertAccNo(accNo.value));
+    this.form.controls.accNo.setValue(Acc.convertAccNo(accNo.value));
   }
 
   accNoFocus(): void {
     const { accNo } = this.form.controls;
-    this.form.controls.accNo.setValue(revertAccNo(accNo.value));
+    this.form.controls.accNo.setValue(Acc.revertAccNo(accNo.value));
   }
 
   validate(input: string, submitted: boolean) {
