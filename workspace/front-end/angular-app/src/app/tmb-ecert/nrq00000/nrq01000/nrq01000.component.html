@@ -19,7 +19,7 @@
         <form [formGroup]="form" #ngForm="ngForm" (submit)="formSubmit(form)" class="ui form">
           <div class="ui centered inline fields grid">
             <div class="field {{ form.controls.calendar.invalid && ngForm.submitted ? 'error' : '' }}">
-                <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue($event)"></ui-calendar>
+                <ui-calendar [calendar]="calendar" (calendarValue)="calendarValue('calendar',$event)"></ui-calendar>
             </div>
             <div class="field">
                 <button class="ui button" type="submit">ปุ่ม</button>

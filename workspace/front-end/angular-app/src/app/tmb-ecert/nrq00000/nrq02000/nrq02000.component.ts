@@ -18,6 +18,7 @@ declare var $: any;
 export class Nrq02000Component implements OnInit {
 
   form: FormGroup;
+  files: any;
   reqDate: string;
   dropdownObj: any;
 
@@ -29,6 +30,11 @@ export class Nrq02000Component implements OnInit {
     private service: Nrq02000Service
   ) {
     this.reqTypeChanged = [];
+    this.files = {
+      requestFile: null,
+      copyFile: null,
+      changeNameFile: null
+    };
   }
 
   ngOnInit() {
@@ -41,11 +47,15 @@ export class Nrq02000Component implements OnInit {
   }
 
   formSubmit(form: FormGroup) {
-    this.service.save(form);
+    this.service.save(form, this.files, this.reqTypeChanged);
   }
 
-  send() {
-    this.service.send();
+  download() {
+    this.service.download();
+  }
+
+  cancel() {
+    this.service.cancel();
   }
 
   reqTypeChange(e) {
@@ -81,6 +91,10 @@ export class Nrq02000Component implements OnInit {
     console.log('subAccMethodChange => ', e);
   }
 
+  changeUpload(control: string, data: any) {
+    this.files[control] = data.target.files[0];
+  }
+
   accNoBlur(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValidators([Validators.required, Validators.maxLength(13)]);
@@ -97,18 +111,18 @@ export class Nrq02000Component implements OnInit {
   }
 
   validateChk() { // is invalid checkbox
-    let i = 0;
-    this.reqTypeChanged.forEach( (obj, index) => {
+    let has: boolean = true;
+    this.reqTypeChanged.forEach((obj, index) => {
       if (index != 0) {
-        if (this.form.controls['chk'+index].valid) {
-          i++;
+        if (this.form.controls['chk' + index].valid) {
+          has = false;
+        } else if (!has && this.form.controls['chk' + index].invalid) {
+          this.form.get('chk' + index).clearValidators();
+          this.form.get('chk' + index).updateValueAndValidity();
         }
       }
     });
-    if (i > 0) {
-      return false;
-    }
-    return true;
+    return has;
   }
 
 }

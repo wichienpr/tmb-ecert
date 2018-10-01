@@ -1,3 +1,5 @@
+import { Certificate } from "tmb-ecert/models";
+
 export interface Nrq02000 {
     reqTypeSelect: string;        // ประเภทคำขอ
     customSegSelect: string;      // Customer Segment
