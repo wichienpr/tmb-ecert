@@ -16,6 +16,7 @@ export interface Calendar {
 
 export enum CalendarFormatter{
     MMMMyyyy = "mmmm yyyy",
+    MMyyyy = "MM/yyyy",
     ddMMyyyy = "dd/mm/yyyy",
     DEFAULT = ""
 }
@@ -26,5 +27,7 @@ export enum CalendarLocal {
 }
 
 export enum CalendarType {
-    DATE = "date"
+    DATE = "date",
+    MONTH = "month",
+    YEAR = "year"
 }

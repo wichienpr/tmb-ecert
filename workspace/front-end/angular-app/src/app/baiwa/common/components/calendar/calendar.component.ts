@@ -73,12 +73,21 @@ class DateConstant {
             case 'mmmm yyyy':
                 return {
                     header: (date, mode, settings) => {
-                        return DateConstant[`${local}Date`]().split("/")[2];
+                        return DateConstant[`${local}Date`](date).split("/")[2];
                     },
                     date: (date, mode, settings) => {
                         let month = date.getMonth();
                         let _year = DateConstant[`${local}Date`](date).split("/")[2];
                         return DateConstant.text.months[month] + " " + _year;
+                    }
+                };
+            case 'MM/yyyy':
+                return {
+                    header: (date, mode, settings) => {
+                        return DateConstant[`${local}Date`](date).split("/")[2];
+                    },
+                    date: (date, mode, settings) => {
+                        return DateConstant[`${local}Date`](date).split("/")[1]+"/"+DateConstant[`${local}Date`](date).split("/")[2];
                     }
                 };
             case 'dd/mm/yyyy':

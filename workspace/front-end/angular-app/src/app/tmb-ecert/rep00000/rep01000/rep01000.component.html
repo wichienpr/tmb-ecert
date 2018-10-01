@@ -11,30 +11,20 @@
 
 
         <div class="ui attached segment">
-            <div class="ui form">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
                         <label class="custom-label-w-25">วันที่ขอ</label>
                     </div>
                     <div class="five wide field">
-                        <div class="ui calendar" id="calendar1" style="width:100%">
-                            <div class="ui input left icon">
-                                <i class="time icon"></i>
-                                <input type="text" name="startDate" id="startDate">
-                            </div>
-                        </div>
+                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field ">
                         <label>ถึงวันที่</label>
                     </div>
                     <div class="five wide field">
-                        <div class="ui calendar" id="calendar2" style="width:100%">
-                            <div class="ui input left icon">
-                                <i class="time icon"></i>
-                                <input type="text" name="endDate" id="endDate">
-                            </div>
-                        </div>
+                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
                     </div>
                 </div>
 
@@ -44,14 +34,14 @@
                     <div class="two wide field ">
                         <label>เลขที่นิติบุคคล </label>
                     </div>
-                    <div class="five wide field ">
-                        <input type="text" placeholder="" value="">
+                    <div class="five wide field">
+                        <input type="number" formControlName="corpNo" placeholder="เลขที่นิติบุคคล">
                     </div>
                     <div class="two wide field ">
                         <label>ชื่อนิติบุคคล</label>
                     </div>
                     <div class="five wide field ">
-                        <input type="text" placeholder="" value="">
+                        <input type="text" formControlName="corpName" placeholder="ชื่อนิติบุคคล">
                     </div>
                 </div>
 
@@ -61,33 +51,29 @@
                         <label>ประเภทคำขอ</label>
                     </div>
                     <div class="five wide field">
-                        <select id="products" name="products" class="ui search dropdown" (change)="onSelectProducts($event)">
-                            <option *ngFor="let product of products; let i = index" value="{{i}}">
-                                {{product}}
-                            </option>
-                        </select>
+                        <ui-dropdown [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
                     </div>
                 </div>
-            </div>
-            <br>
-            <br>
-            <div class="ui center aligned grid">
-
-                <button class="ui blue basic button" (click)="searchData()">
-                    <i class="search icon"></i>
-                    ค้นหา
-                </button>
-                <button class="ui grey  basic button" (click)="clearData()">
-                    <i class="trash alternate outline icon"></i>
-                    ล้างข้อมูล
-                </button>
                 <br>
-            </div>
-            <br>
+                <br>
+                <div class="ui center aligned grid">
 
-            <br>
+                    <button class="ui blue basic button" type="button" (click)="searchData()">
+                        <i class="search icon"></i>
+                        ค้นหา
+                    </button>
+                    <button class="ui grey  basic button" type="button" (click)="clearData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                    <br>
+                </div>
+                <br>
 
+                <br>
+            </form>
         </div>
+
     </div>
 </div>
 <br>
@@ -126,7 +112,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: right">0</td>
+                        <td style="text-align: center">0</td>
                         <td>21/8/2561</td>
                         <td style="text-align: center;">2018080001</td>
                         <td>1234567890123</td>
@@ -163,8 +149,16 @@
                         <td style="text-align: center !important;">{{data.totalAmount}}</td>
                         <td style="text-align: center !important;">({{data.makerById}} {{data.makerByName}})</td>
                         <td style="text-align: center !important;">({{data.checkerById}} {{data.checkerByName}})</td>
-                        <td style="text-align: center !important;"><span *ngIf="data.status=='10010'"><i class="check icon"></i></span></td>
-                        <td style="text-align: center !important;"><span *ngIf="data.status=='10008'||data.status=='10007'"><i class="check icon"></i></span></td>
+                        <td style="text-align: center !important;">
+                            <span *ngIf="data.status=='10010'">
+                                <i class="check icon"></i>
+                            </span>
+                        </td>
+                        <td style="text-align: center !important;">
+                            <span *ngIf="data.status=='10008'||data.status=='10007'">
+                                <i class="check icon"></i>
+                            </span>
+                        </td>
                         <td style="text-align: center !important;">{{data.remark}}</td>
                     </tr>
                 </tbody>

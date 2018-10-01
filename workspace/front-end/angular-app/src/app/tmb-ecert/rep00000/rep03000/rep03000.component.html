@@ -19,12 +19,7 @@
                         </label>
                     </div>
                     <div class="five wide field">
-                        <div class="ui calendar" id="calendar1" style="width:100%">
-                            <div class="ui input left icon">
-                                <i class="time icon"></i>
-                                <input type="text" name="startDate" id="startDate">
-                            </div>
-                        </div>
+                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue($event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field ">
                         <label>เลขประจำตัวผู้เสียภาษีอากร

@@ -9,49 +9,40 @@
 
 
         <div class="ui attached segment">
-            <div class="ui form">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
-                        <label class="custom-label-w-25">ตั้งแต่เดือน</label>
+                        <label>ตั้งแต่เดือน</label>
                     </div>
                     <div class="five wide field">
-                        <div class="ui calendar" id="calendar2" style="width:100%">
-                            <div class="ui input left icon">
-                                <i class="time icon"></i>
-                                <input type="text" name="startDate" id="startDate">
-                            </div>
-                        </div>
+                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field">
-                        <label class="custom-label-w-25">ถึงเดือน</label>
+                        <label>ถึงเดือน</label>
                     </div>
                     <div class="five wide field">
-                        <div class="ui calendar" id="calendar1" style="width:100%">
-                            <div class="ui input left icon">
-                                <i class="time icon"></i>
-                                <input type="text" name="startDate" id="startDate">
-                            </div>
-                        </div>
+                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
                     </div>
                 </div>
 
-            </div>
-            <br>
-            <br>
-            <div class="ui center aligned grid">
-                <button class="ui blue basic button" (click)="searchData()">
-                    <i class="search icon"></i>
-                    ค้นหา
-                </button>
-                <button class="ui gery basic button" (click)="clearData()">
-                    <i class="trash alternate outline icon"></i>
-                    ล้างข้อมูล
-                </button>
-                <br>
-            </div>
-            <br>
 
+                <br>
+                <br>
+                <div class="ui center aligned grid">
+                    <button class="ui blue basic button" type="button" (click)="searchData()">
+                        <i class="search icon"></i>
+                        ค้นหา
+                    </button>
+                    <button class="ui grey  basic button" type="button" (click)="clearData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                    <br>
+                </div>
+                <br>
+            </form>
         </div>
     </div>
 </div>
@@ -83,106 +74,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    <tr style="background: 	#F8F8FF">
-                        <td style="text-align: center">Retail</td>
-                        <td style="text-align: right">56</td>
-                        <td style="text-align: right">30</td>
-                        <td style="text-align: right">26</td>
-                        <td style="text-align: right">11,200.00</td>
-                        <td style="text-align: right">5,600.00</td>
-                        <td style="text-align: right">16,800.00</td>
-                        <td style="text-align: right">56</td>
-                        <td style="text-align: right">0</td>
-                        <td>&nbsp;</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align: center">SE</td>
-                        <td style="text-align: right">57</td>
-                        <td style="text-align: right">45</td>
-                        <td style="text-align: right">12</td>
-                        <td style="text-align: right">11,400.00</td>
-                        <td style="text-align: right">5,700.00</td>
-                        <td style="text-align: right">17,100.00</td>
-                        <td style="text-align: right">57</td>
-                        <td style="text-align: right">0</td>
-                        <td>&nbsp;</td>
-
-                    </tr>
-                    <tr>
-                        <td style="text-align: center">BB</td>
-                        <td style="text-align: right">98</td>
-                        <td style="text-align: right">77</td>
-                        <td style="text-align: right">21</td>
-                        <td style="text-align: right">19,600.00</td>
-                        <td style="text-align: right">9,800.00</td>
-                        <td style="text-align: right">29,400.00</td>
-                        <td style="text-align: right">95</td>
-                        <td style="text-align: right">
-                            3
-                        </td>
-                        <td style="text-align: left">
-                            <button class="ui red basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
-                                <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                        </td>
-
-
-                    </tr>
-                    <tr style="background: 	#F8F8FF">
-                        <td style="text-align: center">CB</td>
-                        <td style="text-align: right">93</td>
-                        <td style="text-align: right">55</td>
-                        <td style="text-align: right">38</td>
-                        <td style="text-align: right">18,600.00</td>
-                        <td style="text-align: right">9,300.00</td>
-                        <td style="text-align: right">27,900.00</td>
-                        <td style="text-align: right">83</td>
-                        <td style="text-align: right">
-                            10
-                        </td>
-                        <td style="text-align: left">
-                            <button class="ui red basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
-                                <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                        </td>
-
-
-                    </tr>
-                    <tr>
-                        <td style="text-align: center">MB</td>
-                        <td style="text-align: right">61</td>
-                        <td style="text-align: right">50</td>
-                        <td style="text-align: right">11</td>
-                        <td style="text-align: right">12,200.00</td>
-                        <td style="text-align: right">6,100.00</td>
-                        <td style="text-align: right">18,300.00</td>
-                        <td style="text-align: right">60</td>
-                        <td style="text-align: right">
-                            1
-                        </td>
-                        <td style="text-align: left">
-                            <button class="ui red basic button" [routerLink]="[ '/cause-monthly']">สาเหตุ
-                                <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td style="text-align: center">Etc</td>
-                        <td style="text-align: right">20</td>
-                        <td style="text-align: right">5</td>
-                        <td style="text-align: right">15</td>
-                        <td style="text-align: right">4,000.00</td>
-                        <td style="text-align: right">2,000.00</td>
-                        <td style="text-align: right">6,000.00</td>
-                        <td style="text-align: right">20</td>
-                        <td style="text-align: right">0</td>
-                        <td>&nbsp;</td>
-
-                    </tr>
                     <tr style="background: 	#F8F8FF">
                         <td style="text-align: center"> ETC</td>
                         <td style="text-align: right">93</td>
@@ -195,6 +86,25 @@
                         <td style="text-align: right">
                             7
                         </td>
+                        <td style="text-align: center">
+                            <button class="ui mini red basic button" [routerLink]="[ '/rep/rep02100']">สาเหตุ
+                                <i class="arrow alternate circle right outline icon"></i>
+                            </button>
+                            <button class="ui mini blue basic button" (click)="openModal(modal[0])"> รายละเอียด
+                                <i class="arrow alternate circle right outline icon"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                        <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
+                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.amountDbd}}</td>
+                        <td style="text-align: center !important;">{{data.amountTmb}}</td>
+                        <td style="text-align: center !important;">{{data.totalAmount}}</td>
+                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
                         <td style="text-align: center">
                             <button class="ui mini red basic button" [routerLink]="[ '/rep/rep02100']">สาเหตุ
                                 <i class="arrow alternate circle right outline icon"></i>
