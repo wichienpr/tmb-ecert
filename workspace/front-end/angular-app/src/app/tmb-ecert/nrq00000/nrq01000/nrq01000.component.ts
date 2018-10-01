@@ -44,8 +44,9 @@ export class Nrq01000Component implements OnInit {
     }
   }
 
-  calendarValue(e) {
-    this.form.controls.calendar.setValue(e);
+  calendarValue(name, e) {
+    this.form.controls[name].setValue(e);
+    console.log(this.form);
   }
 
 

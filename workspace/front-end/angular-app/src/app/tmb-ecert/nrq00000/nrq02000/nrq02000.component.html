@@ -195,7 +195,7 @@
         </div>
         <div class="five wide field {{ validate('accNo', ngForm.submitted) ? '' : 'error' }}">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" placeholder="123-1-12345-9">
+            (focus)="accNoFocus()" autocomplete="off" placeholder="123-1-12345-9">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>
@@ -231,7 +231,7 @@
           </label>
         </div>
         <div class="five wide field {{ validate('requestFile', ngForm.submitted) ? '' : 'error' }}">
-          <input type="file" formControlName="requestFile">
+          <input type="file" (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
         <div class="two wide field">
           <label>ที่อยู่</label>
@@ -247,7 +247,7 @@
           <label>สำเนาบัตรประชาชน</label>
         </div>
         <div class="five wide field {{ validate('copyFile', ngForm.submitted) ? '' : 'error' }}">
-          <input type="file" formControlName="copyFile">
+          <input type="file" (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
       </div>
       <div class="inline fields">
@@ -255,7 +255,7 @@
           <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
         <div class="five wide field {{ validate('changeNameFile', ngForm.submitted) ? '' : 'error' }}">
-          <input type="file" formControlName="changeNameFile">
+          <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
         </div>
       </div>
 
@@ -270,15 +270,15 @@
       <div class="inline field">
         <div class="ui one grid">
           <div class="center aligned one column btn-group">
-            <button class="ui blue basic button" type="submit">
+            <button class="ui blue basic button" (click)="download()" type="button">
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button class="ui blue basic button" type="button" (click)="send()">
+            <button class="ui blue basic button" type="submit">
               <i class="file alternate outline icon"></i>
               ยื่นใบคำขอ
             </button>
-            <button class="ui grey basic button" type="button">
+            <button class="ui grey basic button" (click)="cancel()" type="button">
               <i class="times circle outline icon"></i>
               ยกเลิก
             </button>
