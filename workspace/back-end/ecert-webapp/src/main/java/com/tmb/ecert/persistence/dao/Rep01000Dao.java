@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,8 @@ import com.tmb.ecert.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.persistence.vo.Rep01000Vo;
 
 @Repository
-public class Rep01000Repository {
-	private Logger log = LoggerFactory.getLogger(Rep01000Repository.class);
+public class Rep01000Dao {
+	private Logger log = LoggerFactory.getLogger(Rep01000Dao.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -28,15 +30,41 @@ public class Rep01000Repository {
 			" b.TYPE_CODE AS REQUEST_TYPE_CODE," +
 			" b.TYPE_DESC AS REQUEST_TYPE_DESC," +        
 			" c.NAME AS CUSTSEGMENT_DESC " +   
-			" FROM ECERT_REQUEST_FORM a " + 
-			" INNER JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE " + 
-			" INNER JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ";
+			" FROM (ECERT_REQUEST_FORM a " + 
+			" INNER JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE )" + 
+			" INNER JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE " + 
+			" WHERE 1=1 ";
 	
 	
 	public List<Rep01000Vo> getData(Rep01000FormVo formVo) {
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM);
 		List<Object> params = new ArrayList<>();
 		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
+		
+		if (StringUtils.isNotBlank(formVo.getDateForm())) {
+			sql.append(" AND  a.REQUEST_DATE >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getDateTo())) {
+			sql.append(" AND  a.REQUEST_DATE <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
+			sql.append(" AND a.ORGANIZE_ID = ?");
+			params.add(formVo.getOrganizeId());
+		}
+		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
+			sql.append(" AND a.COMPANY_NAME LIKE ?");
+			params.add("%"+formVo.getCompanyName()+"%");
+		}
+		if (StringUtils.isNotBlank(formVo.getRequestTypeCode())) {
+			sql.append(" AND b.TYPE_CODE = ?");
+			params.add(formVo.getRequestTypeCode());
+		}
+		
+		
 		sql.append(" ORDER BY a.REQUEST_DATE DESC ");
 		rep01000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
 		
