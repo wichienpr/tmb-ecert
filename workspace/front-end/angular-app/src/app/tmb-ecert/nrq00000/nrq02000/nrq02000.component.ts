@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Certificate, Lov } from 'tmb-ecert/models';
-import { DropdownService } from 'services/';
-import { convertAccNo, revertAccNo } from 'app/baiwa/common/helpers';
+import { Certificate } from 'tmb-ecert/models';
+import { convertAccNo, revertAccNo, isValid } from 'helpers/';
 
 declare var $: any;
 
@@ -18,12 +17,7 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
-  form: FormGroup = new FormGroup({
-    reqTyped: new FormControl('', Validators.required),
-
-    accNo: new FormControl('', Validators.required),
-  });
-
+  form: FormGroup;
   reqDate: string;
   dropdownObj: any;
 
@@ -38,18 +32,16 @@ export class Nrq02000Component implements OnInit {
   }
 
   ngOnInit() {
-    // Current Date
+    // Initial Data
     this.reqDate = this.service.getReqDate();
     this.dropdownObj = this.service.getDropdownObj();
-
-    // Certificate
-    this.store.select('certificate').subscribe(result => this.reqTypeChanged = result);
+    this.service.getForm().subscribe(form => {
+      this.form = form
+    });
   }
 
-  onSubmit() {
-    let form = new NgForm([],[]);
-    console.log(this.form);
-    this.service.save(form, this.reqTypeChanged);
+  formSubmit(form: FormGroup) {
+    this.service.save(form);
   }
 
   send() {
@@ -57,7 +49,24 @@ export class Nrq02000Component implements OnInit {
   }
 
   reqTypeChange(e) {
-    this.service.reqTypeChange(e);
+    this.service.reqTypeChange(e).then(certificate => {
+      this.reqTypeChanged = certificate;
+      this.reqTypeChanged.forEach((obj, index) => {
+        if (index != 0) {
+          if (this.form.controls[`chk${index}`]) {
+            this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+          } else {
+            this.form.addControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+          }
+        }
+      })
+    });
+  }
+
+  toggleChk(index) {
+    this.form.controls[`cer${index}`].setValue('');
   }
 
   customSegChange(e) {
@@ -72,10 +81,6 @@ export class Nrq02000Component implements OnInit {
     console.log('subAccMethodChange => ', e);
   }
 
-  toggleChk(index: number) {
-    this.reqTypeChanged[index].value = null;
-  }
-
   accNoBlur(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValidators([Validators.required, Validators.maxLength(13)]);
@@ -85,6 +90,25 @@ export class Nrq02000Component implements OnInit {
   accNoFocus(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValue(revertAccNo(accNo.value));
+  }
+
+  validate(input: string, submitted: boolean) {
+    return isValid(this.form, input, submitted);
+  }
+
+  validateChk() { // is invalid checkbox
+    let i = 0;
+    this.reqTypeChanged.forEach( (obj, index) => {
+      if (index != 0) {
+        if (this.form.controls['chk'+index].valid) {
+          i++;
+        }
+      }
+    });
+    if (i > 0) {
+      return false;
+    }
+    return true;
   }
 
 }

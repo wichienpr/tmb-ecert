@@ -58,7 +58,7 @@
                 ตรวจสอบสถานะคำขอ
               </div>
             </h3>
-          </div>
+          </div> 
         </div>
         <div class="row">
           <div class="ui top attached header segment">
@@ -70,25 +70,15 @@
                 <div class="two wide field">
                   <label class="custom-label-w-22">วันที่ขอ</label>
                 </div>
-                <div class="five wide field">
-                  <div class="ui calendar" id="calendar1" style="width:100%">
-                    <div class="ui input left icon">
-                      <i class="time icon"></i>
-                      <input type="text" name="startDate" id="startDate">
-                    </div>
-                  </div>
+                <div class="five wide field" >
+                    <ui-calendar calendarId="reqDate"  name="reqDate"  style="width:100% ;"></ui-calendar>
                 </div>
                 <div class="two wide field ">
                   <label>ถึงวันที่
                   </label>
                 </div>
                 <div class="five wide field">
-                  <div class="ui calendar" id="calendar2" style="width:100%">
-                    <div class="ui input left icon">
-                      <i class="time icon"></i>
-                      <input type="text" name="endDate" id="endDate">
-                    </div>
-                  </div>
+                    <ui-calendar calendarId="toDate"  name="toDate"  style="width:100% ;"></ui-calendar>
                 </div>
               </div>
               <div class="inline fields">
@@ -130,12 +120,13 @@
               </div>
             </div>
           </div>
-          <div class="ui segment" *ngIf="showData">
+
+          <div class="ui segment" >
             <div class="two wide field ">
               <b>ผลการค้นหา</b>
             </div>
             <table class=" small celled table nowrap ui" id="table" style="width: 100%">
-              <thead class="tbody">
+              <thead class="tbody" >
                 <tr style="text-align: center;">
                   <th class="collapsing">ลำดับ</th>
                   <th >วันที่ยื่นคำขอ</th>
@@ -148,7 +139,6 @@
                   <th>ชื่อบริษัท</th>
                   <th>สถานะดำเนินการ</th>
                   <th>Action</th>
-  
                 </tr>
               </thead>
               <tbody>
@@ -169,184 +159,11 @@
                     </button>
                   </td>
                 </tr>
-                <tr style="background: 	#F8F8FF">
-                  <td style="text-align: right">2</td>
-                  <td> 01/01/2561</td>
-                  <td>20180900002</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                  <td>1023456321234</td>
-                  <td>บริษัท เอ</td>
-                  <td>ดำเนินการชำระเงิน</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style="color:red;">
-                  <td style="text-align: right">3</td>
-                  <td> 01/01/2561</td>
-                  <td>20180900003</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                  <td>1023456321234</td>
-                  <td>บริษัท เอ</td>
-                  <td>ปฏิเสธคำขอ</td>
-                  <td>
-                    <button class="ui red basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style="background: 	#F8F8FF">
-                  <td style="text-align: right">4</td>
-                  <td>01/01/2561</td>
-                  <td>20180900004</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                  <td>2023456321234</td>
-                  <td>บริษัท บี</td>
-                  <td>อนุมัติการชำระเงิน</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style="color:red;">
-                  <td style="text-align: right">5</td>
-                  <td>01/01/2561</td>
-                  <td>20180900005</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                  <td>2023456321234</td>
-                  <td>บริษัท บี</td>
-                  <td>ปฏิเสธการชำระ</td>
-                  <td>
-                    <button class="ui red basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style="background: 	#F8F8FF">
-                  <td style="text-align: right">6</td>
-                  <td>01/01/2561</td>
-                  <td>20180900006</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>สมาคมและหอการค้า</td>
-                  <td>3023456321234</td>
-                  <td>บริษัท ซี</td>
-                  <td>รออนุมัติการชำระเงิน</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-  
-                <tr>
-                  <td style="text-align: right">7</td>
-                  <td>01/01/2561</td>
-                  <td>20180900007</td>
-                  <td>61100920717022</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                  <td>5023456321234</td>
-                  <td>บริษัท บี1</td>
-                  <td>ชำระเงินไม่สำเร็จ</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr style="background: 	#F8F8FF">
-                  <td style="text-align: right">8</td>
-                  <td>01/01/2561</td>
-                  <td>20180900008</td>
-                  <td>61100920717022</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>การประกอบธุรกิจของคนต่างด้าว</td>
-                  <td>5023456321234</td>
-                  <td>บริษัท บี1</td>
-                  <td>รออัพโหลด Certificate</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: right">9</td>
-                  <td>01/01/2561</td>
-                  <td>20180900009</td>
-                  <td>61100920717022</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>สมาคมและหอการค้า</td>
-                  <td>6023456321234</td>
-                  <td>บริษัท ซี1</td>
-                  <td>ดำเนินการสำเร็จ</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-  
-  
-  
-                <tr style="background: 	#F8F8FF;color: red">
-                  <td style="text-align: right">10</td>
-                  <td>01/01/2561</td>
-                  <td>20180900010</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>สมาคมและหอการค้า</td>
-                  <td>9023456321235</td>
-                  <td>บริษัท ซี3</td>
-                  <td>ยกเลิกคำขอ</td>
-                  <td>
-                    <button class="ui red basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: right">11</td>
-                  <td>01/01/2561</td>
-                  <td>20180900011</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>สมาคมและหอการค้า</td>
-                  <td>9023456321236</td>
-                  <td>บริษัท ซี4</td>
-                  <td>รอบันทึกคำขอ (ลูกค้าทำรายการเอง)</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/client-signed']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
         </div>
+        
       </div>
     </div>
   </div>

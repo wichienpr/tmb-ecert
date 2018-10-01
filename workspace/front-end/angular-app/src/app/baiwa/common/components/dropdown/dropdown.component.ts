@@ -18,7 +18,6 @@ declare var $: any;
 })
 export class DropdownComponent implements AfterViewInit {
 
-
     @Input() dropdown: Dropdown;
     @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 

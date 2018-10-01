@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { UserDetail } from 'app/user.model';
 import * as UserActions from 'app/user.action';
 import { Calendar } from 'models/';
-import { NgForm, FormControl, Validators } from '@angular/forms';
+import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
 
 interface AppState { }
 
@@ -17,13 +17,19 @@ interface AppState { }
 export class Nrq01000Component implements OnInit {
 
   calendar: Calendar;
+  form: FormGroup = new FormGroup({
+    calendar: new FormControl('', Validators.required)
+  });
 
   users: Observable<UserDetail>;
   constructor(private store: Store<AppState>) {
     this.calendar = {
       calendarId: "example",
       calendarName: "example",
-      type: "date"
+      formGroup: this.form,
+      formControlName: "calendar",
+      type: "date",
+      formatter: "dd/mm/yyyy"
     };
   }
 
@@ -31,6 +37,18 @@ export class Nrq01000Component implements OnInit {
     this.users = this.store.select('user');
   }
 
+  formSubmit(form: FormGroup) {
+    if (form.valid) {
+      console.log(form);
+    }
+  }
+
+  calendarValue(e) {
+    this.form.controls.calendar.setValue(e);
+  }
+
+
+  // Test NGRX
   change() {
     let data: UserDetail = { // Mock User Detail to Update
       userId: "99999",
@@ -44,10 +62,6 @@ export class Nrq01000Component implements OnInit {
 
   reset() {
     this.store.dispatch(new UserActions.ResetUser(true));
-  }
-
-  calendarValue(e) {
-    console.log(e);
   }
 
 }
