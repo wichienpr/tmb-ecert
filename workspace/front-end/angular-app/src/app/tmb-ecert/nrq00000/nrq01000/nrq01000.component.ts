@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { UserDetail } from 'app/user.model';
 import * as UserActions from 'app/user.action';
-import { Calendar } from 'models/';
+import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
 
 interface AppState { }
@@ -28,8 +28,9 @@ export class Nrq01000Component implements OnInit {
       calendarName: "example",
       formGroup: this.form,
       formControlName: "calendar",
-      type: "date",
-      formatter: "dd/mm/yyyy"
+      type: CalendarType.DATE,
+      formatter: CalendarFormatter.DEFAULT,
+      local: CalendarLocal.TH
     };
   }
 

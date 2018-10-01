@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
+// import { StoreModule } from '@ngrx/store';
 
 // Routing
 import { Nrq00000RoutingModule } from 'app/tmb-ecert/nrq00000/nrq00000-routing.module';
@@ -9,7 +9,7 @@ import { Nrq00000RoutingModule } from 'app/tmb-ecert/nrq00000/nrq00000-routing.m
 import { Nrq01000Component } from 'app/tmb-ecert/nrq00000/nrq01000/nrq01000.component';
 import { Nrq02000Component } from './nrq02000/nrq02000.component';
 // Reducers
-// import { certificateReducer } from './nrq02000/nrq02000.reducers';
+// import { exampleReducer } from './example/example.reducers';
 // Module Components
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
 // Module Directives
@@ -28,8 +28,7 @@ import { DisableControlModule } from 'directives/';
     CalendarModule,
     // Directives
     DisableControlModule,
-    // StoreModule.forRoot({ nrq01000: nrqReducer })
-    // StoreModule.forFeature('certificate', certificateReducer),
+    // StoreModule.forFeature('example', exampleReducer),
   ],
   declarations: [Nrq01000Component, Nrq02000Component]
 })
