@@ -1,52 +1,105 @@
 package com.tmb.ecert.service.nrq;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.domain.CommonMessage;
+import com.tmb.ecert.common.service.DownloadService;
+import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.persistence.dao.Nrq02000Dao;
+import com.tmb.ecert.persistence.entity.RequestForm;
 import com.tmb.ecert.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.persistence.vo.Nrq02000Vo;
 
 @Service
 public class Nrq02000Service {
 
 	private static final Logger logger = LoggerFactory.getLogger(Nrq02000Service.class);
 
-	@Value("${app.datasource.path.upload}")
-	private String pathed;
+	@Autowired
+	private UploadService upload;
 
-	public void upload(Nrq02000FormVo form) {
-		String requestFileName = BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getRequestFile().getOriginalFilename()
-				: null;
-		String copyFile = BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename() : null;
-		String changeNameFile = BeanUtils.isNotEmpty(form.getChangeNameFile())
-				? form.getChangeNameFile().getOriginalFilename()
-				: null;
-//		File f = new File(pathed + "Document_Travel_Estimator/" + idProcess + "/" + document); // initial file (folder)
-//		if (!f.exists()) { // check folder exists
-//			if (f.mkdirs()) {
-//				log.info("Directory is created!");
-//				// System.out.println("Directory is created!");
-//			} else {
-//				log.error("Failed to create directory!");
-//				// System.out.println("Failed to create directory!");
-//			}
-//		}
-//		try {
-//			byte[] data = files.getBytes(); // get data
-//			// set path
-//			String path = pathed + "Document_Travel_Estimator/" + idProcess + "/" + document + "/" + documentName;
-//			OutputStream stream = new FileOutputStream(path);
-//			stream.write(data);
-//
-//			log.info("Created file: " + path);
-//			// System.out.println("Created file: " + path);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		// long s = multi.getSize();
-		// Long.toString(s/1000); // to megabytes
+	@Autowired
+	private DownloadService download;
+
+	@Autowired
+	private Nrq02000Dao dao;
+
+	public CommonMessage<Nrq02000Vo> save(Nrq02000FormVo form) {
+		CommonMessage<Nrq02000Vo> msg = new CommonMessage<Nrq02000Vo>();
+		String userId = "admin";
+		String userName = "Administrator";
+		String folder = "nrq02000/";
+		String requestFileName = "";
+		String copyFile = "";
+		String changeNameFile = "";
+		upload.createFolder(folder); // Create Folder
+		try {
+			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
+				requestFileName = form.getRequestFile().getOriginalFilename();
+				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
+			}
+			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
+				copyFile = form.getCopyFile().getOriginalFilename();
+				upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
+			}
+			if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
+				changeNameFile = form.getChangeNameFile().getOriginalFilename();
+				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
+			}
+			RequestForm req = new RequestForm();
+			req.setAccountName(form.getAccName());
+			req.setAccountNo(form.getAccNo());
+			req.setAccountType("OOA");
+			req.setAddress(form.getAddress());
+			req.setBranch("");
+			req.setCaNumber(form.getAcceptNo());
+			req.setCertificateFile("");
+			req.setCerTypeCode(form.getReqTypeSelect());
+			req.setChangeNameFile(
+					BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename() : null);
+			req.setCompanyName(form.getCorpName());
+			req.setCreatedById(userId);
+			req.setCreatedByName(userName);
+			req.setCreatedDateTime(null);
+			req.setCustomerName(form.getCorpName1());
+			req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
+			req.setCustsegmentCode(form.getCustomSegSelect());
+			req.setDebitAccountType(form.getSubAccMethodSelect());
+			req.setDepartment(form.getDepartmentName());
+			req.setGlType("B533");
+			req.setIdCardFile(BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename() : null);
+			req.setMakerById(userId);
+			req.setMakerByName(userName);
+			req.setOrganizeId(form.getCorpNo());
+			req.setPaidTypeCode(form.getPayMethodSelect());
+			req.setRequestDate(null);
+			req.setRequestFormFile(
+					BeanUtils.isNotEmpty(form.getRequestFile()) ? form.getRequestFile().getOriginalFilename() : null);
+			req.setStatus("");
+			req.setRemark(form.getNote());
+			req.setTelephone(form.getTelReq());
+			dao.save(req);
+			msg.setMessage("SUCCESS");
+			return msg;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			msg.setMessage("ERROR");
+			return msg;
+		}
+	}
+
+	public void download(String fileName, HttpServletResponse response) {
+		String name = "nrq02000/" + fileName;
+		download.download(name, response);
 	}
 
 }
