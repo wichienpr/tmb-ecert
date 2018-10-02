@@ -1,5 +1,6 @@
 package com.tmb.ecert.checkrequeststatus.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestStatusDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 
+
 @Service
 public class CheckRequestStatusService {
 
@@ -19,19 +21,22 @@ public class CheckRequestStatusService {
 	@Autowired
 	private CheckRequestStatusDao crs01000Dao;
 
-	public List<Crs01000Vo> findAllReqForm(Crs01000Vo dataAll) {
-		return crs01000Dao.findAllReqForm(dataAll);
-	}
 
-	public List<Crs01000Vo> findReqFormByStatus(Crs01000FormVo FormVo) {
-		logger.info("findReqFormByStatus_Service");
-		FormVo.setReqDate("01/10/2018");
-		FormVo.setToReqDate("02/10/2018");
-		FormVo.setCompanyName("บริษัทมหารวย");
-		FormVo.setOrganizeId("1234543234567");
-		FormVo.setTmbReqNo("20181000001");
-		FormVo.setStatus("10001");
 
-		return crs01000Dao.findReqFormByStatus(FormVo);
+	public List<Crs01000Vo> findReq(Crs01000FormVo formVo){
+		logger.info("findReq_Service");
+		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
+		crs01000VoList = crs01000Dao.findReq(formVo);
+		return crs01000VoList;
 	}
+	
+	public List<Crs01000Vo> findReqByStatus(Crs01000FormVo formVo){
+		logger.info("findReqByStatus_Service");
+		logger.info("status :: "+ formVo.getStatus());
+		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
+		crs01000VoList = crs01000Dao.findReqByStatus(formVo);
+		return crs01000VoList;
+	}
+	
+	
 }
