@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate } from 'tmb-ecert/models';
 import { Acc, isValid } from 'helpers/';
+import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -21,6 +22,7 @@ export class Nrq02000Component implements OnInit {
   files: any;
   reqDate: string;
   dropdownObj: any;
+  isDownload: Observable<boolean>;
 
   reqTypeChanged: Certificate[];
 
@@ -39,6 +41,7 @@ export class Nrq02000Component implements OnInit {
 
   ngOnInit() {
     // Initial Data
+    this.isDownload = this.service.isDownload();
     this.reqDate = this.service.getReqDate();
     this.dropdownObj = this.service.getDropdownObj();
     this.service.getForm().subscribe(form => {
@@ -50,8 +53,8 @@ export class Nrq02000Component implements OnInit {
     this.service.save(form, this.files, this.reqTypeChanged);
   }
 
-  download() {
-    this.service.download();
+  pdf() {
+    this.service.pdf();
   }
 
   cancel() {
@@ -61,7 +64,7 @@ export class Nrq02000Component implements OnInit {
   reqTypeChange(e) {
     this.service.reqTypeChange(e).then(certificate => {
       this.reqTypeChanged = certificate;
-      this.reqTypeChanged.forEach((obj, index) => {
+      this.reqTypeChanged.forEach((obj, index) => {2
         if (index != 0) {
           if (this.form.controls[`chk${index}`]) {
             this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
@@ -73,6 +76,10 @@ export class Nrq02000Component implements OnInit {
         }
       })
     });
+  }
+
+  accNoPress(e) {
+    return e.charCode >= 48 && e.charCode <= 57;
   }
 
   toggleChk(index) {

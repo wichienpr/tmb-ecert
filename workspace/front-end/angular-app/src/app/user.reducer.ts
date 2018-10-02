@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { UserDetail } from './user.model';
 import * as UserActions from './user.action';
+import { ROLES } from 'constants/';
 
 // Initial
 const INIT_USER_DETAIL: UserDetail = {
@@ -9,7 +10,7 @@ const INIT_USER_DETAIL: UserDetail = {
     // username : 'admin',
     // firstName : 'TMB',
     // lastName : 'Administrator'
-    roles: ['Maker'],
+    roles: [ROLES.CHECKER, ROLES.MAKER, ROLES.REQUESTOR],
     userId: "42307",
     username: 'admin',
     firstName: 'สุรเดช',

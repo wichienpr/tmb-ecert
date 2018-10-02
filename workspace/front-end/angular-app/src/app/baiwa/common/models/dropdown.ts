@@ -11,4 +11,5 @@ export interface Dropdown {
     valueName: string;
     labelName: string;
     values: any[];
+    activeValue?: string;
 }

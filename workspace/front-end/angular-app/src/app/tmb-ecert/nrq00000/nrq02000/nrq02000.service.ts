@@ -14,14 +14,16 @@ import { Router } from "@angular/router";
 const URL = {
     LOV_BY_TYPE: "lov/type",
     CER_BY_TYPE: "cer/typeCode",
-    NRQ_SAVE: "nrq/nrq02000/"
+    NRQ_SAVE: "nrq/nrq02000/",
+    NRQ_DOWNLOAD: "nrq/nrq02000/download/",
+    NRQ_PDF: "nrq/nrq02000/pdf/",
 }
 
 @Injectable()
 export class Nrq02000Service {
-
-    dropdownObj: any;
-    form: FormGroup = new FormGroup({
+    private downloaded: boolean = false;
+    private dropdownObj: any;
+    private form: FormGroup = new FormGroup({
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
         customSegSelect: new FormControl('', Validators.required),      // Customer Segment
         payMethodSelect: new FormControl('', Validators.required),      // วิธีการรับชำระ
@@ -39,7 +41,7 @@ export class Nrq02000Service {
         note: new FormControl('', Validators.required),                 // หมายเหตุ
         requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
         copyFile: new FormControl('', Validators.required),             // สำเนาบัตรประชาชน
-        changeNameFile: new FormControl('', Validators.required),       // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
+        changeNameFile: new FormControl(),                              // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
     });
 
     constructor(
@@ -208,11 +210,22 @@ export class Nrq02000Service {
         }
     }
 
-    download(): void {
-        const modal: Modal = {
-            msg: "ฟีตเจอร์นี้ยังไม่เปิดให้ใช้บริการ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ"
-        }
-        this.modal.alert(modal);
+    pdf(): void {
+        // const modal: Modal = {
+        //     msg: "ฟีตเจอร์นี้ยังไม่เปิดให้ใช้บริการ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ"
+        // }
+        // this.modal.alert(modal);
+        this.downloaded = true;
+        this.ajax.download(URL.NRQ_PDF + "nrq02000");
+    }
+
+    isDownload(): Observable<boolean> {
+        return new Observable<boolean>(obs => {
+            obs.next(this.downloaded);
+            setInterval(() => {
+                obs.next(this.downloaded);
+            }, 800);
+        });
     }
 
     cancel(): void {

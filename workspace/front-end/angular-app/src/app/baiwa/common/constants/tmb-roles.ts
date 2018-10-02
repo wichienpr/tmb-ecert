@@ -1,0 +1,5 @@
+export enum ROLES {
+    REQUESTOR = "REQUESTOR",
+    CHECKER = "CHECKER",
+    MAKER = "REQUESTOR"
+}

@@ -13,6 +13,7 @@
     "paths": {
       "app/*": ["src/app/*"],
       "components/*": ["src/app/baiwa/common/components/index"],
+      "constants/*": ["src/app/baiwa/common/constants/index"],
       "directives/*": ["src/app/baiwa/common/directives/index"],
       "helpers/*": ["src/app/baiwa/common/helpers/index"],
       "pipes/*": ["src/app/baiwa/common/pipes/index"],

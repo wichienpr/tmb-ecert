@@ -1,10 +1,9 @@
 <div class="ui grid">
   <div class="sixteen wide column">
+    <h2 class="ui header">Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h2>
     <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
-      <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h4>
 
       <div class="inline fields">
-        <div class="one wide field"></div>
         <div class="two wide field">
           <label>วันที่ขอ</label>
         </div>
@@ -14,7 +13,6 @@
       </div>
 
       <div class="inline fields">
-        <div class="one wide field"></div>
         <div class="two wide field">
           <label>TMB Req. No.
           </label>
@@ -25,7 +23,6 @@
       </div>
 
       <div class="inline fields">
-        <div class="one wide field"></div>
         <div class="two wide field">
           <label>ประเภทคำขอ</label>
         </div>
@@ -195,7 +192,7 @@
         </div>
         <div class="five wide field {{ validate('accNo', ngForm.submitted) ? '' : 'error' }}">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" autocomplete="off" placeholder="123-1-12345-9">
+            (focus)="accNoFocus()" (keypress)="accNoPress($event)" autocomplete="off" placeholder="123-1-12345-9">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>
@@ -270,11 +267,11 @@
       <div class="inline field">
         <div class="ui one grid">
           <div class="center aligned one column btn-group">
-            <button class="ui blue basic button" (click)="download()" type="button">
+            <button class="ui blue basic button" (click)="pdf()" type="button">
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button class="ui blue basic button" type="submit">
+            <button class="ui blue basic {{ (isDownload|async) ? '' : 'disabled' }} button" type="submit">
               <i class="file alternate outline icon"></i>
               ยื่นใบคำขอ
             </button>
