@@ -26,11 +26,11 @@ public class Crs01000Service {
 	public List<Crs01000Vo> findReqFormByStatus(Crs01000FormVo FormVo) {
 		logger.info("findReqFormByStatus_Service");
 		FormVo.setReqDate("01/10/2018");
-		FormVo.setToReqDate("02/10/2018");
-		FormVo.setCompanyName("บริษัทมหารวย");
-		FormVo.setOrganizeId("1234543234567");
-		FormVo.setTmbReqNo("20181000001");
-		FormVo.setStatus("10001");
+		FormVo.setToReqDate("05/10/2018");
+		FormVo.setCompanyName("");
+		FormVo.setOrganizeId("");
+		FormVo.setTmbReqNo("");
+		FormVo.setStatus("");
 
 		return crs01000Dao.findReqFormByStatus(FormVo);
 	}
