@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AjaxService } from 'services/';
 
 const URL = {
-  TEST: "cer/typeCode"
+  TEST: "api/cer/typeCode"
 };
 
 @Injectable({

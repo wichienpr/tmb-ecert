@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { AjaxService } from "./ajax.service";
 
 const URL = {
-    LOV_BY_TYPE: "lov/type"
+    LOV_BY_TYPE: "api/lov/type"
 }
 
 @Injectable()

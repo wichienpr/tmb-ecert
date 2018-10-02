@@ -7,16 +7,15 @@ import { Store } from "@ngrx/store";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Modal } from "models/";
 import { Observable } from "rxjs";
-import { Nrq02000 } from "app/tmb-ecert/nrq00000/nrq02000/nrq02000.model";
-import { Headers } from "@angular/http";
+import { Nrq02000 } from "./nrq02000.model";
 import { Router } from "@angular/router";
 
 const URL = {
-    LOV_BY_TYPE: "lov/type",
-    CER_BY_TYPE: "cer/typeCode",
-    NRQ_SAVE: "nrq/nrq02000/",
-    NRQ_DOWNLOAD: "nrq/nrq02000/download/",
-    NRQ_PDF: "nrq/nrq02000/pdf/",
+    LOV_BY_TYPE: "api/lov/type",
+    CER_BY_TYPE: "api/cer/typeCode",
+    NRQ_SAVE: "api/nrq/save",
+    NRQ_DOWNLOAD: "api/nrq/download/",
+    NRQ_PDF: "api/nrq/pdf/",
 }
 
 @Injectable()
@@ -197,7 +196,7 @@ export class Nrq02000Service {
                             this.modal.alert(modal);
                         }
                     }, err => {
-                        console.log(err)
+                        console.error(err)
                     });
                 }
             }, modalConf);
