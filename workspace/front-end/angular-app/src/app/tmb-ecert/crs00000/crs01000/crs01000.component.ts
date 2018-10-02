@@ -19,7 +19,7 @@ export class Crs01000Component implements OnInit {
   idReq : any;
   dataT: any[]= [];
   showData: boolean = false; 
-
+  loading: boolean = false;
   constructor(private crs01000Service : Crs01000Service,private ajax: AjaxService,private router: Router,) { 
     
     this.crs01000Service.getForm().subscribe(form => {
@@ -51,7 +51,7 @@ export class Crs01000Component implements OnInit {
 
   ngOnInit() {
    //this.crs01000Service.findReqFormByStatus()
-    this.getData();
+   
   }
  
   ngAfterViewInit() {
@@ -84,14 +84,13 @@ export class Crs01000Component implements OnInit {
   getData=()=>{
     console.log(this.form);
     this.dataT=[];
-    const URL = "crs/crs01000/findReqFormByStatus";
+    const URL = "api/crs/crs01000/findReqFormByStatus";
     this.ajax.post(URL,{
-      // reqDate: this.form.controls.reqDate.value,
-      // toReqDate: this.form.controls.toReqDate.value,
-      // organizeId: this.form.controls.organizeId.value,
-      // companyName: this.form.controls.companyName.value,
-      // tmbReqNo: this.form.controls.tmbReqNo.value,
-     
+        reqDate: this.form.controls.reqDate.value,
+        toReqDate: this.form.controls.toReqDate.value,
+        organizeId: this.form.controls.organizeId.value,
+        companyName: this.form.controls.companyName.value,
+        tmbReqNo: this.form.controls.tmbReqNo.value,
 
     },async res => {
       const data = await res.json();
@@ -105,19 +104,18 @@ export class Crs01000Component implements OnInit {
   searchData(): void {
     console.log("searchData");
     this.showData = true;
-    this.getData();
+    this.getData();;
   }
 
   clearData(): void {
     console.log("clearData");
     this.form.reset();
-    $('#reqtype').dropdown('restore defaults');
     this.showData = false;
   }
 
   description(idReq): void {
     console.log(idReq)
-    this.router.navigate(["/nrq03000"], {
+    this.router.navigate(["/nrq/nrq03000"], {
       queryParams: { id: idReq }
     });
   }
