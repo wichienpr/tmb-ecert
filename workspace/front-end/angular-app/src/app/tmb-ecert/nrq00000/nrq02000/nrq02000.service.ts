@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Certificate, Lov } from "tmb-ecert/models";
+import { Certificate, Lov } from "models/";
 import { AjaxService, ModalService, DropdownService } from "services/";
 import { dateLocale, Acc } from "helpers/";
 

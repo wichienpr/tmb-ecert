@@ -4,7 +4,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
 
-import { Certificate } from 'tmb-ecert/models';
+import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
 declare var $: any;
 const URL = {

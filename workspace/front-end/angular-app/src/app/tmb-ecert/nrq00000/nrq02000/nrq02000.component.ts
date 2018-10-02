@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Certificate } from 'tmb-ecert/models';
+import { Certificate } from 'models/';
 import { Acc, isValid } from 'helpers/';
 import { Observable } from 'rxjs';
 

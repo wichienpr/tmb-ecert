@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Lov } from "tmb-ecert/models";
+import { Lov } from "models/";
 import { Observable } from "rxjs";
 import { AjaxService } from "./ajax.service";
 

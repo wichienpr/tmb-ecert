@@ -1,4 +1,4 @@
-import { Certificate } from "tmb-ecert/models";
+import { Certificate } from "models/";
 
 export interface Nrq02000 {
     reqTypeSelect: string;        // ประเภทคำขอ

@@ -20,8 +20,7 @@
       "services/*": ["src/app/baiwa/common/services/index"],
       "models/*": ["src/app/baiwa/common/models/index"],
       // Change when new project
-      "tmb-ecert/*": ["src/app/tmb-ecert/*"],
-      "tmb-ecert/models/*": ["src/app/tmb-ecert/models/index"]
+      "tmb-ecert/*": ["src/app/tmb-ecert/*"]
     },
     "typeRoots": [
       "node_modules/@types"
