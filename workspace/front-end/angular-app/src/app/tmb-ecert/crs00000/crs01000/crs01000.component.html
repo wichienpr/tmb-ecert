@@ -60,107 +60,118 @@
             </h3>
           </div> 
         </div>
+
         <div class="row">
+          
           <div class="ui top attached header segment">
             <span>ระบุเงื่อนไขในการค้นหา </span>
           </div>
+
           <div class="ui attached segment">
-            <div class="ui form">
-              <div class="inline fields">
-                <div class="two wide field">
-                  <label class="custom-label-w-22">วันที่ขอ</label>
-                </div>
-                <div class="five wide field" >
-                    <ui-calendar calendarId="reqDate"  name="reqDate"  style="width:100% ;"></ui-calendar>
-                </div>
-                <div class="two wide field ">
-                  <label>ถึงวันที่
-                  </label>
-                </div>
-                <div class="five wide field">
-                    <ui-calendar calendarId="toDate"  name="toDate"  style="width:100% ;"></ui-calendar>
-                </div>
-              </div>
-              <div class="inline fields">
-                <div class="two wide field ">
-                  <label>เลขที่นิติบุคคล
-                  </label>
-                </div>
-                <div class="five wide field ">
-                  <input type="text" placeholder="" value="">
-                </div>
-                <div class="two wide field ">
-                  <label>ชื่อนิติบุคคล</label>
-                </div>
-                <div class="five wide field ">
-                  <input type="text" placeholder="" value="">
-                </div>
-              </div>
-              <div class="inline fields">
-                <div class="two wide field ">
-                  <label>TMB Req. No. </label>
-                </div>
-                <div class="five wide field ">
-                  <input type="text" placeholder="" value="">
-                </div>
-              </div>
-              <div class="inline field">
-                <div class="ui centered grid">
-                  <div class="six wide column center aligned">
-                    <button class="ui blue basic button" (click)="searchData()">
-                      <i class="search icon"></i>
-                      ค้นหา
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="ui grey basic button" (click)="clearData()">
-                      <i class="trash alternate outline icon"></i>
-                      ล้างข้อมูล
-                    </button>
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+              
+                <div class="inline fields">
+                  <div class="two wide field">
+                    <label class="custom-label-w-22">วันที่ขอ</label>
+                  </div>
+                  <div class="five wide field" >
+                    <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%"></ui-calendar>
+                  </div>
+                  <div class="two wide field ">
+                    <label>ถึงวันที่
+                    </label>
+                  </div>
+                  <div class="five wide field">
+                    <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('toReqDate',$event)" style="width:100%"></ui-calendar>
                   </div>
                 </div>
-              </div>
-            </div>
+
+
+                <div class="inline fields">
+                  <div class="two wide field ">
+                    <label>เลขที่นิติบุคคล
+                    </label>
+                  </div>
+                  <div class="five wide field ">
+                    <input type="text" formControlName="organizeId" placeholder="เลขที่นิติบุคคล">
+                  </div>
+                  <div class="two wide field ">
+                    <label>ชื่อนิติบุคคล</label>
+                  </div>
+                  <div class="five wide field ">
+                    <input type="text" formControlName="companyName" placeholder="ชื่อนิติบุคคล">
+                  </div>
+                </div>
+
+                <div class="inline fields">
+                  <div class="two wide field ">
+                    <label>TMB Req. No. </label>
+                  </div>
+                  <div class="five wide field ">
+                    <input type="text" formControlName="tmbReqNo" placeholder="TMB Req. No.">
+                  </div>
+                </div>
+
+                <div class="inline field">
+                  <div class="ui centered grid">
+                    <div class="six wide column center aligned">
+                      <button class="ui blue basic button" (click)="searchData()">
+                        <i class="search icon"></i>
+                        ค้นหา
+                      </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <button class="ui grey basic button" (click)="clearData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+            </form>
           </div>
 
           <div class="ui segment" >
             <div class="two wide field ">
               <b>ผลการค้นหา</b>
             </div>
-            <table class=" small celled table nowrap ui" id="table" style="width: 100%">
-              <thead class="tbody" >
-                <tr style="text-align: center;">
-                  <th class="collapsing">ลำดับ</th>
-                  <th >วันที่ยื่นคำขอ</th>
-                  <th>TMB Req. No.</th>
-                  <th>เลขที่คำขอ (Ref.1)</th>
-                  <th>เลขที่ตรวจสอบ (Ref.2)</th>
-                  <th>จำนวนเงิน</th>
-                  <th>ประเภทคำขอ</th>
-                  <th>เลขที่นิติบุคคล </th>
-                  <th>ชื่อบริษัท</th>
-                  <th>สถานะดำเนินการ</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="text-align: right">1</td>
-                  <td> 01/01/2561</td>
-                  <td>20180900001</td>
-                  <td>-</td>
-                  <td>0101256100000125</td>
-                  <td style="text-align: right">300.00</td>
-                  <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                  <td>1023456321234</td>
-                  <td>บริษัท เอ</td>
-                  <td>คำขอใหม่</td>
-                  <td>
-                    <button class="ui blue basic button" [routerLink]="[ '/description']">แสดง
-                      <i class="arrow alternate circle right outline icon"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div style="overflow-x: auto;white-space: nowrap;">
+              <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                <thead>
+                  <tr>
+                    <th class="collapsing">ลำดับ</th>
+                    <th >วันที่ยื่นคำขอ</th>
+                    <th>TMB Req. No.</th>
+                    <th>เลขที่คำขอ (Ref.1)</th>
+                    <th>เลขที่ตรวจสอบ (Ref.2)</th>
+                    <th>จำนวนเงิน</th>
+                    <th>ประเภทคำขอ</th>
+                    <th>เลขที่นิติบุคคล </th>
+                    <th>ชื่อบริษัท</th>
+                    <th>สถานะดำเนินการ</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                      <td style="text-align: center !important;">{{i+1}}</td>
+                      <td style="text-align: center !important;">{{data.reqDateStr}}</td>
+                      <td style="text-align: center !important;">{{data.tmbReqNo}}</td>
+                      <td style="text-align: center !important;">{{data.ref1}}</td>
+                      <td style="text-align: center !important;">{{data.ref2}}</td>
+                      <td style="text-align: center !important;">{{data.amount}}</td>
+                      <td style="text-align: center !important;">{{data.typeDesc}}</td>
+                      <td style="text-align: center !important;">{{data.organizeId}}</td>
+                      <td style="text-align: center !important;">{{data.companyName}}</td>
+                      <td style="text-align: center !important;">{{data.statusName}}</td>
+                      <td>
+                        <button class="ui blue basic button"  (click)="description(data.id)">แสดง
+                          <i class="arrow alternate circle right outline icon"></i>
+                        </button>
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         
