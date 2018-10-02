@@ -7,6 +7,9 @@ import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
 import { Certificate } from 'tmb-ecert/models';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
 declare var $: any;
+const URL = {
+  export:"rep/rep02000/exportFile"
+}
 @Component({
   selector: 'app-rep02000',
   templateUrl: './rep02000.component.html',
@@ -90,5 +93,11 @@ export class Rep02000Component implements OnInit {
     this.form.reset();
     this.showData = false;
   }
+
+  exportFile=()=>{
+    console.log("exportFile");
+    this.ajax.download(URL.export);
+  }
+
 
 }

@@ -111,28 +111,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center">0</td>
-                        <td>21/8/2561</td>
-                        <td style="text-align: center;">2018080001</td>
-                        <td>1234567890123</td>
-                        <td>Test1</td>
-                        <td style="text-align: center;">SE</td>
-                        <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-                        <td>หนังสือรับรอง</td>
-                        <td style="text-align: center;">123-1-12345-9</td>
-                        <td style="text-align: right">200.00</td>
-                        <td style="text-align: right">140.19</td>
-                        <td style="text-align: right">9.81</td>
-                        <td style="text-align: right">350</td>
-                        <td>(42307 สุรเดช แสนสมบูรณ์สุข)</td>
-                        <td>(14930 วารุณีย์ จุลเสวี)</td>
-                        <td style="text-align: center;">
-                            <i class="check icon"></i>
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.requestDate}}</td>
@@ -150,12 +128,12 @@
                         <td style="text-align: center !important;">({{data.makerById}} {{data.makerByName}})</td>
                         <td style="text-align: center !important;">({{data.checkerById}} {{data.checkerByName}})</td>
                         <td style="text-align: center !important;">
-                            <span *ngIf="data.status=='10010'">
+                            <span *ngIf="data.status=='10010' || data.status=='10009'">
                                 <i class="check icon"></i>
                             </span>
                         </td>
                         <td style="text-align: center !important;">
-                            <span *ngIf="data.status=='10008'||data.status=='10007'">
+                            <span *ngIf="data.status=='10003' || data.status=='10004' || data.status=='10007' || data.status=='10008' ">
                                 <i class="check icon"></i>
                             </span>
                         </td>

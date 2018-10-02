@@ -74,37 +74,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="background: 	#F8F8FF">
-                        <td style="text-align: center"> ETC</td>
-                        <td style="text-align: right">93</td>
-                        <td style="text-align: right">55</td>
-                        <td style="text-align: right">38</td>
-                        <td style="text-align: right">18,600.00</td>
-                        <td style="text-align: right">9,300.00</td>
-                        <td style="text-align: right">27,900.00</td>
-                        <td style="text-align: right">83</td>
-                        <td style="text-align: right">
-                            7
-                        </td>
-                        <td style="text-align: center">
-                            <button class="ui mini red basic button" [routerLink]="[ '/rep/rep02100']">สาเหตุ
-                                <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                            <button class="ui mini blue basic button" (click)="openModal(modal[0])"> รายละเอียด
-                                <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                        </td>
-                    </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.certificate}}</td>
+                        <td style="text-align: center !important;">{{data.copyGuarantee}}</td>
                         <td style="text-align: center !important;">{{data.amountDbd}}</td>
                         <td style="text-align: center !important;">{{data.amountTmb}}</td>
                         <td style="text-align: center !important;">{{data.totalAmount}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: center !important;">{{data.success}}</td>
+                        <td style="text-align: center !important;">{{data.fail}}</td>
                         <td style="text-align: center">
                             <button class="ui mini red basic button" [routerLink]="[ '/rep/rep02100']">สาเหตุ
                                 <i class="arrow alternate circle right outline icon"></i>
@@ -121,7 +100,7 @@
         <br>
         <div class="ui center aligned grid">
             <div class="sixteen wide column">
-                <button class="ui blue basic button">
+                <button class="ui blue basic button" (click)="exportFile()">
                     <i class="file excel outline icon"></i>Export to Excel</button>
             </div>
         </div>
