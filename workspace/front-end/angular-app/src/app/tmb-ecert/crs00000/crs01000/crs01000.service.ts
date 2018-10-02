@@ -5,11 +5,11 @@ import { Observable } from "rxjs";
 import { dateLocale } from "helpers/";
 
 
-const URL = {
-  testList: "crs/crs01000/list",
-  findAll: "crs/crs01000/findAll",
-  findReqFormByStatus: "crs/crs01000/findReqFormByStatus"
-};
+// const URL = {
+//   testList: "crs/crs01000/list",
+//   findAll: "crs/crs01000/findAll",
+//   findReqFormByStatus: "crs/crs01000/findReqFormByStatus"
+// };
 
 
 @Injectable()
@@ -23,7 +23,6 @@ export class Crs01000Service {
     organizeId: new FormControl('', Validators.required),  //เลขที่นิติบุคคล
     companyName: new FormControl('', Validators.required),  //ชื่อนิติบุคคล
     tmbReqNo: new FormControl('', Validators.required),     //TMB Req. No.
-    //status : new FormControl('', Validators.required),        //status
   });
 
 
@@ -36,18 +35,18 @@ export class Crs01000Service {
 
 
 
-  findAll() {
-    this.ajax.post(URL.findAll, {}, res => {
-      console.log(res.json());
-    });
-  }
+  // findAll() {
+  //   this.ajax.post(URL.findAll, {}, res => {
+  //     console.log(res.json());
+  //   });
+  // }
 
-  findReqFormByStatus() {
-    this.ajax.post(URL.findReqFormByStatus, {}, res => {
-      console.log(res.json());
-    });
+  // findReqFormByStatus() {
+  //   this.ajax.post(URL.findReqFormByStatus, {}, res => {
+  //     console.log(res.json());
+  //   });
 
-  }
+  // }
 
     /**
      * Initial Data

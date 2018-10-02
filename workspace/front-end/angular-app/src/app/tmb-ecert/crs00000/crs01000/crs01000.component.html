@@ -1,51 +1,53 @@
 <div class="ui grid pushable">
     <div class="ui left vertical sidebar menu">
-      <a class="item" style="font-size: 13px;color:#2185D0;">
+      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
         คำขอใหม่
         <div class="ui  label blue" style="font-size: 13px">1</div>
       </a>
-      <a class="item" style="font-size: 13px;">
+      <a class="item" style="font-size: 13px;" (click)="searchStatus('10002')">
         ดำเนินการชำระเงิน
         <div class="ui label ">2</div>
       </a>
-      <a class="item" style="font-size: 13px;color:red;">
+      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
         ปฏิเสธคำขอ
         <div class="ui label red">1</div>
       </a>
-      <a class="item teal item red" style="font-size: 13px;color:red;">
+      <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
         ยกเลิกคำขอ
         <div class="ui label red ">1</div>
       </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;">
+      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
         รออนุมัติการชำระเงิน
         <div class="ui label blue">1</div>
       </a>
-      <a class="item" style="font-size: 13px;">
+      <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
         อนุมัติการชำระเงิน
         <div class="ui label ">1</div>
       </a>
-      <a class="item" style="font-size: 13px;color:red;">
+      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
         ปฏิเสธการชำระเงิน
         <div class="ui label red">1</div>
       </a>
-      <a class="item" style="font-size: 13px;color:red;">
+      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
         ชำระเงินไม่สำเร็จ
         <div class="ui label red">1</div>
       </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;">
+      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
         รออัพโหลด Certificate
         <div class="ui label blue">1</div>
       </a>
-      <a class="item" style="font-size: 13px;">
+      <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
         ดำเนินการสำเร็จ
         <div class="ui label ">2</div>
       </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;">
+      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
         รอบันทึกคำขอ
         (ลูกค้าทำรายเอง)
         <div class="ui label blue">1</div>
       </a>
     </div>
+
+
     <div class="sixteen wide column pusher">
       <div class="ui one column">
         <div class="row">
@@ -75,7 +77,7 @@
                     <label class="custom-label-w-22">วันที่ขอ</label>
                   </div>
                   <div class="five wide field" >
-                    <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%"></ui-calendar>
+                      <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%"></ui-calendar>
                   </div>
                   <div class="two wide field ">
                     <label>ถึงวันที่
@@ -152,17 +154,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngIf="!dataT || dataT.length == 0">
-                        <tr class="center aligned" >
-                            <td colspan="5">
-                              <h5>ไม่มีข้อมูลประเภทคำขอ</h5>
-                            </td>
-                            <td style="display: none">&nbsp;</td>
-                            <td style="display: none">&nbsp;</td>
-                            <td style="display: none">&nbsp;</td>
-                            <td style="display: none">&nbsp;</td>
-                        </tr>
-                    </ng-container>
+
                   <tr class="text-center" *ngFor="let data of dataT; let i=index">
                       <td style="text-align: center !important;">{{i+1}}</td>
                       <td style="text-align: center !important;">{{data.reqDateStr}}</td>
@@ -180,6 +172,20 @@
                         </button>
                       </td>
                   </tr>
+                  <ng-container *ngIf="!dataT || dataT.length == 0">
+                      <tr class="center aligned">
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td colspan="12"><h5> ไม่พบรายการ </h5></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                        <td style="display: none"></td>
+                      </tr>
+                    </ng-container>
                 </tbody>
               </table>
             </div>

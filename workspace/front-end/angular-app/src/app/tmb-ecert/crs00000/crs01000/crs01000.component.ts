@@ -16,16 +16,18 @@ export class Crs01000Component implements OnInit {
   calendar1: Calendar;
   calendar2: Calendar;
   form: FormGroup;
-  idReq : any;
-  dataT: any[]= [];
-  showData: boolean = false; 
+  idReq: any;
+  dataT: any[] = [];
+  showData: boolean = false;
   loading: boolean = false;
-  constructor(private crs01000Service : Crs01000Service,private ajax: AjaxService,private router: Router,) { 
-    
+  status: string;
+
+  constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, ) {
+
     this.crs01000Service.getForm().subscribe(form => {
       this.form = form
     });
-    
+
     this.calendar1 = {
       calendarId: "cal1",
       calendarName: "cal1",
@@ -50,10 +52,9 @@ export class Crs01000Component implements OnInit {
   }
 
   ngOnInit() {
-   //this.crs01000Service.findReqFormByStatus()
-   
+
   }
- 
+
   ngAfterViewInit() {
     $('.ui.sidebar')
       .sidebar({
@@ -73,38 +74,71 @@ export class Crs01000Component implements OnInit {
   }
 
 
-  calendarValue(name,e) {
+  calendarValue(name, e) {
     this.form.controls[name].setValue(e);
     console.log(this.form);
     console.log(this.form.controls[name].value);
-  
+
   }
 
 
-  getData=()=>{
+  getData = () => {
     console.log(this.form);
-    this.dataT=[];
-    const URL = "api/crs/crs01000/findReqFormByStatus";
-    this.ajax.post(URL,{
-        reqDate: this.form.controls.reqDate.value,
-        toReqDate: this.form.controls.toReqDate.value,
-        organizeId: this.form.controls.organizeId.value,
-        companyName: this.form.controls.companyName.value,
-        tmbReqNo: this.form.controls.tmbReqNo.value,
 
-    },async res => {
+    const URL = "api/crs/crs01000/findReq";
+    this.ajax.post(URL, {
+      reqDate: this.form.controls.reqDate.value,
+      toReqDate: this.form.controls.toReqDate.value,
+      organizeId: this.form.controls.organizeId.value,
+      companyName: this.form.controls.companyName.value,
+      tmbReqNo: this.form.controls.tmbReqNo.value,
+
+    }, async res => {
       const data = await res.json();
       data.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data s",this.dataT);
+      console.log("getData True : Data s", this.dataT);
     });
   }
+
+
+
+  getDataByStatus(code) {
+
+    this.status = code;
+    const URL = "api/crs/crs01000/findReqByStatus";
+    this.ajax.post(URL, { status: this.status }, res => {
+      console.log(res.json());
+      res.json().forEach(element => {
+        this.dataT.push(element);
+      });
+    });
+
+  }
+
+
 
   searchData(): void {
     console.log("searchData");
     this.showData = true;
-    this.getData();;
+    this.getData();
+    this.dataT = [];
+  }
+
+  searchStatus(code): void {
+    $('.ui.sidebar')
+    .sidebar({
+      context: '.ui.grid.pushable'
+    })
+    .sidebar('setting', 'transition', 'push')
+    .sidebar('toggle');
+
+
+    console.log("searchStatus");
+    this.showData = true;
+    this.getDataByStatus(code);
+    this.dataT = [];
   }
 
   clearData(): void {
@@ -120,6 +154,6 @@ export class Crs01000Component implements OnInit {
     });
   }
 
-  
+
 }
 
