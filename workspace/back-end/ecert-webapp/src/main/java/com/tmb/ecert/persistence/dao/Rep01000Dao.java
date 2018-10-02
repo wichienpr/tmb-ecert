@@ -33,7 +33,7 @@ public class Rep01000Dao {
 			" FROM (ECERT_REQUEST_FORM a " + 
 			" INNER JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE )" + 
 			" INNER JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE " + 
-			" WHERE 1=1 ";
+			" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ";
 	
 	
 	public List<Rep01000Vo> getData(Rep01000FormVo formVo) {

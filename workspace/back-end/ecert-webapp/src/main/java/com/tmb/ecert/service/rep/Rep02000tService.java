@@ -41,7 +41,11 @@ public class Rep02000tService {
 	
 	public List<Rep02000Vo> findAll(Rep02000FormVo formVo){
 		List<Rep02000Vo> rep02000VoList = new ArrayList<Rep02000Vo>();
+		List<Rep02000Vo> rep02000VoListReturn = new ArrayList<Rep02000Vo>();
 		rep02000VoList = rep02000Dao.getData(formVo);
+		for (Rep02000Vo rep02000Vo : rep02000VoList) {
+			
+		}
 		return rep02000VoList;
 	}
 	
@@ -64,12 +68,11 @@ public class Rep02000tService {
 			
 			 
 			/* create data spreadsheet */
-			
+
 			/* Header */
 //			String[] tbTH1 = formVo.getTrHtml1();
-			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
-		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
-		             "รวม","Marker","Checker","สถานะ","","หมายเหตุ"};
+			String[] tbTH1 = { "Segment","จำนวนคำขอ","ประเภทคำขอ : ราย","","จำนวนเงิน : บาท","", "จำนวนเงิน",
+		             "สถานะ : จำนวนราย","", "สาเหตุ"};
 			
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -78,9 +81,9 @@ public class Rep02000tService {
 			};
 
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "DBD", "TMB","Tax Amount","","","","Success","Fail"};
+			String[] tbTH2 = { "หนังสือรับรอง", "รับรองสำเนา","DBD","TMB","","Success","Fail"};
 			row = sheet.createRow(1);
-			int cellNumtbTH2 = 9;
+			int cellNumtbTH2 = 2;
 			for (int i = 0; i < tbTH2.length; i++) {
 				cell = row.createCell(cellNumtbTH2);
 				cell.setCellValue(tbTH2[i]);
@@ -90,17 +93,17 @@ public class Rep02000tService {
 			
 			// merge(firstRow, lastRow, firstCol, lastCol)
 			
-			for (int i = 0; i<=8; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr1-9 rowspan=2
-			}
-			for (int i = 12; i<=14; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-15 rowspan=2
-			}
+		
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0)); //tr1 rowspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1)); //tr2 rowspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6)); //tr7 rowspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9)); //tr10 rowspan=2
 			
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 17, 17)); //tr17 rowspan=2
+		
 			
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 11)); //tr colspan=3
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 16)); //tr colspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 3)); //tr colspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5)); //tr colspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 8)); //tr colspan=2
 	
 			
 			/* Detail */

@@ -69,7 +69,7 @@ public class Rep01000tService {
 //			String[] tbTH1 = formVo.getTrHtml1();
 			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
 		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
-		             "รวม","Marker","Checker","สถานะ","","หมายเหตุ"};
+		             "รวม","Marker","Checker","สถานะ","หมายเหตุ"};
 			
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -93,14 +93,12 @@ public class Rep01000tService {
 			for (int i = 0; i<=8; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr1-9 rowspan=2
 			}
-			for (int i = 12; i<=14; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-15 rowspan=2
+			for (int i = 12; i<=16; i++) {
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-16 rowspan=2
 			}
 			
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 17, 17)); //tr17 rowspan=2
 			
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 11)); //tr colspan=3
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 16)); //tr colspan=2
 	
 			
 			/* Detail */
@@ -127,8 +125,14 @@ public class Rep01000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmount().toString()      ))?detail.getTotalAmount().toString()      : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerByName()                 ))?detail.getMakerByName()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerByName()               ))?detail.getCheckerByName()               : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getStatus()                      ))?detail.getStatus()                      : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getStatus()                      ))?detail.getStatus()                      : "" );
+				
+				String status = "";
+				if(StringUtils.isNotBlank(detail.getStatus())&&(detail.getStatus().equals("10009") || detail.getStatus().equals("10010") )) {
+					status = "สำเร็จ";
+				}else {
+					status = "ไม่สำเร็จ";
+				}
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(status);
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRemark()                      ))?detail.getRemark()                      : "" );
 				order++;
 				rowNum++;
@@ -139,7 +143,7 @@ public class Rep01000tService {
 			
 			/*set	fileName*/		
 			String fileName ="E-Certificate_End-day_"+DateFormatUtils.format(new Date(),"yyyyMMdd", new Locale("th", "TH"));;
-			System.out.println(fileName);
+			log.info(fileName);
 			
 			/* write it as an excel attachment */
 			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
