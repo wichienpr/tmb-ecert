@@ -1,4 +1,4 @@
-package com.tmb.ecert.NewRequest.controller;
+package com.tmb.ecert.requestorform.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.NewRequest.persistence.vo.Nrq02000FormVo;
-import com.tmb.ecert.NewRequest.persistence.vo.Nrq02000Vo;
-import com.tmb.ecert.NewRequest.service.RequestorFormService;
 import com.tmb.ecert.common.domain.CommonMessage;
+import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.requestorform.persistence.vo.Nrq02000Vo;
+import com.tmb.ecert.requestorform.service.RequestorFormService;
 
 @RequestMapping("api/nrq/nrq02000")
 @Controller

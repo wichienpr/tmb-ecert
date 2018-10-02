@@ -1,4 +1,4 @@
-package com.tmb.ecert.NewRequest.persistence.vo;
+package com.tmb.ecert.requestorform.persistence.vo;
 
 import java.util.List;
 

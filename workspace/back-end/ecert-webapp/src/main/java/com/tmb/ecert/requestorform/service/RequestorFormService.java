@@ -1,4 +1,4 @@
-package com.tmb.ecert.NewRequest.service;
+package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 
@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.CheckRequestStatus.persistence.entity.RequestForm;
-import com.tmb.ecert.NewRequest.persistence.dao.RequestorDao;
-import com.tmb.ecert.NewRequest.persistence.vo.Nrq02000FormVo;
-import com.tmb.ecert.NewRequest.persistence.vo.Nrq02000Vo;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
+import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.requestorform.persistence.vo.Nrq02000Vo;
 
 @Service
 public class RequestorFormService {
