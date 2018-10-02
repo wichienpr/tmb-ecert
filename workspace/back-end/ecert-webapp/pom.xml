@@ -34,6 +34,7 @@
 		<swagger.version>2.7.0</swagger.version>
 		<!-- Plugin Version -->
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+		<quartz.version>2.2.1</quartz.version>
 	</properties>
 
 	<dependencies>
@@ -197,6 +198,27 @@
 			<version>3.17</version>
 		</dependency>
 
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version><!--$NO-MVN-MAN-VER$ -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -206,33 +228,33 @@
 
 		<!-- List of resource elements that each describe what and where to include 
 			files associated with this project. -->
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
+<!-- 		<resources> -->
+<!-- 			<resource> -->
+<!-- 				<directory>src/main/resources</directory> -->
+<!-- 				<filtering>true</filtering> -->
+<!-- 			</resource> -->
+<!-- 		</resources> -->
 
 		<plugins>
 
 			<!-- Allowing to package executable jar or war archives and run an application 
 				"in-place" -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<!-- repackaged for executable jar/war -->
-				<configuration>
-					<mainClass>${start-class}</mainClass>
-					<classifier>exec</classifier>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.springframework.boot</groupId> -->
+<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
+<!-- 				repackaged for executable jar/war -->
+<!-- 				<configuration> -->
+<!-- 					<mainClass>${start-class}</mainClass> -->
+<!-- 					<classifier>exec</classifier> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>repackage</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 
 		</plugins>
 	</build>
