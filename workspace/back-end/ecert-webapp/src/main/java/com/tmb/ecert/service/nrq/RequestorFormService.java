@@ -13,15 +13,16 @@ import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
-import com.tmb.ecert.persistence.dao.Nrq02000Dao;
+import com.tmb.ecert.persistence.dao.RequestorDao;
 import com.tmb.ecert.persistence.entity.RequestForm;
 import com.tmb.ecert.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.persistence.vo.Nrq02000Vo;
 
 @Service
-public class Nrq02000Service {
+public class RequestorFormService {
 
-	private static final Logger logger = LoggerFactory.getLogger(Nrq02000Service.class);
+	private static final Logger logger = LoggerFactory.getLogger(RequestorFormService.class);
+	private static String PATH = "nrq02000/";
 
 	@Autowired
 	private UploadService upload;
@@ -30,13 +31,13 @@ public class Nrq02000Service {
 	private DownloadService download;
 
 	@Autowired
-	private Nrq02000Dao dao;
+	private RequestorDao dao;
 
 	public CommonMessage<Nrq02000Vo> save(Nrq02000FormVo form) {
 		CommonMessage<Nrq02000Vo> msg = new CommonMessage<Nrq02000Vo>();
 		String userId = "admin";
 		String userName = "Administrator";
-		String folder = "nrq02000/";
+		String folder = PATH;
 		String requestFileName = "";
 		String copyFile = "";
 		String changeNameFile = "";
@@ -98,8 +99,13 @@ public class Nrq02000Service {
 	}
 
 	public void download(String fileName, HttpServletResponse response) {
-		String name = "nrq02000/" + fileName;
-		download.download(name, response);
+		String pathName = PATH + fileName;
+		download.download(pathName, response);
+	}
+
+	public void pdf(String name, HttpServletResponse response) {
+		String pathName = PATH + name;
+		download.pdf(pathName, response);
 	}
 
 }

@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.persistence.vo.Nrq02000Vo;
-import com.tmb.ecert.service.nrq.Nrq02000Service;
+import com.tmb.ecert.service.nrq.RequestorFormService;
 
 @RequestMapping("api/nrq/nrq02000")
 @Controller
-public class Nrq02000Controller {
+public class RequestorFormController {
 	
 	@Autowired
-	private Nrq02000Service nqr02000Service;
+	private RequestorFormService reqService;
 	
 	@GetMapping("/")
 	@ResponseBody
@@ -32,19 +32,18 @@ public class Nrq02000Controller {
 	@PostMapping("/")
 	@ResponseBody
 	public CommonMessage<Nrq02000Vo> save(@ModelAttribute Nrq02000FormVo form) {
-		try {
-			return nqr02000Service.save(form);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		CommonMessage<Nrq02000Vo> msg = new CommonMessage<Nrq02000Vo>();
-		msg.setMessage("ERROR");
-		return msg;
+		return reqService.save(form);
 	}
 	
 	@GetMapping("/download/{filename}")
 	@ResponseBody
 	public void download(@PathVariable("filename") String fileName, HttpServletResponse response) {
-		nqr02000Service.download(fileName, response);
+		reqService.download(fileName, response);
+	}
+	
+	@GetMapping("pdf/{name}")
+	@ResponseBody
+	public void pdf(@PathVariable("name") String name, HttpServletResponse response) {
+		reqService.pdf(name, response);
 	}
 }

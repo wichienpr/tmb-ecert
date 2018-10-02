@@ -14,21 +14,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DownloadService {
-	
+
 	@Value("${app.datasource.path.upload}")
 	private String PATH_UPLOAD;
-	
+
 	@Value("${app.datasource.path.report}")
 	private String PATH_REPORT;
-	
+
 	public void download(String name, HttpServletResponse response) {
 		byte[] result;
 		try {
 			File file = new File(PATH_UPLOAD + name);
 			result = IOUtils.toByteArray(new FileInputStream(file));
 			response.setContentType("application/octet-stream");
-			response.addHeader("Content-Disposition",
-	                "attachment;filename=" + name);
+			response.addHeader("Content-Disposition", "attachment;filename=" + name);
 			response.setContentLength(result.length);
 			OutputStream responseOutputStream = response.getOutputStream();
 			for (byte bytes : result) {
@@ -42,18 +41,26 @@ public class DownloadService {
 			e.printStackTrace();
 		}
 	}
-	
-	public void pdf(String name, HttpServletResponse response) throws Exception {
-//		File file = new File(PATH_EXPORT + name + ".pdf");
-//		byte[] reportFile = IOUtils.toByteArray(new FileInputStream(file)); // null
-//
-//		response.setContentType("application/pdf");
-//		response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
-//		response.setContentLength(reportFile.length);
-//
-//		OutputStream responseOutputStream = response.getOutputStream();
-//		for (byte bytes : reportFile) {
-//			responseOutputStream.write(bytes);
-//		}
+
+	public void pdf(String name, HttpServletResponse response) {
+		File file = new File(PATH_UPLOAD + name + ".pdf");
+		byte[] reportFile;
+		OutputStream responseOutputStream;
+		try {
+			reportFile = IOUtils.toByteArray(new FileInputStream(file));
+			response.setContentType("application/pdf");
+			response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
+			response.setContentLength(reportFile.length);
+			responseOutputStream = response.getOutputStream();
+			for (byte bytes : reportFile) {
+				responseOutputStream.write(bytes);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
