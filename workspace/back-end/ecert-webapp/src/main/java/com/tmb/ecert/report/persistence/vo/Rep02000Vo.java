@@ -1,4 +1,4 @@
-package com.tmb.ecert.Report.persistence.vo;
+package com.tmb.ecert.report.persistence.vo;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

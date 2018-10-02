@@ -1,4 +1,4 @@
-package com.tmb.ecert.Report.persistence.dao;
+package com.tmb.ecert.report.persistence.dao;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,9 +15,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.Report.persistence.vo.Rep02000FormVo;
-import com.tmb.ecert.Report.persistence.vo.Rep02000Vo;
 import com.tmb.ecert.constant.DateConstant;
+import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
+import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
 @Repository
 public class Rep02000Dao {

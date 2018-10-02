@@ -1,4 +1,4 @@
-package com.tmb.ecert.Report.controller;
+package com.tmb.ecert.report.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.Report.persistence.vo.Rep02000FormVo;
-import com.tmb.ecert.Report.persistence.vo.Rep02000Vo;
-import com.tmb.ecert.Report.service.Rep02000tService;
+import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
+import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
+import com.tmb.ecert.report.service.Rep02000tService;
 
 @Controller
 @RequestMapping("api/rep/rep02000")

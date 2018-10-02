@@ -1,4 +1,4 @@
-package com.tmb.ecert.Report.service;
+package com.tmb.ecert.report.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,10 +23,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.Report.persistence.dao.Rep02000Dao;
-import com.tmb.ecert.Report.persistence.vo.Rep02000FormVo;
-import com.tmb.ecert.Report.persistence.vo.Rep02000Vo;
 import com.tmb.ecert.common.service.ExcalService;
+import com.tmb.ecert.report.persistence.dao.Rep02000Dao;
+import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
+import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
 @Service
 public class Rep02000tService {
