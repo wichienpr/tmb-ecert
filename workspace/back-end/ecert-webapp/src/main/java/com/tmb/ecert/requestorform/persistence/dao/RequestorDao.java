@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.CheckRequestStatus.persistence.entity.RequestForm;
+import com.tmb.ecert.checkrequeststatus.persistence.entity.RequestForm;
 
 @Repository
 public class RequestorDao {

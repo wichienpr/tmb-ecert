@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.CheckRequestStatus.persistence.entity.RequestForm;
+import com.tmb.ecert.checkrequeststatus.persistence.entity.RequestForm;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;

@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.service;
+package com.tmb.ecert.checkrequeststatus.service;
 
 import java.util.List;
 
@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.CheckRequestStatus.persistence.dao.Crs01000Dao;
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000FormVo;
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000Vo;
+import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestStatusDao;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 
 @Service
-public class Crs01000Service {
+public class CheckRequestStatusService {
 
-	private Logger logger = LoggerFactory.getLogger(Crs01000Service.class);
+	private Logger logger = LoggerFactory.getLogger(CheckRequestStatusService.class);
 
 	@Autowired
-	private Crs01000Dao crs01000Dao;
+	private CheckRequestStatusDao crs01000Dao;
 
 	public List<Crs01000Vo> findAllReqForm(Crs01000Vo dataAll) {
 		return crs01000Dao.findAllReqForm(dataAll);

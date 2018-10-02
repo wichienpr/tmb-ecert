@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.persistence.vo;
+package com.tmb.ecert.checkrequeststatus.persistence.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;

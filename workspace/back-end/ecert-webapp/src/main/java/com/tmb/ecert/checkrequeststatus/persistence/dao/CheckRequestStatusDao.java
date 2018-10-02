@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.persistence.dao;
+package com.tmb.ecert.checkrequeststatus.persistence.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,17 +13,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000FormVo;
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000Vo;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.constant.DateConstant;
 
 @Repository
-public class Crs01000Dao {
+public class CheckRequestStatusDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private Logger logger = LoggerFactory.getLogger(Crs01000Dao.class);
+	private Logger logger = LoggerFactory.getLogger(CheckRequestStatusDao.class);
 
 	private final String SQL_ECERT_REQUEST_FORM = "SELECT * FROM ECERT_REQUEST_FORM;";
 

@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.persistence.vo;
+package com.tmb.ecert.checkrequeststatus.persistence.vo;
 
 public class Crs01000FormVo {
 	private String reqDate;

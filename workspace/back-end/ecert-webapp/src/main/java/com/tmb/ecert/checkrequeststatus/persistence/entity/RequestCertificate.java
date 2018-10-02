@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.persistence.entity;
+package com.tmb.ecert.checkrequeststatus.persistence.entity;
 
 import java.util.Date;
 

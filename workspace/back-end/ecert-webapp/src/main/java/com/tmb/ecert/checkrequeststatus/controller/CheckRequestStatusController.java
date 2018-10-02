@@ -1,4 +1,4 @@
-package com.tmb.ecert.CheckRequestStatus.controller;
+package com.tmb.ecert.checkrequeststatus.controller;
 
 
 import java.util.List;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000FormVo;
-import com.tmb.ecert.CheckRequestStatus.persistence.vo.Crs01000Vo;
-import com.tmb.ecert.CheckRequestStatus.service.Crs01000Service;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
+import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
 
 
 
@@ -22,14 +22,14 @@ import com.tmb.ecert.CheckRequestStatus.service.Crs01000Service;
 
 @RequestMapping("api/crs/crs01000")
 @Controller
-public class Crs01000Controller {
+public class CheckRequestStatusController {
 
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	
 	@Autowired
-	private Crs01000Service crs01000Service;
+	private CheckRequestStatusService crs01000Service;
 	
 
 	
