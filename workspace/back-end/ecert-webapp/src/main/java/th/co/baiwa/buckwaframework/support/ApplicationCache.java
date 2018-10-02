@@ -13,8 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.tmb.ecert.common.dao.CertificateDao;
 import com.tmb.ecert.common.dao.ListOfValueDao;
+import com.tmb.ecert.common.dao.ParameterConfigDao;
+import com.tmb.ecert.common.dao.RoleDao;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.ListOfValue;
+import com.tmb.ecert.common.domain.ParameterConfig;
+import com.tmb.ecert.common.domain.RoleVo;
 
 @Component
 public class ApplicationCache {
@@ -26,22 +30,31 @@ public class ApplicationCache {
 	// Certificate `ECERT_CERTIFICATE`
 	private static final ConcurrentHashMap<String, List<Certificate>> CER_GROUP_VALUE = new ConcurrentHashMap<String, List<Certificate>>();
 	private static final List<Certificate> CER_TYPE_VALUE = new ArrayList<Certificate>();
+	// ParameterConfig `ECERT_PARAMETER_CONFIG`
+	private static final List<ParameterConfig> PARAM_GROUP_VALUE = new ArrayList<ParameterConfig>();
+	// ParameterConfig `ECERT_ROLE AND ECERT_ROLE_PERMISSION`
+	private static final List<RoleVo> ROLE_GROUP_VALUE = new ArrayList<RoleVo>();
 
 	// DAO
 	private final ListOfValueDao lovDao;
 	private final CertificateDao cerDao;
+	private final ParameterConfigDao paramDao;
+	private final RoleDao roleDao;
 
 	@Autowired
-	public ApplicationCache(CertificateDao cerDao, ListOfValueDao lovDao) {
+	public ApplicationCache(CertificateDao cerDao, ListOfValueDao lovDao, ParameterConfigDao paramDao,
+			RoleDao roleDao) {
 		super();
 		this.lovDao = lovDao;
 		this.cerDao = cerDao;
+		this.paramDao = paramDao;
+		this.roleDao = roleDao;
 	}
 
 	/********************* Method for Get Cache - Start *********************/
 
 	/** ListOfValue */
-	
+
 	public static List<Object> getLovAll() {
 		List<ListOfValue> types = LOV_TYPE_VALUE;
 		List<Object> lovs = new ArrayList<>();
@@ -57,9 +70,8 @@ public class ApplicationCache {
 
 	/** ListOfValue */
 
-	
 	/** Certificate */
-	
+
 	public static List<Object> getCerAll() {
 		List<Certificate> types = CER_TYPE_VALUE;
 		List<Object> lovs = new ArrayList<>();
@@ -75,7 +87,22 @@ public class ApplicationCache {
 
 	/** Certificate */
 
-	
+	/** ParameterConfig */
+
+	public static List<ParameterConfig> getParamAll() {
+		return PARAM_GROUP_VALUE;
+	}
+
+	/** ParameterConfig */
+
+	/** RoleVo */
+
+	public static List<RoleVo> getRoleAll() {
+		return ROLE_GROUP_VALUE;
+	}
+
+	/** RoleVo */
+
 	/** Common Cache */
 
 	/********************* Method for Get Cache - End *********************/
@@ -86,6 +113,8 @@ public class ApplicationCache {
 		logger.info("ApplicationCache Reloading...");
 		loadLov();
 		loadCer();
+		loadParam();
+		loadRole();
 		logger.info("ApplicationCache Reloaded");
 	}
 
@@ -110,6 +139,24 @@ public class ApplicationCache {
 			lovs = lovDao.lovByType(type.getType());
 			LOV_TYPE_VALUE.add(type);
 			LOV_GROUP_VALUE.put(type.getType(), lovs);
+		}
+	}
+
+	private void loadParam() {
+		logger.info("load `ParameterConfig` loading...");
+		PARAM_GROUP_VALUE.clear();
+		List<ParameterConfig> items = paramDao.findAll();
+		for (ParameterConfig item : items) {
+			PARAM_GROUP_VALUE.add(item);
+		}
+	}
+
+	private void loadRole() {
+		logger.info("load `RoleVo` loading...");
+		ROLE_GROUP_VALUE.clear();
+		List<RoleVo> items = roleDao.findRoleJoinRolePermission();
+		for (RoleVo item : items) {
+			ROLE_GROUP_VALUE.add(item);
 		}
 	}
 
