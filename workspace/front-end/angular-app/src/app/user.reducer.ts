@@ -14,7 +14,8 @@ const INIT_USER_DETAIL: UserDetail = {
     userId: "42307",
     username: 'admin',
     firstName: 'สุรเดช',
-    lastName: 'แสนสมบูรณ์สุข'
+    lastName: 'แสนสมบูรณ์สุข',
+    auths : []
 };
 
 // Reducers

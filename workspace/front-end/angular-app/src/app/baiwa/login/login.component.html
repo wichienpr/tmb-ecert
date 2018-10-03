@@ -14,6 +14,7 @@
 
 <!-- content -->
 <div class="ui container login-content">
+
   <div class="ui one column grid login-page">
 
     <div class="ui five wide column bg-login login">
@@ -22,10 +23,10 @@
       </b>
       <form (submit)="onSubmit($event)" class="ui form segment bg-login form-login" ngNativeValidate>
 
-        <div class="ui hidden negative message">
-          <i class="close icon"></i>
+        <div class="ui negative message" [ngClass]="{'visible': showLoginMessage, 'hidden': !showLoginMessage }">
+          <i class="close icon" (click)="showLoginMessage=false"></i>
           <div class="header"></div>
-          <p>ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</p>
+          <p> {{loginMessage}}</p>
         </div>
 
         <div class="inline-fields">
