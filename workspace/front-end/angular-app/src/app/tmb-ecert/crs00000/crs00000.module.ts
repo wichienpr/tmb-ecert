@@ -9,10 +9,11 @@ import { Crs00000RoutingModule } from 'app/tmb-ecert/crs00000/crs00000-routing.m
 import { StoreModule } from '@ngrx/store';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
+import { DisableControlModule } from 'directives/';
 
 // Module Components
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
+import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
 
 
@@ -27,6 +28,8 @@ import { ModalModule, CalendarModule, DropdownModule } from 'components/';
     ModalModule,
     DropdownModule,
     CalendarModule,
+    DisableControlModule,
+    PipesModule,
   ],
   declarations: [Crs01000Component]
 })

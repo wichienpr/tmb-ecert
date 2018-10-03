@@ -1,49 +1,49 @@
 <div class="ui grid pushable">
-    <div class="ui left vertical sidebar menu">
+    <div class="ui left vertical sidebar menu"  >
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
         คำขอใหม่
-        <div class="ui  label blue" style="font-size: 13px">1</div>
+        <div class="ui  label blue" style="font-size: 13px">{{countStatus1 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10002')">
         ดำเนินการชำระเงิน
-        <div class="ui label ">2</div>
+        <div class="ui label ">{{countStatus2 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
         ปฏิเสธคำขอ
-        <div class="ui label red">1</div>
+        <div class="ui label red">{{countStatus3 || '0'}}</div>
       </a>
       <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
         ยกเลิกคำขอ
-        <div class="ui label red ">1</div>
+        <div class="ui label red ">{{countStatus4 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
         รออนุมัติการชำระเงิน
-        <div class="ui label blue">1</div>
+        <div class="ui label blue">{{countStatus5 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
         อนุมัติการชำระเงิน
-        <div class="ui label ">1</div>
+        <div class="ui label ">{{countStatus6 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
         ปฏิเสธการชำระเงิน
-        <div class="ui label red">1</div>
+        <div class="ui label red">{{countStatus7 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
         ชำระเงินไม่สำเร็จ
-        <div class="ui label red">1</div>
+        <div class="ui label red">{{countStatus8 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
         รออัพโหลด Certificate
-        <div class="ui label blue">1</div>
+        <div class="ui label blue">{{countStatus9 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
         ดำเนินการสำเร็จ
-        <div class="ui label ">2</div>
+        <div class="ui label ">{{countStatus10 || '0'}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
         รอบันทึกคำขอ
         (ลูกค้าทำรายเอง)
-        <div class="ui label blue">1</div>
+        <div class="ui label blue">{{countStatus11 || '0'}}</div>
       </a>
     </div>
 
@@ -70,20 +70,20 @@
           </div>
 
           <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
               
                 <div class="inline fields">
                   <div class="two wide field">
                     <label class="custom-label-w-22">วันที่ขอ</label>
                   </div>
-                  <div class="five wide field" >
+                  <div class="five wide field {{ validate('reqDate', ngForm.submitted) ? '' : 'error' }}" >
                       <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%"></ui-calendar>
                   </div>
                   <div class="two wide field ">
                     <label>ถึงวันที่
                     </label>
                   </div>
-                  <div class="five wide field">
+                  <div class="five wide field {{ validate('toReqDate', ngForm.submitted) ? '' : 'error' }}">
                     <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('toReqDate',$event)" style="width:100%"></ui-calendar>
                   </div>
                 </div>
@@ -94,13 +94,13 @@
                     <label>เลขที่นิติบุคคล
                     </label>
                   </div>
-                  <div class="five wide field ">
+                  <div class="five wide field {{ validate('organizeId', ngForm.submitted) ? '' : 'error' }}">
                     <input type="number" formControlName="organizeId" placeholder="เลขที่นิติบุคคล">
                   </div>
                   <div class="two wide field ">
                     <label>ชื่อนิติบุคคล</label>
                   </div>
-                  <div class="five wide field ">
+                  <div class="five wide field {{ validate('companyName', ngForm.submitted) ? '' : 'error' }}">
                     <input type="text" formControlName="companyName" placeholder="ชื่อนิติบุคคล">
                   </div>
                 </div>
@@ -109,7 +109,7 @@
                   <div class="two wide field ">
                     <label>TMB Req. No. </label>
                   </div>
-                  <div class="five wide field ">
+                  <div class="five wide field {{ validate('tmbReqNo', ngForm.submitted) ? '' : 'error' }}">
                     <input type="number" formControlName="tmbReqNo" placeholder="TMB Req. No.">
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div class="inline field">
                   <div class="ui centered grid">
                     <div class="six wide column center aligned">
-                      <button class="ui blue basic button" type="button" (click)="searchData()">
+                      <button class="ui blue basic button" type="submit">
                         <i class="search icon"></i>
                         ค้นหา
                       </button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -159,9 +159,9 @@
                       <td style="text-align: center !important;">{{i+1}}</td>
                       <td style="text-align: center !important;">{{data.reqDateStr}}</td>
                       <td style="text-align: center !important;">{{data.tmbReqNo}}</td>
-                      <td style="text-align: center !important;">{{ data.ref1 || '-' }}</td>
-                      <td style="text-align: center !important;">{{ data.ref2 || '-' }}</td>
-                      <td style="text-align: center !important;">{{data.amount}}</td>
+                      <td style="text-align: center !important;">{{ data.ref1 | emptyString }}</td>
+                      <td style="text-align: center !important;">{{ data.ref2 | emptyString }}</td>
+                      <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00" | emptyString }} </td>
                       <td style="text-align: center !important;">{{data.typeDesc}}</td>
                       <td style="text-align: center !important;">{{data.organizeId}}</td>
                       <td style="text-align: center !important;">{{data.companyName}}</td>
