@@ -79,13 +79,14 @@ public class SftpUtils {
 		return null;
 	}
 	
-	public static void putFile(SftpVo vo) {
+	public static boolean putFile(SftpVo vo) {
 
 		Session session = null;
 		Channel channel = null;
 		ChannelSftp channelSftp = null;
 		OutputStream outputStream = null;
 		InputStream inputStream = null;
+		boolean isSuccess = true;
 		try {
 			Security.insertProviderAt(new BouncyCastleProvider(), 1);
 			
@@ -112,12 +113,14 @@ public class SftpUtils {
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
+			isSuccess = false;
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
 					log.error("exception close inputStream ", e.getMessage());
+					isSuccess = false;
 				}
 			}
 			
@@ -126,6 +129,7 @@ public class SftpUtils {
 					outputStream.close();
 				} catch (IOException e) {
 					log.error("exception close outputStream ", e.getMessage());
+					isSuccess = false;
 				}
 				
 			}
@@ -139,6 +143,8 @@ public class SftpUtils {
 				log.info("Host Session disconnected");
 			}
 		}
-	}
 
+		return isSuccess;
+	}
+	
 }
