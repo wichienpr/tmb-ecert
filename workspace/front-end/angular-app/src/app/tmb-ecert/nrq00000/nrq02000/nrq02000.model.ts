@@ -1,6 +1,7 @@
 import { Certificate } from "models/";
 
 export interface Nrq02000 {
+    [x: string]: any;
     reqTypeSelect: string;        // ประเภทคำขอ
     customSegSelect: string;      // Customer Segment
     payMethodSelect: string;      // วิธีการรับชำระ
@@ -16,7 +17,7 @@ export interface Nrq02000 {
     telReq: string;               // เบอร์โทรผู้ขอ/ลูกค้า
     address: string;              // ที่อยู่
     note: string;                 // หมายเหตุ
-    requestFile: any;             // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-    copyFile: any;                // สำเนาบัตรประชาชน
-    changeNameFile: any;          // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
+    requestFile: File;             // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+    copyFile: File;                // สำเนาบัตรประชาชน
+    changeNameFile?: File;          // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
 }

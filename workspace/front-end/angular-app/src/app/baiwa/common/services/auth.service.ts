@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   public logout() {
-    let logouturl: string = AjaxService + "/onlogout";
+    let logouturl: string = AjaxService.CONTEXT_PATH + "/onlogout";
     return this.http.get(logouturl);
   }
 }

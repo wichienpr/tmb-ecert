@@ -62,6 +62,7 @@ export class Nrq02000Component implements OnInit {
   }
 
   reqTypeChange(e) {
+    console.log('reqTypeChange => ', e);
     this.service.reqTypeChange(e).then(certificate => {
       this.reqTypeChanged = certificate;
       this.reqTypeChanged.forEach((obj, index) => {2
@@ -104,12 +105,13 @@ export class Nrq02000Component implements OnInit {
 
   accNoBlur(): void {
     const { accNo } = this.form.controls;
-    this.form.controls.accNo.setValidators([Validators.required, Validators.maxLength(13)]);
+    this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
     this.form.controls.accNo.setValue(Acc.convertAccNo(accNo.value));
   }
 
   accNoFocus(): void {
     const { accNo } = this.form.controls;
+    this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
     this.form.controls.accNo.setValue(Acc.revertAccNo(accNo.value));
   }
 

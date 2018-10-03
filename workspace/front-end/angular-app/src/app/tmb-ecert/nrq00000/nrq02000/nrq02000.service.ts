@@ -155,17 +155,23 @@ export class Nrq02000Service {
                         if (index != 0) {
                             obj.check = form.controls['chk' + index].value;
                             obj.value = form.controls['cer' + index].value;
+                            if (obj.check == "" && obj.value == "") {
+                                obj.check = false;
+                                obj.value = 0;
+                            }
                         }
                     });
                     let formData = new FormData();
-                    const data: Nrq02000 = {
+                    let _data = [...certificates];
+                    _data.splice(0, 1);
+                    let data: Nrq02000 = {
                         acceptNo: form.controls.acceptNo.value,
                         accName: form.controls.accName.value,
                         accNo: Acc.revertAccNo(form.controls.accNo.value),
                         address: form.controls.address.value,
-                        changeNameFile: files.changeNameFile,
-                        copyFile: files.copyFile,
-                        requestFile: files.requestFile,
+                        changeNameFile: files.changeNameFile ? files.changeNameFile : null,
+                        copyFile: files.copyFile ? files.copyFile : null,
+                        requestFile: files.requestFile ? files.requestFile : null,
                         corpName: form.controls.corpName.value,
                         corpName1: form.controls.corpName1.value,
                         corpNo: form.controls.corpNo.value,
@@ -176,10 +182,18 @@ export class Nrq02000Service {
                         payMethodSelect: form.controls.payMethodSelect.value,
                         subAccMethodSelect: form.controls.subAccMethodSelect.value,
                         telReq: form.controls.telReq.value,
-                        tmbReceiptChk: form.controls.tmbReceiptChk.value
+                        tmbReceiptChk: form.controls.tmbReceiptChk.value,
+                        certificates: _data
                     };
                     for (let key in data) {
-                        formData.append(key, data[key]);
+                        if (data[key]) {
+                            if (key == "certificates") {
+                                console.log(data[key]);
+                                formData.append(key, JSON.stringify(data[key]));
+                            } else {
+                                formData.append(key, data[key]);
+                            }
+                        }
                     }
                     this.ajax.upload(URL.NRQ_SAVE, formData, response => {
                         if (response.json().message == "SUCCESS") {
