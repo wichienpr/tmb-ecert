@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import com.tmb.ecert.batchjob.job.FeepaymentAutoRetryBatchJob;
 
 @Configuration
-@ConditionalOnProperty(name="feepayment.autoretrybatch.config" , havingValue="" ,matchIfMissing=false)
+@ConditionalOnProperty(name="job.autoRetryFeePayment.cornexpression" , havingValue="" ,matchIfMissing=false)
 public class FeepaymentAutoRetryBatchConfig {
 
 	
@@ -32,7 +32,7 @@ public class FeepaymentAutoRetryBatchConfig {
 //	@Autowired
 //	private FeepaymentAutoRetryBatchConfig feepaymentAutoRetryBatchConfig;
 	
-	@Value("${feepayment.autoretrybatch.config}")
+	@Value("${job.autoRetryFeePayment.cornexpression}")
 	private String cronExpressions;
 	
 	@PostConstruct
