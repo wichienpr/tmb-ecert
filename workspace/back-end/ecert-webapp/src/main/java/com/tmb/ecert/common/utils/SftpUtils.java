@@ -6,8 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.Security;
 import java.util.Properties;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ public class SftpUtils {
 		ChannelSftp channelSftp = null;
 		OutputStream outputStream = null;
 		try {
-//			Security.insertProviderAt(new BouncyCastleProvider(), 1);
+			Security.insertProviderAt(new BouncyCastleProvider(), 1);
 
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
@@ -85,7 +87,7 @@ public class SftpUtils {
 		OutputStream outputStream = null;
 		InputStream inputStream = null;
 		try {
-//			Security.insertProviderAt(new BouncyCastleProvider(),1);
+			Security.insertProviderAt(new BouncyCastleProvider(), 1);
 			
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
