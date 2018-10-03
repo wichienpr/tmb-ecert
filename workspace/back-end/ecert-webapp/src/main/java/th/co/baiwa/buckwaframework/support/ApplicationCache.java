@@ -120,6 +120,16 @@ public class ApplicationCache {
 	public static List<ParameterConfig> getParamAll() {
 		return PARAM_GROUP_VALUE;
 	}
+	
+	public String getParamValueByName(String propertyName) {
+		List<ParameterConfig> paramConfigs = PARAM_GROUP_VALUE;
+		for (ParameterConfig param : paramConfigs) {
+			if (propertyName.equals(param.getPropertyName())) {
+				return param.getPropertyValue();
+			}
+		}
+		return null;
+	}
 
 	/** ParameterConfig */
 
