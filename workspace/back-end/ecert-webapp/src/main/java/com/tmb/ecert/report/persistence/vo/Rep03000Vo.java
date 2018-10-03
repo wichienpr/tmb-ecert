@@ -6,28 +6,15 @@ import java.math.BigInteger;
 public class Rep03000Vo {
 
 	public Long id;
-	public String requestDate;
-	public String tmbRequestno;
+	public String receiptNo;
+	public String paymentDate;
+	public String customerName;
 	public String organizeId;
-	public String companyName;
-	public String custsegmentCode;
-	public String custsegmentDesc;
-	public String requestTypeCode;
-	public String requestTypeDesc;
-	public String certypeCode;
-	public String certypeDesc;
-	public String accountNo;
-	public BigDecimal amountDbd;
-	public BigDecimal amountTmb;
+	public String address;
+	public String branch;
 	public BigDecimal amount;
-	public BigDecimal totalAmount;
-	public String makerById;
-	public String makerByName;
-	public String checkerById;
-	public String checkerByName;
-	public String status;
-	public String remark;
-
+	public BigDecimal amountVat;
+	public BigDecimal amountTotal;
 
 	public Long getId() {
 		return id;
@@ -36,21 +23,31 @@ public class Rep03000Vo {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	
 
-	public String getRequestDate() {
-		return requestDate;
+	public String getReceiptNo() {
+		return receiptNo;
 	}
 
-	public void setRequestDate(String requestDate) {
-		this.requestDate = requestDate;
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
 	}
 
-	public String getTmbRequestno() {
-		return tmbRequestno;
+	public String getPaymentDate() {
+		return paymentDate;
 	}
 
-	public void setTmbRequestno(String tmbRequestno) {
-		this.tmbRequestno = tmbRequestno;
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	public String getOrganizeId() {
@@ -61,84 +58,20 @@ public class Rep03000Vo {
 		this.organizeId = organizeId;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getCustsegmentCode() {
-		return custsegmentCode;
+	public String getBranch() {
+		return branch;
 	}
 
-	public void setCustsegmentCode(String custsegmentCode) {
-		this.custsegmentCode = custsegmentCode;
-	}
-
-	public String getCustsegmentDesc() {
-		return custsegmentDesc;
-	}
-
-	public void setCustsegmentDesc(String custsegmentDesc) {
-		this.custsegmentDesc = custsegmentDesc;
-	}
-
-	public String getRequestTypeCode() {
-		return requestTypeCode;
-	}
-
-	public void setRequestTypeCode(String requestTypeCode) {
-		this.requestTypeCode = requestTypeCode;
-	}
-
-	public String getRequestTypeDesc() {
-		return requestTypeDesc;
-	}
-
-	public void setRequestTypeDesc(String requestTypeDesc) {
-		this.requestTypeDesc = requestTypeDesc;
-	}
-
-	public String getCertypeCode() {
-		return certypeCode;
-	}
-
-	public void setCertypeCode(String certypeCode) {
-		this.certypeCode = certypeCode;
-	}
-
-	public String getCertypeDesc() {
-		return certypeDesc;
-	}
-
-	public void setCertypeDesc(String certypeDesc) {
-		this.certypeDesc = certypeDesc;
-	}
-
-	public String getAccountNo() {
-		return accountNo;
-	}
-
-	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
-	}
-
-	public BigDecimal getAmountDbd() {
-		return amountDbd;
-	}
-
-	public void setAmountDbd(BigDecimal amountDbd) {
-		this.amountDbd = amountDbd;
-	}
-
-	public BigDecimal getAmountTmb() {
-		return amountTmb;
-	}
-
-	public void setAmountTmb(BigDecimal amountTmb) {
-		this.amountTmb = amountTmb;
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 
 	public BigDecimal getAmount() {
@@ -149,61 +82,20 @@ public class Rep03000Vo {
 		this.amount = amount;
 	}
 
-	public BigDecimal getTotalAmount() {
-		return totalAmount;
+	public BigDecimal getAmountVat() {
+		return amountVat;
 	}
 
-	public void setTotalAmount(BigDecimal totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setAmountVat(BigDecimal amountVat) {
+		this.amountVat = amountVat;
 	}
 
-	public String getMakerById() {
-		return makerById;
+	public BigDecimal getAmountTotal() {
+		return amountTotal;
 	}
 
-	public void setMakerById(String makerById) {
-		this.makerById = makerById;
+	public void setAmountTotal(BigDecimal amountTotal) {
+		this.amountTotal = amountTotal;
 	}
-
-	public String getMakerByName() {
-		return makerByName;
-	}
-
-	public void setMakerByName(String makerByName) {
-		this.makerByName = makerByName;
-	}
-
-	public String getCheckerById() {
-		return checkerById;
-	}
-
-	public void setCheckerById(String checkerById) {
-		this.checkerById = checkerById;
-	}
-
-	public String getCheckerByName() {
-		return checkerByName;
-	}
-
-	public void setCheckerByName(String checkerByName) {
-		this.checkerByName = checkerByName;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 
 }

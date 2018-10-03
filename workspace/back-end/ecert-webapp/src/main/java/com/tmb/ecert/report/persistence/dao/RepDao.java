@@ -337,43 +337,26 @@ public class RepDao {
 				    		Rep03000Vo vo = new Rep03000Vo();
 				    		
 				    		vo.setId(Long.parseLong(String.valueOf(rs.getInt("REQFORM_ID"))));
-				    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
-				    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));                 
-				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
-				    		vo.setCompanyName(rs.getString("CUSTOMER_NAME")); 
 				    		
-				    		vo.setCustsegmentCode(rs.getString("CUSTSEGMENT_CODE")); 
-				    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
+				    		vo.setReceiptNo(rs.getString("RECEIPT_NO")); 
+				    		vo.setPaymentDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("PAYMENT_DATE")));  
+				    		                  
+				    		vo.setCustomerName(rs.getString("CUSTOMER_NAME")); 
+				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));  
 				    		
-				    		vo.setRequestTypeCode(rs.getString("REQUEST_TYPE_CODE"));  
-				    		vo.setRequestTypeDesc(rs.getString("REQUEST_TYPE_DESC"));
-				    		
-				    		vo.setCertypeCode(rs.getString("CERTYPE_CODE")); 
-				    		vo.setCertypeDesc(rs.getString("CERTYPE_DESC"));  
-				    		
-				    		vo.setAccountNo(rs.getString("ACCOUNT_NO"));  
+				    		vo.setAddress(rs.getString("ADDRESS"));   
+				    		vo.setBranch(rs.getString("BRANCH"));  
 				    		
 				    		Float totalAmount = 0f;
-				    		
-				    		vo.setAmountDbd(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_DBD")));  
-				    		totalAmount+=convertBigDecimalToLong(vo.getAmountDbd());
-				    		
-				    		vo.setAmountTmb(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TMB")));  
-				    		totalAmount+=convertBigDecimalToLong(vo.getAmountTmb());
 				    		
 				    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
 				    		totalAmount+=convertBigDecimalToLong(vo.getAmount());
 				    		
-				    		vo.setTotalAmount(new BigDecimal(totalAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN));   
+				    		vo.setAmountVat(convertBigDecimalToZero(new BigDecimal(15))); 
+				    		totalAmount+=convertBigDecimalToLong(new BigDecimal(15));
 				    		
-				    		vo.setMakerById(rs.getString("MAKER_BY_ID"));   
-				    		vo.setMakerByName(rs.getString("MAKER_BY_NAME"));   
-				    		
-				    		vo.setCheckerById(rs.getString("CHECKER_BY_ID"));  
-				    		vo.setCheckerByName(rs.getString("CHECKER_BY_NAME")); 
-				    		
-				    		vo.setStatus(rs.getString("STATUS"));                   
-				    		vo.setRemark(rs.getString("REMARK"));                   
+				    		vo.setAmountTotal(convertBigDecimalToZero(new BigDecimal(totalAmount))); 
+				    		 
 				    		                
 				    		return vo;                                                         
 				    	}
