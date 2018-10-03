@@ -1,4 +1,4 @@
-package com.tmb.ecert.checkrequeststatus.persistence.entity;
+package com.tmb.ecert.common.domain;
 
 import java.util.Date;
 

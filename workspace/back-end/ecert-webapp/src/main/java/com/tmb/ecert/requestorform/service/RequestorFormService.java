@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tmb.ecert.checkrequeststatus.persistence.entity.RequestForm;
 import com.tmb.ecert.common.domain.CommonMessage;
+import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;

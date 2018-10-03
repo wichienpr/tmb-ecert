@@ -18,7 +18,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.checkrequeststatus.persistence.entity.RequestForm;
+import com.tmb.ecert.common.domain.RequestForm;
 
 @Repository
 public class RequestorDao {

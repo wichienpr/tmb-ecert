@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
-import com.tmb.ecert.constant.DateConstant;
+import com.tmb.ecert.common.constant.DateConstant;
 
 @Repository
 public class CheckRequestStatusDao {
@@ -117,5 +117,25 @@ public class CheckRequestStatusDao {
 		}
 
 	};
+	
+	
+//	public List<CountStatusVo> countStatus() {
+//		logger.info("CountStatus_Dao");
+//		List<CountStatusVo> countStatusVoList = new ArrayList<CountStatusVo>();
+//		StringBuilder sql = new StringBuilder();
+//		sql.append(" SELECT COUNT(*) AS COUNT_STATUS, H.STATUS ");
+//		sql.append(" FROM ECERT_REQUEST_FORM H ");
+//		sql.append(" GROUP BY H.STATUS ");
+//		sql.append(" ORDER BY H.STATUS ASC ");
+//		
+//		countStatusVoList = jdbcTemplate.query(sql.toString(), countStatusMapping);
+//	
+//		return countStatusVoList;
+//	}
+//	
+//	private RowMapper<CountStatusVo> countStatusMapping = new RowMapper<CountStatusVo>() {
+//		
+//
+//	}
 
 }
