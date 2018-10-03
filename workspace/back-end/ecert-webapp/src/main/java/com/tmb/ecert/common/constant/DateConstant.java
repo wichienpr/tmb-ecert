@@ -1,4 +1,4 @@
-package com.tmb.ecert.constant;
+package com.tmb.ecert.common.constant;
 
 import java.util.Date;
 import java.util.Locale;
@@ -102,7 +102,17 @@ public class DateConstant {
 		return date;
 	}
 	
-
+	public static Date  convertStringMMYYYYToDate(String MMYYYY) {
+		Date date = null;
+		try {
+			if (MMYYYY != null) {
+				date = DateUtils.parseDate(MMYYYY, MM_YYYY);
+			}
+		} catch (Exception e) {
+			log.error("Error convertDateToStrDDMMYYYY : ", e);
+		}
+		return date;
+	}
 
 
 }

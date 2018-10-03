@@ -20,6 +20,8 @@ public class Rep02000Vo {
 	public int success;
 	public int fail;
 
+	public String remark;
+
 	public String getCustsegmentDesc() {
 		return custsegmentDesc;
 	}
@@ -106,6 +108,14 @@ public class Rep02000Vo {
 
 	public void setFail(int fail) {
 		this.fail = fail;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

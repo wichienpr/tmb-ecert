@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.service.ExcalService;
-import com.tmb.ecert.report.persistence.dao.Rep02000Dao;
+import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
@@ -33,7 +33,7 @@ public class Rep02000tService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private Rep02000Dao rep02000Dao;
+	private RepDao repDao;
 	
 	@Autowired
 	private ExcalService excalService;
@@ -42,18 +42,32 @@ public class Rep02000tService {
 	public List<Rep02000Vo> findAll(Rep02000FormVo formVo){
 		List<Rep02000Vo> rep02000VoList = new ArrayList<Rep02000Vo>();
 		List<Rep02000Vo> rep02000VoListReturn = new ArrayList<Rep02000Vo>();
-		rep02000VoList = rep02000Dao.getData(formVo);
+		rep02000VoList = repDao.getDataRep02000(formVo);
+		
 		for (Rep02000Vo rep02000Vo : rep02000VoList) {
 			
+			int countCertificate = 0;
+			countCertificate = repDao.getCountCertificateRep02000(formVo,rep02000Vo);
+			rep02000Vo.setCertificate(countCertificate);
+			rep02000Vo.setCopyGuarantee(rep02000Vo.getCustsegmentCount()-countCertificate);
+			
+			int countStatus = 0;
+			countStatus = repDao.getCountStatusRep02000(formVo,rep02000Vo);
+			rep02000Vo.setSuccess(countStatus);
+			rep02000Vo.setFail(rep02000Vo.getCustsegmentCount()-countStatus);
+	
+			rep02000VoListReturn.add(rep02000Vo);
+			
 		}
-		return rep02000VoList;
+		
+		return rep02000VoListReturn;
 	}
 	
 	public void exportFile(Rep02000FormVo formVo, HttpServletResponse response) throws IOException {
 		
 		List<Rep02000Vo> dataTestList = new ArrayList<Rep02000Vo>();
 	
-		dataTestList = rep02000Dao.getData(formVo);
+		dataTestList = findAll(formVo);
 //		dataTestList = formVo.getDataT();
 		
 			/* create spreadsheet */
@@ -64,7 +78,7 @@ public class Rep02000tService {
 			int cellNum = 0;
 			Row row = sheet.createRow(rowNum);
 			Cell cell = row.createCell(cellNum);
-			System.out.println("Creating excel");
+			log.info("Creating excel");
 			
 			 
 			/* create data spreadsheet */
@@ -108,32 +122,27 @@ public class Rep02000tService {
 			
 			/* Detail */
 //			List<LicenseList6010> exportDataList = null;
-
 			rowNum = 2;
 			cellNum = 0;
-			int order = 1;
 			for (Rep02000Vo detail : dataTestList) {
 				row = sheet.createRow(rowNum);
 				// No.
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(order);
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRequestDate()                 ))?detail.getRequestDate()                 : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTmbRequestno()                ))?detail.getTmbRequestno()                : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()                  ))?detail.getOrganizeId()                  : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()                 ))?detail.getCompanyName()                 : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCustsegmentDesc()             ))?detail.getCustsegmentDesc()             : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRequestTypeDesc()             ))?detail.getRequestTypeDesc()             : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCertypeDesc()                 ))?detail.getCertypeDesc()                 : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(convertAccountNo(detail.getAccountNo()) ))?convertAccountNo(detail.getAccountNo()) : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmount().toString()      ))?detail.getTotalAmount().toString()      : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerByName()                 ))?detail.getMakerByName()                 : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerByName()               ))?detail.getCheckerByName()               : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getStatus()                      ))?detail.getStatus()                      : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getStatus()                      ))?detail.getStatus()                      : "" );
-//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRemark()                      ))?detail.getRemark()                      : "" );
-				order++;
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCustsegmentDesc()))?detail.getCustsegmentDesc() : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getCustsegmentCount()));
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getCertificate()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getCopyGuarantee()));
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()))?detail.getAmountDbd().toString() : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString() : "" );			
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmount().toString()))?detail.getTotalAmount().toString() : "" );
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getSuccess()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getFail()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRemark()))?detail.getRemark() : "" );
+				
+				
 				rowNum++;
 				cellNum = 0;
 			}
@@ -141,8 +150,8 @@ public class Rep02000tService {
 			
 			
 			/*set	fileName*/		
-			String fileName ="E-Certificate_End-day_"+DateFormatUtils.format(new Date(),"yyyyMMdd", new Locale("th", "TH"));;
-			System.out.println(fileName);
+			String fileName ="E-Certificate_Monthly_"+DateFormatUtils.format(new Date(),"yyyyMMdd", new Locale("th", "TH"));;
+			log.info(fileName);
 			
 			/* write it as an excel attachment */
 			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();

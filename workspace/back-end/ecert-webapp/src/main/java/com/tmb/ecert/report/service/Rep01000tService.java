@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.service.ExcalService;
-import com.tmb.ecert.report.persistence.dao.Rep01000Dao;
+import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
 
@@ -33,7 +33,7 @@ public class Rep01000tService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private Rep01000Dao rep01000Dao;
+	private RepDao repDao;
 	
 	@Autowired
 	private ExcalService excalService;
@@ -41,7 +41,7 @@ public class Rep01000tService {
 	
 	public List<Rep01000Vo> findAll(Rep01000FormVo formVo){
 		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
-		rep01000VoList = rep01000Dao.getData(formVo);
+		rep01000VoList = repDao.getDataRep01000(formVo);
 		return rep01000VoList;
 	}
 	
@@ -49,7 +49,7 @@ public class Rep01000tService {
 		
 		List<Rep01000Vo> dataTestList = new ArrayList<Rep01000Vo>();
 	
-		dataTestList = rep01000Dao.getData(formVo);
+		dataTestList = repDao.getDataRep01000(formVo);
 //		dataTestList = formVo.getDataT();
 		
 			/* create spreadsheet */
@@ -60,7 +60,7 @@ public class Rep01000tService {
 			int cellNum = 0;
 			Row row = sheet.createRow(rowNum);
 			Cell cell = row.createCell(cellNum);
-			System.out.println("Creating excel");
+			log.info("Creating excel");
 			
 			 
 			/* create data spreadsheet */
