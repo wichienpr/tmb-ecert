@@ -22,7 +22,7 @@ public class Nrq02000FormVo {
 	private String telReq;
 	private String address;
 	private String note;
-	private List<Certificate> certificates;
+	private String certificates;
 	private MultipartFile requestFile;
 	private MultipartFile copyFile;
 	private MultipartFile changeNameFile;
@@ -147,11 +147,11 @@ public class Nrq02000FormVo {
 		this.note = note;
 	}
 
-	public List<Certificate> getCertificates() {
+	public String getCertificates() {
 		return certificates;
 	}
 
-	public void setCertificates(List<Certificate> certificates) {
+	public void setCertificates(String certificates) {
 		this.certificates = certificates;
 	}
 

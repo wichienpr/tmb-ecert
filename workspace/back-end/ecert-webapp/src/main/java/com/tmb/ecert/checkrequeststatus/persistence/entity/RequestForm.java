@@ -56,9 +56,9 @@ public class RequestForm {
 	private String createdById;
 	private String createdByName;
 	private Date createdDateTime;
-	private String updateById;
-	private String updateByName;
-	private Date updateDateTime;
+	private String updatedById;
+	private String updatedByName;
+	private Date updatedDateTime;
 
 	private String makerById;
 	private String makerByName;
@@ -425,28 +425,28 @@ public class RequestForm {
 		this.createdDateTime = createdDateTime;
 	}
 
-	public String getUpdateById() {
-		return updateById;
+	public String getUpdatedById() {
+		return updatedById;
 	}
 
-	public void setUpdateById(String updateById) {
-		this.updateById = updateById;
+	public void setUpdatedById(String updatedById) {
+		this.updatedById = updatedById;
 	}
 
-	public String getUpdateByName() {
-		return updateByName;
+	public String getUpdatedByName() {
+		return updatedByName;
 	}
 
-	public void setUpdateByName(String updateByName) {
-		this.updateByName = updateByName;
+	public void setUpdatedByName(String updatedByName) {
+		this.updatedByName = updatedByName;
 	}
 
-	public Date getUpdateDateTime() {
-		return updateDateTime;
+	public Date getUpdatedDateTime() {
+		return updatedDateTime;
 	}
 
-	public void setUpdateDateTime(Date updateDateTime) {
-		this.updateDateTime = updateDateTime;
+	public void setUpdatedDateTime(Date updatedDateTime) {
+		this.updatedDateTime = updatedDateTime;
 	}
 
 	public String getMakerById() {
@@ -480,5 +480,4 @@ public class RequestForm {
 	public void setCheckerByName(String checkerByName) {
 		this.checkerByName = checkerByName;
 	}
-
 }

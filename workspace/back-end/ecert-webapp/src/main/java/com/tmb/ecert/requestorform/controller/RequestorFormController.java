@@ -1,5 +1,7 @@
 package com.tmb.ecert.requestorform.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
-import com.tmb.ecert.requestorform.persistence.vo.Nrq02000Vo;
 import com.tmb.ecert.requestorform.service.RequestorFormService;
 
-@RequestMapping("api/nrq/nrq02000")
+@RequestMapping("api/nrq")
 @Controller
 public class RequestorFormController {
 	
@@ -25,13 +26,19 @@ public class RequestorFormController {
 	
 	@GetMapping("/")
 	@ResponseBody
-	public String nrq02000() {
-		return "NRQ02000";
+	public String nrq() {
+		return "NRQ";
 	}
 	
 	@PostMapping("/")
 	@ResponseBody
-	public CommonMessage<Nrq02000Vo> save(@ModelAttribute Nrq02000FormVo form) {
+	public List<String> all() {
+		return null;
+	}
+	
+	@PostMapping("/save")
+	@ResponseBody
+	public CommonMessage<String> save(@ModelAttribute Nrq02000FormVo form) {
 		return reqService.save(form);
 	}
 	

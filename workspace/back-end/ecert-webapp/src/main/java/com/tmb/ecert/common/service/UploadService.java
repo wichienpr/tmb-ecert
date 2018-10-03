@@ -38,6 +38,7 @@ public class UploadService {
 			OutputStream stream = new FileOutputStream(path);
 			stream.write(data);
 			logger.info("Created file: " + path);
+			stream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -67,6 +67,20 @@ public class ApplicationCache {
 	public static List<ListOfValue> getLovByType(Integer type) {
 		return LOV_GROUP_VALUE.get(type);
 	}
+	
+	public static ListOfValue getLovByCode(String code) {
+		List<ListOfValue> types = LOV_TYPE_VALUE;
+		for (ListOfValue type : types) {
+			int typeCode = type.getType();
+			List<ListOfValue> lovs = LOV_GROUP_VALUE.get(typeCode);
+			for(ListOfValue lov: lovs) {
+				if (code.equals(lov.getCode())) {
+					return lov;
+				}
+			}
+		}
+		return null;
+	}
 
 	/** ListOfValue */
 
@@ -81,8 +95,22 @@ public class ApplicationCache {
 		return lovs;
 	}
 
-	public static List<Certificate> getCetByType(String typeCode) {
+	public static List<Certificate> getCerByType(String typeCode) {
 		return CER_GROUP_VALUE.get(typeCode);
+	}
+	
+	public static Certificate getCerByCode(String code) {
+		List<Certificate> types = CER_TYPE_VALUE;
+		for (Certificate type : types) {
+			String typeCode = type.getTypeCode();
+			List<Certificate> cers = CER_GROUP_VALUE.get(typeCode);
+			for(Certificate cer: cers) {
+				if (code.equals(cer.getCode())) {
+					return cer;
+				}
+			}
+		}
+		return null;
 	}
 
 	/** Certificate */

@@ -26,7 +26,7 @@ public class CertificateController {
 	@PostMapping("/typeCode")
 	@ResponseBody
 	public List<Certificate> cerByTypeCode(@RequestBody Certificate cer) {
-		return ApplicationCache.getCetByType(cer.getTypeCode());
+		return ApplicationCache.getCerByType(cer.getTypeCode());
 	}
 
 }
