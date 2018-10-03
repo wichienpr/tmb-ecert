@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Modal } from 'models/';
+import { Modal, RequestForm, initRequestForm } from 'models/';
 import { Nrq03000Service } from './nrq03000.service';
 
 declare var $: any;
@@ -13,6 +13,7 @@ declare var $: any;
 export class Nrq03000Component implements OnInit, AfterViewInit {
 
   id: string;
+  data: RequestForm = initRequestForm;
   paidModal: Modal;
   allowedModal: Modal;
   documentModal: Modal;
@@ -43,6 +44,12 @@ export class Nrq03000Component implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.queryParams["id"] || "";
+    if (this.id !== "") {
+      this.service.getData(this.id).subscribe(result => {
+        console.log(result);
+        this.data = result;
+      });
+    }
   }
 
   ngAfterViewInit() {

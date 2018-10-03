@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ModalService } from 'services/';
-import { Modal } from 'models/';
+import { ModalService, AjaxService } from 'services/';
+import { Modal, RequestForm, initRequestForm } from 'models/';
+import { Observable } from 'rxjs';
+
+const URL = {
+  REQUEST_FORM: "/api/nrq/data"
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class Nrq03000Service {
 
-  constructor(private modal: ModalService) { }
+  constructor(private modal: ModalService, private ajax: AjaxService) { }
 
   approveToggle(): any {
     const modal: Modal = {
@@ -20,6 +25,15 @@ export class Nrq03000Service {
       title: "อนุมัติการชำระเงินค่าธรรมเนียม"
     };
     this.modal.confirm(e => { }, modal);
+  }
+
+  getData(id: String): Observable<RequestForm> {
+    return new Observable<RequestForm>(obs => {
+      this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
+        let data: RequestForm[] = response.json() as RequestForm[];
+        obs.next(data.length > 0 ? data[0] : initRequestForm);
+      })
+    });
   }
 
 }

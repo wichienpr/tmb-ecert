@@ -6,3 +6,5 @@ export { Lov } from './lov';
 
 // For Child components
 export { Certificate } from './certificate';
+export { RequestForm, initRequestForm } from './request-form';
+export { RequestCertificate } from './request-certificate';

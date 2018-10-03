@@ -22,7 +22,8 @@ export class Nrq02000Component implements OnInit {
   files: any;
   reqDate: string;
   dropdownObj: any;
-  isDownload: Observable<boolean>;
+  saving: boolean = false;
+  isdownload: boolean = false;
 
   reqTypeChanged: Certificate[];
 
@@ -41,7 +42,6 @@ export class Nrq02000Component implements OnInit {
 
   ngOnInit() {
     // Initial Data
-    this.isDownload = this.service.isDownload();
     this.reqDate = this.service.getReqDate();
     this.dropdownObj = this.service.getDropdownObj();
     this.service.getForm().subscribe(form => {
@@ -54,7 +54,7 @@ export class Nrq02000Component implements OnInit {
   }
 
   pdf() {
-    this.service.pdf();
+    this.isdownload = this.service.pdf();
   }
 
   cancel() {

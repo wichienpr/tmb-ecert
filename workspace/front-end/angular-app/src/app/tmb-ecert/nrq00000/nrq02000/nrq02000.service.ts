@@ -20,7 +20,6 @@ const URL = {
 
 @Injectable()
 export class Nrq02000Service {
-    private downloaded: boolean = false;
     private dropdownObj: any;
     private form: FormGroup = new FormGroup({
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
@@ -223,22 +222,13 @@ export class Nrq02000Service {
         }
     }
 
-    pdf(): void {
+    pdf(): boolean {
         // const modal: Modal = {
         //     msg: "ฟีตเจอร์นี้ยังไม่เปิดให้ใช้บริการ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ"
         // }
         // this.modal.alert(modal);
-        this.downloaded = true;
         this.ajax.download(URL.NRQ_PDF + "nrq02000");
-    }
-
-    isDownload(): Observable<boolean> {
-        return new Observable<boolean>(obs => {
-            obs.next(this.downloaded);
-            setInterval(() => {
-                obs.next(this.downloaded);
-            }, 800);
-        });
+        return true;
     }
 
     cancel(): void {
