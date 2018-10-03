@@ -8,8 +8,8 @@ import { Rep02100Component } from 'app/tmb-ecert/rep00000/rep02000/rep02100/rep0
 import { Rep03000Component } from 'app/tmb-ecert/rep00000/rep03000/rep03000.component';
 import { StoreModule } from '@ngrx/store';
 import { ModalModule, CalendarModule, DropdownModule }from 'components/';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
 
 @NgModule({
   imports: [
@@ -22,6 +22,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     CalendarModule,
     // StoreModule.forRoot({ rep01000: repReducer })
   ],
-  declarations: [Rep01000Component, Rep02000Component, Rep03000Component,Rep02100Component]
+  declarations: [
+    Rep01000Component, 
+    Rep02000Component, 
+    Rep02100Component,
+    Rep03000Component,
+    
+    // Pipes
+    EmptyStringPipe,
+    AccountNumberPipe,
+    DecimalFormatPipe]
 })
 export class Rep00000Module { }

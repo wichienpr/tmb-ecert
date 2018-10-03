@@ -55,9 +55,10 @@ export class Rep02100Component implements OnInit {
     this.showData = false;
   }
   getData=()=>{
-    console.log(this.form);
+    console.log(this.form); 
+    this.loading = true;
     this.dataT=[];
-    const URL = "api/rep/rep02100/list";
+    const URL = "/api/rep/rep02100/list";
     this.ajax.post(URL,{
       custsegmentCode: this.form.controls.custsegmentCode.value,
       dateForm: this.form.controls.dateForm.value,
@@ -66,6 +67,10 @@ export class Rep02100Component implements OnInit {
       
     },async res => {
       const data = await res.json();
+     
+      setTimeout(() => {
+        this.loading = false;
+      },200);
       data.forEach(element => {
         this.dataT.push(element);
       });

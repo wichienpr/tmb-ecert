@@ -81,7 +81,7 @@
     <div class="ui top attached header segment">
         <span>ผลการค้นหา </span>
     </div>
-    <div class="ui attached segment">
+    <div class="ui attached segment {{ loading? 'loading' : '' }}">
         <div style="overflow-x: auto;white-space: nowrap;">
             <table class="ui small celled table nowrap" style="width: 100%" id="table">
                 <thead>
@@ -111,6 +111,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr class="text-center" *ngIf="dataT.length==0">
+                        <td colspan="18" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                    </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.requestDate}}</td>
@@ -120,11 +123,11 @@
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: center !important;">{{data.requestTypeDesc}}</td>
                         <td style="text-align: center !important;">{{data.certypeDesc}}</td>
-                        <td style="text-align: center !important;">{{data.accountNo}}</td>
-                        <td style="text-align: center !important;">{{data.amountDbd}}</td>
-                        <td style="text-align: center !important;">{{data.amountTmb}}</td>
-                        <td style="text-align: center !important;">{{data.amount}}</td>
-                        <td style="text-align: center !important;">{{data.totalAmount}}</td>
+                        <td style="text-align: center !important;">{{data.accountNo | accountNo}}</td>
+                        <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">({{data.makerById}} {{data.makerByName}})</td>
                         <td style="text-align: center !important;">({{data.checkerById}} {{data.checkerByName}})</td>
                         <td style="text-align: center !important;">

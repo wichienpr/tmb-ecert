@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 declare var $: any;
 const URL = {
-  export:"api/rep/rep02000/exportFile"
+  export:"/api/rep/rep02000/exportFile"
 }
 @Component({
   selector: 'app-rep02000',
@@ -82,20 +82,27 @@ export class Rep02000Component implements OnInit {
 
   getData=()=>{
     console.log(this.form);
+    this.loading = true;
     this.dataT=[];
-    const URL = "api/rep/rep02000/list";
+    const URL = "/api/rep/rep02000/list";
     this.ajax.post(URL,{
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value
       
     },async res => {
       const data = await res.json();
+      
+      setTimeout(() => {
+        this.loading = false;
+      },200);
+
       data.forEach(element => {
         this.dataT.push(element);
       });
     console.log("getData True : Data length",this.dataT.length);
     console.log("getData True : Data ",this.dataT);
     });
+    
   }
 
   searchData(): void {

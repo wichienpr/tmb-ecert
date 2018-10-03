@@ -51,9 +51,9 @@
     <div class="ui top attached header segment">
         <span>ผลการค้นหา </span>
     </div>
-    <div class="ui attached segment">
-        <div>
-            <table class="ui small celled table nowrap" id="table" style="width: 100%">
+    <div class="ui attached segment {{ loading? 'loading' : '' }}">
+            <div style="overflow-x: auto;white-space: nowrap;">
+                    <table class="ui small celled table nowrap" style="width: 100%" id="table">
                 <thead>
                     <tr>
                         <th rowspan="2">Segment</th>
@@ -73,15 +73,18 @@
                         <th>Fail</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> 
+                    <tr class="text-center" *ngIf="dataT.length==0">
+                        <td colspan="10" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                    </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
                         <td style="text-align: center !important;">{{data.certificate}}</td>
                         <td style="text-align: center !important;">{{data.copyGuarantee}}</td>
-                        <td style="text-align: center !important;">{{data.amountDbd}}</td>
-                        <td style="text-align: center !important;">{{data.amountTmb}}</td>
-                        <td style="text-align: center !important;">{{data.totalAmount}}</td>
+                        <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">{{data.success}}</td>
                         <td style="text-align: center !important;">{{data.fail}}</td>
                         <td style="text-align: center">

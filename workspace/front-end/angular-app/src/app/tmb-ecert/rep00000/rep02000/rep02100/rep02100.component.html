@@ -6,42 +6,45 @@
         <div class="ui top attached header segment">
             <span>รายการที่ทำรายการไม่สำเร็จ</span>
         </div>
-        <div class="ui attached segment">
-            <table class="ui small celled table nowrap" id="table" style="width: 100%">
-                <thead>
-                    <tr style="text-align: center;">
-                        <th class="collapsing">ลำดับ</th>
-                        <th>วันที่ยื่นคำขอ</th>
-                        <th>TMB Req. No.</th>
-                        <th>เลขที่คำขอ (Ref.1)</th>
-                        <th>เลขที่ตรวจสอบ (Ref.2)</th>
-                        <th>จำนวนเงิน</th>
-                        <th>ประเภทคำขอ</th>
-                        <th>เลขที่นิติบุคคล </th>
-                        <th>ชื่อบริษัท</th>
-                        <th>สถานะดำเนินการ</th>
-                        <th>สาเหตุ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="text-center" *ngIf="dataT">
-                        <td colspan="11" style="text-align: center !important;">ไม่มีข้อมูล</td>
-                    </tr>
-                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
-                        <td style="text-align: center !important;">{{i+1}}</td>
-                        <td style="text-align: center !important;">{{data.requestDate}}</td>
-                        <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
-                        <td style="text-align: center !important;">{{data.ref1}}</td>
-                        <td style="text-align: center !important;">{{data.ref2}}</td>
-                        <td style="text-align: center !important;">{{data.amount}}</td>
-                        <td style="text-align: center !important;">{{data.requestTypeDesc}}</td>
-                        <td style="text-align: center !important;">{{data.organizeId}}</td>
-                        <td style="text-align: center !important;">{{data.companyName}}</td>
-                        <td style="text-align: center !important;">{{data.status}}</td>
-                        <td style="text-align: center !important;">{{data.remark}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="ui attached segment {{ loading? 'loading' : '' }}">
+            <div style="overflow-x: auto;white-space: nowrap;">
+                <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th class="collapsing">ลำดับ</th>
+                            <th>วันที่ยื่นคำขอ</th>
+                            <th>TMB Req. No.</th>
+                            <th>เลขที่คำขอ (Ref.1)</th>
+                            <th>เลขที่ตรวจสอบ (Ref.2)</th>
+                            <th>จำนวนเงิน</th>
+                            <th>ประเภทคำขอ</th>
+                            <th>เลขที่นิติบุคคล </th>
+                            <th>ชื่อบริษัท</th>
+                            <th>สถานะดำเนินการ</th>
+                            <th>สาเหตุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" *ngIf="dataT.length==0">
+                            <td colspan="11" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                        </tr>
+                        <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                            <td style="text-align: center !important;">{{i+1}}</td>
+                            <td style="text-align: center !important;">{{data.requestDate}}</td>
+                            <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
+                            <td style="text-align: center !important;">{{data.ref1}}</td>
+                            <td style="text-align: center !important;">{{data.ref2}}</td>
+                            <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
+                            <td style="text-align: center !important;">{{data.requestTypeDesc}}</td>
+                            <td style="text-align: center !important;">{{data.organizeId}}</td>
+                            <td style="text-align: center !important;">{{data.companyName}}</td>
+                            <td style="text-align: center !important;">{{data.status}}</td>
+                            <td style="text-align: center !important;">{{data.remark}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
             <br>
             <div class="ui center aligned grid">
                 <button class="ui blue basic button" (click)="clickBack()">
