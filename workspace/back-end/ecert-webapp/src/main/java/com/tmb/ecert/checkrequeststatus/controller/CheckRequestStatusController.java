@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tmb.ecert.checkrequeststatus.persistence.vo.CountStatusVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
@@ -59,6 +60,20 @@ public class CheckRequestStatusController {
 		}
 		
 		return  crs01000VoList;
+	}
+	
+	@PostMapping("/countStatus")
+	@ResponseBody
+	public CountStatusVo countStatus(CountStatusVo countStatusVo) {
+		log.info("countStatus_C");
+		CountStatusVo countStatus = new CountStatusVo();
+		try {
+			countStatus = crs01000Service.countStatus(countStatusVo);	
+		} catch (Exception e) {
+			log.error("Error ! ==> CheckRequestStatusController method countStatus",e);
+		}
+		
+		return  countStatus;
 	}
 	
 }
