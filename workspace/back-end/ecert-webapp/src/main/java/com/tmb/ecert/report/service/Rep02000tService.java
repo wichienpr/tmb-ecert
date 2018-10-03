@@ -150,7 +150,7 @@ public class Rep02000tService {
 			
 			
 			/*set	fileName*/		
-			String fileName ="E-Certificate_Monthly_"+DateFormatUtils.format(new Date(),"yyyyMMdd", new Locale("th", "TH"));;
+			String fileName ="Monthly_Report_"+DateFormatUtils.format(new Date(),"yyyyMMdd");;
 			log.info(fileName);
 			
 			/* write it as an excel attachment */

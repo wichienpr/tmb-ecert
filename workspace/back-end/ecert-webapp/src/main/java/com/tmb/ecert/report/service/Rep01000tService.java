@@ -142,7 +142,7 @@ public class Rep01000tService {
 			
 			
 			/*set	fileName*/		
-			String fileName ="E-Certificate_End-day_"+DateFormatUtils.format(new Date(),"yyyyMMdd", new Locale("th", "TH"));;
+			String fileName ="End-day_Report_"+DateFormatUtils.format(new Date(),"yyyyMMdd");;
 			log.info(fileName);
 			
 			/* write it as an excel attachment */

@@ -22,6 +22,8 @@ import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 import com.tmb.ecert.report.persistence.vo.Rep02100FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02100Vo;
+import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
+import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 
 @Repository
 public class RepDao {
@@ -41,8 +43,8 @@ public class RepDao {
 			sql.append(" b.TYPE_DESC AS REQUEST_TYPE_DESC, ");        
 			sql.append(" c.NAME AS CUSTSEGMENT_DESC ");   
 			sql.append(" FROM (ECERT_REQUEST_FORM a "); 
-			sql.append(" INNER JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE ) "); 
-			sql.append(" INNER JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
+			sql.append(" LEFT JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE ) "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
 			sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 		
 		if (StringUtils.isNotBlank(formVo.getDateForm())) {
@@ -70,11 +72,12 @@ public class RepDao {
 		
 		
 		sql.append(" ORDER BY a.REQUEST_DATE DESC ");
+		log.info("sqlRep02100 : {}",sql.toString());
 		rep01000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
 		
 		return rep01000VoList;
 	}
-	
+	  
 
 	 private RowMapper<Rep01000Vo> rep01000RowMapper = new RowMapper<Rep01000Vo>() {
 	    	@Override
@@ -185,7 +188,7 @@ public class RepDao {
 			sql.append("  sum(a.AMOUNT_TMB) AS AMOUNT_TMB  , "); 
 			sql.append("  sum(a.AMOUNT_TMB+a.AMOUNT_DBD) AS AMOUNT_TATOL   "); 
 			sql.append("  FROM ECERT_REQUEST_FORM a    "); 
-			sql.append("  INNER JOIN ECERT_LISTOFVALUE c  "); 
+			sql.append("  LEFT JOIN ECERT_LISTOFVALUE c  "); 
 			sql.append("  on a.CUSTSEGMENT_CODE = c.CODE  ");
 			sql.append("  WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'  "); 
 			sql.append("  OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
@@ -204,6 +207,7 @@ public class RepDao {
 			}
 			
 			sql.append("  GROUP BY c.NAME,c.CODE,a.DEPARTMENT ORDER BY c.CODE ");
+			log.info("sqlRep02100 : {}",sql.toString());
 			rep02000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep02000RowMapper);
 			
 			return rep02000VoList;
@@ -242,10 +246,12 @@ public class RepDao {
 				    sql.append(" SELECT a.*,b.CERTIFICATE AS CERTYPE_DESC, ");
 					sql.append(" b.TYPE_CODE AS REQUEST_TYPE_CODE, ");
 					sql.append(" b.TYPE_DESC AS REQUEST_TYPE_DESC, ");        
-					sql.append(" c.NAME AS CUSTSEGMENT_DESC ");   
+					sql.append(" c.NAME AS CUSTSEGMENT_DESC, ");  
+					sql.append(" d.NAME AS STATUS_DESC ");   
 					sql.append(" FROM (ECERT_REQUEST_FORM a "); 
-					sql.append(" INNER JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE ) "); 
-					sql.append(" INNER JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
+					sql.append(" LEFT JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE ) "); 
+					sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ");
+					sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.STATUS = d.CODE "); 
 					sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008') ");
 					
 				if (StringUtils.isNotBlank(formVo.getCustsegmentCode())) {
@@ -292,11 +298,87 @@ public class RepDao {
 			    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
 			    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
 			    		vo.setCompanyName(rs.getString("COMPANY_NAME")); 
-			    		vo.setStatus(rs.getString("STATUS"));                   
+			    		vo.setStatus(rs.getString("STATUS_DESC"));                   
 			    		vo.setRemark(rs.getString("REMARK"));                   
 			    		return vo;                                                         
 			    	}
 			 };
+			 
+			 public List<Rep03000Vo> getDataRep03000(Rep03000FormVo formVo) {
+					StringBuilder sql = new StringBuilder("");
+					List<Object> params = new ArrayList<>();
+					List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
+					
+				    sql.append(" SELECT a.*,b.CERTIFICATE AS CERTYPE_DESC, ");
+					sql.append(" b.TYPE_CODE AS REQUEST_TYPE_CODE, ");
+					sql.append(" b.TYPE_DESC AS REQUEST_TYPE_DESC, ");        
+					sql.append(" c.NAME AS CUSTSEGMENT_DESC ");   
+					sql.append(" FROM (ECERT_REQUEST_FORM a "); 
+					sql.append(" LEFT JOIN ECERT_CERTIFICATE b on a.CERTYPE_CODE = b.CODE ) "); 
+					sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
+					
+//					if (StringUtils.isNotBlank(formVo.getDateVat())) {
+//						sql.append("  AND  MONTH(a.REQUEST_DATE) == MONTH(?) AND YEAR(a.REQUEST_DATE)== YEAR(?) ");
+//						Date date = DateConstant.convertStringMMYYYYToDate(formVo.getDateVat());
+//						params.add(date);
+//						params.add(date);
+//					}
+					
+					log.info("sqlRep02100 : {}",sql.toString());
+					rep03000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep03000RowMapper);
+					
+					return rep03000VoList;
+				}
+				
+
+				 private RowMapper<Rep03000Vo> rep03000RowMapper = new RowMapper<Rep03000Vo>() {
+				    	@Override
+				    	public Rep03000Vo mapRow(ResultSet rs, int arg1) throws SQLException {
+				    		Rep03000Vo vo = new Rep03000Vo();
+				    		
+				    		vo.setId(Long.parseLong(String.valueOf(rs.getInt("REQFORM_ID"))));
+				    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
+				    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));                 
+				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
+				    		vo.setCompanyName(rs.getString("CUSTOMER_NAME")); 
+				    		
+				    		vo.setCustsegmentCode(rs.getString("CUSTSEGMENT_CODE")); 
+				    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
+				    		
+				    		vo.setRequestTypeCode(rs.getString("REQUEST_TYPE_CODE"));  
+				    		vo.setRequestTypeDesc(rs.getString("REQUEST_TYPE_DESC"));
+				    		
+				    		vo.setCertypeCode(rs.getString("CERTYPE_CODE")); 
+				    		vo.setCertypeDesc(rs.getString("CERTYPE_DESC"));  
+				    		
+				    		vo.setAccountNo(rs.getString("ACCOUNT_NO"));  
+				    		
+				    		Float totalAmount = 0f;
+				    		
+				    		vo.setAmountDbd(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_DBD")));  
+				    		totalAmount+=convertBigDecimalToLong(vo.getAmountDbd());
+				    		
+				    		vo.setAmountTmb(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TMB")));  
+				    		totalAmount+=convertBigDecimalToLong(vo.getAmountTmb());
+				    		
+				    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
+				    		totalAmount+=convertBigDecimalToLong(vo.getAmount());
+				    		
+				    		vo.setTotalAmount(new BigDecimal(totalAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN));   
+				    		
+				    		vo.setMakerById(rs.getString("MAKER_BY_ID"));   
+				    		vo.setMakerByName(rs.getString("MAKER_BY_NAME"));   
+				    		
+				    		vo.setCheckerById(rs.getString("CHECKER_BY_ID"));  
+				    		vo.setCheckerByName(rs.getString("CHECKER_BY_NAME")); 
+				    		
+				    		vo.setStatus(rs.getString("STATUS"));                   
+				    		vo.setRemark(rs.getString("REMARK"));                   
+				    		                
+				    		return vo;                                                         
+				    	}
+				 };
+				 
 		 
 		 public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
 			 return (bigdecimal!=null)?bigdecimal.floatValue():0f;
