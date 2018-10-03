@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { AjaxService } from 'app/baiwa/common/services/ajax.service';
+import { AjaxService, ModalService, DropdownService } from "services/";
+import { Modal } from "models/";
 import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 declare var $: any;
 const URL = {
-  export:"rep/rep02000/exportFile"
+  export:"api/rep/rep02000/exportFile"
 }
 @Component({
   selector: 'app-rep02000',
@@ -27,7 +30,10 @@ export class Rep02000Component implements OnInit {
 
   constructor(
     private ajax: AjaxService,
-    private service: Rep02000Service
+    private modal: ModalService,
+    private service: Rep02000Service,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.service.getForm().subscribe(form => {
       this.form = form
@@ -54,21 +60,30 @@ export class Rep02000Component implements OnInit {
     };
   }
 
-  ngOnInit() { }
-  ngAfterViewInit() {
-
+  ngOnInit() {
+    let dForm = this.route.snapshot.queryParams["dateForm"];
+    let dTo = this.route.snapshot.queryParams["dateTo"];
+    if(dForm!=""||dTo!=""){
+      this.form.controls[`dateForm`].setValue(dForm); 
+      this.form.controls[`dateTo`].setValue(dTo); 
+      this.searchData();
+    }
+    console.log("form : ",this.form);
   }
+
+  ngAfterViewInit() {}
+
   calendarValue(name,e) {
     this.form.controls[name].setValue(e);
-    console.log(this.form);
-    console.log(this.form.controls[name].value);
+    // console.log(this.form);
+    // console.log(this.form.controls[name].value);
     
   }
 
   getData=()=>{
     console.log(this.form);
     this.dataT=[];
-    const URL = "rep/rep02000/list";
+    const URL = "api/rep/rep02000/list";
     this.ajax.post(URL,{
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value
@@ -78,7 +93,8 @@ export class Rep02000Component implements OnInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data s",this.dataT);
+    console.log("getData True : Data length",this.dataT.length);
+    console.log("getData True : Data ",this.dataT);
     });
   }
 
@@ -98,6 +114,20 @@ export class Rep02000Component implements OnInit {
     console.log("exportFile");
     this.ajax.download(URL.export);
   }
-
+  remark=custsegmentCode=>{
+    this.router.navigate(['/rep/rep02100'], {
+      queryParams: {  custsegmentCode:custsegmentCode,
+                      dateForm:this.form.controls.dateForm.value,
+                      dateTo:this.form.controls.dateTo.value}
+    });
+  }
+  openModalDetails=department=>{
+    const modal: Modal = {
+      title:"รายละเอียด",
+      msg: "ชื่อหน่อยงาน : "+department,
+      success: false
+  };
+  this.modal.alert(modal);
+  }
 
 }

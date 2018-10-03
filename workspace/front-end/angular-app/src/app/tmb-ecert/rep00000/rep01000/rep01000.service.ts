@@ -8,8 +8,8 @@ import { Modal } from "models/";
 import { Observable } from "rxjs";
 
 const URL = {
-    LOV_BY_TYPE: "lov/type",
-    CER_BY_TYPE: "cer/typeCode"
+    LOV_BY_TYPE: "api/lov/type",
+    CER_BY_TYPE: "api/cer/typeCode"
 }
 
 @Injectable()

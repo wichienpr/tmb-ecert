@@ -85,10 +85,12 @@
                         <td style="text-align: center !important;">{{data.success}}</td>
                         <td style="text-align: center !important;">{{data.fail}}</td>
                         <td style="text-align: center">
-                            <button class="ui mini red basic button" [routerLink]="[ '/rep/rep02100']">สาเหตุ
+                            <button class="ui mini red basic button" (click)="remark(data.custsegmentCode)"
+                            *ngIf="data.fail!=0">สาเหตุ
                                 <i class="arrow alternate circle right outline icon"></i>
                             </button>
-                            <button class="ui mini blue basic button" (click)="openModal(modal[0])"> รายละเอียด
+                            <button class="ui mini blue basic button" (click)="openModalDetails(data.department)"
+                            *ngIf="data.custsegmentCode=='20007'"> รายละเอียด
                                 <i class="arrow alternate circle right outline icon"></i>
                             </button>
                         </td>

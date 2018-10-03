@@ -14,6 +14,7 @@ export class ModalService {
         $(`#${id} .header`).html(obj.title || "แจ้งเตือน");
         $(`#${id} .content`).html(obj.msg || "...");
         // color
+        $(`#${id} .header`).removeClass('notification');
         $(`#${id} .header`).addClass(obj.color || '');
         // size
         $(`#${id}`).removeClass('small');

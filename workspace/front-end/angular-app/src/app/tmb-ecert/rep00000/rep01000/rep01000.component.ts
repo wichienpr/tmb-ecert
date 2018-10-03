@@ -7,7 +7,7 @@ import { Rep01000Service } from './rep01000.service';
 import { Certificate } from 'models/';
 declare var $: any;
 const URL = {
-  export:"rep/rep01000/exportFile"
+  export:"api/rep/rep01000/exportFile"
 }
 @Component({
   selector: 'app-rep01000',
@@ -77,7 +77,7 @@ export class Rep01000Component implements OnInit {
   getData=()=>{
     console.log(this.form);
     this.dataT=[];
-    const URL = "rep/rep01000/list";
+    const URL = "api/rep/rep01000/list";
     this.ajax.post(URL,{
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value,
