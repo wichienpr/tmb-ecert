@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { ModalModule, CalendarModule, DropdownModule }from 'components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
+import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -17,20 +18,19 @@ import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
     Rep00000RoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    // ConponentsModule
     ModalModule,
     DropdownModule,
     CalendarModule,
+    // PipesModule
+    PipesModule
     // StoreModule.forRoot({ rep01000: repReducer })
   ],
   declarations: [
     Rep01000Component, 
     Rep02000Component, 
     Rep02100Component,
-    Rep03000Component,
-    
-    // Pipes
-    EmptyStringPipe,
-    AccountNumberPipe,
-    DecimalFormatPipe]
+    Rep03000Component
+  ]
 })
 export class Rep00000Module { }

@@ -303,7 +303,7 @@
             <label>เลขที่นิติบุคคล</label>
           </div>
           <div class="five wide field ">
-            9023456321236
+            {{ data.organizeId | emptyString }}
           </div>
         </div>
         <div class="inline fields">
@@ -312,7 +312,7 @@
             <label>ชื่อนิติบุคคล</label>
           </div>
           <div class="five wide field ">
-            บริษัท ซี4
+            {{ data.companyName | emptyString }}
           </div>
         </div>
         <div class="inline fields">
@@ -327,10 +327,10 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>ชื่อหน่อยงาน</label>
+            <label>ชื่อหน่วยงาน</label>
           </div>
           <div class="five wide field ">
-            นิติกรรม
+            {{ data.department | emptyString }}
           </div>
         </div>
 
@@ -352,7 +352,7 @@
             <label>วิธีการรับชำระ</label>
           </div>
           <div class="five wide field ">
-            ลูกค้าชำระค่าธรรมเนียม DBD,TMB
+            {{ data.paidTypeCode | emptyString }}
           </div>
         </div>
         <div class="inline fields">
@@ -361,7 +361,8 @@
             <label>วิธีหักบัญชีจาก</label>
           </div>
           <div class="five wide field ">
-            ธนาคารกลุ่ม SE</div>
+              {{ data.paidTypeCode | emptyString }}
+          </div>
         </div>
         <div class="inline fields">
           <div class="one wide field "></div>
@@ -401,7 +402,7 @@
             </label>
           </div>
           <div class="three wide field ">
-              {{ data.accountNo | accountNo }}
+            {{ data.accountNo | accountNo }}
           </div>
           <div class="one wide field ">
             <label>ชื่อบัญชี</label>

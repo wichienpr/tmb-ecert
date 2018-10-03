@@ -15,7 +15,7 @@ import { Nrq03000Component } from './nrq03000/nrq03000.component';
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
 // Module Directives
 import { DisableControlModule } from 'directives/';
-import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe, DateStringPipe } from 'pipes/';
+import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -30,17 +30,14 @@ import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe, DateStringPipe }
     CalendarModule,
     // Directives
     DisableControlModule,
+    // PipesModule
+    PipesModule,
     // StoreModule.forFeature('example', exampleReducer),
   ],
   declarations: [
     Nrq01000Component,
     Nrq02000Component,
     Nrq03000Component,
-    // Pipes
-    EmptyStringPipe,
-    AccountNumberPipe,
-    DecimalFormatPipe,
-    DateStringPipe
   ]
 })
 export class Nrq00000Module { }
