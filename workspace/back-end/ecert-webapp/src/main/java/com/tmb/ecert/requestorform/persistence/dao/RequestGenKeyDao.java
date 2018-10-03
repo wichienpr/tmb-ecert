@@ -15,7 +15,7 @@ public class RequestGenKeyDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	public Integer getNextKey(String keyYear) {
-		String sql =" select RUNNING from ECERT_REQUEST_GENKEY where YEAR=?";
+		String sql =" select max(RUNNING) from ECERT_REQUEST_GENKEY where YEAR=?";
 		List<BigDecimal> res = jdbcTemplate.queryForList(sql,BigDecimal.class, NumberUtils.toInt(keyYear));
 		if(res.isEmpty()) {
 			return 0;

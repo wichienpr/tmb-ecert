@@ -19,11 +19,11 @@ public class RequestGenKeyService {
 		String keyyear = DateFormatUtils.format(new Date(), "yyyyMM");
 		Integer currentRunningNo = requestGenKeyDao.getNextKey(keyyear);
 		int nextRunning = currentRunningNo + 1;
-		if(nextRunning == 1) {
-			requestGenKeyDao.insertKeyrunning(nextRunning,keyyear);					
-		}else {
-			requestGenKeyDao.updateKeyrunning(nextRunning,keyyear);					
-		}
+//		if(nextRunning == 1) {
+		requestGenKeyDao.insertKeyrunning(nextRunning,keyyear);					
+//		}else {
+//			requestGenKeyDao.updateKeyrunning(nextRunning,keyyear);					
+//		}
 		return keyyear + StringUtils.leftPad(String.valueOf(nextRunning), 5, "0");
 	}
 	
