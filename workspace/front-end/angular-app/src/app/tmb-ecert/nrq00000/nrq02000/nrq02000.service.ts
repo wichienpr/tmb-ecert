@@ -11,11 +11,11 @@ import { Nrq02000 } from "./nrq02000.model";
 import { Router } from "@angular/router";
 
 const URL = {
-    LOV_BY_TYPE: "api/lov/type",
-    CER_BY_TYPE: "api/cer/typeCode",
-    NRQ_SAVE: "api/nrq/save",
-    NRQ_DOWNLOAD: "api/nrq/download/",
-    NRQ_PDF: "api/nrq/pdf/",
+    LOV_BY_TYPE: "/api/lov/type",
+    CER_BY_TYPE: "/api/cer/typeCode",
+    NRQ_SAVE: "/api/nrq/save",
+    NRQ_DOWNLOAD: "/api/nrq/download/",
+    NRQ_PDF: "/api/nrq/pdf/",
 }
 
 @Injectable()
