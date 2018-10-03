@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.dao.UserProfileDao;
+
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
 @Service
@@ -21,6 +23,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserProfileDao UserProfileDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,13 +33,49 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		// Initial Granted Authority
 		List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
-		grantedAuthorityList.add(new SimpleGrantedAuthority("ADMIN"));
-		
-		UserDetails userDetails = new UserDetails(username,	passwordEncoder.encode("password"),grantedAuthorityList	);
-		
-		
-		
-		return userDetails;
+//		passwordEncoder.encode("password")
+		UserDetails userDetails = new UserDetails(username,"",grantedAuthorityList);
+		if("ADMIN".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("ADMIN"));
+			userDetails.setFirstName("admin");
+			userDetails.setLastName("ทดสอบแอดมิ Admin ");
+			userDetails.setUserId("0001");
+		}
+		if("IT".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("IT"));
+			userDetails.setFirstName("IT");
+			userDetails.setLastName("ทดสอบ IT ");
+			userDetails.setUserId("0002");
+		}
+		if("ISA".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("ISA"));
+			userDetails.setFirstName("ISA");
+			userDetails.setLastName("ทดสอบ ISA ");
+			userDetails.setUserId("0003");
+		}
+		if("REQUESTOR".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("REQUESTOR"));
+			userDetails.setFirstName("REQUESTOR");
+			userDetails.setLastName("ทดสอบ REQUESTOR ");
+			userDetails.setUserId("0004");
+		}
+		if("MAKER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("MAKER"));
+			userDetails.setFirstName("MAKER");
+			userDetails.setLastName("ทดสอบ MAKER ");
+			userDetails.setUserId("0005");
+		}
+		if("CHECKER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority("CHECKER"));
+			userDetails.setFirstName("CHECKER");
+			userDetails.setLastName("ทดสอบ CHECKER ");
+			userDetails.setUserId("0006");
+		}
+		UserDetails rs = new UserDetails(username, passwordEncoder.encode("password"),grantedAuthorityList	);
+		rs.setUserId(userDetails.getUserId());
+		rs.setFirstName(userDetails.getFirstName());
+		rs.setLastName(userDetails.getLastName());
+		return rs;
 	}
 	
 }

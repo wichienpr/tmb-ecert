@@ -11,10 +11,11 @@ public class UserDetails extends User implements UserBean {
 	
 	private static final long serialVersionUID = 2637807472705815470L;
 	
-	private Long userId;
+	private String userId;
 	// Add More Information about USER here.
 	private List<String> auths = new ArrayList<>();
-
+	private String firstName;
+	private String lastName;
 	
 	// Constructor
 	public UserDetails(String username, String password, boolean enabled,boolean accountNonExpired,
@@ -31,13 +32,7 @@ public class UserDetails extends User implements UserBean {
 	// ==================================================
 	// Getter & Setter Method
 	// ==================================================
-	public Long getUserId() {
-		return userId;
-	}
 	
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
 	
 	public List<String> getAuths() {
 		return auths;
@@ -46,5 +41,28 @@ public class UserDetails extends User implements UserBean {
 	public void setAuths(List<String> auths) {
 		this.auths = auths;
 	}
-	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 }

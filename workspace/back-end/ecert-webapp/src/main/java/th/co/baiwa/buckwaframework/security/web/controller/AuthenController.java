@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import th.co.baiwa.buckwaframework.security.constant.SecurityConstants.LOGIN_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.AjaxLoginVo;
-import th.co.baiwa.buckwaframework.security.domain.UserBean;
-import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
 @RestController
 public class AuthenController {
@@ -39,17 +38,18 @@ public class AuthenController {
 		HttpSession session = request.getSession(false);
 		logger.info("onLoginSeccess : {}" ,session.getId());
 		AjaxLoginVo vo = new AjaxLoginVo();
-		UserBean user = UserLoginUtils.getCurrentUserBean();
-		
-		vo.setUserId(user.getUsername());
-		vo.setFirstName("Jonh");
-		vo.setLastName("smit");
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		vo.setUserId(user.getUserId());
+		vo.setFirstName(user.getFirstName());
+		vo.setLastName(user.getLastName());
 		vo.setUsername(user.getUsername());
 		for ( GrantedAuthority item : user.getAuthorities()) {
 			vo.getRoles().add(item.getAuthority());
 		} 
 		vo.setStatus(LOGIN_STATUS.SUCCESS);
 		
+		vo.setAuths(user.getAuths());
 		
 		List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
 		logger.info("{}", inallsess.size());
