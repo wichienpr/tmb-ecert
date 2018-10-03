@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ModalService } from 'app/baiwa/common/services';
 import { Modal } from 'models/';
 import { AuthService } from 'app/baiwa/common/services/auth.service';
+import { UserDetail } from 'app/user.model';
+import { Store } from '@ngrx/store';
+import { UpdateUser } from 'app/user.action';
 declare var $: any;
 @Component({
   selector: 'app-login',
@@ -16,7 +19,10 @@ export class LoginComponent implements OnInit {
   showLoginMessage: boolean = false;
   loginMessage: string;
 
-  constructor(private router: Router, private modal: ModalService, private loginsv: AuthService) { }
+  constructor(private router: Router, private modal: ModalService, private loginsv: AuthService
+    , private store: Store<AppState>) {
+
+  }
 
   ngOnInit() {
     this.modalObj = {
@@ -28,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(event) {
-    $.blockUI({ message: null }); 
+    $.blockUI({ message: null });
 
     this.loginsv.login(this.username, this.password).subscribe(resp => {
       let result: AjaxLoginVo = resp.json() as AjaxLoginVo;
@@ -36,7 +42,18 @@ export class LoginComponent implements OnInit {
       $.unblockUI();
 
       if (result.status == "SUCCESS") {
+        const INIT_USER_DETAIL: UserDetail = {
+          roles: result.roles,
+          userId: result.userId,
+          username: result.username,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          auths: result.auths,
+        };
+
+        this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
         this.router.navigate(["/home"]);
+
       } else if (result.status == "FAIL") {
         this.loginMessage = "ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
         this.showLoginMessage = true;
@@ -47,8 +64,18 @@ export class LoginComponent implements OnInit {
           color: "notification",
           approveMsg: "ดำเนินการต่อ"
         }
+
+        const INIT_USER_DETAIL: UserDetail = {
+          roles: result.roles,
+          userId: result.userId,
+          username: result.username,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          auths: result.auths,
+        };
         this.modal.confirm((e) => {
           if (e) {
+            this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
             this.router.navigate(["/home"]);
           }
         }, modal);
@@ -57,7 +84,11 @@ export class LoginComponent implements OnInit {
         this.showLoginMessage = true;
       }
 
-    });
+    },
+      error => {
+        $.unblockUI();
+      })
+      ;
 
     return false;
   }
@@ -67,4 +98,13 @@ export class LoginComponent implements OnInit {
 export interface AjaxLoginVo {
   username: string
   status: string
+  userId: string
+  firstName: string
+  lastName: string
+  discription: string
+  roles: string[]
+  auths: string[]
+}
+interface AppState {
+  user: UserDetail
 }

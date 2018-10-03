@@ -5,17 +5,12 @@ import { ROLES } from 'constants/';
 
 // Initial
 const INIT_USER_DETAIL: UserDetail = {
-    // roles: ['ADMIN'],
-    // userId: "00001",
-    // username : 'admin',
-    // firstName : 'TMB',
-    // lastName : 'Administrator'
-    roles: [ROLES.CHECKER, ROLES.MAKER, ROLES.REQUESTOR],
-    userId: "42307",
-    username: 'admin',
-    firstName: 'สุรเดช',
-    lastName: 'แสนสมบูรณ์สุข',
-    auths : []
+    roles: [],
+    userId: "",
+    username: "",
+    firstName: "",
+    lastName: "",
+    auths : [],
 };
 
 // Reducers

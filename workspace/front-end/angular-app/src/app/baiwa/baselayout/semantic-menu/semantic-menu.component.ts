@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserDetail } from 'app/user.model';
@@ -14,12 +14,23 @@ declare var $: any;
   templateUrl: './semantic-menu.component.html',
   styleUrls: ['./semantic-menu.component.css']
 })
-export class SemanticMenuComponent implements OnInit {
+export class SemanticMenuComponent implements OnInit, OnDestroy {
 
   routes: Routing[];
   user: Observable<UserDetail>;
+  currentDate: Date = new Date();
+  clockdisplay: any = { text : "---" };
+  timeticker;
+
+
   constructor(private store: Store<{}>, private router: Router, private modal: ModalService
-    , private loginsv:AuthService) {
+    , private loginsv: AuthService) {
+  }
+
+  ngOnInit() {
+    this.user = this.store.select('user');
+
+
     this.routes = [
       { // Main Menu 1
         label: "ทำคำขอใหม่",
@@ -68,29 +79,13 @@ export class SemanticMenuComponent implements OnInit {
           { label: "Email Configuration", url: "/email-configuration" }
         ]
       },
-      /*
-      { // Main Menu test
-        label: "LV1", url: null,
-        child: [ // Sub Menu test.1
-          {
-            label: "LV2", url: null,
-            child: [ // Sub Menu test.1.1
-              {
-                label: "LV3", url: null,
-                child: [ // Sub Menu test1.1.1
-                  { label: "LV4", url: "./test" }
-                ] // Sub Menu test1.1.1
-              }
-            ] // Sub Menu test.1.1
-          }
-        ] // Sub Menu test.1
-      } // Main Menu test
-      */
     ];
+
+    this.timeticker = setInterval(()=>{this.clock()}, 1000);
   }
 
-  ngOnInit() {
-    this.user = this.store.select('user');
+  ngOnDestroy(): void {
+    clearInterval(this.timeticker);
   }
 
   logout() {
@@ -104,11 +99,23 @@ export class SemanticMenuComponent implements OnInit {
   logoutConfirm(e: boolean) {
     if (e == true) {
 
-      this.loginsv.logout().subscribe( rsp => {
+      this.loginsv.logout().subscribe(rsp => {
         this.router.navigate(['login']);
       });
     }
   }
+
+
+  clock() {
+    let d = new Date();
+    let h = d.getHours();
+    let m = d.getMinutes();
+    let s = d.getSeconds();
+    this.clockdisplay.text = (h + ":" + m );
+    // console.log(this.clockdisplay);
+  }
+
+
 
 }
 

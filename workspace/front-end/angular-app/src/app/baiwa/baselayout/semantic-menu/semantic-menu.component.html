@@ -59,9 +59,9 @@
     ออกจากระบบ
   </div>
   <div class="right menu">
-    <div class="ui simple  item " style=" color:rgb(255, 255, 255);line-height: 150%;margin-right: 20px">
+    <div class="ui simple  item " style=" color:rgb(255, 255, 255);line-height: 150%;margin-right: 20px;min-width: 275px;">
       {{(user|async).userId}} {{(user|async).firstName}} {{(user|async).lastName}} {{(user|async).roles[0]}}
-      <br> วันที่ 21/8/2561 เวลา 14.30 น. ปฏิบัติการสินเชื่อธุรกิจ
+      <br> วันที่ {{ currentDate | dateString }} เวลา {{clockdisplay.text}} น. ปฏิบัติการสินเชื่อธุรกิจ
     </div>
   </div>
 </div>

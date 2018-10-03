@@ -57,7 +57,7 @@
   <div class="ui thirteen wide center aligned column text-content content">
     <div class="ui two wide column" style="text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
       <h2 style="top: 10px;">
-        <p>ยินดีต้อนรับ คุณ สุรเดช แสนสมบูรณ์สุข</p>
+        <p>ยินดีต้อนรับ คุณ {{ (userdetail|async).firstName}} {{ (userdetail|async).lastName}} </p>
       </h2>
       <h2 style="top: 44px;">
       </h2>
