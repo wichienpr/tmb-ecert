@@ -25,7 +25,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	private UserProfileDao UserProfileDao;
+	private UserProfileDao userProfileDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -75,6 +75,14 @@ public class UserDetailsService implements org.springframework.security.core.use
 		rs.setUserId(userDetails.getUserId());
 		rs.setFirstName(userDetails.getFirstName());
 		rs.setLastName(userDetails.getLastName());
+		
+		List<String> roles = new ArrayList<>();
+		for ( GrantedAuthority g : grantedAuthorityList) {
+			roles.add(g.toString());
+		}
+		
+		List<String> auths = userProfileDao.getAuthbyRole(roles);
+		rs.setAuths(auths);
 		return rs;
 	}
 	
