@@ -15,7 +15,7 @@ import { Nrq03000Component } from './nrq03000/nrq03000.component';
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
 // Module Directives
 import { DisableControlModule } from 'directives/';
-import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
+import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe, DateStringPipe } from 'pipes/';
 
 @NgModule({
   imports: [
@@ -39,7 +39,8 @@ import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
     // Pipes
     EmptyStringPipe,
     AccountNumberPipe,
-    DecimalFormatPipe
+    DecimalFormatPipe,
+    DateStringPipe
   ]
 })
 export class Nrq00000Module { }

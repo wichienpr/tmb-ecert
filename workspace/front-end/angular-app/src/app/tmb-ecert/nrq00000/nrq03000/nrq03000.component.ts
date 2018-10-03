@@ -13,6 +13,7 @@ declare var $: any;
 export class Nrq03000Component implements OnInit, AfterViewInit {
 
   id: string;
+  date: Date;
   data: RequestForm = initRequestForm;
   paidModal: Modal;
   allowedModal: Modal;
@@ -40,6 +41,7 @@ export class Nrq03000Component implements OnInit, AfterViewInit {
       "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
       "อื่นๆ",
     ];
+    this.date = new Date();
   }
 
   ngOnInit() {
@@ -62,6 +64,12 @@ export class Nrq03000Component implements OnInit, AfterViewInit {
 
   modalToggle(name: string) {
     $(`#${name}`).modal('show');
+  }
+
+  download(fileName: string) {
+    if (fileName) {
+      console.log(fileName);
+    }
   }
 
 }

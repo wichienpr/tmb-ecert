@@ -300,8 +300,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>เลขที่นิติบุคคล
-            </label>
+            <label>เลขที่นิติบุคคล</label>
           </div>
           <div class="five wide field ">
             9023456321236
@@ -310,8 +309,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>ชื่อนิติบุคคล
-            </label>
+            <label>ชื่อนิติบุคคล</label>
           </div>
           <div class="five wide field ">
             บริษัท ซี4
@@ -320,8 +318,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>Customer Segment
-            </label>
+            <label>Customer Segment</label>
           </div>
           <div class="five wide field ">
             ETC
@@ -330,8 +327,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>ชื่อหน่อยงาน
-            </label>
+            <label>ชื่อหน่อยงาน</label>
           </div>
           <div class="five wide field ">
             นิติกรรม
@@ -341,12 +337,11 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>เลขที่ CA/มติอนุมัติ
-            </label>
+            <label>เลขที่ CA/มติอนุมัติ</label>
           </div>
 
           <div class="five wide field ">
-            -
+            {{ data.caNumber | emptyString }}
           </div>
         </div>
 
@@ -354,8 +349,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>วิธีการรับชำระ
-            </label>
+            <label>วิธีการรับชำระ</label>
           </div>
           <div class="five wide field ">
             ลูกค้าชำระค่าธรรมเนียม DBD,TMB
@@ -364,29 +358,25 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>วิธีหักบัญชีจาก
-            </label>
+            <label>วิธีหักบัญชีจาก</label>
           </div>
           <div class="five wide field ">
-            ธนาคารกลุ่ม SE
-          </div>
+            ธนาคารกลุ่ม SE</div>
         </div>
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>Tran Code
-            </label>
+            <label>Tran Code</label>
           </div>
           <div class="five wide field ">
-            8880
+            {{ data.tranCode | emptyString }}
           </div>
         </div>
 
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>GL Type
-            </label>
+            <label>GL Type</label>
           </div>
           <div class="five wide field ">
             {{ data.glType | emptyString }}
@@ -448,7 +438,7 @@
             </label>
           </div>
           <div class="five wide field ">
-            300.00 บาท
+            {{ 3000 | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
         <div class="inline fields">
@@ -479,7 +469,7 @@
             </label>
           </div>
           <div class="two wide field ">
-            <a style="color: #000;">
+            <a style="color: #000;" (click)="download(data.requestFormFile)">
               <u>Download</u>
             </a>
           </div>
@@ -491,7 +481,7 @@
             </label>
           </div>
           <div class="two wide field ">
-            <a style="color: #000;">
+            <a style="color: #000;" (click)="download(data.idCardFile)">
               <u>Download</u>
             </a>
           </div>
@@ -503,7 +493,7 @@
             </label>
           </div>
           <div class="two wide field ">
-            <a style="color: #000;">
+            <a style="color: #000;" (click)="download(data.changeNameFile)">
               <u>Download</u>
             </a>
           </div>
@@ -515,7 +505,7 @@
             </label>
           </div>
           <div class="two wide field ">
-            <a style="color: #000;">
+            <a style="color: #000;" (click)="download(data.certificateFile)">
               <u>Download</u>
             </a>
           </div>
@@ -587,7 +577,7 @@
               <td style="text-align: center">1</td>
               <td>01/01/2561 09:00</td>
               <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>01/01/2561</td>
+              <td>{{ date | dateString }}</td>
               <td>20180900001</td>
               <td>-</td>
               <td>&nbsp;</td>
@@ -602,7 +592,7 @@
               <td style="text-align: center">2</td>
               <td>01/01/2561 09:10</td>
               <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>01/01/2561</td>
+              <td>{{ date | dateString }}</td>
               <td>20180900002</td>
               <td>-</td>
               <td>&nbsp;</td>
@@ -617,7 +607,7 @@
               <td style="text-align: center">3</td>
               <td>01/01/2561 09:20</td>
               <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>01/01/2561</td>
+              <td>{{ date | dateString }}</td>
               <td>20180900003</td>
               <td>61100920717022</td>
               <td>6110092071702211</td>
