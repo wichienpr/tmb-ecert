@@ -8,6 +8,22 @@ public class SftpFileVo {
 	private String path;
 	private String fileName;
 	
+	public SftpFileVo() {
+		super();
+	}
+	
+	/**
+	 * Using Get File Sftp 
+	 */
+	public SftpFileVo(String path, String fileName) {
+		super();
+		this.path = path;
+		this.fileName = fileName;
+	}
+
+	/**
+	 * Using Put File Sftp 
+	 */
 	public SftpFileVo(File file, String path, String fileName) {
 		super();
 		this.file = file;

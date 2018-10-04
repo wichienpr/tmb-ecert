@@ -8,64 +8,67 @@ public class SftpVo {
 	private String host;
 	private String username;
 	private String password;
-	private String path;
-	private String fileName;
-	private List<SftpFileVo> files = new ArrayList<>();
+	private SftpFileVo getFile = new SftpFileVo();
+	private List<SftpFileVo> putFiles = new ArrayList<>();
 	
 	public SftpVo() {
 		super();
 	}
-	public SftpVo(String host, String username, String password, String path, String fileName) {
+
+	public SftpVo(SftpFileVo getFile, String host, String username, String password) {
 		super();
 		this.host = host;
 		this.username = username;
 		this.password = password;
-		this.path = path;
-		this.fileName = fileName;
+		this.getFile = getFile;
 	}
-	
-	public SftpVo(String host, String username, String password, List<SftpFileVo> files) {
+
+	public SftpVo(List<SftpFileVo> putFiles, String host, String username, String password) {
 		super();
 		this.host = host;
 		this.username = username;
 		this.password = password;
-		this.files = files;
+		this.putFiles = putFiles;
 	}
+
 	public String getHost() {
 		return host;
 	}
+
 	public void setHost(String host) {
 		this.host = host;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getPath() {
-		return path;
+
+	public SftpFileVo getGetFile() {
+		return getFile;
 	}
-	public void setPath(String path) {
-		this.path = path;
+
+	public void setGetFile(SftpFileVo getFile) {
+		this.getFile = getFile;
 	}
-	public String getFileName() {
-		return fileName;
+
+	public List<SftpFileVo> getPutFiles() {
+		return putFiles;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	public List<SftpFileVo> getFiles() {
-		return files;
-	}
-	public void setFiles(List<SftpFileVo> files) {
-		this.files = files;
+
+	public void setPutFiles(List<SftpFileVo> putFiles) {
+		this.putFiles = putFiles;
 	}
 	
 }

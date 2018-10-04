@@ -50,12 +50,16 @@ public class SftpUtils {
 			log.info("Channel connected");
 
 			channelSftp = (ChannelSftp) channel;
-			channelSftp.cd(vo.getPath());
+			
+			if (vo.getGetFile() != null) {
+				SftpFileVo getFile = vo.getGetFile();
+				channelSftp.cd(getFile.getPath());
 
-			File newFile = File.createTempFile("tmp", ".txt");
-			outputStream = new FileOutputStream(newFile);
-			channelSftp.get(vo.getFileName(), outputStream);
-			return newFile;
+				File newFile = File.createTempFile("tmp", ".txt");
+				outputStream = new FileOutputStream(newFile);
+				channelSftp.get(getFile.getFileName(), outputStream);
+				return newFile;
+			}
 		} catch (Exception e) {
 			log.error("exception in getFile : {}", e.getMessage(), e);
 		} finally {
@@ -105,7 +109,7 @@ public class SftpUtils {
 			
 			channelSftp = (ChannelSftp) channel;
 			
-			for (SftpFileVo file : vo.getFiles()) {
+			for (SftpFileVo file : vo.getPutFiles()) {
 				channelSftp.cd(file.getPath());
 				inputStream = new FileInputStream(file.getFile());
 				channelSftp.put(inputStream, file.getFileName());
