@@ -14,6 +14,10 @@
 
 <!-- content -->
 <div class="ui container login-content">
+  
+  <div class="ui active dimmer" *ngIf="loading">
+    <div class="ui text loader">กำลังโหลด</div>
+  </div>
 
   <div class="ui one column grid login-page">
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal } from 'models/';
+import { Router, NavigationStart, NavigationEnd, NavigationCancel } from '@angular/router';
 
 @Component({
   selector: 'app-semantic-body',
@@ -11,8 +12,9 @@ export class SemanticBodyComponent implements OnInit {
   modalAlert: Modal;
   modalAlertSuccess: Modal;
   modalConfirm: Modal;
+  loading: boolean = false;
 
-  constructor() {
+  constructor(private router: Router) {
     this.modalAlert = {
       modalId: "alert",
       size: "small",
@@ -35,6 +37,17 @@ export class SemanticBodyComponent implements OnInit {
       title: "การยืนยัน",
       type: "confirm"
     };
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.loading = true;
+      } else if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel
+      ) {
+        this.loading = false;
+      }
+    });
   }
 
   ngOnInit() {

@@ -1,5 +1,6 @@
 .menu.fixed {
     border: 0 !important;
+    z-index: 999 !important;
 }
 
 img:focus {

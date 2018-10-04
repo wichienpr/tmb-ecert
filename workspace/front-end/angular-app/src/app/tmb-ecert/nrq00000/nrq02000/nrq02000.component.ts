@@ -18,6 +18,7 @@ declare var $: any;
 })
 export class Nrq02000Component implements OnInit {
 
+  tmbReqFormId: Observable<string>;
   form: FormGroup;
   files: any;
   reqDate: string;
@@ -47,6 +48,7 @@ export class Nrq02000Component implements OnInit {
     this.service.getForm().subscribe(form => {
       this.form = form
     });
+    this.tmbReqFormId = this.service.getTmbReqFormId();
   }
 
   formSubmit(form: FormGroup) {

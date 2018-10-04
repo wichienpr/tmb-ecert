@@ -1,5 +1,3 @@
-import { Certificate } from "models/";
-
 export interface Nrq02000 {
     [x: string]: any;
     reqTypeSelect: string;        // ประเภทคำขอ
@@ -17,7 +15,8 @@ export interface Nrq02000 {
     telReq: string;               // เบอร์โทรผู้ขอ/ลูกค้า
     address: string;              // ที่อยู่
     note: string;                 // หมายเหตุ
-    requestFile: File;             // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-    copyFile: File;                // สำเนาบัตรประชาชน
-    changeNameFile?: File;          // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
+    requestFile: File;            // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+    copyFile: File;               // สำเนาบัตรประชาชน
+    changeNameFile?: File;        // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
+    tmbReqFormNo: string;         // TMB Req No.
 }

@@ -8,7 +8,6 @@ import { Nrq00000RoutingModule } from 'app/tmb-ecert/nrq00000/nrq00000-routing.m
 // Components
 import { Nrq01000Component } from './nrq01000/nrq01000.component';
 import { Nrq02000Component } from './nrq02000/nrq02000.component';
-import { Nrq03000Component } from './nrq03000/nrq03000.component';
 // Reducers
 // import { exampleReducer } from './example/example.reducers';
 // Module Components
@@ -37,7 +36,6 @@ import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
   declarations: [
     Nrq01000Component,
     Nrq02000Component,
-    Nrq03000Component,
   ]
 })
 export class Nrq00000Module { }

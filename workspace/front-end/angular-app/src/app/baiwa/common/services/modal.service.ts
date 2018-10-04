@@ -20,7 +20,7 @@ export class ModalService {
         $(`#${id}`).removeClass('small');
         $(`#${id}`).addClass(obj.size || 'small');
         // active
-        $(`#${id}`).modal('show');
+        $(`#${id}`).modal({ centered: false, autofocus: false }).modal('show');
     }
 
     confirm(func: Function, obj: Modal) {
@@ -37,6 +37,7 @@ export class ModalService {
         $('#confirm').addClass(obj.size || 'small');
         // callback function
         $("#confirm")
+            .modal({ centered: false, autofocus: false })
             .modal({
                 centered: false,
                 autofocus: false,

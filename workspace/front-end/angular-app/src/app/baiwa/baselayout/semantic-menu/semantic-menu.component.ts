@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ModalService } from 'app/baiwa/common/services';
 import { Modal } from 'models/';
 import { AuthService } from 'app/baiwa/common/services/auth.service';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import * as UserActions from 'app/user.action';
 
 declare var $: any;
 
@@ -19,7 +21,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
   routes: Routing[];
   user: Observable<UserDetail>;
   currentDate: Date = new Date();
-  clockdisplay: any = { text : "---" };
+  clockdisplay: any = { text: "---" };
   timeticker;
 
 
@@ -29,7 +31,24 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user = this.store.select('user');
-
+    this.user.subscribe(obj => {
+      if (obj.userId === "") {
+        const { ADMIN } = ROLES;
+        let list = [];
+        for (let key in PAGE_AUTH) {
+          list.push(PAGE_AUTH[key]);
+        }
+        let data: UserDetail = { // Mock User Detail to Update
+          userId: "000",
+          username: "admin",
+          firstName: "Administrator",
+          lastName: "-",
+          roles: [ADMIN],
+          auths: list
+        };
+        this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
+      }
+    });
 
     this.routes = [
       { // Main Menu 1
@@ -81,7 +100,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.timeticker = setInterval(()=>{this.clock()}, 1000);
+    this.timeticker = setInterval(() => { this.clock() }, 1000);
   }
 
   ngOnDestroy(): void {
@@ -111,7 +130,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
     let h = d.getHours();
     let m = d.getMinutes();
     let s = d.getSeconds();
-    this.clockdisplay.text = (h + ":" + m );
+    this.clockdisplay.text = (h + ":" + m);
     // console.log(this.clockdisplay);
   }
 

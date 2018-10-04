@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   modalObj: Modal;
   showLoginMessage: boolean = false;
   loginMessage: string;
+  loading: boolean = false;
 
   constructor(private router: Router, private modal: ModalService, private loginsv: AuthService
     , private store: Store<AppState>) {
@@ -34,13 +35,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(event) {
-    $.blockUI({ message: null });
+    this.loading = true;
 
     this.loginsv.login(this.username, this.password).subscribe(resp => {
       let result: AjaxLoginVo = resp.json() as AjaxLoginVo;
       console.log(result);
-      $.unblockUI();
-
+      this.loading = false;
       if (result.status == "SUCCESS") {
         const INIT_USER_DETAIL: UserDetail = {
           roles: result.roles,

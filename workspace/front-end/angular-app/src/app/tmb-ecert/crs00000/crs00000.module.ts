@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { Crs01000Component } from 'app/tmb-ecert/crs00000/crs01000/crs01000.component';
+import { Crs02000Component } from 'app/tmb-ecert/crs00000/crs02000/crs02000.component';
 import { Crs00000RoutingModule } from 'app/tmb-ecert/crs00000/crs00000-routing.module';
 
 import { StoreModule } from '@ngrx/store';
@@ -31,6 +32,6 @@ import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
     DisableControlModule,
     PipesModule,
   ],
-  declarations: [Crs01000Component]
+  declarations: [Crs01000Component, Crs02000Component]
 })
 export class Crs00000Module { }

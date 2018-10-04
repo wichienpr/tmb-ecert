@@ -16,10 +16,12 @@ const URL = {
     NRQ_SAVE: "/api/nrq/save",
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
+    GEN_KEY: "/api/nrq/generate/key"
 }
 
 @Injectable()
 export class Nrq02000Service {
+    private tmbReqFormId: string = "";
     private dropdownObj: any;
     private form: FormGroup = new FormGroup({
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
@@ -36,7 +38,7 @@ export class Nrq02000Service {
         tmbReceiptChk: new FormControl('', Validators.required),        // ชื่อบนใบเสร็จธนาคาร TMB
         telReq: new FormControl('', Validators.required),               // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl('', Validators.required),              // ที่อยู่
-        note: new FormControl('', Validators.required),                 // หมายเหตุ
+        note: new FormControl(),                                        // หมายเหตุ
         requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
         copyFile: new FormControl('', Validators.required),             // สำเนาบัตรประชาชน
         changeNameFile: new FormControl(),                              // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
@@ -102,6 +104,14 @@ export class Nrq02000Service {
     /**
      * Initial Data
      */
+    getTmbReqFormId(): Observable<string> {
+        return new Observable<string>( obs => {
+            this.ajax.get(URL.GEN_KEY, response => {
+                this.tmbReqFormId = response.json();
+                obs.next(this.tmbReqFormId);
+            });
+        });
+    }
     getForm(): Observable<FormGroup> {
         return new Observable<FormGroup>(obs => {
             obs.next(this.form);
@@ -164,6 +174,7 @@ export class Nrq02000Service {
                     let _data = [...certificates];
                     _data.splice(0, 1);
                     let data: Nrq02000 = {
+                        tmbReqFormNo: this.tmbReqFormId,
                         acceptNo: form.controls.acceptNo.value,
                         accName: form.controls.accName.value,
                         accNo: Acc.revertAccNo(form.controls.accNo.value),
@@ -197,7 +208,7 @@ export class Nrq02000Service {
                     this.ajax.upload(URL.NRQ_SAVE, formData, response => {
                         if (response.json().message == "SUCCESS") {
                             const modal: Modal = {
-                                msg: "บันทึกข้อมูลสำเร็จ",
+                                msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
                                 success: true
                             };
                             this.modal.alert(modal);
@@ -223,10 +234,6 @@ export class Nrq02000Service {
     }
 
     pdf(): boolean {
-        // const modal: Modal = {
-        //     msg: "ฟีตเจอร์นี้ยังไม่เปิดให้ใช้บริการ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ"
-        // }
-        // this.modal.alert(modal);
         this.ajax.download(URL.NRQ_PDF + "nrq02000");
         return true;
     }

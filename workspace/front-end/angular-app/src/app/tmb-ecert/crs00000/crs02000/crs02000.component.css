@@ -1,0 +1,11 @@
+.btn-bot > button {
+    margin: 0 0.5em !important;
+}
+
+.download-link {
+    color: #000;
+    cursor: pointer;
+}
+.download-link:hover {
+    color: rgb(88, 88, 88);
+}

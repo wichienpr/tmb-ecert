@@ -6,6 +6,7 @@ import { UserDetail } from 'app/user.model';
 import * as UserActions from 'app/user.action';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 interface AppState { }
 
@@ -52,12 +53,18 @@ export class Nrq01000Component implements OnInit {
 
   // Test NGRX
   change() {
+    const { ADMIN } = ROLES;
+    let list = [];
+    for(let key in PAGE_AUTH) {
+      list.push(PAGE_AUTH[key]);
+    }
     let data: UserDetail = { // Mock User Detail to Update
-      userId: "99999",
-      username: "kimjaeha",
-      firstName: "อาทิตย์",
-      lastName: "แก่นใจ",
-      roles: ["Developer"]
+      userId: "000",
+      username: "admin",
+      firstName: "Administrator",
+      lastName: "-",
+      roles: [ADMIN],
+      auths: list
     };
     this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
   }

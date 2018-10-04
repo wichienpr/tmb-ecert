@@ -8,7 +8,7 @@
           <label>วันที่ขอ</label>
         </div>
         <div class="five wide field">
-          {{ reqDate || '01/01/2561' }}
+          {{ null | dateString }}
         </div>
       </div>
 
@@ -18,7 +18,7 @@
           </label>
         </div>
         <div class="five wide field">
-          20180900001
+          {{ ( tmbReqFormId | async ) | emptyString }}
         </div>
       </div>
 

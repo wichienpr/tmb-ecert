@@ -4,13 +4,14 @@ import { Modal, RequestForm, initRequestForm } from 'models/';
 import { Observable } from 'rxjs';
 
 const URL = {
-  REQUEST_FORM: "/api/nrq/data"
+  REQUEST_FORM: "/api/nrq/data",
+  DOWNLOAD: "/api/nrq/download/"
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class Nrq03000Service {
+export class Crs02000Service {
 
   constructor(private modal: ModalService, private ajax: AjaxService) { }
 
@@ -34,6 +35,10 @@ export class Nrq03000Service {
         obs.next(data.length > 0 ? data[0] : initRequestForm);
       })
     });
+  }
+
+  download(fileName: string): void {
+    this.ajax.download(URL.DOWNLOAD + fileName);
   }
 
 }

@@ -1,26 +1,36 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Modal, RequestForm, initRequestForm } from 'models/';
-import { Nrq03000Service } from './nrq03000.service';
+import { ModalService } from 'app/baiwa/common/services';
+import { Crs02000Service } from './crs02000.service';
 
 declare var $: any;
-
 @Component({
-  selector: 'app-nrq03000',
-  templateUrl: './nrq03000.component.html',
-  styleUrls: ['./nrq03000.component.css']
+  selector: 'app-crs02000',
+  templateUrl: './crs02000.component.html',
+  styleUrls: ['./crs02000.component.css']
 })
-export class Nrq03000Component implements OnInit, AfterViewInit {
+export class Crs02000Component implements OnInit {
 
   id: string;
   date: Date;
+  dataLoading: boolean = false;
   data: RequestForm = initRequestForm;
   paidModal: Modal;
   allowedModal: Modal;
   documentModal: Modal;
   allowed: string[] = [];
+  tab: any = {
+    A: "active",
+    B: ""
+  };
 
-  constructor(private route: ActivatedRoute, private router: Router, private service: Nrq03000Service) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: Crs02000Service,
+    private modal: ModalService
+  ) {
     this.paidModal = {
       modalId: "desp",
       type: "custom"
@@ -47,15 +57,25 @@ export class Nrq03000Component implements OnInit, AfterViewInit {
   ngOnInit() {
     this.id = this.route.snapshot.queryParams["id"] || "";
     if (this.id !== "") {
+      this.dataLoading = true;
       this.service.getData(this.id).subscribe(result => {
         console.log(result);
         this.data = result;
+        setTimeout(() => {
+          this.dataLoading = false;
+        }, 200);
       });
     }
   }
 
-  ngAfterViewInit() {
-    $('.menu .item').tab();
+  tabs(name: string) {
+    for (let key in this.tab) {
+      if (name == key) {
+        this.tab[key] = "active";
+      } else {
+        this.tab[key] = "";
+      }
+    }
   }
 
   approveToggle() {
@@ -68,7 +88,12 @@ export class Nrq03000Component implements OnInit, AfterViewInit {
 
   download(fileName: string) {
     if (fileName) {
-      console.log(fileName);
+      this.service.download(fileName);
+    } else {
+      const modal: Modal = {
+        msg: "ไม่พบไฟล์"
+      };
+      this.modal.alert(modal);
     }
   }
 
