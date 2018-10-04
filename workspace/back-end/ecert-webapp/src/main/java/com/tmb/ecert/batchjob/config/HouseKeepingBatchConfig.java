@@ -27,7 +27,7 @@ import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 
 @Configuration
 @ConditionalOnProperty(name="job.housekeeping.archive.cornexpression" , havingValue="" ,matchIfMissing=false)
-public class HousekeepAuditLogConfig {
+public class HouseKeepingBatchConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(BACHJOB_LOG_NAME.ECERT_HOUSEKEEPING);
 
@@ -48,7 +48,7 @@ public class HousekeepAuditLogConfig {
 		log.info("################ HouseKeepingBatchJobConfig ################");
 	}
 	
-	@Bean("houseKeepingBatchJobConfigJobDetail")
+	@Bean("houseKeepingBatchConfigDetail")
 	public JobDetail houseKeepingBatchJobConfigJobDetail() {
 		JobDataMap newJobDataMap = new JobDataMap();
 		newJobDataMap.put("houseKeepingBatchService", houseKeepingBatchService);
@@ -59,16 +59,16 @@ public class HousekeepAuditLogConfig {
 		return job;
 	}
 	
-	@Bean("houseKeepingBatchJobConfigCronTrigger")
+	@Bean("houseKeepingBatchConfigCronTrigger")
 	public CronTrigger houseKeepingBatchJobConfigCronTrigger() {
 		CronTrigger trigger = TriggerBuilder.newTrigger()
-			    .withIdentity("houseKeepingBatchJobConfigCronTrigger", "batchjobgroup")
+			    .withIdentity("houseKeepingBatchConfigCronTrigger", "batchjobgroup")
 			    .withSchedule(CronScheduleBuilder.cronSchedule(cronExpressions))
 			    .build();
 		return trigger;
 	}
 	
-	@Bean("houseKeepingBatchJobConfigSchedulerFactory")
+	@Bean("houseKeepingBatchConfigSchedulerFactory")
 	public SchedulerFactory  houseKeepingBatchJobConfigSchedulerFactory() throws SchedulerException {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
@@ -79,7 +79,7 @@ public class HousekeepAuditLogConfig {
 	
 	@PreDestroy
 	public void destroy() throws SchedulerException {
-		log.info("houseKeepingBatchJobConfig.. shutdown");
+		log.info("HouseKeepingBatchConfig.. shutdown");
 		houseKeepingBatchJobConfigSchedulerFactory().getScheduler().shutdown();
 	}
 
