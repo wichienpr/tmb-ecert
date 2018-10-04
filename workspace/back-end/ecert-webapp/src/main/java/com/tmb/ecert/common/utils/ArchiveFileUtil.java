@@ -9,10 +9,12 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
+
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
-import com.tmb.ecert.common.constant.ProjectConstant;
 
 @Service
 public class ArchiveFileUtil {

@@ -1,8 +1,18 @@
 package com.tmb.ecert.batchjob.config;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +20,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
-import org.springframework.scheduling.quartz.JobDetailFactoryBean;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.tmb.ecert.batchjob.job.HouseKeepingBatchJob;
-import com.tmb.ecert.batchjob.job.HouseKeepingService;
+import com.tmb.ecert.batchjob.service.HouseKeepingBatchService;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 
 @Configuration
 @ConditionalOnProperty(name="job.housekeeping.archive.cornexpression" , havingValue="" ,matchIfMissing=false)
-public class HouseKeepingBatchJobConfig {
+public class HousekeepAuditLogConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(BACHJOB_LOG_NAME.ECERT_HOUSEKEEPING);
 

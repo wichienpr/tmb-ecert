@@ -157,7 +157,7 @@ public class HouseKeepingBatchService {
 	 * @return
 	 * @throws IOException
 	 */
-	private boolean writeFileWithEncoding(List<AuditLogDao> auditLogs, String fileName,String encoding) throws IOException {
+	private boolean writeFileWithEncoding(List<AuditLog> auditLogs, String fileName,String encoding) throws IOException {
 		OutputStreamWriter writer = null;
 		boolean result = true;
 		try {
@@ -167,7 +167,7 @@ public class HouseKeepingBatchService {
 				file.createNewFile();
 			}
 			writer = new OutputStreamWriter(new FileOutputStream(file, true),encoding);
-			for (AuditLogDao info : auditLogs) {
+			for (AuditLog info : auditLogs) {
 				StringJoiner sj = new StringJoiner("|");
 				sj.add(getData(info.getAuditLogId()));
 				sj.add(getDataTimestamp(info.getCreateDatetime()));
