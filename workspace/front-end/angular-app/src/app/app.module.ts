@@ -13,6 +13,7 @@ import { AjaxService, DropdownService, ModalService } from 'services/';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { ecerdashBoardReducer } from 'app/dash-board.reducer';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { HttpModule } from '@angular/http';
     // Components
     ModalModule,
     // Store
-    StoreModule.forRoot({ user: userReducer }),
+    StoreModule.forRoot({ user: userReducer , ecerdashboard : ecerdashBoardReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states      
     }),
