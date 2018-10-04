@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
+import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -32,6 +33,12 @@ public class CheckRequestDetailController {
 	@ResponseBody
 	public List<RequestCertificate> certFromId(@PathVariable("id") String id) {
 		return crsService.findCertByReqFormId(id);
+	}
+	
+	@GetMapping("/cert/list/{id}")
+	@ResponseBody
+	public List<Certificate> certListFromId(@PathVariable("id") String id) {
+		return crsService.findCertListByReqFormId(id);
 	}
 	
 	@GetMapping("/download/{filename}")

@@ -122,7 +122,7 @@ public class ApplicationCache {
 		return PARAM_GROUP_VALUE;
 	}
 	
-	public String getParamValueByName(String propertyName) {
+	public static String getParamValueByName(String propertyName) {
 		if (StringUtils.isBlank(propertyName)) return null;
 		
 		List<ParameterConfig> paramConfigs = PARAM_GROUP_VALUE;

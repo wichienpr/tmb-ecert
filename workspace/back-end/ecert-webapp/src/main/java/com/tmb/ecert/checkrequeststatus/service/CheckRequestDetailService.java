@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
@@ -25,6 +26,13 @@ public class CheckRequestDetailService {
 	
 	@Autowired
 	private CheckRequestDetailDao dao;
+	
+	public List<Certificate> findCertListByReqFormId(String id) {
+		Long reqFormId = Long.valueOf(id);
+		List<RequestForm> reqForm = dao.findReqFormById(reqFormId);
+		String code = reqForm.get(0).getCerTypeCode();
+		return ApplicationCache.getCerByType(code);
+	}
 	
 	public List<RequestCertificate> findCertByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
