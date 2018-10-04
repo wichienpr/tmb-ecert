@@ -23,8 +23,6 @@ import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
-import th.co.baiwa.buckwaframework.support.ApplicationCache;
-
 @Service
 public class RequestorFormService {
 
@@ -68,45 +66,45 @@ public class RequestorFormService {
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
+				RequestForm req = new RequestForm();
+				req.setAccountName(form.getAccName());
+				req.setAccountNo(form.getAccNo());
+				req.setTmbRequestNo(form.getTmbReqFormNo());
+				req.setAccountType("OOA");
+				req.setAddress(form.getAddress());
+				req.setBranch("");
+				req.setCaNumber(form.getAcceptNo());
+				req.setCertificateFile("");
+				req.setCerTypeCode(form.getReqTypeSelect());
+				req.setChangeNameFile(
+						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
+								: null);
+				req.setCompanyName(form.getCorpName());
+				req.setCreatedById(userId);
+				req.setCreatedByName(userName);
+				req.setCreatedDateTime(null);
+				req.setCustomerName(form.getCorpName1());
+				req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
+				req.setCustsegmentCode(form.getCustomSegSelect());
+				req.setDebitAccountType(form.getSubAccMethodSelect());
+				req.setDepartment(form.getDepartmentName());
+				req.setGlType("B533");
+				req.setIdCardFile(
+						BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename() : null);
+				req.setMakerById(userId);
+				req.setMakerByName(userName);
+				req.setOrganizeId(form.getCorpNo());
+				req.setPaidTypeCode(form.getPayMethodSelect());
+				req.setRequestDate(null);
+				req.setRequestFormFile(
+						BeanUtils.isNotEmpty(form.getRequestFile()) ? form.getRequestFile().getOriginalFilename()
+								: null);
+				req.setStatus("10001");
+				req.setRemark(form.getNote());
+				req.setTelephone(form.getTelReq());
+				nextId = dao.save(req); // SAVE REQUEST FORM
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
-						RequestForm req = new RequestForm();
-						req.setAccountName(form.getAccName());
-						req.setAccountNo(form.getAccNo());
-						req.setAccountType("OOA");
-						req.setAddress(form.getAddress());
-						req.setBranch("");
-						req.setCaNumber(form.getAcceptNo());
-						req.setCertificateFile("");
-						req.setCerTypeCode(cer.getCode());
-						req.setChangeNameFile(BeanUtils.isNotEmpty(form.getChangeNameFile())
-								? form.getChangeNameFile().getOriginalFilename()
-								: null);
-						req.setCompanyName(form.getCorpName());
-						req.setCreatedById(userId);
-						req.setCreatedByName(userName);
-						req.setCreatedDateTime(null);
-						req.setCustomerName(form.getCorpName1());
-						req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
-						req.setCustsegmentCode(form.getCustomSegSelect());
-						req.setDebitAccountType(form.getSubAccMethodSelect());
-						req.setDepartment(form.getDepartmentName());
-						req.setGlType("B533");
-						req.setIdCardFile(
-								BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename()
-										: null);
-						req.setMakerById(userId);
-						req.setMakerByName(userName);
-						req.setOrganizeId(form.getCorpNo());
-						req.setPaidTypeCode(form.getPayMethodSelect());
-						req.setRequestDate(null);
-						req.setRequestFormFile(BeanUtils.isNotEmpty(form.getRequestFile())
-								? form.getRequestFile().getOriginalFilename()
-								: null);
-						req.setStatus("");
-						req.setRemark(form.getNote());
-						req.setTelephone(form.getTelReq());
-						nextId = dao.save(req); // SAVE REQUEST FORM
 						RequestCertificate cert = new RequestCertificate();
 						cert.setReqFormId(nextId);
 						cert.setCertificateCode(cer.getCode());
@@ -122,35 +120,10 @@ public class RequestorFormService {
 			}
 			return msg;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			msg.setMessage("ERROR");
 			return msg;
 		}
-	}
-	
-	public List<RequestForm> findAll() {
-		return dao.findAll();
-	}
-	
-	public List<RequestCertificate> findCertByReqFormId(String id) {
-		Long reqFormId = Long.valueOf(id);
-		List<RequestCertificate> reqForm = dao.findCertByReqFormId(reqFormId);
-		return reqForm;
-	}
-	
-	public List<RequestForm> findById(String id) {
-		Long reqFormId = Long.valueOf(id);
-		List<RequestForm> reqForm = dao.findById(reqFormId);
-		if (reqForm.size()>0) {
-			RequestForm req = reqForm.get(0);
-			req.setStatus(ApplicationCache.getLovByCode(req.getStatus()).getName());
-			req.setCerTypeCode(ApplicationCache.getCerByCode(req.getCerTypeCode()).getTypeDesc());
-			req.setPaidTypeCode(ApplicationCache.getLovByCode(req.getPaidTypeCode()).getName());
-			req.setCustsegmentCode(ApplicationCache.getLovByCode(req.getCustsegmentCode()).getName());
-			reqForm.set(0, req);
-		}
-		return reqForm;
 	}
 
 	public void download(String fileName, HttpServletResponse response) {

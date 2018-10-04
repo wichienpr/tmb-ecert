@@ -1,7 +1,5 @@
 package com.tmb.ecert.requestorform.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.common.domain.CommonMessage;
-import com.tmb.ecert.common.domain.RequestCertificate;
-import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.service.RequestGenKeyService;
 import com.tmb.ecert.requestorform.service.RequestorFormService;
@@ -34,24 +30,6 @@ public class RequestorFormController {
 	@ResponseBody
 	public String gerenateKeys() {
 		return generateKey.getNextKey();
-	}
-	
-	@GetMapping("/data")
-	@ResponseBody
-	public List<RequestForm> all() {	
-		return reqService.findAll();
-	}
-	
-	@GetMapping("/data/{id}")
-	@ResponseBody
-	public List<RequestForm> fromId(@PathVariable("id") String id) {
-		return reqService.findById(id);
-	}
-	
-	@GetMapping("/cert/{id}")
-	@ResponseBody
-	public List<RequestCertificate> certFromId(@PathVariable("id") String id) {
-		return reqService.findCertByReqFormId(id);
 	}
 	
 	

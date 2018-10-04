@@ -1,12 +1,9 @@
 package com.tmb.ecert.requestorform.persistence.vo;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tmb.ecert.common.domain.Certificate;
-
 public class Nrq02000FormVo {
+	private String tmbReqFormNo;
 	private String reqTypeSelect;
 	private String customSegSelect;
 	private String payMethodSelect;
@@ -26,6 +23,14 @@ public class Nrq02000FormVo {
 	private MultipartFile requestFile;
 	private MultipartFile copyFile;
 	private MultipartFile changeNameFile;
+	
+	public String getTmbReqFormNo() {
+		return tmbReqFormNo;
+	}
+
+	public void setTmbReqFormNo(String tmbReqFormNo) {
+		this.tmbReqFormNo = tmbReqFormNo;
+	}
 
 	public String getReqTypeSelect() {
 		return reqTypeSelect;
