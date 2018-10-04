@@ -36,5 +36,10 @@ public class UserLoginUtils {
 	public static String getCurrentUsername() {
 		return UserLoginUtils.getCurrentUserBean().getUsername();
 	}
+
+	public static UserDetails getCurrentUserLogin() {
+ 		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+ 		return user;
+	}
 	
 }
