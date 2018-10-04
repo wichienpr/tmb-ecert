@@ -33,11 +33,11 @@ public class CheckRequestStatusDao {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.TYPE_DESC AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
-		sql.append(" INNER JOIN ECERT_CERTIFICATE C ");
+		sql.append(" INNER JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
 
@@ -76,11 +76,11 @@ public class CheckRequestStatusDao {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.TYPE_DESC AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
-		sql.append(" INNER JOIN ECERT_CERTIFICATE C ");
+		sql.append(" INNER JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
 
