@@ -23,18 +23,17 @@ export class Crs01000Component implements OnInit {
   loading: boolean = false;
   status: string;
 
-  countStatus1: Number;
-  countStatus2: Number;
-  countStatus3: Number;
-  countStatus4: Number;
-  countStatus5: Number;
-  countStatus6: Number;
-  countStatus7: Number;
-  countStatus8: Number;
-  countStatus9: Number;
-  countStatus10: Number;
-  countStatus11: Number;
-
+  countNewrequest: Number;
+  countPaymentProcessing : Number;
+  countRefuseRequest: Number;
+  countCancelRequest : Number;
+  countWaitPaymentApproval : Number;
+  countPaymentApprovals: Number;
+  countChargeback : Number;
+  countPaymentfailed : Number;
+  countWaitUploadCertificate : Number;
+  countSucceed : Number;
+  countWaitSaveRequest : Number;
 
   constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, ) {
 
@@ -140,17 +139,17 @@ export class Crs01000Component implements OnInit {
   getCountStatus() {
     const URL = "/api/crs/crs01000/countStatus";
     this.ajax.post(URL, {}, res => {
-      this.countStatus1 = res.json().countStatus1;
-      this.countStatus2 = res.json().countStatus2;
-      this.countStatus3 = res.json().countStatus3;
-      this.countStatus4 = res.json().countStatus4;
-      this.countStatus5 = res.json().countStatus5;
-      this.countStatus6 = res.json().countStatus6;
-      this.countStatus7 = res.json().countStatus7;
-      this.countStatus8 = res.json().countStatus8;
-      this.countStatus9 = res.json().countStatus9;
-      this.countStatus10 = res.json().countStatus10;
-      this.countStatus11 = res.json().countStatus11;
+      this.countNewrequest = res.json().newrequest;
+      this.countPaymentProcessing = res.json().paymentProcessing;
+      this.countRefuseRequest = res.json().refuseRequest;
+      this.countCancelRequest = res.json().cancelRequest;
+      this.countWaitPaymentApproval = res.json().waitPaymentApproval;
+      this.countPaymentApprovals = res.json().paymentApprovals;
+      this.countChargeback = res.json().chargeback;
+      this.countPaymentfailed = res.json().paymentfailed;
+      this.countWaitUploadCertificate = res.json().waitUploadCertificate;
+      this.countSucceed = res.json().succeed;
+      this.countWaitSaveRequest = res.json().waitSaveRequest;
     });
 
   }
