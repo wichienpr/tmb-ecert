@@ -26,7 +26,8 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
-import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.utils.ArchiveFileUtil;
 
@@ -112,6 +113,7 @@ public class HouseKeepingBatchService {
 	public void removeFile() throws IOException {
 		String path = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
 		Integer afterDay =  Integer.valueOf(applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_AFTERDAY));
+		String removeFileIndex = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_RMFILE);
 		int after = (afterDay == null) ? -7 : afterDay.intValue() * -1;
 		File actual = new File(path);
 		

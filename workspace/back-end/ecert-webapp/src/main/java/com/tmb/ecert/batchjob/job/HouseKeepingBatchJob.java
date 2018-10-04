@@ -6,7 +6,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import com.tmb.ecert.batchjob.service.HouseKeepingBatchService;
-import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 
 public class HouseKeepingBatchJob extends QuartzJobBean{
 

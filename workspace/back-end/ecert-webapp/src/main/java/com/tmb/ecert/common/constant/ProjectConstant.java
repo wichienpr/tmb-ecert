@@ -32,6 +32,8 @@ public class ProjectConstant {
 		public static final String BATCH_HOUSEKEEPING_TARFILE = "housekeeping.archive.tarfile";
 		public static final String BATCH_HOUSEKEEPING_AFTERDAY = "housekeeping.archive.afterday";
 		public static final String BATCH_HOUSEKEEPING_ROOTPATH = "housekeeping.archivefile.root.path";
+		public static final String BATCH_HOUSEKEEPING_RMFILE = "housekeeping.archive.removefile";
+		
 		
 	}
 }

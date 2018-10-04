@@ -16,7 +16,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.tmb.ecert.batchjob.job.HouseKeepingBatchJob;
 import com.tmb.ecert.batchjob.job.HouseKeepingService;
-import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 
 @Configuration
 @ConditionalOnProperty(name="job.housekeeping.archive.cornexpression" , havingValue="" ,matchIfMissing=false)
