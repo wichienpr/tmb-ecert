@@ -39,17 +39,17 @@ public class HouseKeepingBatchConfig {
 	
 	@PostConstruct
 	public void init() {
-		log.info("################ HouseKeepingBatchJobConfig ################");
+		log.info("################ HouseKeepingBatchConfig ################");
 		log.info("# ");
 		log.info("# ");
 		log.info("# cronEx : " + cronExpressions);
 		log.info("# ");
 		log.info("# ");
-		log.info("################ HouseKeepingBatchJobConfig ################");
+		log.info("################ HouseKeepingBatchConfig ################");
 	}
 	
 	@Bean("houseKeepingBatchConfigDetail")
-	public JobDetail houseKeepingBatchJobConfigJobDetail() {
+	public JobDetail houseKeepingBatchConfigDetail() {
 		JobDataMap newJobDataMap = new JobDataMap();
 		newJobDataMap.put("houseKeepingBatchService", houseKeepingBatchService);
 		JobDetail job = JobBuilder.newJob(HouseKeepingBatchJob.class)
@@ -60,7 +60,7 @@ public class HouseKeepingBatchConfig {
 	}
 	
 	@Bean("houseKeepingBatchConfigCronTrigger")
-	public CronTrigger houseKeepingBatchJobConfigCronTrigger() {
+	public CronTrigger houseKeepingBatchConfigCronTrigger() {
 		CronTrigger trigger = TriggerBuilder.newTrigger()
 			    .withIdentity("houseKeepingBatchConfigCronTrigger", "batchjobgroup")
 			    .withSchedule(CronScheduleBuilder.cronSchedule(cronExpressions))
@@ -69,10 +69,10 @@ public class HouseKeepingBatchConfig {
 	}
 	
 	@Bean("houseKeepingBatchConfigSchedulerFactory")
-	public SchedulerFactory  houseKeepingBatchJobConfigSchedulerFactory() throws SchedulerException {
+	public SchedulerFactory  houseKeepingBatchConfigSchedulerFactory() throws SchedulerException {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
-		sched.scheduleJob(houseKeepingBatchJobConfigJobDetail(), houseKeepingBatchJobConfigCronTrigger());
+		sched.scheduleJob(houseKeepingBatchConfigDetail(), houseKeepingBatchConfigCronTrigger());
 		sched.start();
 		return sf;
 	}
@@ -80,7 +80,7 @@ public class HouseKeepingBatchConfig {
 	@PreDestroy
 	public void destroy() throws SchedulerException {
 		log.info("HouseKeepingBatchConfig.. shutdown");
-		houseKeepingBatchJobConfigSchedulerFactory().getScheduler().shutdown();
+		houseKeepingBatchConfigSchedulerFactory().getScheduler().shutdown();
 	}
 
 }

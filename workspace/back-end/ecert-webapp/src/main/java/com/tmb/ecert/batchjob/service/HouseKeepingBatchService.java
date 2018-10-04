@@ -39,10 +39,7 @@ public class HouseKeepingBatchService {
 
 	@Autowired
 	private AuditLogDao auditLogDao;
-	
-	@Autowired
-	private ApplicationCache applicationCache;
-	
+		
 	@Autowired
 	private ArchiveFileUtil archiveFileUtil;
 
@@ -55,10 +52,10 @@ public class HouseKeepingBatchService {
 		boolean isLogFail = false;
 		String errorMesage = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.ENGLISH);
-		String pathFile = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
-		String fileName = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_FILENAME);
-		String tarFile = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_TARFILE);
-		int days =  Integer.parseInt(applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_DAYS));
+		String pathFile = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
+		String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_FILENAME);
+		String tarFile = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_TARFILE);
+		int days =  Integer.parseInt(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_DAYS));
 		
 		try {
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogWithDays(days);
@@ -111,9 +108,9 @@ public class HouseKeepingBatchService {
 	 * @throws IOException
 	 */
 	public void removeFile() throws IOException {
-		String path = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
-		Integer afterDay =  Integer.valueOf(applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_AFTERDAY));
-		String removeFileIndex = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_RMFILE);
+		String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
+		Integer afterDay =  Integer.valueOf(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_AFTERDAY));
+		String removeFileIndex = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_RMFILE);
 		int after = (afterDay == null) ? -7 : afterDay.intValue() * -1;
 		File actual = new File(path);
 		
