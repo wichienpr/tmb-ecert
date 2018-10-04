@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
-import { Modal, RequestForm, initRequestForm } from 'models/';
+import { Modal, RequestForm, initRequestForm, RequestCertificate } from 'models/';
 import { Observable } from 'rxjs';
+import { Certificate } from 'models/';
+import { ActivatedRoute } from '@angular/router';
 
 const URL = {
-  REQUEST_FORM: "/api/nrq/data",
-  DOWNLOAD: "/api/nrq/download/"
+  REQUEST_FORM: "/api/crs/crs02000/data",
+  REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
+  DOWNLOAD: "/api/crs/crs02000/download/",
+  CER_BY_TYPE: "/api/crs/crs02000/cert/list",
 }
 
 @Injectable({
@@ -13,7 +18,27 @@ const URL = {
 })
 export class Crs02000Service {
 
-  constructor(private modal: ModalService, private ajax: AjaxService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private modal: ModalService,
+    private ajax: AjaxService,
+    private location: Location
+  ) { }
+
+  getId() {
+    return this.route.snapshot.queryParams["id"] || "";
+  }
+
+  tabsToggle(name: string, tab: any): any {
+    for (let key in tab) {
+      if (name == key) {
+        tab[key] = "active";
+      } else {
+        tab[key] = "";
+      }
+    }
+    return tab;
+  }
 
   approveToggle(): any {
     const modal: Modal = {
@@ -28,17 +53,74 @@ export class Crs02000Service {
     this.modal.confirm(e => { }, modal);
   }
 
-  getData(id: String): Observable<RequestForm> {
-    return new Observable<RequestForm>(obs => {
-      this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
-        let data: RequestForm[] = response.json() as RequestForm[];
-        obs.next(data.length > 0 ? data[0] : initRequestForm);
-      })
+  async getChkList(id: string) {
+    return this.ajax.get(`${URL.CER_BY_TYPE}/${id}`, response => {
+      let lists = response.json();
+      const list = lists.slice(0, 1);
+      let data: Certificate = {
+        code: "",
+        typeCode: list[0].typeCode,
+        typeDesc: list[0].typeDesc,
+        certificate: list[0].certificate,
+        feeDbd: list[0].feeDbd,
+        feeTmb: list[0].feeTmb,
+      };
+      lists.unshift(data);
+      return [...lists];
+    });
+  }
+
+  async getData(id: string) {
+    return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
+      let data: RequestForm[] = response.json() as RequestForm[];
+      return data.length > 0 ? data[0] : initRequestForm;
+    })
+  }
+
+  async getCert(id: String) {
+    return this.ajax.get(`${URL.REQUEST_CERTIFICATE}/${id}`, response => {
+      let data: RequestCertificate[] = response.json() as RequestCertificate[];
+      return data;
+    });
+  }
+
+  async matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
+    return new Promise<Certificate[]>(resolve => {
+      chkList.forEach((obj, index) => {
+        cert.forEach((ob, idx) => {
+          if (obj.code == ob.certificateCode) {
+            obj.check = true;
+            obj.value = ob.totalNumber;
+          } else {
+            obj.check = false;
+            obj.value = 0;
+          }
+        });
+      });
+      resolve([...chkList]);
     });
   }
 
   download(fileName: string): void {
-    this.ajax.download(URL.DOWNLOAD + fileName);
+    if (fileName) {
+      this.ajax.download(URL.DOWNLOAD + fileName);
+    } else {
+      const modal: Modal = {
+        msg: "ไม่พบไฟล์"
+      };
+      this.modal.alert(modal);
+    }
+  }
+
+  cancel(): void {
+    const modal: Modal = {
+      msg: "ท่านต้องการกลับหรือไม่?"
+    }
+    this.modal.confirm(e => {
+      if (e) {
+        this.location.back();
+      }
+    }, modal);
   }
 
 }

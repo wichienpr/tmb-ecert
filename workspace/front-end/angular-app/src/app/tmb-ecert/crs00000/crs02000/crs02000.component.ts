@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Modal, RequestForm, initRequestForm } from 'models/';
-import { ModalService } from 'app/baiwa/common/services';
+import { ActivatedRoute } from '@angular/router';
+import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { Crs02000Service } from './crs02000.service';
 
 declare var $: any;
@@ -12,70 +11,57 @@ declare var $: any;
 })
 export class Crs02000Component implements OnInit {
 
-  id: string;
-  date: Date;
+  id: string = "";
+  date: Date = new Date();
   dataLoading: boolean = false;
+  chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
-  paidModal: Modal;
-  allowedModal: Modal;
-  documentModal: Modal;
-  allowed: string[] = [];
+  cert: RequestCertificate[] = [];
+  paidModal: Modal = {
+    modalId: "desp",
+    type: "custom"
+  };
+  allowedModal: Modal = {
+    modalId: "allowed",
+    type: "custom"
+  };
+  documentModal: Modal = {
+    modalId: "document",
+    type: "custom"
+  };
+  allowed: string[] = [
+    "กรุณาเลือก",
+    "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย",
+    "ลูกค้าแนบเอกสารไม่ครบถ้วน",
+    "ลูกค้าขอยกเลิกคำขอ",
+    "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
+    "อื่นๆ",
+  ];
   tab: any = {
     A: "active",
     B: ""
   };
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private service: Crs02000Service,
-    private modal: ModalService
-  ) {
-    this.paidModal = {
-      modalId: "desp",
-      type: "custom"
-    };
-    this.allowedModal = {
-      modalId: "allowed",
-      type: "custom"
-    }
-    this.documentModal = {
-      modalId: "document",
-      type: "custom"
-    }
-    this.allowed = [
-      "กรุณาเลือก",
-      "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย",
-      "ลูกค้าแนบเอกสารไม่ครบถ้วน",
-      "ลูกค้าขอยกเลิกคำขอ",
-      "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
-      "อื่นๆ",
-    ];
-    this.date = new Date();
-  }
+    private service: Crs02000Service
+  ) { }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.queryParams["id"] || "";
+  async ngOnInit() {
+    this.id = this.service.getId();
     if (this.id !== "") {
       this.dataLoading = true;
-      this.service.getData(this.id).subscribe(result => {
-        console.log(result);
-        this.data = result;
-        setTimeout(() => {
-          this.dataLoading = false;
-        }, 200);
-      });
+      this.data = await this.service.getData(this.id);
+      this.cert = await this.service.getCert(this.id);
+      this.chkList = await this.service.getChkList(this.id);
+      this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+      setTimeout(() => {
+        this.dataLoading = false;
+      }, 500);
     }
   }
 
   tabs(name: string) {
-    for (let key in this.tab) {
-      if (name == key) {
-        this.tab[key] = "active";
-      } else {
-        this.tab[key] = "";
-      }
-    }
+    this.tab = this.service.tabsToggle(name, this.tab);
   }
 
   approveToggle() {
@@ -87,14 +73,11 @@ export class Crs02000Component implements OnInit {
   }
 
   download(fileName: string) {
-    if (fileName) {
-      this.service.download(fileName);
-    } else {
-      const modal: Modal = {
-        msg: "ไม่พบไฟล์"
-      };
-      this.modal.alert(modal);
-    }
+    this.service.download(fileName);
+  }
+
+  back() {
+    this.service.cancel();
   }
 
 }

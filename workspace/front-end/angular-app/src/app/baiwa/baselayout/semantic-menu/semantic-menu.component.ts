@@ -31,24 +31,24 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user = this.store.select('user');
-    this.user.subscribe(obj => {
-      if (obj.userId === "") {
-        const { ADMIN } = ROLES;
-        let list = [];
-        for (let key in PAGE_AUTH) {
-          list.push(PAGE_AUTH[key]);
-        }
-        let data: UserDetail = { // Mock User Detail to Update
-          userId: "000",
-          username: "admin",
-          firstName: "Administrator",
-          lastName: "-",
-          roles: [ADMIN],
-          auths: list
-        };
-        this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
-      }
-    });
+    // this.user.subscribe(obj => {
+    //   if (obj.userId === "") {
+    //     const { ADMIN } = ROLES;
+    //     let list = [];
+    //     for (let key in PAGE_AUTH) {
+    //       list.push(PAGE_AUTH[key]);
+    //     }
+    //     let data: UserDetail = { // Mock User Detail to Update
+    //       userId: "000",
+    //       username: "admin",
+    //       firstName: "Administrator",
+    //       lastName: "-",
+    //       roles: [ADMIN],
+    //       auths: list
+    //     };
+    //     this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
+    //   }
+    // });
 
     this.routes = [
       { // Main Menu 1
