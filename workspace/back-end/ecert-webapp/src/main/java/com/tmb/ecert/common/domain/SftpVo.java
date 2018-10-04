@@ -10,6 +10,7 @@ public class SftpVo {
 	private String password;
 	private SftpFileVo getFile = new SftpFileVo();
 	private List<SftpFileVo> putFiles = new ArrayList<>();
+	private String errorMessage;
 	
 	public SftpVo() {
 		super();
@@ -69,6 +70,14 @@ public class SftpVo {
 
 	public void setPutFiles(List<SftpFileVo> putFiles) {
 		this.putFiles = putFiles;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 	
 }
