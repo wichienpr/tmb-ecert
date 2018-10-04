@@ -23,24 +23,25 @@ export class Crs01000Component implements OnInit {
   loading: boolean = false;
   status: string;
 
-  countStatus1:Number;
-  countStatus2:Number;
-  countStatus3:Number;
-  countStatus4:Number;
-  countStatus5:Number;
-  countStatus6:Number;
-  countStatus7:Number;
-  countStatus8:Number;
-  countStatus9:Number;
-  countStatus10:Number;
-  countStatus11:Number;
+  countStatus1: Number;
+  countStatus2: Number;
+  countStatus3: Number;
+  countStatus4: Number;
+  countStatus5: Number;
+  countStatus6: Number;
+  countStatus7: Number;
+  countStatus8: Number;
+  countStatus9: Number;
+  countStatus10: Number;
+  countStatus11: Number;
+
 
   constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, ) {
 
     this.crs01000Service.getForm().subscribe(form => {
       this.form = form
     });
-    
+
     this.calendar1 = {
       calendarId: "cal1",
       calendarName: "cal1",
@@ -65,7 +66,9 @@ export class Crs01000Component implements OnInit {
   }
 
   ngOnInit() {
+    this.dataT = [];
     this.getCountStatus();
+
   }
 
   ngAfterViewInit() {
@@ -98,7 +101,7 @@ export class Crs01000Component implements OnInit {
 
   getData = () => {
     console.log(this.form);
-
+    this.loading = true;
     const URL = "/api/crs/crs01000/findReq";
     this.ajax.post(URL, {
       reqDate: this.form.controls.reqDate.value,
@@ -109,6 +112,10 @@ export class Crs01000Component implements OnInit {
 
     }, async res => {
       const data = await res.json();
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 200);
       data.forEach(element => {
         this.dataT.push(element);
       });
@@ -119,7 +126,6 @@ export class Crs01000Component implements OnInit {
 
 
   getDataByStatus(code) {
-
     this.status = code;
     const URL = "/api/crs/crs01000/findReqByStatus";
     this.ajax.post(URL, { status: this.status }, res => {
@@ -133,7 +139,7 @@ export class Crs01000Component implements OnInit {
 
   getCountStatus() {
     const URL = "/api/crs/crs01000/countStatus";
-    this.ajax.post(URL, { }, res => {
+    this.ajax.post(URL, {}, res => {
       this.countStatus1 = res.json().countStatus1;
       this.countStatus2 = res.json().countStatus2;
       this.countStatus3 = res.json().countStatus3;
@@ -150,19 +156,35 @@ export class Crs01000Component implements OnInit {
   }
 
   searchData(): void {
+    console.log(this.form.controls['reqDate'].value);
     console.log("searchData");
-    this.showData = true;
-    this.getData();
-    this.dataT = [];
+    if(this.form.controls['reqDate'].value==""&& 
+      this.form.controls['toReqDate'].value=="" && 
+      this.form.controls['organizeId'].value==""&&
+      this.form.controls['companyName'].value==""&&
+      this.form.controls['tmbReqNo'].value=="")
+    {
+      this.dataT = [];
+      this.showData = true;
+    }else{
+      this.showData = true;
+      this.getData();
+      this.dataT = [];
+    }
+
+      
+   
   }
+
+
 
   searchStatus(code): void {
     $('.ui.sidebar')
-    .sidebar({
-      context: '.ui.grid.pushable'
-    })
-    .sidebar('setting', 'transition', 'push')
-    .sidebar('toggle');
+      .sidebar({
+        context: '.ui.grid.pushable'
+      })
+      .sidebar('setting', 'transition', 'push')
+      .sidebar('toggle');
 
 
     console.log("searchStatus");
@@ -175,11 +197,12 @@ export class Crs01000Component implements OnInit {
     console.log("clearData");
     this.form.reset();
     this.showData = false;
+    this.dataT = [];
   }
 
   description(idReq): void {
     console.log(idReq)
-    this.router.navigate(["/nrq/nrq03000"], {
+    this.router.navigate(["/crs/crs02000"], {
       queryParams: { id: idReq }
     });
   }
