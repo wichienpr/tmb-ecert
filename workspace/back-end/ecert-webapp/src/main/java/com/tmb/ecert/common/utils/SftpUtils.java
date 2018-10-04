@@ -61,7 +61,8 @@ public class SftpUtils {
 				return newFile;
 			}
 		} catch (Exception e) {
-			log.error("exception in getFile : {}", e.getMessage(), e);
+			vo.setErrorMessage(e.getMessage());
+			log.error("exception in getFile : {}", e);
 		} finally {
 			if (outputStream != null) {
 				try {
@@ -116,7 +117,8 @@ public class SftpUtils {
 				log.info("Put file FileName : {} Completed ", file.getFileName());
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.error("exception in putFile : {}", e);
+			vo.setErrorMessage(e.getMessage());
 			isSuccess = false;
 		} finally {
 			if (inputStream != null) {

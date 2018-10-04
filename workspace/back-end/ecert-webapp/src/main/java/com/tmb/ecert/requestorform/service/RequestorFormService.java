@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -26,7 +27,8 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 @Service
 public class RequestorFormService {
 
-	private static final Logger logger = LoggerFactory.getLogger(RequestorFormService.class);
+	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_REQFORM);
+	
 	private static String PATH = "requestor/";
 
 	@Autowired

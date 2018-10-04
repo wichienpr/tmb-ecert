@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -23,7 +24,7 @@ public class RequestorDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private Logger logger = LoggerFactory.getLogger(RequestorDao.class);
+	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_REQFORM);
 
 	private final String SQL_ECERT_REQUEST_FORM_INSERT = "INSERT INTO ECERT_REQUEST_FORM";
 	private final String SQL_ECERT_REQUEST_CERTIFICATE_INSERT = "INSERT INTO ECERT_REQUEST_CERTIFICATE";

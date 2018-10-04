@@ -47,27 +47,27 @@ public class CheckRequestStatusService {
 		
 		for (StatusVo data : statusVoList) {
 			if("10001".equals(data.getStatus())) {
-				countStatusVo.setCountStatus1(data.getCount());
+				countStatusVo.setNewrequest(data.getCount());
 			}else if("10002".equals(data.getStatus())) {
-				countStatusVo.setCountStatus2(data.getCount());
+				countStatusVo.setPaymentProcessing(data.getCount());
 			}else if("10003".equals(data.getStatus())) {
-				countStatusVo.setCountStatus3(data.getCount());
+				countStatusVo.setRefuseRequest(data.getCount());
 			}else if("10004".equals(data.getStatus())) {
-				countStatusVo.setCountStatus4(data.getCount());
+				countStatusVo.setCancelRequest(data.getCount());
 			}else if("10005".equals(data.getStatus())) {
-				countStatusVo.setCountStatus5(data.getCount());
+				countStatusVo.setWaitPaymentApproval(data.getCount());
 			}else if("10006".equals(data.getStatus())) {
-				countStatusVo.setCountStatus6(data.getCount());
+				countStatusVo.setPaymentApprovals(data.getCount());
 			}else if("10007".equals(data.getStatus())) {
-				countStatusVo.setCountStatus7(data.getCount());
+				countStatusVo.setChargeback(data.getCount());
 			}else if("10008".equals(data.getStatus())) {
-				countStatusVo.setCountStatus8(data.getCount());
+				countStatusVo.setPaymentfailed(data.getCount());
 			}else if("10009".equals(data.getStatus())) {
-				countStatusVo.setCountStatus9(data.getCount());
+				countStatusVo.setWaitUploadCertificate(data.getCount());
 			}else if("10010".equals(data.getStatus())) {
-				countStatusVo.setCountStatus10(data.getCount());
+				countStatusVo.setSucceed(data.getCount());
 			}else if("10011".equals(data.getStatus())) {
-				countStatusVo.setCountStatus11(data.getCount());
+				countStatusVo.setWaitSaveRequest(data.getCount());
 			}	
 			
 		}

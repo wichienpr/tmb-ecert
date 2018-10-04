@@ -42,4 +42,8 @@ public class ProjectConstant {
 		public static final String BATCH_AUDITLOG_FTPPWD = "auditlog.ftpserver.password";
 		public static final String BATCH_AUDITLOG_FILENAME = "auditlog.filename";
 	}
+	
+	public static class CHANNEL {
+		public static final String BATCH = "BATCH";
+	}
 }

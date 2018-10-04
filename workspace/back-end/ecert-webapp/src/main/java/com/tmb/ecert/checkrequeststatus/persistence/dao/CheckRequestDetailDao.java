@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.checkrequeststatus.controller.CheckRequestDetailController;
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -21,7 +22,8 @@ public class CheckRequestDetailDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private static Logger logger = LoggerFactory.getLogger(CheckRequestDetailController.class);
+	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
+	
 	private final String SQL_ECERT_REQUEST_FORM = " SELECT * FROM ECERT_REQUEST_FORM WHERE 1=1 ";
 	private final String SQL_ECERT_REQUEST_CERTIFICATE = " SELECT * FROM ECERT_REQUEST_CERTIFICATE WHERE 1=1 ";
 
