@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserDetail } from 'app/user.model';
 import { PAGE_AUTH, ROLES } from 'app/baiwa/common/constants';
+declare var $;
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,16 @@ export class CommonService {
       return user.roles.indexOf(roles) >= 0;
     }
     return false;
+  }
+
+  blockui(){
+    $.blockUI({
+      message: null
+    }); 
+  }
+
+  unblockui(){
+    $.unblockUI()
   }
 
 }
