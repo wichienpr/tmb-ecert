@@ -32,7 +32,6 @@ public class RequestorFormController {
 		return generateKey.getNextKey();
 	}
 	
-	
 	@PostMapping("/save")
 	@ResponseBody
 	public CommonMessage<String> save(@ModelAttribute Nrq02000FormVo form) {
