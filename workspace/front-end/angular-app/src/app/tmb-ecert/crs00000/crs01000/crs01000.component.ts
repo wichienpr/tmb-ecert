@@ -158,22 +158,22 @@ export class Crs01000Component implements OnInit {
   searchData(): void {
     console.log(this.form.controls['reqDate'].value);
     console.log("searchData");
-    if(this.form.controls['reqDate'].value==""&& 
-      this.form.controls['toReqDate'].value=="" && 
-      this.form.controls['organizeId'].value==""&&
-      this.form.controls['companyName'].value==""&&
-      this.form.controls['tmbReqNo'].value=="")
-    {
+    if ((this.form.controls['reqDate'].value == "" ||  this.form.controls['reqDate'].value == null) &&
+        (this.form.controls['toReqDate'].value == "" || this.form.controls['toReqDate'].value == null)&&
+        (this.form.controls['organizeId'].value == "" || this.form.controls['organizeId'].value == null)&&
+        (this.form.controls['companyName'].value == "" || this.form.controls['companyName'].value == null) &&
+        (this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null)
+    ) {
       this.dataT = [];
       this.showData = true;
-    }else{
+    } else {
       this.showData = true;
       this.getData();
       this.dataT = [];
     }
 
-      
-   
+
+
   }
 
 
