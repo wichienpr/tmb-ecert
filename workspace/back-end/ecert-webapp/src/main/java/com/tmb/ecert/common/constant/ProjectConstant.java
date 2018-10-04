@@ -36,4 +36,8 @@ public class ProjectConstant {
 		
 		
 	}
+	
+	public static class CHANNEL {
+		public static final String BATCH = "BATCH";
+	}
 }
