@@ -8,13 +8,13 @@ public class EcertJobMonitoring {
 	private String jobTypeCode;
 	private Date startDate;
 	private Date stopDate;
-	private String endOfDate;
+	private Date endOfDate;
+	private Integer status;
 	private String errorDesc;
 	private Integer rerunNumber;
 	private String rerunById;
 	private String rerunByName;
 	private Date rerunDatetime;
-	
 	public Long getJobMonitoringId() {
 		return jobMonitoringId;
 	}
@@ -39,11 +39,17 @@ public class EcertJobMonitoring {
 	public void setStopDate(Date stopDate) {
 		this.stopDate = stopDate;
 	}
-	public String getEndOfDate() {
+	public Date getEndOfDate() {
 		return endOfDate;
 	}
-	public void setEndOfDate(String endOfDate) {
+	public void setEndOfDate(Date endOfDate) {
 		this.endOfDate = endOfDate;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	public String getErrorDesc() {
 		return errorDesc;
