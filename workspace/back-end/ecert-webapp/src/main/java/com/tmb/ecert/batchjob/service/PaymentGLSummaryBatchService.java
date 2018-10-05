@@ -51,7 +51,6 @@ public class PaymentGLSummaryBatchService {
 	private final String CONST_PIPE = "|";
 	private final String CONST_DASH = "-";
 	private final String CONST_COMMA = ",";
-	private final String CONST_SPACE = " ";
 	
 	public void runBatchJob() {
 		Date runDate = new Date();
