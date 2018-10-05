@@ -38,6 +38,7 @@ public class ProjectConstant {
 		public static final String BATCH_AUDITLOG_ACTIONCODE = "auditlog.actioncode";
 		public static final String BATCH_AUDITLOG_LOCALPATH = "auditlog.local.path";
 		public static final String BATCH_AUDITLOG_FTPPATH = "auditlog.ftpserver.path";
+		public static final String BATCH_AUDITLOG_FTPHOST = "auditlog.ftpserver.host";
 		public static final String BATCH_AUDITLOG_FTPUSERNAME = "auditlog.ftpserver.username";
 		public static final String BATCH_AUDITLOG_FTPPWD = "auditlog.ftpserver.password";
 		public static final String BATCH_AUDITLOG_FILENAME = "auditlog.filename";

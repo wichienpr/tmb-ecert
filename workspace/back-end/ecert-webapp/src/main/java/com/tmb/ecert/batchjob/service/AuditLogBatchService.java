@@ -30,6 +30,8 @@ import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.domain.SftpFileVo;
+import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.utils.SftpUtils;
 
 @Service
 @ConditionalOnProperty(name="job.auditlog.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -45,22 +47,32 @@ public class AuditLogBatchService {
 		log.info("AuditLogBatchService is starting process...");	
 		String localPath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_LOCALPATH);
 		String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FILENAME);
+		String ftpPath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPPATH);
+		String ftpHost = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPHOST);
+		String ftpUsername = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPUSERNAME);
+		String ftpPassword = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPPWD);
 
 		try {
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
 			if(auditLogs!=null && auditLogs.size()>0){
 				
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
-				String fileNameFull = localPath + File.separator + fileName.replace("{fileNo}", df.format(new Date()));							
+				fileName = fileName.replace("{0}", df.format(new Date()));
+				String fileNameFull = localPath + File.separator + fileName;							
 
 				// Step 1. Write File include file ISA format
 				boolean result = writeFileWithEncoding(auditLogs,fileNameFull,"UTF8");
 				
 				// Step 2. SFTP File and save log fail or success !!
 				if(result){
-					
+					List<SftpFileVo> files = new ArrayList<>();
+					files.add(new SftpFileVo(new File(fileNameFull), ftpPath, fileName));
+					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
+				    boolean isSuccess = SftpUtils.putFile(sftpVo);
+					if(!isSuccess){
+						log.error("AuditLogBatchService FTP Error: {} ",sftpVo.getErrorMessage());
+					}
 				}
-				
 			}
 			
 		} catch (Exception ex) {
