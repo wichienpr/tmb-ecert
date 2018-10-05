@@ -7,7 +7,7 @@ public class Rep01000FormVo {
 	public String organizeId;
 	public String companyName;
 	public String requestTypeCode;
-
+	public String paidtypeCode;
 
 	public String getDateForm() {
 		return dateForm;
@@ -47,6 +47,14 @@ public class Rep01000FormVo {
 
 	public void setRequestTypeCode(String requestTypeCode) {
 		this.requestTypeCode = requestTypeCode;
+	}
+
+	public String getPaidtypeCode() {
+		return paidtypeCode;
+	}
+
+	public void setPaidtypeCode(String paidtypeCode) {
+		this.paidtypeCode = paidtypeCode;
 	}
 
 }

@@ -8,13 +8,15 @@ public class Rep03000Vo {
 	public Long id;
 	public String receiptNo;
 	public String paymentDate;
-	public String customerName;
+	public String companyName;
 	public String organizeId;
 	public String address;
 	public String branch;
-	public BigDecimal amount;
+	public BigDecimal amountTmbVat;
 	public BigDecimal amountVat;
-	public BigDecimal amountTotal;
+	public BigDecimal amountTmb;
+
+	private String customerName;
 
 	public Long getId() {
 		return id;
@@ -23,8 +25,6 @@ public class Rep03000Vo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
 
 	public String getReceiptNo() {
 		return receiptNo;
@@ -42,12 +42,12 @@ public class Rep03000Vo {
 		this.paymentDate = paymentDate;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getOrganizeId() {
@@ -74,12 +74,12 @@ public class Rep03000Vo {
 		this.branch = branch;
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
+	public BigDecimal getAmountTmbVat() {
+		return amountTmbVat;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+	public void setAmountTmbVat(BigDecimal amountTmbVat) {
+		this.amountTmbVat = amountTmbVat;
 	}
 
 	public BigDecimal getAmountVat() {
@@ -90,12 +90,20 @@ public class Rep03000Vo {
 		this.amountVat = amountVat;
 	}
 
-	public BigDecimal getAmountTotal() {
-		return amountTotal;
+	public BigDecimal getAmountTmb() {
+		return amountTmb;
 	}
 
-	public void setAmountTotal(BigDecimal amountTotal) {
-		this.amountTotal = amountTotal;
+	public void setAmountTmb(BigDecimal amountTmb) {
+		this.amountTmb = amountTmb;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 }

@@ -5,22 +5,36 @@ import java.math.BigInteger;
 
 public class Rep02000Vo {
 
-	public String custsegmentDesc;
-	public String custsegmentCode;
-	public int custsegmentCount;
+	private Long id;
+	private String custsegmentDesc;
+	private String custsegmentCode;
+	private int custsegmentCount;
 
-	public int certificate;
-	public int copyGuarantee;
+	private int certificate;
+	private int copyGuarantee;
 
-	public BigDecimal amountDbd;
-	public BigDecimal amountTmb;
-	public BigDecimal totalAmount;
+	private BigDecimal amountDbd;
+	private BigDecimal amountTmb;
+	private BigDecimal totalAmount;
 
-	public String department;
-	public int success;
-	public int fail;
+	private int paymentTypeCountDT;
+	private int paymentTypeCountDNoT;
+	private int paymentTypeCountDAll;
+	private int paymentTypeCountECert;
+
+	private String department;
+	private int success;
+	private int fail;
 
 	public String remark;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getCustsegmentDesc() {
 		return custsegmentDesc;
@@ -84,6 +98,38 @@ public class Rep02000Vo {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+	public int getPaymentTypeCountDT() {
+		return paymentTypeCountDT;
+	}
+
+	public void setPaymentTypeCountDT(int paymentTypeCountDT) {
+		this.paymentTypeCountDT = paymentTypeCountDT;
+	}
+
+	public int getPaymentTypeCountDNoT() {
+		return paymentTypeCountDNoT;
+	}
+
+	public void setPaymentTypeCountDNoT(int paymentTypeCountDNoT) {
+		this.paymentTypeCountDNoT = paymentTypeCountDNoT;
+	}
+
+	public int getPaymentTypeCountDAll() {
+		return paymentTypeCountDAll;
+	}
+
+	public void setPaymentTypeCountDAll(int paymentTypeCountDAll) {
+		this.paymentTypeCountDAll = paymentTypeCountDAll;
+	}
+
+	public int getPaymentTypeCountECert() {
+		return paymentTypeCountECert;
+	}
+
+	public void setPaymentTypeCountECert(int paymentTypeCountECert) {
+		this.paymentTypeCountECert = paymentTypeCountECert;
 	}
 
 	public String getDepartment() {

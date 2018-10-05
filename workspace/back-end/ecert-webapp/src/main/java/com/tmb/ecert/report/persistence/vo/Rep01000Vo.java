@@ -12,22 +12,26 @@ public class Rep01000Vo {
 	public String companyName;
 	public String custsegmentCode;
 	public String custsegmentDesc;
+
 	public String requestTypeCode;
 	public String requestTypeDesc;
+	public String requestTypeExcel;
+
 	public String certypeCode;
 	public String certypeDesc;
 	public String accountNo;
 	public BigDecimal amountDbd;
 	public BigDecimal amountTmb;
 	public BigDecimal amount;
-	public BigDecimal totalAmount;
+	public BigDecimal totalAmountVat;
+	public String paidtypeCode;
+	public String paidtypeDesc;
 	public String makerById;
 	public String makerByName;
 	public String checkerById;
 	public String checkerByName;
 	public String status;
 	public String remark;
-
 
 	public Long getId() {
 		return id;
@@ -101,6 +105,14 @@ public class Rep01000Vo {
 		this.requestTypeDesc = requestTypeDesc;
 	}
 
+	public String getRequestTypeExcel() {
+		return requestTypeExcel;
+	}
+
+	public void setRequestTypeExcel(String requestTypeExcel) {
+		this.requestTypeExcel = requestTypeExcel;
+	}
+
 	public String getCertypeCode() {
 		return certypeCode;
 	}
@@ -149,12 +161,28 @@ public class Rep01000Vo {
 		this.amount = amount;
 	}
 
-	public BigDecimal getTotalAmount() {
-		return totalAmount;
+	public BigDecimal getTotalAmountVat() {
+		return totalAmountVat;
 	}
 
-	public void setTotalAmount(BigDecimal totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setTotalAmountVat(BigDecimal totalAmountVat) {
+		this.totalAmountVat = totalAmountVat;
+	}
+
+	public String getPaidtypeCode() {
+		return paidtypeCode;
+	}
+
+	public void setPaidtypeCode(String paidtypeCode) {
+		this.paidtypeCode = paidtypeCode;
+	}
+
+	public String getPaidtypeDesc() {
+		return paidtypeDesc;
+	}
+
+	public void setPaidtypeDesc(String paidtypeDesc) {
+		this.paidtypeDesc = paidtypeDesc;
 	}
 
 	public String getMakerById() {

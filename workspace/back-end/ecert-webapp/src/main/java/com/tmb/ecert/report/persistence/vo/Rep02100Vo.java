@@ -13,7 +13,8 @@ public class Rep02100Vo {
 	public String ref1;
 	public String ref2;
 	public BigDecimal amount;
-	public String requestTypeDesc;
+
+	public String certypeDesc;
 	public String organizeId;
 	public String companyName;
 	public String status;
@@ -75,12 +76,12 @@ public class Rep02100Vo {
 		this.amount = amount;
 	}
 
-	public String getRequestTypeDesc() {
-		return requestTypeDesc;
+	public String getCertypeDesc() {
+		return certypeDesc;
 	}
 
-	public void setRequestTypeDesc(String requestTypeDesc) {
-		this.requestTypeDesc = requestTypeDesc;
+	public void setCertypeDesc(String certypeDesc) {
+		this.certypeDesc = certypeDesc;
 	}
 
 	public String getOrganizeId() {
