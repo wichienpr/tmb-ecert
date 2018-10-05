@@ -9,7 +9,7 @@ public class EcertJobMonitoring {
 	private Date startDate;
 	private Date stopDate;
 	private Date endOfDate;
-	private Integer status;
+	private String status;
 	private String errorDesc;
 	private Integer rerunNumber;
 	private String rerunById;
@@ -45,10 +45,10 @@ public class EcertJobMonitoring {
 	public void setEndOfDate(Date endOfDate) {
 		this.endOfDate = endOfDate;
 	}
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public String getErrorDesc() {
