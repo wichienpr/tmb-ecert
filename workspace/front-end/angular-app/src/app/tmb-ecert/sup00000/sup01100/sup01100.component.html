@@ -9,7 +9,8 @@
                 <div class="two wide field ">
                     <label>Role Name </label>
                 </div>
-                <div class="five wide field" [ngClass]="{'error':(roleName.invalid && (roleName.dirty || roleName.touched)) || (roleName.invalid && submited) }">
+                <div class="five wide field" [ngClass]="{'error':(roleName.invalid && (roleName.dirty || roleName.touched)) || (roleName.invalid && submited),
+                'disabled' :(roleId) }">
                     <input type="text" formControlName="roleName" required>
 
                 </div>

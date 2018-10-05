@@ -25,6 +25,10 @@ export class sup01100Service {
             },
             {
                 status: 0,
+                functionCode: PAGE_AUTH.P0000300
+            },
+            {
+                status: 0,
                 functionCode: PAGE_AUTH.P0000301
             },
             {

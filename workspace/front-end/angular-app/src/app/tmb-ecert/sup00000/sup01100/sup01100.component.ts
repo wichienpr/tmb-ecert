@@ -20,7 +20,9 @@ export class sup01100Component implements OnInit {
   roleId: Number;
   submited: boolean;
 
+
   form: FormGroup;
+  responseObj: any;
   // roleName = new FormControl('');
 
   constructor(private router: Router, private route: ActivatedRoute, private service: sup01100Service, private modal: ModalService) {
@@ -144,7 +146,11 @@ export class sup01100Component implements OnInit {
         rolename: "UI-00008 - รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly",
         status: 0,
         fuctioncode: PAGE_AUTH.P0000800,
-        chliddata: []
+        chliddata: [{
+          rolename: "Export to Excel",
+          status: 0,
+          fuctioncode: PAGE_AUTH.P0000801
+        }]
       }
       ,
       {
@@ -166,7 +172,7 @@ export class sup01100Component implements OnInit {
         chliddata: [{
           rolename: "Rerun",
           status: 0,
-          fuctioncode: PAGE_AUTH.P0000901,
+          fuctioncode: PAGE_AUTH.P0001101,
 
         }]
       }
@@ -235,6 +241,11 @@ export class sup01100Component implements OnInit {
       }
     ];
 
+    this.responseObj = {
+      data: "",
+      message: ""
+    }
+
     this.submited = false;
 
   }
@@ -270,7 +281,12 @@ export class sup01100Component implements OnInit {
     if (this.form.valid) {
       this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
         console.log("save success" + res);
-        this.modal.alert({ msg: "ทำรายการสำเร็จ" });
+        this.responseObj = res;
+        if (this.responseObj.message == null) {
+          this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+        } else {
+          this.modal.alert({ msg: this.responseObj.message });
+        }
       }, error => {
         console.log("error", error)
       }, () => {
@@ -307,14 +323,30 @@ export class sup01100Component implements OnInit {
 
   setRolePermission(data) {
     let index = 0;
-    this.rolepermisson.forEach(element => {
-      element.status = data[index].status;
-      index++;
-      element.chliddata.forEach(childs => {
-        childs.status = data[index].status;
+    console.log("swift toggle ",data);
+    if(data.length == 1){
+      this.rolepermisson.forEach(element => {
+        element.status = 0;
         index++;
+        element.chliddata.forEach(childs => {
+          childs.status = 0;
+          index++;
+        });
       });
-    });
+    }else{
+      this.rolepermisson.forEach(element => {
+        element.status = data[index].status;
+        console.log("item  key ",data[index].functionCode,index++);
+        //index++;
+        element.chliddata.forEach(childs => {
+          childs.status = data[index].status;
+          console.log("child  key ",data[index].functionCode,"",index++);
+          //index++;
+        });
+      });
+      
+    }
+
 
     // this.rolepermisson.forEach(element => {
     //   console.log(element.fuctioncode, " status ", element.status)

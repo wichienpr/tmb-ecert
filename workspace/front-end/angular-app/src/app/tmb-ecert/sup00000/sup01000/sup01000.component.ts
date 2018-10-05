@@ -104,5 +104,8 @@ export class Sup01000Component implements OnInit {
       console.log("export error");
     });
   }
+  clickExportTemplate(){
+    
+  }
 
 }
