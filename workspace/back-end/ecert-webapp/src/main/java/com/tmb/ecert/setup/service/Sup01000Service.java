@@ -29,14 +29,14 @@ import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 import com.tmb.ecert.setup.dao.UserRoleDao;
-import com.tmb.ecert.setup.vo.Sup01010FormVo;
-import com.tmb.ecert.setup.vo.Sup01010Vo;
+import com.tmb.ecert.setup.vo.Sup01100FormVo;
+import com.tmb.ecert.setup.vo.Sup01100Vo;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @Service
-public class UserRoleService {
+public class Sup01000Service {
 
 	@Autowired
 	private UserRoleDao userRoleDao;
@@ -46,14 +46,14 @@ public class UserRoleService {
 
 	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
 
-	public CommonMessage<String> saveUserRole(Sup01010FormVo form) {
+	public CommonMessage<String> saveUserRole(Sup01100FormVo form) {
 		CommonMessage<String> message = new CommonMessage<>();
 		Long idRole = 0L;
 
 		try {
 			UserDetails user = UserLoginUtils.getCurrentUserLogin();
 			String fullName = user.getFirstName() + " " + user.getLastName();
-			List<Sup01010Vo> permissionList = new ArrayList<>();
+			List<Sup01100Vo> permissionList = new ArrayList<>();
 			if (form.getRoleId() == null || form.getRoleId() == 0) {
 				idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
 			} else {
@@ -62,7 +62,7 @@ public class UserRoleService {
 				idRole = form.getRoleId();
 			}
 			for (RoleVo roleVo : form.getRolePermission()) {
-				Sup01010Vo vo = new Sup01010Vo();
+				Sup01100Vo vo = new Sup01100Vo();
 				vo.setRoleId(idRole);
 				vo.setFunctionCode(roleVo.getFunctionCode());
 				vo.setStatus(roleVo.getStatus());
@@ -79,19 +79,19 @@ public class UserRoleService {
 		return message;
 	}
 
-	public List<RoleVo> getRole(Sup01010FormVo form) {
+	public List<RoleVo> getRole(Sup01100FormVo form) {
 		return userRoleDao.getRole(form);
 	}
 
-	public List<Sup01010Vo> getRolePermissionByRoleID(Long roleID) {
+	public List<Sup01100Vo> getRolePermissionByRoleID(Long roleID) {
 
-		List<Sup01010Vo> permissionRole = userRoleDao.getListPermissionByRoleID(roleID);
+		List<Sup01100Vo> permissionRole = userRoleDao.getListPermissionByRoleID(roleID);
 //		List<Sup01020Vo> listPermission  = generateCostanListPermission(permissionRole);
 		return permissionRole;
 
 	}
 
-	public void exportFile(Sup01010FormVo form, HttpServletResponse response) throws IOException {
+	public void exportFile(Sup01100FormVo form, HttpServletResponse response) throws IOException {
 
 		List<RoleVo> listRole = new ArrayList<RoleVo>();
 

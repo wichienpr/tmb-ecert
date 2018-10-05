@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tmb.ecert.common.domain.ParameterConfig;
 import com.tmb.ecert.common.domain.RoleVo;
-import com.tmb.ecert.setup.service.ParameterConfigurationService;
-import com.tmb.ecert.setup.vo.Sup01010FormVo;
+import com.tmb.ecert.setup.service.Sup02000Service;
+import com.tmb.ecert.setup.vo.Sup01100FormVo;
 
 @RequestMapping("api/setup/sup02000")
 @RestController
-public class ParameterConfigurationContoller {
+public class Sup02000Contoller {
 	
 	@Autowired
-	private ParameterConfigurationService service;
+	private Sup02000Service service;
 	
 	@GetMapping("/getParameter")
 	@ResponseBody
