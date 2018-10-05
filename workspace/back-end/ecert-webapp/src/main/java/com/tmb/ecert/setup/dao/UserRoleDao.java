@@ -25,8 +25,8 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RoleVo;
 import com.tmb.ecert.report.persistence.vo.Rep02100Vo;
 import com.tmb.ecert.requestorform.service.RequestorFormService;
-import com.tmb.ecert.setup.vo.Sup01010FormVo;
-import com.tmb.ecert.setup.vo.Sup01010Vo;
+import com.tmb.ecert.setup.vo.Sup01100FormVo;
+import com.tmb.ecert.setup.vo.Sup01100Vo;
 
 @Repository
 public class UserRoleDao {
@@ -41,7 +41,7 @@ public class UserRoleDao {
 	
 	
 	
-	public Long createUserRole( Sup01010FormVo form,String username , String userID) {
+	public Long createUserRole( Sup01100FormVo form,String username , String userID) {
 //		jdbcTemplate.batchUpdate(sql, batchArgs)
 		KeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
@@ -61,7 +61,7 @@ public class UserRoleDao {
 		return newKey;
 	}
 	
-	public List<RoleVo> getRole(Sup01010FormVo form){
+	public List<RoleVo> getRole(Sup01100FormVo form){
 		StringBuilder sql = new StringBuilder("");
 		List<Object> params = new ArrayList<>();
 		
@@ -97,7 +97,7 @@ public class UserRoleDao {
 		
 	};
 	
-	public void createRolePermission(final List<Sup01010Vo> permissionList ,String username , String userID) {
+	public void createRolePermission(final List<Sup01100Vo> permissionList ,String username , String userID) {
 		StringBuilder sql = new StringBuilder(""); 
 		sql.append("  INSERT INTO ECERT_ROLE_PERMISSION ( ROLE_ID , FUNCTION_CODE , STATUS ,CREATED_BY_ID, CREATED_BY_NAME ,CREATED_DATETIME )");
 		sql.append(" VALUES ( ?, ?, ?, ?, ?,  GETDATE() )  ");
@@ -105,7 +105,7 @@ public class UserRoleDao {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				Sup01010Vo vo = permissionList.get(i);
+				Sup01100Vo vo = permissionList.get(i);
 				ps.setLong(1, vo.getRoleId());
 				ps.setString(2, vo.getFunctionCode());
 				ps.setInt(3, vo.getStatus());
@@ -120,11 +120,11 @@ public class UserRoleDao {
 		});
 	}
 	
-	public List<Sup01010Vo> getListPermissionByRoleID (Long roleID){
+	public List<Sup01100Vo> getListPermissionByRoleID (Long roleID){
 		StringBuilder sql = new StringBuilder("");
 		List<Object> params = new ArrayList<>();
 		
-		List<Sup01010Vo> list = new ArrayList<>();
+		List<Sup01100Vo> list = new ArrayList<>();
 		sql.append(" SELECT a.ROLE_PERMISSION_ID , a.FUNCTION_CODE, a.STATUS  "
 				+ " FROM ECERT_ROLE_PERMISSION a RIGHT JOIN  ECERT_ROLE b ON  a.ROLE_ID = b.ROLE_ID WHERE b.ROLE_ID = ? ");
 		params.add(roleID);
@@ -133,11 +133,11 @@ public class UserRoleDao {
 		return list;
 	}
 	
-	private RowMapper<Sup01010Vo> sup01010RowMapper = new RowMapper<Sup01010Vo>() {
+	private RowMapper<Sup01100Vo> sup01010RowMapper = new RowMapper<Sup01100Vo>() {
 
 		@Override
-		public Sup01010Vo mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Sup01010Vo vo = new Sup01010Vo();
+		public Sup01100Vo mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Sup01100Vo vo = new Sup01100Vo();
 			vo.setRolePermissionId(rs.getLong("ROLE_PERMISSION_ID"));
 			vo.setFunctionCode(rs.getString("FUNCTION_CODE"));
 			vo.setStatus(rs.getInt("STATUS"));
@@ -157,7 +157,7 @@ public class UserRoleDao {
 		return row;
 	}
 	
-	public void updateRolePermissByRoleID(Sup01010FormVo form , String username , String userID ) {
+	public void updateRolePermissByRoleID(Sup01100FormVo form , String username , String userID ) {
 		StringBuilder sql = new StringBuilder("");
 		List<Object> params = new ArrayList<>();
 		Long roleId = form.getRoleId();

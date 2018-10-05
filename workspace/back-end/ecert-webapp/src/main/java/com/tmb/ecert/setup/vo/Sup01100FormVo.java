@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.tmb.ecert.common.domain.RoleVo;
 
-public class Sup01010FormVo {
+public class Sup01100FormVo {
 	private Long roleId;
 	private String roleName;
 	private int status;

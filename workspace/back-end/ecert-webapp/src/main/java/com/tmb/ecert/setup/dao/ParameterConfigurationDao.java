@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.ParameterConfig;
 import com.tmb.ecert.common.domain.RoleVo;
-import com.tmb.ecert.setup.vo.Sup01010FormVo;
+import com.tmb.ecert.setup.vo.Sup01100FormVo;
 
 @Repository
 public class ParameterConfigurationDao {

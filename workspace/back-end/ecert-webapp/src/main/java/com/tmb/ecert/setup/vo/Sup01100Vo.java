@@ -1,6 +1,6 @@
 package com.tmb.ecert.setup.vo;
 
-public class Sup01010Vo {
+public class Sup01100Vo {
 	private Long rolePermissionId;
 	private Long roleId;
 	private String functionCode;

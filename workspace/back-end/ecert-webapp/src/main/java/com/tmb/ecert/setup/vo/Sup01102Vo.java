@@ -1,12 +1,9 @@
 package com.tmb.ecert.setup.vo;
 
-import java.util.List;
-
-public class Sup01020Vo {
+public class Sup01102Vo {
 	private String roleName ;
 	private int status;
 	private String fuctioncode;
-	private List<Sup01021Vo> chliddata;
 	
 	public String getRoleName() {
 		return roleName;
@@ -26,12 +23,7 @@ public class Sup01020Vo {
 	public void setFuctioncode(String fuctioncode) {
 		this.fuctioncode = fuctioncode;
 	}
-	public List<Sup01021Vo> getChliddata() {
-		return chliddata;
-	}
-	public void setChliddata(List<Sup01021Vo> chliddata) {
-		this.chliddata = chliddata;
-	}
 	
 	
+
 }
