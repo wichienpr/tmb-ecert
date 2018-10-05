@@ -61,47 +61,39 @@ public class PaymentGLSummaryBatchService {
 		
 		log.info(" PaymentGLSummaryBatch find process ==> {}", requestGlProcessList.size());
 		
+		String errorDesc = "";
+		Date requestDate = runDate;
 		try {
-			if (!requestGlProcessList.isEmpty()) {
-				String errorDesc = "";
-				Date requestDate = requestGlProcessList.get(0).getRequestDate();
-				
-				try {
-					List<String> contents = this.createContentFile(requestGlProcessList);
-					contents.add(this.createTrailer(requestGlProcessList));
-					
-					File file = this.writeFile(contents, StandardCharsets.UTF_8.name());
-					String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
-					String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_IP);
-					String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
-					String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PASSWORD);
-					
-					String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, runDate);
-					List<SftpFileVo> files = new ArrayList<>();
-					files.add(new SftpFileVo(file, path, fileName));
-					SftpVo sftpVo = new SftpVo(files, host, username, password);
-					boolean isSuccess = SftpUtils.putFile(sftpVo);
-					
-					if (!isSuccess) {
-						errorDesc = sftpVo.getErrorMessage();
-						log.error("error PaymentGLSummaryBatch sftp file : {} ", errorDesc);
-					} 
-				} catch (Exception e) {
-					errorDesc = e.getMessage();
-				} finally {
-					if (StringUtils.isBlank(errorDesc)) {
-						this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.SUCCESS, "");
-					} else {
-						this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.FAILED, errorDesc);
-						this.saveEcertJobGLFailed(requestDate);
-					}
-				}
-			}
+			List<String> contents = this.createContentFile(requestGlProcessList);
+			contents.add(this.createTrailer(requestGlProcessList));
 			
+			File file = this.writeFile(contents, StandardCharsets.UTF_8.name());
+			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
+			String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_IP);
+			String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
+			String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PASSWORD);
 			
+			String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, runDate);
+			List<SftpFileVo> files = new ArrayList<>();
+			files.add(new SftpFileVo(file, path, fileName));
+			SftpVo sftpVo = new SftpVo(files, host, username, password);
+			boolean isSuccess = SftpUtils.putFile(sftpVo);
+			
+			if (!isSuccess) {
+				errorDesc = sftpVo.getErrorMessage();
+				log.error("error PaymentGLSummaryBatch sftp file : {} ", errorDesc);
+			} 
 		} catch (Exception e) {
+			errorDesc = e.getMessage();
 			log.error("exception in PaymentGLSummaryBatch : ", e);
 		} finally {
+			if (StringUtils.isBlank(errorDesc)) {
+				this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.SUCCESS, "");
+			} else {
+				this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.FAILED, errorDesc);
+				this.saveEcertJobGLFailed(requestDate);
+			}
+			
 			long end = System.currentTimeMillis();
 			log.info("PaymentGLSummaryBatch is working Time : {} ms", (end - start));
 		}
@@ -423,16 +415,20 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String createTrailer(List<EcertRequestForm> requestGlProcessList) {
-		String totalCount = StringUtils.rightPad(String.valueOf(requestGlProcessList.size()), 10, CONST_SPACE);
+		List<String> trailer = new ArrayList<>();
+		String totalCount = String.valueOf(requestGlProcessList.size());
 		String indicator = "T"; 
 		BigDecimal calSumTransaction = new BigDecimal(0.0);
 		for (EcertRequestForm request : requestGlProcessList) {
 			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd()));
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
-		String sumTransaction = StringUtils.rightPad(String.format("%.2f", calSumTransaction.doubleValue()), 10, CONST_SPACE);
-		
-		return String.format("%s%s%s", indicator,sumTransaction, totalCount);
+		String sumTransaction = String.format("%.2f", calSumTransaction.doubleValue());
+
+		trailer.add(indicator);
+		trailer.add(totalCount);
+		trailer.add(sumTransaction);
+		return StringUtils.join(trailer, CONST_PIPE);
 	}
 	
 	private String createFileName(Integer rerunNumber, Date runDate) {
