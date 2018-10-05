@@ -75,14 +75,14 @@
 
                 </div>
                 <div class="five wide field ">
-                    นาย ประกอบการ ร่ำรวย
+                    <span>{{customerNameHead}}</span>
                 </div>
-                <div class="three wide field ">
-                    <h5>เลขประจำตัวผู้เสียภาษีอากรชื่อผู้ประกอบการ
+                <div class="two wide field ">
+                    <h5>เลขประจำตัวผู้เสียภาษีอากร
                     </h5>
                 </div>
                 <div class="three wide field ">
-                    1234567843762
+                    <span>{{organizeIdHead}}</span>
                 </div>
             </div>
 
@@ -94,14 +94,14 @@
 
                 </div>
                 <div class="five wide field ">
-                    บริษัท ตั้งเจริญ
+                    <span>{{companyNameHead}}</span>
                 </div>
                 <div class="two wide field ">
                     <h5>สำนักงานใหญ่/สาขา
                     </h5>
                 </div>
                 <div class="three wide field ">
-                    -
+                    <span>{{branchHead}}</span>
                 </div>
             </div>
             <div class="inline fields">
@@ -112,7 +112,7 @@
 
                 </div>
                 <div class="seven wide field ">
-                    เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234
+                    <span>{{addressHead}}</span>
                 </div>
 
             </div>
@@ -142,31 +142,19 @@
                 </thead>
                 <tbody>
                     <tr class="text-center" *ngIf="dataT.length==0">
-                        <td colspan="18" style="text-align: center !important;">ไม่มีข้อมูล</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center">0</td>
-                        <td style="text-align: center">0120180000000001</td>
-                        <td style="text-align: center">01/01/2561</td>
-                        <td style="text-align: left">นาย ประกอบการ ร่ำรวย</td>
-                        <td style="text-align: center">1234567843762</td>
-                        <td>เลขที่ 1 ถนนเจริญพัฒนา ตำบลในเมือง อำเภอเมือง จังหวัดนนทบุรี 10234</td>
-                        <td>สำนักงานใหญ่</td>
-                        <td style="text-align: right">140.19</td>
-                        <td style="text-align: right">9.81</td>
-                        <td style="text-align: right">150.00</td>
-                    </tr>
+                        <td colspan="10" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                    </tr>	
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.receiptNo}}</td>
                         <td style="text-align: center !important;">{{data.paymentDate}}</td>
-                        <td style="text-align: center !important;">{{data.customerName}}</td>
+                        <td style="text-align: center !important;">{{data.companyName}}</td>
                         <td style="text-align: center !important;">{{data.organizeId}}</td>
                         <td style="text-align: center !important;">{{data.address}}</td>
                         <td style="text-align: center !important;">{{data.branch}}</td>
-                        <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.amountTmbVat | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">{{data.amountVat | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.amountTotal | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -22,6 +22,7 @@ export class Rep01000Service {
         corpNo: new FormControl('', Validators.required),               // เลขที่นิติบุคคล
         corpName: new FormControl('', Validators.required),             // ชื่อนิติบุคคล
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
+        paidTypeSelect: new FormControl('', Validators.required),       // ประเภทการชำระเงิน
        
     });
 
@@ -40,10 +41,21 @@ export class Rep01000Service {
                 values: [],
                 valueName: "code",
                 labelName: "name"
+            },
+            paidType: {
+                dropdownId: "paidtype",
+                dropdownName: "paidtype",
+                type: "search",
+                formGroup: this.form,
+                formControlName: "paidTypeSelect",
+                values: [],
+                valueName: "code",
+                labelName: "name"
             }
         };
         // Dropdowns
         this.dropdown.getReqType().subscribe((obj: Lov[]) => this.dropdownObj.reqType.values = obj);
+        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.paidType.values = obj);
     }
 
 

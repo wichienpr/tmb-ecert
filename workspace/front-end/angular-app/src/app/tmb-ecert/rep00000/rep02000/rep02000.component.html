@@ -61,6 +61,7 @@
                         <th colspan="2">ประเภทคำขอ : ราย</th>
                         <th colspan="2">จำนวนเงิน : บาท</th>
                         <th rowspan="2">จำนวนเงิน</th>
+                        <th colspan="4">ประเภทการชำระเงิน</th>
                         <th colspan="2">สถานะ : จำนวนราย</th>
                         <th rowspan="2" style="width: 220px">สาเหตุ</th>
                     </tr>
@@ -69,13 +70,17 @@
                         <th>รับรองสำเนา</th>
                         <th>DBD </th>
                         <th>TMB</th>
+                        <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD,TMB</th>
+                        <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD ยกเว้น TMB</th>
+                        <th>TMB ชำระค่าธรรมเนียม<br>DBD ทั้งหมด</th>
+                        <th>ไม่ได้ดำเนินการชำระเงิน<br>ผ่านระบบ E-Cert</th>
                         <th>Success </th>
                         <th>Fail</th>
                     </tr>
                 </thead>
                 <tbody> 
                     <tr class="text-center" *ngIf="dataT.length==0">
-                        <td colspan="10" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                        <td colspan="14" style="text-align: center !important;">ไม่มีข้อมูล</td>
                     </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
@@ -85,6 +90,10 @@
                         <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: center !important;">{{data.paymentTypeCountDT}}</td>
+                        <td style="text-align: center !important;">{{data.paymentTypeCountDNoT}}</td>
+                        <td style="text-align: center !important;">{{data.paymentTypeCountDAll}}</td>
+                        <td style="text-align: center !important;">{{data.paymentTypeCountECert}}</td>
                         <td style="text-align: center !important;">{{data.success}}</td>
                         <td style="text-align: center !important;">{{data.fail}}</td>
                         <td style="text-align: center">

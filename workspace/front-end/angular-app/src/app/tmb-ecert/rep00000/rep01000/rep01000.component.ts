@@ -22,6 +22,8 @@ export class Rep01000Component implements OnInit {
 
   dropdownObj: any;
   reqTypeChanged: Certificate[];
+  paidTypeChanged: Certificate[];
+
 
   calendar1: Calendar;
   calendar2: Calendar;
@@ -72,6 +74,10 @@ export class Rep01000Component implements OnInit {
     console.log("requestTypeCode : ",e);
       this.reqTypeChanged = e;
   }
+  paidTypeChange(e) {
+    console.log("requestTypeCode : ",e);
+      this.paidTypeChanged = e;
+  }
 
 
   getData=()=>{
@@ -84,7 +90,8 @@ export class Rep01000Component implements OnInit {
       dateTo: this.form.controls.dateTo.value,
       organizeId: this.form.controls.corpNo.value,
       companyName: this.form.controls.corpName.value,
-      requestTypeCode:this.reqTypeChanged
+      requestTypeCode:this.reqTypeChanged,
+      paidtypeCode:this.paidTypeChanged
       
     },async res => {
       const data = await res.json();
@@ -110,6 +117,7 @@ export class Rep01000Component implements OnInit {
     console.log("clearData");
     this.form.reset();
     $('#reqtype').dropdown('restore defaults');
+    $('#paidtype').dropdown('restore defaults');
     this.showData = false;
   }
 

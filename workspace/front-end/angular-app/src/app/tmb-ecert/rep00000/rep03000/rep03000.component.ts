@@ -21,6 +21,14 @@ const URL = {
 })
 export class Rep03000Component implements OnInit {
   showData: boolean = false; 
+
+  //Head Table
+  customerNameHead:String;
+  organizeIdHead:String;
+  companyNameHead:String;
+  branchHead:String;
+  addressHead:String;
+
   dataT: any[]= [];
   loading: boolean = false;
 
@@ -65,17 +73,25 @@ export class Rep03000Component implements OnInit {
     this.dataT=[];
     const URL = "/api/rep/rep03000/list";
     this.ajax.post(URL,{
-      dateVat: this.form.controls.dateVat.value,
+      paymentDate: this.form.controls.dateVat.value,
       organizeId: this.form.controls.organizeId.value,
       customerName: this.form.controls.customerName.value
     },async res => {
       const data = await res.json();
-      
+  
       setTimeout(() => {
         this.loading = false;
       },200);
 
-      data.forEach(element => {
+      console.log("Data : ",data);
+
+      this.customerNameHead=data.customerNameHead;
+      this.organizeIdHead=data.organizeIdHead;
+      this.companyNameHead=data.companyNameHead;
+      this.branchHead=data.branchHead;
+      this.addressHead=data.addressHead;
+      
+      data.rep03000VoList.forEach(element => {
         this.dataT.push(element);
       });
     console.log("getData True : Data length",this.dataT.length);
