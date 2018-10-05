@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -52,7 +52,6 @@ public class PaymentGLSummaryBatchService {
 	private final String CONST_DASH = "-";
 	private final String CONST_COMMA = ",";
 	private final String CONST_SPACE = " ";
-	private final String FORMAT_FILE = ".txt";
 	
 	public void runBatchJob() {
 		Date runDate = new Date();
@@ -68,15 +67,16 @@ public class PaymentGLSummaryBatchService {
 				Date requestDate = requestGlProcessList.get(0).getRequestDate();
 				
 				try {
-					File file = this.writeFile(this.createContentFile(requestGlProcessList), this.createTrailer(requestGlProcessList), StandardCharsets.UTF_8.name());
+					List<String> contents = this.createContentFile(requestGlProcessList);
+					contents.add(this.createTrailer(requestGlProcessList));
 					
+					File file = this.writeFile(contents, StandardCharsets.UTF_8.name());
 					String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
 					String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_IP);
 					String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
 					String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PASSWORD);
 					
 					String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, runDate);
-					
 					List<SftpFileVo> files = new ArrayList<>();
 					files.add(new SftpFileVo(file, path, fileName));
 					SftpVo sftpVo = new SftpVo(files, host, username, password);
@@ -89,7 +89,7 @@ public class PaymentGLSummaryBatchService {
 				} catch (Exception e) {
 					errorDesc = e.getMessage();
 				} finally {
-					if (StringUtils.isNotBlank(errorDesc)) {
+					if (StringUtils.isBlank(errorDesc)) {
 						this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.SUCCESS, "");
 					} else {
 						this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, JOBMONITORING.FAILED, errorDesc);
@@ -149,7 +149,7 @@ public class PaymentGLSummaryBatchService {
 	private String customerPayContent(EcertRequestForm request, String effrectiveDate) {
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR1), 0, 1));
-		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER), 0, 30));
+		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER1), 0, 30));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_SOURCECODE1), 0, 3));
 		tmp.add(this.replaceValue(effrectiveDate, 0, 8));
 		tmp.add(this.replaceValue(this.covertDate(request.getPayloadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
@@ -287,7 +287,7 @@ public class PaymentGLSummaryBatchService {
 	private String tmbPayContent(EcertRequestForm request, String effrectiveDate) {
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR2), 0, 1));
-		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER), 0, 30));
+		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER2), 0, 30));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_SOURCECODE2), 0, 3));
 		tmp.add(this.replaceValue(effrectiveDate, 0, 8));
 		tmp.add(this.replaceValue(this.covertDate(request.getPayloadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
@@ -430,7 +430,7 @@ public class PaymentGLSummaryBatchService {
 			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd()));
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
-		String sumTransaction = StringUtils.rightPad(String.format("%f.2", calSumTransaction.doubleValue()), 10, CONST_SPACE);
+		String sumTransaction = StringUtils.rightPad(String.format("%.2f", calSumTransaction.doubleValue()), 10, CONST_SPACE);
 		
 		return String.format("%s%s%s", indicator,sumTransaction, totalCount);
 	}
@@ -441,7 +441,7 @@ public class PaymentGLSummaryBatchService {
 		String typeData = ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_HEADER_TYPE_DATA);
 		String fileType = ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_HEADER_FILE_TYPE);
 		String version = StringUtils.leftPad(String.valueOf(rerunNumber), 3, "0");
-		return String.format("%s_%s_%s_%s%s", sourceSystemFrom, sourceSystemTo, typeData, this.covertDate(runDate, DATE_FORMAT_YYYYMMDD), version, fileType); 
+		return String.format("%s_%s_%s_%s_%s%s", sourceSystemFrom, sourceSystemTo, typeData, this.covertDate(runDate, DATE_FORMAT_YYYYMMDD), version, fileType); 
 	}
 	
 	private String covertDate(Date date, String format) {
@@ -486,7 +486,7 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String getAmountNoVat(BigDecimal amount) {
-		return String.format("%f.2", this.getDefaultAmount(amount));
+		return String.format("%.2f", this.getDefaultAmount(amount));
 	}
 	
 	private Double getDefaultAmount(BigDecimal amount) {
@@ -502,13 +502,13 @@ public class PaymentGLSummaryBatchService {
 		String vatValue = "";
 		if (amount != null && amount.doubleValue() > 0) {
 			Double value = amount.doubleValue() - this.getDefaultAmount(amount);
-			vatValue = String.format("%f.2", value);
+			vatValue = String.format("%.2f", value);
 		}
 		return vatValue;
 	}
 	
 	private String replaceValue(String value, int start, int length) {
-		String v = StringUtils.isNotBlank(value) ? StringUtils.replaceAll(value, CONST_PIPE, CONST_DASH) : "";
+		String v = StringUtils.isNotBlank(value) ? StringUtils.replace(value, CONST_PIPE, CONST_DASH) : "";
 		
 		if (v.length() > length) {
 			v = StringUtils.substring(v, start, length);
@@ -521,12 +521,13 @@ public class PaymentGLSummaryBatchService {
 		return StringUtils.join(certificateReqs, CONST_COMMA);
 	}
 	
-	private File writeFile(List<String> content, String endingContent, String encoding) throws Exception {
+	private File writeFile(List<String> content, String encoding) throws Exception {
 		OutputStreamWriter writer = null;
-		File file = File.createTempFile("tmp", FORMAT_FILE);
+		String fileType = ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_HEADER_FILE_TYPE);
+		File file = File.createTempFile("tmp", fileType);
 		try {
 			writer = new OutputStreamWriter(new FileOutputStream(file, true), encoding);
-			IOUtils.writeLines(content, endingContent, writer);
+			FileUtils.writeLines(file, content, false);
 		} catch (Exception e) {
 			log.error("exception write file : ", e);
 			throw e;

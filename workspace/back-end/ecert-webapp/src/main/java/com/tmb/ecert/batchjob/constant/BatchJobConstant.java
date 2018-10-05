@@ -14,7 +14,7 @@ public class BatchJobConstant {
 	
 	public static class PAYMENT_GL_SUMMARY {
 		public static final String BATCH_GL_INDICATOR1 = "batch.gl.indicator1";
-		public static final String BATCH_GL_LEDGER = "batch.gl.ledger";
+		public static final String BATCH_GL_LEDGER1 = "batch.gl.ledger1";
 		public static final String BATCH_GL_SOURCECODE1 = "batch.gl.sourcecode1";
 		public static final String BATCH_GL_EVENTDESC1 = "batch.gl.eventdesc1";
 		public static final String BATCH_GL_ENTITYCODE1 = "batch.gl.entitycode1";
@@ -32,6 +32,7 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_AMT_CURRENCY_CODE = "batch.gl.amt.currency.code";
 		
 		public static final String BATCH_GL_INDICATOR2 = "batch.gl.indicator2";
+		public static final String BATCH_GL_LEDGER2 = "batch.gl.ledger2";
 		public static final String BATCH_GL_SOURCECODE2 = "batch.gl.sourcecode2";
 		public static final String BATCH_GL_EVENTDESC2 = "batch.gl.eventdesc2";
 		public static final String BATCH_GL_ENTITYCODE2 = "batch.gl.entitycode2";

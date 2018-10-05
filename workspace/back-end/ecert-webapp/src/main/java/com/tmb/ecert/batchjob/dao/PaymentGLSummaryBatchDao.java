@@ -36,23 +36,23 @@ public class PaymentGLSummaryBatchDao {
 	private final String QUERY_REQ_GL_SUMMARY_PROCESS = " SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10010') AND CONVERT(date, REQUEST_DATE) = ? ";
 	
 	private final String QUERY_INSERT_ECERT_JOB_MONITORING = " INSERT INTO ECERT_JOB_MONITORING ( " +
-			" JOBTYPE_CODE  	 	" + 
-			" START_DATE  	 		" + 
-			" STOP_DATE  	 		" + 
-			" ENDOFDATE 		 	" + 
-			" STATUS  		 		" + 
-			" ERROR_DESC  	 		" + 
-			" RERUN_NUMBER 	 		" + 
-			" RERUN_BY_ID 	 		" + 
-			" RERUN_BY_NAME 	 	" + 
+			" JOBTYPE_CODE,  	 	" + 
+			" START_DATE,  	 		" + 
+			" STOP_DATE, 	 		" + 
+			" ENDOFDATE, 		 	" + 
+			" STATUS,  		 		" + 
+			" ERROR_DESC,  	 		" + 
+			" RERUN_NUMBER, 	 	" + 
+			" RERUN_BY_ID, 	 		" + 
+			" RERUN_BY_NAME, 	 	" + 
 			" RERUN_DATETIME ) 		" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 	
 	private final String QUERY_UPDATE_ECERT_JOB_MONITORING = " UPDATE ECERT_JOB_MONITORING " + 
 			" SET STOP_DATE = ?, STATUS = ? AND ERROR_DESC = ?, RERUN_ID = ?, RERUN_BY_NAME = ?, RERUN_DATETIME = ?" +
 			" WHERE JOBMONITORING_ID = ? ";
 	
-	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOB_GL_FAILE (PAYMENTDATE) VALUES (?) ";
+	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOBGL_FAILED (PAYMENTDATE) VALUES (?) ";
 	
 	private final String QUERY_OFFICE_CODE = " select OFFICE_CODE2 from ECERT_HR_OFFICECODE where OFFICE_CODE1 = ? ";
 
@@ -76,7 +76,7 @@ public class PaymentGLSummaryBatchDao {
 			vo.setOrganizeId(rs.getString("ORGANIZE_ID"));
 			vo.setCustomerName(rs.getString("CUSTOMER_NAME"));
 			vo.setCompanyName(rs.getString("COMPANY_NAME"));
-			vo.setBranch(rs.getString("BRANCE"));
+			vo.setBranch(rs.getString("BRANCH"));
 			vo.setCustSegmentCode(rs.getString("CUSTSEGMENT_CODE"));
 			vo.setOfficeCode(rs.getString("OFFICE_CODE"));
 			vo.setCaNumber(rs.getString("CA_NUMBER"));
