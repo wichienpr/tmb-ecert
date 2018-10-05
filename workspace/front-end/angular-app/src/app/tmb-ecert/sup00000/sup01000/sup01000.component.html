@@ -1,0 +1,117 @@
+<div class="ui grid">
+   <div class="sixteen wide column">
+      <h2 class="ui header">Role Management
+      </h2>
+
+      <form class="ui form segment" [formGroup]="userRoleForm">
+
+         <div class="inline fields">
+            <div class="four wide field">
+            </div>
+            <div class="two wide field">
+               <label>Role Name
+               </label>
+            </div>
+            <div class="five wide field ">
+               <div class="ui input">
+                  <input type="text" formControlName="roleName">
+               </div>
+            </div>
+         </div>
+
+         <div class="inline fields">
+            <div class="four wide field">
+            </div>
+            <div class="two wide field">
+               <label>ประเภทคำขอ</label>
+            </div>
+            <div class="five wide field ">
+               <select class="ui dropdown" formControlName="status">
+                  <option value="2">ทั้งหมด</option>
+                  <option value="0">Active</option>
+                  <option value="1">Inactive</option>
+               </select>
+            </div>
+         </div>
+         <br>
+
+         <div class="ui center aligned grid">
+            <button class="ui blue basic button" type="button" (click)="clickSerch()">
+               <i class="search icon"></i>
+               ค้นหา
+            </button>
+            <button class="ui grey  basic button" type="button" (click)="clickClear()">
+               <i class="trash alternate outline icon"></i>
+               ล้างข้อมูล
+            </button>
+            <button class="ui green  basic button" type="button">
+               <i class="download icon"></i>
+               Import Role
+            </button>
+            <button class="ui green  basic button" type="button" (click)="clickAddRole()">
+               <i class="plus icon"></i>
+               เพิ่ม Role
+            </button>
+            <br>
+         </div>
+         <br>
+      </form>
+   </div>
+
+   <div class="sixteen wide column" *ngIf="isShowResult">
+      <div class="ui top attached header segment">
+         <span>ผลการค้นหา</span>
+      </div>
+      <div class="ui attached segment">
+         <div style="overflow-x: auto;white-space: nowrap;">
+            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+               <thead>
+                  <tr>
+                     <th>No.</th>
+                     <th>Role Name</th>
+                     <th>Status</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr *ngIf="nodataResult">
+                     <td style="text-align: center" colspan="4">ไม่พบรายการ</td>
+                  </tr>
+
+                  <ng-template ngIf="!nodataResult">
+                     <tr *ngFor="let item of objRoleResult; let i = index">
+                        <td style="text-align: right">{{i+1}}</td>
+                        <td>{{item.roleName}}</td>
+                        <td>
+                           <Span *ngIf="item.status == 1 ">Inactive</Span>
+                           <Span *ngIf="item.status == 0 ">Active</Span>
+                        </td>
+                        <td style="text-align: center">
+                           <button class="ui blue basic button" (click)="clickEditRole(item)">แก้ไข
+                           </button>
+                        </td>
+                     </tr>
+                  </ng-template>
+
+
+               </tbody>
+            </table>
+
+         </div>
+         <br>
+         <br>
+
+         <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+               <button class="ui blue basic button" (click)="clickExportRole()">
+                  <i class="file excel outline icon"></i>Export to Role</button>
+            </div>
+         </div>
+         <br>
+
+      </div>
+   </div>
+
+
+</div>
+<br>

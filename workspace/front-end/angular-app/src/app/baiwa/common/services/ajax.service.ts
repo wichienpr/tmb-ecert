@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Headers, Http } from "@angular/http";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class AjaxService {
@@ -14,7 +15,7 @@ export class AjaxService {
   public static CONTEXT_PATH = "/ecert-webapp";
   public static isDebug = true;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private httpClient:HttpClient) { }
 
   private handleError(error: any): Promise<any> {
     console.error("An error occurred", error); // for demo purposes only
@@ -51,6 +52,13 @@ export class AjaxService {
       .toPromise()
       .then(success)
       .catch(errorFn);
+  }
+
+  Get(url:string ){
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.httpClient.get(AjaxService.CONTEXT_PATH + url,httpOptions);
   }
 
   delete(url: string, success: any, error?: any) {

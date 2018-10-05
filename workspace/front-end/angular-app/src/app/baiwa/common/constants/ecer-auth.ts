@@ -31,6 +31,7 @@ export enum PAGE_AUTH {
     "P0001303" = "0001303", //Import Role	
     "P0001304" = "0001304", //Export Role	
     "P0001400" = "0001400", //Parameter Configuration	
+    "P0001401" = "0001401", //บันทึก	
     "P0001500" = "0001500", //Email Configuration	
     "P0001501" = "0001501"  	// แก้ไข
 

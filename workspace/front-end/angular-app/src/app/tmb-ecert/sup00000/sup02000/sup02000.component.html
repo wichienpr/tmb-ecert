@@ -1,0 +1,50 @@
+<h2 class="ui header">
+  Parameter Configuration
+</h2>
+
+<div class="ui form segment ">
+  <div class="ui grid ">
+    <div class="row">
+      <div class="three wide column">&nbsp;</div>
+      <div class="ten wide column" formArrayName="aliases">
+        <table class="ui small celled table nowrap " id="table" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th>Property Name</th>
+              <th>Value</th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+              <tr *ngFor="let item of paramResult">
+                <td>{{item.propertyName}}</td>
+                <td>
+                  <!-- <input type="text"  [formControlName]="{{item.propertyName}}" style="width: 95%;">{{ item.propertyName}} -->
+                </td>
+              </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="three wide column">&nbsp;</div>
+    </div>
+  </div>
+
+
+
+  <br>
+  <br>
+  <div class="ui center aligned grid">
+    <button class="ui blue basic button" (click)="clickSave()">
+      <i class="download circle icon"></i>
+      บันทึก
+    </button> &nbsp;&nbsp;&nbsp;
+    <button class="ui grey basic button">
+      <i class="times circle outline icon"></i>
+      ยกเลิก
+    </button>
+  </div>
+  <br>
+
+</div>
