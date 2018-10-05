@@ -29,10 +29,13 @@ import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
 import com.tmb.ecert.common.utils.SftpUtils;
+import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
+import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 
 @Service
 @ConditionalOnProperty(name="job.auditlog.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -42,9 +45,15 @@ public class AuditLogBatchService {
 
 	@Autowired
 	private AuditLogDao auditLogDao;
+	
+	@Autowired
+	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
 
 	public void transferAuditLogByActionCode(String actionCode) {
+		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
+		jobMonitoring.setStartDate(new Date());
 		long start = System.currentTimeMillis();
+		boolean isSuccess = false;
 		log.info("AuditLogBatchService is starting process...");	
 		String localPath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_LOCALPATH);
 		String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FILENAME);
@@ -54,6 +63,11 @@ public class AuditLogBatchService {
 		String ftpPassword = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPPWD);
 
 		try {
+		
+			//Insert Job Monitoring table
+			jobMonitoring.setJobTypeCode(JOBMONITORING.AUDITLOG_TYPE);
+			jobMonitoring.setEndOfDate(new Date());
+			
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
 			if(auditLogs!=null && auditLogs.size()>0){
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
@@ -61,24 +75,30 @@ public class AuditLogBatchService {
 				String fileNameFull = localPath + File.separator + fileName;							
 
 				// Step 1. Write File include file ISA format
-				boolean result = writeFileWithEncoding(auditLogs,fileNameFull,"UTF8");
+				isSuccess = writeFileWithEncoding(auditLogs,fileNameFull,"UTF8");
 				
 				// Step 2. SFTP File and save log fail or success !!
-				if(result){
+				if(isSuccess){
 					List<SftpFileVo> files = new ArrayList<>();
 					files.add(new SftpFileVo(new File(fileNameFull), ftpPath, fileName));
 					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
-				    boolean isSuccess = SftpUtils.putFile(sftpVo);
+				    isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
 						log.error("AuditLogBatchService FTP Error: {} ",sftpVo.getErrorMessage());
+						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
 					}
 				}
 			}
 		} catch (Exception ex) {
 			log.error("AuditLogBatchService Error = ",ex);
+			jobMonitoring.setErrorDesc(ex.getMessage());
 		} finally {
 			long end = System.currentTimeMillis();
 			log.info("AuditLogBatchService is working Time(ms) = " + (end - start));
+			
+			jobMonitoring.setStopDate(new Date());
+			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
+			paymentGLSummaryBatchDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 	}
 	
@@ -108,7 +128,6 @@ public class AuditLogBatchService {
 		}finally {
 			try {
 				writer.close();
-				log.info("AuditLogBatchService export text file at "+fileName);
 			} catch (IOException e) {
 				result = false;
 				log.error("AuditLogBatchService error =  ",e);

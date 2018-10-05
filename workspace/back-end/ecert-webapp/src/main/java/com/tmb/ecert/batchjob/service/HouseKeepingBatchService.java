@@ -28,8 +28,11 @@ import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.utils.ArchiveFileUtil;
+import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 
 @Service
 @ConditionalOnProperty(name="job.housekeeping.archive.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -42,14 +45,19 @@ public class HouseKeepingBatchService {
 		
 	@Autowired
 	private ArchiveFileUtil archiveFileUtil;
+	
+	@Autowired
+	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
 
 	/**
 	 * 
 	 */
 	public void archiveAuditLog() {
+		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
+		jobMonitoring.setStartDate(new Date());
 		long start = System.currentTimeMillis();
 		log.info("HouseKeepingBatchService is starting process...");
-		boolean isLogFail = false;
+		boolean isSuccess = false;
 		String errorMesage = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.ENGLISH);
 		String pathFile = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
@@ -58,6 +66,11 @@ public class HouseKeepingBatchService {
 		int days =  Integer.parseInt(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_DAYS));
 		
 		try {
+		
+			//Insert Job Monitoring table
+			jobMonitoring.setJobTypeCode(JOBMONITORING.HOUSEKEEPING_TYPE);
+			jobMonitoring.setEndOfDate(new Date());
+			
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogWithDays(days);
 			if(auditLogs!=null && auditLogs.size()>0){
 				Date currentDate = new Date();
@@ -65,32 +78,29 @@ public class HouseKeepingBatchService {
 				//Archive Audit Log file 
 				String fileFullName = pathFile + File.separator + fileName.replace("$format", dateFormat.format(currentDate));
 				
-				boolean result = writeFileWithEncoding(auditLogs,fileFullName,"UTF8");
+				isSuccess = writeFileWithEncoding(auditLogs,fileFullName,"UTF8");
 				
-				if(result){
+				if(isSuccess){
 					
 					String tarFullName = pathFile + File.separator + tarFile.replace("$format", dateFormat.format(currentDate));
 					
 					//Archive Audit Log file to Tar file
-					result = archiveFileUtil.archiveFile(fileFullName, tarFullName);
+					isSuccess = archiveFileUtil.archiveFile(fileFullName, tarFullName);
 					
-					if(result){
-					
-						log.info("HouseKeepingBatchService archived file at = "+tarFullName);
-						
+					if(isSuccess){	
 						//Delete audit log
 						auditLogDao.deleteAuditlog(days);
-						
 					}else{
-						log.info("HouseKeepingBatchService archived file failed.");
+						log.error("HouseKeepingBatchService archived file failed.");
+						jobMonitoring.setErrorDesc("HouseKeepingBatchService archived file failed.");
 					}
 				}
 			}
 			
 		} catch (Exception ex) {
 			log.error("HouseKeepingBatchService Error = ",ex);
+			jobMonitoring.setErrorDesc(ex.getMessage());
 		} finally {
-			
 			// Remove old file
 			try {
 				removeFile();
@@ -100,6 +110,10 @@ public class HouseKeepingBatchService {
 			
 			long end = System.currentTimeMillis();
 			log.info("HouseKeepingBatchService is working Time(ms) = " + (end - start));
+			
+			jobMonitoring.setStopDate(new Date());
+			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
+			paymentGLSummaryBatchDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 		log.info("HouseKeepingBatchService end process...");
 	}
@@ -180,7 +194,6 @@ public class HouseKeepingBatchService {
 		}finally {
 			try {
 				writer.close();
-				log.info("HouseKeepingBatchService export text file at "+fileName);
 			} catch (IOException e) {
 				result = false;
 				log.error("HouseKeepingBatchService error =  ",e);
