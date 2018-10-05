@@ -47,7 +47,7 @@ public class AuditLogBatchService {
 		String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FILENAME);
 
 		try {
-			List<AuditLog> auditLogs = auditLogDao.getAuditLogByActionCode(actionCode);
+			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
 			if(auditLogs!=null && auditLogs.size()>0){
 				
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
