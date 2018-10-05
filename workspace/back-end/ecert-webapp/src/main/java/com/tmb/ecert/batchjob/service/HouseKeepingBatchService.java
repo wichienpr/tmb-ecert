@@ -58,7 +58,6 @@ public class HouseKeepingBatchService {
 		long start = System.currentTimeMillis();
 		log.info("HouseKeepingBatchService is starting process...");
 		boolean isSuccess = false;
-		String errorMesage = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.ENGLISH);
 		String pathFile = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_PATH);
 		String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_FILENAME);

@@ -17,11 +17,11 @@ public class AuditLogDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<AuditLog> findAuditLogWithDays(int days) {		
-		return jdbcTemplate.query("SELECT * FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < SYSDATE  - ?",new Object[] {days}, mapping);
+		return jdbcTemplate.query("SELECT * FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < GETDATE()  - ?",new Object[] {days}, mapping);
 	}
 	
 	public int deleteAuditlog(int days) {
-		return jdbcTemplate.update("DELETE FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < SYSDATE  - ?", days);
+		return jdbcTemplate.update("DELETE FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < GETDATE()  - ?", days);
 	}
 	
 	public List<AuditLog> findAuditLogByActionCode(String actionCode) {
