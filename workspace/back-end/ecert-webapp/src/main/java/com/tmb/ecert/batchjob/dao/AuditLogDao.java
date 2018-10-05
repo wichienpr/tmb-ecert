@@ -24,7 +24,7 @@ public class AuditLogDao {
 		return jdbcTemplate.update("DELETE FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < SYSDATE  - ?", days);
 	}
 	
-	public int findAuditLogByActionCode(String actionCode) {
+	public List<AuditLog> findAuditLogByActionCode(String actionCode) {
 		return jdbcTemplate.query("SELECT * FROM ECERT_AUDIT_LOG WHERE ACTION_CODE = ?",new Object[] {actionCode}, mapping);
 	}
 	

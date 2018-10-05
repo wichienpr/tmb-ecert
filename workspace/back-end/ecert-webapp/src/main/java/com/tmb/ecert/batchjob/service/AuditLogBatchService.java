@@ -49,7 +49,6 @@ public class AuditLogBatchService {
 		try {
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
 			if(auditLogs!=null && auditLogs.size()>0){
-				
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
 				String fileNameFull = localPath + File.separator + fileName.replace("{fileNo}", df.format(new Date()));							
 
