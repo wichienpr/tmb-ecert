@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Rep01000Service } from './rep01000.service';
 import { Certificate } from 'models/';
+import { isValid } from 'app/baiwa/common/helpers';
 declare var $: any;
 const URL = {
   export:"/api/rep/rep01000/exportFile"
@@ -108,9 +109,14 @@ export class Rep01000Component implements OnInit {
 
 
   searchData(): void {
-    console.log("searchData");
-    this.showData = true;
-    this.getData();
+    if(this.form.valid){
+    console.log("searchData True");
+        this.showData = true;
+        this.getData();
+    }else{
+      console.log("searchData False");
+    }
+   
   }
   
   clearData(): void {
@@ -123,8 +129,21 @@ export class Rep01000Component implements OnInit {
 
   exportFile=()=>{
     console.log("exportFile");
-    this.ajax.download(URL.export);
+    let param = "";
+    param+="?dateForm="+this.form.controls.dateForm.value;
+    param+="&dateTo="+this.form.controls.dateTo.value;
+
+    (this.form.controls.corpNo.value!=null)?param+="&organizeId="+this.form.controls.corpNo.value:"";
+    (this.form.controls.corpName.value!=null)?param+="&companyName="+this.form.controls.corpName.value:"";
+
+    (this.reqTypeChanged!=null)?param+="&requestTypeCode="+this.reqTypeChanged:"";
+    (this.paidTypeChanged!=null)?param+="&paidtypeCode="+this.paidTypeChanged:"";
+
+    this.ajax.download(URL.export+param);
   }
 
+  validate(input: string, submitted: boolean) {
+    return isValid(this.form, input, submitted);
+  }
  
 }

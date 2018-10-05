@@ -9,21 +9,21 @@
 
 
         <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
                 <div class="inline fields">
                     <div class="one wide field "></div>
                     <div class="two wide field ">
                         <label>เดือนปีภาษี
                         </label>
                     </div>
-                    <div class="five wide field">
+                    <div class="five wide field" [ngClass]="validate('dateVat', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateVat',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field ">
                         <label>เลขประจำตัวผู้เสียภาษีอากร
                         </label>
                     </div>
-                    <div class="five wide field ">
+                    <div class="five wide field " [ngClass]="validate('organizeId', ngForm.submitted) ? '' : 'error'">
                         <input type="number" formControlName="organizeId" placeholder="เลขประจำตัวผู้เสียภาษีอากร">
                     </div>
 
@@ -43,7 +43,7 @@
                 <br>
                 <br>
                 <div class="ui center aligned grid">
-                    <button class="ui blue basic button" type="button" (click)="searchData()">
+                    <button class="ui blue basic button" type="submit">
                         <i class="search icon"></i>
                         ค้นหา
                     </button>
@@ -75,14 +75,14 @@
 
                 </div>
                 <div class="five wide field ">
-                    <span>{{customerNameHead}}</span>
+                    <span>{{customerNameHead | emptyString }}</span>
                 </div>
                 <div class="two wide field ">
                     <h5>เลขประจำตัวผู้เสียภาษีอากร
                     </h5>
                 </div>
                 <div class="three wide field ">
-                    <span>{{organizeIdHead}}</span>
+                    <span>{{organizeIdHead | emptyString }}</span>
                 </div>
             </div>
 
@@ -94,14 +94,14 @@
 
                 </div>
                 <div class="five wide field ">
-                    <span>{{companyNameHead}}</span>
+                    <span>{{companyNameHead | emptyString }}</span>
                 </div>
                 <div class="two wide field ">
                     <h5>สำนักงานใหญ่/สาขา
                     </h5>
                 </div>
                 <div class="three wide field ">
-                    <span>{{branchHead}}</span>
+                    <span>{{branchHead | emptyString }}</span>
                 </div>
             </div>
             <div class="inline fields">
@@ -112,7 +112,7 @@
 
                 </div>
                 <div class="seven wide field ">
-                    <span>{{addressHead}}</span>
+                    <span>{{addressHead | emptyString }}</span>
                 </div>
 
             </div>

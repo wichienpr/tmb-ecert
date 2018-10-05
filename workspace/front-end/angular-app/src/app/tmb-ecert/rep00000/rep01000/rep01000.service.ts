@@ -19,10 +19,10 @@ export class Rep01000Service {
     form: FormGroup = new FormGroup({
         dateForm: new FormControl('', Validators.required),             // วันที่ขอ
         dateTo: new FormControl('', Validators.required),               // ถึงวันที่
-        corpNo: new FormControl('', Validators.required),               // เลขที่นิติบุคคล
-        corpName: new FormControl('', Validators.required),             // ชื่อนิติบุคคล
-        reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
-        paidTypeSelect: new FormControl('', Validators.required),       // ประเภทการชำระเงิน
+        corpNo: new FormControl(),                                      // เลขที่นิติบุคคล
+        corpName: new FormControl(),                                    // ชื่อนิติบุคคล
+        reqTypeSelect: new FormControl(),                               // ประเภทคำขอ
+        paidTypeSelect: new FormControl(),                              // ประเภทการชำระเงิน
        
     });
 

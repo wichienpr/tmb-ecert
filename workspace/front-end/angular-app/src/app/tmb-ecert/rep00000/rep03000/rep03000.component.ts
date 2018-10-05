@@ -3,7 +3,8 @@ import { AjaxService, ModalService, DropdownService } from "services/";
 import { Modal } from "models/";
 import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { isValid } from 'app/baiwa/common/helpers';
 
 import { Certificate } from 'models/';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -101,9 +102,13 @@ export class Rep03000Component implements OnInit {
   }
 
   searchData(): void {
-    console.log("searchData");
-    this.showData = true;
-    this.getData();
+    if(this.form.valid){
+      console.log("searchData True");
+          this.showData = true;
+          this.getData();
+      }else{
+        console.log("searchData False");
+      }
   }
   
   clearData(): void {
@@ -113,7 +118,16 @@ export class Rep03000Component implements OnInit {
   }
   exportFile=()=>{
     console.log("exportFile");
-    this.ajax.download(URL.export);
+    let param = "";
+    param+="?paymentDate="+this.form.controls.dateVat.value;
+    param+="&organizeId="+this.form.controls.organizeId.value;
+
+    (this.form.controls.customerName.value!=null)?param+="&customerName="+this.form.controls.customerName.value:"";
+
+    this.ajax.download(URL.export+param);
   }
 
+  validate(input: string, submitted: boolean) {
+    return isValid(this.form, input, submitted);
+  }
 }

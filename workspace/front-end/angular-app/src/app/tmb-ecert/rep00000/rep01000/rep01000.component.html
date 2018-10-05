@@ -1,7 +1,7 @@
 <div class="ui grid">
     <div class="sixteen wide column">
 
-        <h2 class="ui header">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day
+        <h2 class="ui header">รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day
         </h2>
 
 
@@ -11,19 +11,19 @@
 
 
         <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
                         <label class="custom-label-w-25">วันที่ขอ</label>
                     </div>
-                    <div class="five wide field">
+                    <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field ">
                         <label>ถึงวันที่</label>
                     </div>
-                    <div class="five wide field">
+                    <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                 <br>
                 <div class="ui center aligned grid">
 
-                    <button class="ui blue basic button" type="button" (click)="searchData()">
+                    <button class="ui blue basic button" type="submit" >
                         <i class="search icon"></i>
                         ค้นหา
                     </button>
@@ -121,7 +121,7 @@
                 </thead>
                 <tbody>
                     <tr class="text-center" *ngIf="dataT.length==0">
-                        <td colspan="21" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                        <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
                     </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
@@ -131,7 +131,7 @@
                         <td style="text-align: center !important;">{{data.companyName}}</td>
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: center !important;">{{data.certypeDesc}}</td>
-                        <td style="text-align: center !important;">{{data.requestTypeDesc}}</td>
+                        <td style="text-align: center !important;"><span *ngFor="let requestTypeDesc of data.requestTypeDesc | commaStringBr ">{{requestTypeDesc}}<br></span></td>
                         <td style="text-align: center !important;">{{data.accountNo | accountNo}}</td>
                         <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>

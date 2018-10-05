@@ -3,7 +3,8 @@ import { AjaxService, ModalService, DropdownService } from "services/";
 import { Modal } from "models/";
 import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { isValid } from 'app/baiwa/common/helpers';
 
 import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
@@ -106,9 +107,13 @@ export class Rep02000Component implements OnInit {
   }
 
   searchData(): void {
-    console.log("searchData");
-    this.showData = true;
-    this.getData();
+    if(this.form.valid){
+      console.log("searchData True");
+          this.showData = true;
+          this.getData();
+      }else{
+        console.log("searchData False");
+      }
   }
   
   clearData(): void {
@@ -119,7 +124,11 @@ export class Rep02000Component implements OnInit {
 
   exportFile=()=>{
     console.log("exportFile");
-    this.ajax.download(URL.export);
+    let param = "";
+    param+="?dateForm="+this.form.controls.dateForm.value;
+    param+="&dateTo="+this.form.controls.dateTo.value;
+
+    this.ajax.download(URL.export+param);
   }
   remark=custsegmentCode=>{
     this.router.navigate(['/rep/rep02100'], {
@@ -136,5 +145,11 @@ export class Rep02000Component implements OnInit {
   };
   this.modal.alert(modal);
   }
+  validate(input: string, submitted: boolean) {
+    return isValid(this.form, input, submitted);
+  }
 
+  stringBr=s=> {
+    return 'AAAAAAA';
+  }
 }

@@ -1,6 +1,6 @@
 <div class="ui grid">
     <div class="sixteen wide column">
-        <h2 class="ui header">รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly
+        <h2 class="ui header">รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly
         </h2>
 
         <div class="ui top attached header segment">
@@ -9,20 +9,20 @@
 
 
         <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
 
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
                         <label>ตั้งแต่เดือน</label>
                     </div>
-                    <div class="five wide field">
+                    <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field">
                         <label>ถึงเดือน</label>
                     </div>
-                    <div class="five wide field">
+                    <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 <br>
                 <br>
                 <div class="ui center aligned grid">
-                    <button class="ui blue basic button" type="button" (click)="searchData()">
+                    <button class="ui blue basic button" type="submit" >
                         <i class="search icon"></i>
                         ค้นหา
                     </button>

@@ -19,7 +19,7 @@ export class Rep03000Service {
     form: FormGroup = new FormGroup({
         dateVat: new FormControl('', Validators.required),                  // เดือนปีภาษี
         organizeId: new FormControl('', Validators.required),               // เลขประจำตัวผู้เสียภาษีอากรเลขที่นิติบุคคล
-        customerName: new FormControl('', Validators.required),             // ชื่อผู้ประกอบการ
+        customerName: new FormControl(),                                    // ชื่อผู้ประกอบการ
          
    
         
