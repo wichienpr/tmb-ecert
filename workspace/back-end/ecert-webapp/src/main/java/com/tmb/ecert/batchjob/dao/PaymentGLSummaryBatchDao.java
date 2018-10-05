@@ -53,8 +53,7 @@ public class PaymentGLSummaryBatchDao {
 			" SET STOP_DATE = ?, STATUS = ? AND ERROR_DESC = ?, RERUN_ID = ?, RERUN_BY_NAME = ?, RERUN_DATETIME = ?" +
 			" WHERE JOBMONITORING_ID = ? ";
 	
-	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOB_GL_FAILE ( " +
-			" PAYMENTDATE VALUES (?) ";
+	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOB_GL_FAILE (PAYMENTDATE) VALUES (?) ";
 	
 	private final String QUERY_OFFICE_CODE = " select OFFICE_CODE2 from ECERT_HR_OFFICECODE where OFFICE_CODE1 = ? ";
 
@@ -137,8 +136,8 @@ public class PaymentGLSummaryBatchDao {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_ECERT_JOB_MONITORING, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, ecertJobMonitoring.getJobTypeCode());
-				ps.setTimestamp(2, new Timestamp(ecertJobMonitoring.getStartDate() != null ? ecertJobMonitoring.getStartDate().getTime() : null));
-				ps.setTimestamp(3, new Timestamp(ecertJobMonitoring.getEndOfDate() != null ? ecertJobMonitoring.getEndOfDate().getTime() : null));
+				ps.setTimestamp(2, ecertJobMonitoring.getStartDate() != null ? new Timestamp(ecertJobMonitoring.getStartDate().getTime()) : null);
+				ps.setTimestamp(3, ecertJobMonitoring.getEndOfDate() != null ? new Timestamp(ecertJobMonitoring.getEndOfDate().getTime()) : null);
 				ps.setInt(4, ecertJobMonitoring.getStatus());
 				ps.setString(5, ecertJobMonitoring.getErrorDesc());
 				ps.setInt(6, ecertJobMonitoring.getRerunNumber());
@@ -159,7 +158,7 @@ public class PaymentGLSummaryBatchDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_ECERT_JOB_GL_FAILED, Statement.RETURN_GENERATED_KEYS);
-				ps.setTimestamp(1, new Timestamp(ecertJobGLFailed.getPaymentDate() != null ? ecertJobGLFailed.getPaymentDate().getTime() : null));
+				ps.setTimestamp(1, ecertJobGLFailed.getPaymentDate() != null ? new Timestamp(ecertJobGLFailed.getPaymentDate().getTime()) : null);
 				return ps;
 			}
 		}, holder);
