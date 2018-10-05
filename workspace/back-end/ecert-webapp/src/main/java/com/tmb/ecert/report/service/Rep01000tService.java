@@ -72,6 +72,8 @@ public class Rep01000tService {
 			/* create spreadsheet */
 			XSSFWorkbook workbook = excalService.setUpExcel();
 			CellStyle thStyle = excalService.thStyle;
+			CellStyle fontHeader = workbook.createCellStyle();
+			fontHeader.setFont(excalService.fontHeader);
 			Sheet sheet = workbook.createSheet();
 			int rowNum = 0;
 			int cellNum = 0;
@@ -83,21 +85,30 @@ public class Rep01000tService {
 			/* create data spreadsheet */
 			
 			/* Header */
+			
+			row = sheet.createRow(rowNum);
+			cell = row.createCell(0);
+			cell.setCellValue("รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day");
+			cell.setCellStyle(fontHeader);
+			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 19)); //tr colspan=20
+			rowNum+=2;
+			
 //			String[] tbTH1 = formVo.getTrHtml1();
 			
 			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
 		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
 		             "รวม","ประเภทการชำระเงิน","Maker ID","Maker Name","Checker ID","Checker Name","สถานะ","หมายเหตุ"};
-			
+			row = sheet.createRow(rowNum++);
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
 				cell.setCellValue(tbTH1[cellNum]);
 				cell.setCellStyle(thStyle);
 			};
-
+			
+			
 //			String[] tbTH2 = formVo.getTrHtml2();
 			String[] tbTH2 = { "DBD", "TMB","Tax"};
-			row = sheet.createRow(1);
+			row = sheet.createRow(rowNum);
 			int cellNumtbTH2 = 9;
 			for (int i = 0; i < tbTH2.length; i++) {
 				cell = row.createCell(cellNumtbTH2);
@@ -109,19 +120,18 @@ public class Rep01000tService {
 			// merge(firstRow, lastRow, firstCol, lastCol)
 			
 			for (int i = 0; i<=8; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr1-9 rowspan=2
+				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr1-9 rowspan=2
 			}
-			for (int i = 12; i<=20; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-18 rowspan=2
+			for (int i = 12; i<=19; i++) {
+				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr13-18 rowspan=2
 			}
 			
 			
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 11)); //tr colspan=3
+			sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum-1, 9, 11)); //tr colspan=3
 			
 			/* Detail */
 //			List<LicenseList6010> exportDataList = null;
-
-			rowNum = 2;
+			rowNum++;
 			cellNum = 0;
 			int order = 1;
 			for (Rep01000Vo detail : dataTestList) {

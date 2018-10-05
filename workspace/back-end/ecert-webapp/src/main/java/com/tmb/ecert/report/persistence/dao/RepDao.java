@@ -62,8 +62,8 @@ public class RepDao {
 			params.add(formVo.getOrganizeId());
 		}
 		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
-			sql.append(" AND a.COMPANY_NAME LIKE ?");
-			params.add("%"+formVo.getCompanyName()+"%");
+			sql.append(" AND a.COMPANY_NAME = ? ");
+			params.add(formVo.getCompanyName());
 		}
 		if (StringUtils.isNotBlank(formVo.getRequestTypeCode())) {
 			sql.append(" AND a.CERTYPE_CODE = ?");
@@ -77,7 +77,7 @@ public class RepDao {
 		
 		
 		sql.append(" ORDER BY a.REQUEST_DATE DESC ");
-//		log.info("sqlRep01000 : {}",sql.toString());
+		log.info("sqlRep01000 : {}",sql.toString());
 		rep01000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
 		
 		return rep01000VoList;
@@ -454,6 +454,7 @@ public class RepDao {
 						sql.append(" AND a.ORGANIZE_ID = ?");
 						params.add(formVo.getOrganizeId());
 					}
+//					log.info("formVo.getCustomerName() : {}",formVo.getCustomerName());
 					if (StringUtils.isNotBlank(formVo.getCustomerName())) {
 						sql.append(" AND a.CUSTOMER_NAME = ?");
 						params.add(formVo.getCustomerName());

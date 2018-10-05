@@ -31,6 +31,9 @@ public class ExcalService {
 	public XSSFWorkbook setUpExcel() {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		
+		fontHeader = workbook.createFont();
+		fontHeader.setBold(true);
+		
 		thStyle = workbook.createCellStyle();
 		thStyle.setAlignment(HorizontalAlignment.CENTER);
 		thStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -40,6 +43,7 @@ public class ExcalService {
 		thStyle.setBorderTop(BorderStyle.THIN);
 		thStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		thStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		thStyle.setFont(fontHeader);
 
 		cellCenter = workbook.createCellStyle();
 		cellCenter.setAlignment(HorizontalAlignment.CENTER);
@@ -88,9 +92,6 @@ public class ExcalService {
 		bgGreen.setBorderTop(BorderStyle.THIN);
 		bgGreen.setFillForegroundColor(IndexedColors.GREEN.getIndex());
 		bgGreen.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-		fontHeader = workbook.createFont();
-		fontHeader.setBold(true);
 
 		topCenter = workbook.createCellStyle();
 		topCenter.setAlignment(HorizontalAlignment.CENTER);
