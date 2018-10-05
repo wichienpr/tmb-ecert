@@ -27,6 +27,7 @@ import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
+import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
 @Service
 public class Rep01000tService {
@@ -41,15 +42,31 @@ public class Rep01000tService {
 	
 	public List<Rep01000Vo> findAll(Rep01000FormVo formVo){
 		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> requestTypeList = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> rep01000VoListReturn = new ArrayList<Rep01000Vo>();
 		rep01000VoList = repDao.getDataRep01000(formVo);
-		return rep01000VoList;
+
+		for (Rep01000Vo rep01000Vo : rep01000VoList) {
+			
+			requestTypeList = repDao.getRequestTypeRep01000(rep01000Vo.getId());
+			String requestTypeString = "";
+			String requestTypeStringExcel = "";
+			for (Rep01000Vo requestType : requestTypeList) {
+				requestTypeString += (StringUtils.isNoneBlank(requestTypeString))?","+requestType.getRequestTypeDesc():requestType.getRequestTypeDesc();
+				requestTypeStringExcel += (StringUtils.isNoneBlank(requestTypeStringExcel))?","+requestType.getRequestTypeDesc():requestType.getRequestTypeDesc();
+			}
+			rep01000Vo.setRequestTypeDesc(requestTypeString);
+			rep01000Vo.setRequestTypeExcel(requestTypeStringExcel);
+			rep01000VoListReturn.add(rep01000Vo);
+			
+		}
+		return rep01000VoListReturn;
 	}
 	
 	public void exportFile(Rep01000FormVo formVo, HttpServletResponse response) throws IOException {
 		
 		List<Rep01000Vo> dataTestList = new ArrayList<Rep01000Vo>();
-	
-		dataTestList = repDao.getDataRep01000(formVo);
+		dataTestList =findAll(formVo);
 //		dataTestList = formVo.getDataT();
 		
 			/* create spreadsheet */
@@ -67,9 +84,10 @@ public class Rep01000tService {
 			
 			/* Header */
 //			String[] tbTH1 = formVo.getTrHtml1();
+			
 			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
 		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
-		             "รวม","Marker","Checker","สถานะ","หมายเหตุ"};
+		             "รวม","ประเภทการชำระเงิน","Maker ID","Maker Name","Checker ID","Checker Name","สถานะ","หมายเหตุ"};
 			
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -78,7 +96,7 @@ public class Rep01000tService {
 			};
 
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "DBD", "TMB","Tax Amount","","","","Success","Fail"};
+			String[] tbTH2 = { "DBD", "TMB","Tax"};
 			row = sheet.createRow(1);
 			int cellNumtbTH2 = 9;
 			for (int i = 0; i < tbTH2.length; i++) {
@@ -93,13 +111,12 @@ public class Rep01000tService {
 			for (int i = 0; i<=8; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr1-9 rowspan=2
 			}
-			for (int i = 12; i<=16; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-16 rowspan=2
+			for (int i = 12; i<=20; i++) {
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i)); //tr13-18 rowspan=2
 			}
 			
 			
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 11)); //tr colspan=3
-	
 			
 			/* Detail */
 //			List<LicenseList6010> exportDataList = null;
@@ -116,16 +133,18 @@ public class Rep01000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()                  ))?detail.getOrganizeId()                  : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()                 ))?detail.getCompanyName()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCustsegmentDesc()             ))?detail.getCustsegmentDesc()             : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRequestTypeDesc()             ))?detail.getRequestTypeDesc()             : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCertypeDesc()                 ))?detail.getCertypeDesc()                 : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getRequestTypeExcel()            ))?detail.getRequestTypeExcel()            : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(convertAccountNo(detail.getAccountNo()) ))?convertAccountNo(detail.getAccountNo()) : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmountVat().toString()   ))?detail.getTotalAmountVat().toString()   : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmount().toString()      ))?detail.getTotalAmount().toString()      : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getPaidtypeDesc()                ))?detail.getPaidtypeDesc()                : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerById()                   ))?detail.getMakerById()                   : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerByName()                 ))?detail.getMakerByName()                 : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerById()                 ))?detail.getCheckerById()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerByName()               ))?detail.getCheckerByName()               : "" );
-				
 				String status = "";
 				if(StringUtils.isNotBlank(detail.getStatus())&&(detail.getStatus().equals("10009") || detail.getStatus().equals("10010") )) {
 					status = "สำเร็จ";

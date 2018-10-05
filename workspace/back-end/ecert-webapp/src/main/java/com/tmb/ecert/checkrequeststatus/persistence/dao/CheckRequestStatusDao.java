@@ -17,6 +17,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.StatusVo;
 import com.tmb.ecert.common.constant.DateConstant;
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 
 @Repository
 public class CheckRequestStatusDao {
@@ -24,7 +25,7 @@ public class CheckRequestStatusDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private Logger logger = LoggerFactory.getLogger(CheckRequestStatusDao.class);
+	private Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
 	public List<Crs01000Vo> findReq(Crs01000FormVo formVo) {
 		logger.info("findReq_Dao");

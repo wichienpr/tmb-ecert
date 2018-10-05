@@ -46,10 +46,20 @@ public class Rep02000tService {
 		
 		for (Rep02000Vo rep02000Vo : rep02000VoList) {
 			
-			int countCertificate = 0;
-			countCertificate = repDao.getCountCertificateRep02000(formVo,rep02000Vo);
-			rep02000Vo.setCertificate(countCertificate);
-			rep02000Vo.setCopyGuarantee(rep02000Vo.getCustsegmentCount()-countCertificate);
+			List<Rep02000Vo> countCertificateList = repDao.getCountCertificateRep02000(formVo,rep02000Vo);
+			rep02000Vo.setCertificate((countCertificateList.size()==0)?0:countCertificateList.get(0).getCertificate());
+			
+			List<Rep02000Vo> countUnCertificateList = repDao.getCountUnCertificateRep02000(formVo,rep02000Vo);
+			rep02000Vo.setCopyGuarantee((countUnCertificateList.size()==0)?0:countUnCertificateList.get(0).getCopyGuarantee());
+			
+//			getPaymentTypeCountRep02000
+			
+			rep02000Vo.setPaymentTypeCountDT(repDao.getPaymentTypeCountRep02000(formVo,rep02000Vo,"30001"));
+			rep02000Vo.setPaymentTypeCountDNoT(repDao.getPaymentTypeCountRep02000(formVo,rep02000Vo,"30002"));
+			rep02000Vo.setPaymentTypeCountDAll(repDao.getPaymentTypeCountRep02000(formVo,rep02000Vo,"30003"));
+			rep02000Vo.setPaymentTypeCountECert(repDao.getPaymentTypeCountRep02000(formVo,rep02000Vo,"30004"));
+			
+			
 			
 			int countStatus = 0;
 			countStatus = repDao.getCountStatusRep02000(formVo,rep02000Vo);
@@ -85,7 +95,7 @@ public class Rep02000tService {
 
 			/* Header */
 //			String[] tbTH1 = formVo.getTrHtml1();
-			String[] tbTH1 = { "Segment","จำนวนคำขอ","ประเภทคำขอ : ราย","","จำนวนเงิน : บาท","", "จำนวนเงิน",
+			String[] tbTH1 = { "Segment","จำนวนคำขอ","ประเภทคำขอ : ราย","","จำนวนเงิน : บาท","", "จำนวนเงิน","ประเภทการชำระเงิน","","","",
 		             "สถานะ : จำนวนราย","", "สาเหตุ"};
 			
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
@@ -95,7 +105,7 @@ public class Rep02000tService {
 			};
 
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "หนังสือรับรอง", "รับรองสำเนา","DBD","TMB","","Success","Fail"};
+			String[] tbTH2 = { "หนังสือรับรอง", "รับรองสำเนา","DBD","TMB","","ลูกค้าชำระค่าธรรมเนียม DBD,TMB","ลูกค้าชำระค่าธรรมเนียม DBD ยกเว้น TMB","TMB ชำระค่าธรรมเนียม  DBD ทั้งหมด","ไม่ได้ดำเนินการชำระเงินผ่านระบบ E-Cert","Success","Fail"};
 			row = sheet.createRow(1);
 			int cellNumtbTH2 = 2;
 			for (int i = 0; i < tbTH2.length; i++) {
@@ -111,13 +121,14 @@ public class Rep02000tService {
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0)); //tr1 rowspan=2
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1)); //tr2 rowspan=2
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6)); //tr7 rowspan=2
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9)); //tr10 rowspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 13, 13)); //tr10 rowspan=2
 			
 		
 			
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 3)); //tr colspan=2
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5)); //tr colspan=2
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 8)); //tr colspan=2
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 10)); //tr colspan=4
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 12)); //tr colspan=2
 	
 			
 			/* Detail */
@@ -137,6 +148,11 @@ public class Rep02000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()))?detail.getAmountDbd().toString() : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString() : "" );			
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmount().toString()))?detail.getTotalAmount().toString() : "" );
+
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getPaymentTypeCountDT()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getPaymentTypeCountDNoT()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getPaymentTypeCountDAll()));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getPaymentTypeCountECert()));
 				
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getSuccess()));
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue( String.valueOf(detail.getFail()));

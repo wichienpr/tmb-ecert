@@ -242,7 +242,10 @@
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.54</version>
 		</dependency>
-
+		<dependency>
+		   <groupId>commons-codec</groupId>
+		   <artifactId>commons-codec</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

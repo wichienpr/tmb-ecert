@@ -3,12 +3,14 @@ package com.tmb.ecert.report.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -37,19 +39,30 @@ public class Rep03000tService {
 	private ExcalService excalService;
 	
 	
-	public List<Rep03000Vo> findAll(Rep03000FormVo formVo){
+	public Rep03000FormVo findAll(Rep03000FormVo formVo){
 		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 		rep03000VoList = repDao.getDataRep03000(formVo);
-		
 	
-		return rep03000VoList;
+		if(rep03000VoList.size()!=0) {
+			formVo.setCustomerNameHead(rep03000VoList.get(0).getCustomerName());
+			formVo.setOrganizeIdHead(rep03000VoList.get(0).getOrganizeId());
+			formVo.setCompanyNameHead(rep03000VoList.get(0).getCompanyName());
+			formVo.setBranchHead(rep03000VoList.get(0).getBranch());
+			formVo.setAddressHead(rep03000VoList.get(0).getAddress());
+		}
+		
+		formVo.setRep03000VoList(rep03000VoList);
+	
+		return formVo;
 	}
 	
 	public void exportFile(Rep03000FormVo formVo, HttpServletResponse response) throws IOException {
-		
+		Rep03000FormVo formVofindAll = new Rep03000FormVo();
 		List<Rep03000Vo> dataTestList = new ArrayList<Rep03000Vo>();
 	
-		dataTestList = findAll(formVo);
+		formVofindAll= findAll(formVo);
+		
+		dataTestList = formVofindAll.getRep03000VoList();
 //		dataTestList = formVo.getDataT();
 		
 			/* create spreadsheet */
@@ -107,17 +120,16 @@ public class Rep03000tService {
 			for (Rep03000Vo detail : dataTestList) {
 				row = sheet.createRow(rowNum);
 				// No.
-				
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getReceiptNo()))?detail.getReceiptNo(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getPaymentDate()))?detail.getPaymentDate(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()))?detail.getCompanyName(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()))?detail.getOrganizeId(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAddress()))?detail.getAddress(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getBranch()))?detail.getBranch(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmbVat().toString()))?detail.getAmountTmbVat().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
 				
 				rowNum++;
 				order++;
