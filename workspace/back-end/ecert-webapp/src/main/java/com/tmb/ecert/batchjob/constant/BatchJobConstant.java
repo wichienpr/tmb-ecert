@@ -1,12 +1,6 @@
 package com.tmb.ecert.batchjob.constant;
 
 public class BatchJobConstant {
-
-	public static class STATUS {
-		public static final String SUCCESS = "80001";
-		public static final String FAIL = "80002";
-		public static final String IN_PROGRESS ="80003";
-	}
 	
 	public static class PARAMETER_CONFIG {
 		public static final String BATCH_GL_SUMMARY_IP = "gl.ftpserver.ip";
@@ -43,7 +37,18 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_ENTITYCODE2 = "batch.gl.entitycode2";
 		public static final String BATCH_GL_INTERCODE2 = "batch.gl.intercode2";
 		public static final String BATCH_GL_OWNDER_BRANCHCODE2 = "batch.gl.owner.branchcode2";
-		
+		public static final String BATCH_GL_DESTINATION_BRANCHCODE2 = "batch.gl.destination.branchcode2";
+		public static final String BATCH_GL_DESCTICATION_OFFICECODE2 = "batch.gl.destication.officecode2";
+		public static final String BATCH_GL_PRODUCTCODE2 = "batch.gl.productcode2";
+		public static final String BATCH_GL_CHANNELCODE2 = "batch.gl.channelcode2";
+		public static final String BATCH_GL_PROJECTCODE2 = "batch.gl.projectcode2";
+		public static final String BATCH_GL_TAXCODE2 = "batch.gl.taxcode2";
+		public static final String BATCH_GL_CURRENCY_CODE2 = "batch.gl.currency.code2";
+
+		public static final String BATCH_GL_HEADER_SOURCE_FROM = "gl.header.source.from";
+		public static final String BATCH_GL_HEADER_SOURCE_TO = "gl.header.source.to";
+		public static final String BATCH_GL_HEADER_TYPE_DATA = "gl.header.type.data";
+		public static final String BATCH_GL_HEADER_FILE_TYPE = "gl.header.file.type";
 		
 		public static final class OFFICE_CODE {
 			public static final String OFFICE_1092 = "1092";

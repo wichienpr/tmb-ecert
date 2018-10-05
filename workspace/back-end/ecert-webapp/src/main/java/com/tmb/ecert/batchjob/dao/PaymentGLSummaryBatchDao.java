@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -28,7 +26,7 @@ import com.tmb.ecert.batchjob.domain.EcertRequestForm;
 @Repository
 public class PaymentGLSummaryBatchDao {
 
-	private Logger log = LoggerFactory.getLogger(PaymentGLSummaryBatchDao.class);
+//	private Logger log = LoggerFactory.getLogger(PaymentGLSummaryBatchDao.class);
 	
 	private final String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -40,6 +38,7 @@ public class PaymentGLSummaryBatchDao {
 	private final String QUERY_INSERT_ECERT_JOB_MONITORING = " INSERT INTO ECERT_JOB_MONITORING ( " +
 			" JOBTYPE_CODE  	 	" + 
 			" START_DATE  	 		" + 
+			" STOP_DATE  	 		" + 
 			" ENDOFDATE 		 	" + 
 			" STATUS  		 		" + 
 			" ERROR_DESC  	 		" + 
@@ -137,13 +136,14 @@ public class PaymentGLSummaryBatchDao {
 				PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_ECERT_JOB_MONITORING, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, ecertJobMonitoring.getJobTypeCode());
 				ps.setTimestamp(2, ecertJobMonitoring.getStartDate() != null ? new Timestamp(ecertJobMonitoring.getStartDate().getTime()) : null);
-				ps.setTimestamp(3, ecertJobMonitoring.getEndOfDate() != null ? new Timestamp(ecertJobMonitoring.getEndOfDate().getTime()) : null);
-				ps.setInt(4, ecertJobMonitoring.getStatus());
-				ps.setString(5, ecertJobMonitoring.getErrorDesc());
-				ps.setInt(6, ecertJobMonitoring.getRerunNumber());
-				ps.setString(7, ecertJobMonitoring.getRerunById());
-				ps.setString(8, ecertJobMonitoring.getRerunByName());
-				ps.setTimestamp(9, ecertJobMonitoring.getRerunDatetime() != null ? new Timestamp(ecertJobMonitoring.getRerunDatetime().getTime()) : null);
+				ps.setTimestamp(3, ecertJobMonitoring.getStopDate() != null ? new Timestamp(ecertJobMonitoring.getStopDate().getTime()) : null);
+				ps.setTimestamp(4, ecertJobMonitoring.getEndOfDate() != null ? new Timestamp(ecertJobMonitoring.getEndOfDate().getTime()) : null);
+				ps.setString(5, ecertJobMonitoring.getStatus());
+				ps.setString(6, ecertJobMonitoring.getErrorDesc());
+				ps.setInt(7, ecertJobMonitoring.getRerunNumber());
+				ps.setString(8, ecertJobMonitoring.getRerunById());
+				ps.setString(9, ecertJobMonitoring.getRerunByName());
+				ps.setTimestamp(10, ecertJobMonitoring.getRerunDatetime() != null ? new Timestamp(ecertJobMonitoring.getRerunDatetime().getTime()) : null);
 				return ps;
 			}
 		}, holder);
