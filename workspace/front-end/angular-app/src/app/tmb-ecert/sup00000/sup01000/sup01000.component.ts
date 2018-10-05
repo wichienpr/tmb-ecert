@@ -81,13 +81,13 @@ export class Sup01000Component implements OnInit {
   }
 
   clickAddRole() {
-    this.router.navigate(["/sup/sup01010"], {});
+    this.router.navigate(["/sup/sup01100"], {});
 
   }
   clickEditRole(roleObj) {
     this.roleResult = roleObj;
     console.log("role id " + this.roleResult.roldId);
-    this.router.navigate(["/sup/sup01010"], {
+    this.router.navigate(["/sup/sup01100"], {
       queryParams: {
         roleId: this.roleResult.roldId
         , roleName: this.roleResult.roleName

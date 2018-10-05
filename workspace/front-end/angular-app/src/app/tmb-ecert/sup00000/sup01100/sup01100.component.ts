@@ -1,19 +1,19 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { PAGE_AUTH } from 'app/baiwa/common/constants';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Sup01010Service } from 'app/tmb-ecert/sup00000/sup01010/sup01010.service';
+import { sup01100Service } from 'app/tmb-ecert/sup00000/sup01100/sup01100.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalService } from 'app/baiwa/common/services';
 
 
 @Component({
-  selector: 'app-sup01010',
-  templateUrl: './sup01010.component.html',
-  styleUrls: ['./sup01010.component.css'],
+  selector: 'app-sup01100',
+  templateUrl: './sup01100.component.html',
+  styleUrls: ['./sup01100.component.css'],
 })
 
 
-export class Sup01010Component implements OnInit {
+export class sup01100Component implements OnInit {
   @ViewChild('roleNameView') roleNameEliment: ElementRef;
   rolepermisson: any
   userRolePermission: any
@@ -23,7 +23,7 @@ export class Sup01010Component implements OnInit {
   form: FormGroup;
   // roleName = new FormControl('');
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: Sup01010Service, private modal: ModalService) {
+  constructor(private router: Router, private route: ActivatedRoute, private service: sup01100Service, private modal: ModalService) {
     this.rolepermisson = [
       {
         rolename: "UI-00002 - ยินดีต้อนรับ",

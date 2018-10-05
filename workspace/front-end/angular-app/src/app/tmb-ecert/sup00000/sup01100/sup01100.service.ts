@@ -13,7 +13,7 @@ const URL = {
 @Injectable({
     providedIn: 'root'
 })
-export class Sup01010Service {
+export class sup01100Service {
     userRolePermission: any;
     dataT: any;
 
