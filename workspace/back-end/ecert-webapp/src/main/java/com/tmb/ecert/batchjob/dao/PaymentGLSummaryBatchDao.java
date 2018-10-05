@@ -143,7 +143,7 @@ public class PaymentGLSummaryBatchDao {
 				ps.setInt(6, ecertJobMonitoring.getRerunNumber());
 				ps.setString(7, ecertJobMonitoring.getRerunById());
 				ps.setString(8, ecertJobMonitoring.getRerunByName());
-				ps.setTimestamp(9, new Timestamp(ecertJobMonitoring.getRerunDatetime() != null ? ecertJobMonitoring.getRerunDatetime().getTime() : null));
+				ps.setTimestamp(9, ecertJobMonitoring.getRerunDatetime() != null ? new Timestamp(ecertJobMonitoring.getRerunDatetime().getTime()) : null);
 				return ps;
 			}
 		}, holder);
