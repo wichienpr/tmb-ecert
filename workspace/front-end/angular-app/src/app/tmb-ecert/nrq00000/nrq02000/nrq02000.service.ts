@@ -6,7 +6,6 @@ import { dateLocale, Acc } from "helpers/";
 import { Store } from "@ngrx/store";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Modal } from "models/";
-import { Observable } from "rxjs";
 import { Nrq02000 } from "./nrq02000.model";
 import { Router } from "@angular/router";
 
@@ -104,18 +103,14 @@ export class Nrq02000Service {
     /**
      * Initial Data
      */
-    getTmbReqFormId(): Observable<string> {
-        return new Observable<string>( obs => {
-            this.ajax.get(URL.GEN_KEY, response => {
-                this.tmbReqFormId = response.json();
-                obs.next(this.tmbReqFormId);
-            });
+    getTmbReqFormId() {
+        return this.ajax.get(URL.GEN_KEY, response => {
+            this.tmbReqFormId = response.json();
+            return this.tmbReqFormId;
         });
     }
-    getForm(): Observable<FormGroup> {
-        return new Observable<FormGroup>(obs => {
-            obs.next(this.form);
-        });
+    getForm(): FormGroup {
+        return this.form;
     }
 
     getReqDate(): string {
@@ -130,26 +125,22 @@ export class Nrq02000Service {
     /**
      * Forms Action
      */
-    save(form: FormGroup, files: any, certificates: Certificate[]): void {
-        let has: boolean = false;
-        certificates.forEach((obj, index) => {
-            if (index != 0) {
-                if (form.controls['chk' + index].valid) {
-                    has = true;
-                }
-            }
-        });
-        if (has) {
-            certificates.forEach((obj, index) => {
-                if (index != 0) {
-                    if (form.controls['chk' + index].invalid) {
-                        form.get('chk' + index).clearValidators();
-                        form.get('chk' + index).updateValueAndValidity();
-                    }
-                }
-            });
+    save(form: FormGroup, files: any, certificates: Certificate[], viewChilds: any) {
+        let modalValid: Modal = { msg: "" }
+        let chkCerts = this.chkCerts(certificates, form);
+        certificates = [...chkCerts.data]; // clear validators checkbox
+        if (!chkCerts.flag) {
+            this.modal.alertWithAct({ msg: ValidatorMessages.selectSomeCerts });
+            viewChilds.chks[0].nativeElement.focus();
+            return chkCerts.form;
         }
-        if (form.valid) {
+        if (!chkCerts.total) {
+            this.modal.alertWithAct({ msg: ValidatorMessages.totalCerts });
+            viewChilds.cers[0].nativeElement.focus();
+            return chkCerts.form;
+        }
+        console.log(form.value);
+        if (!form.valid) {
             const modalConf: Modal = {
                 msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
                 <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
@@ -160,51 +151,7 @@ export class Nrq02000Service {
             }
             this.modal.confirm((e) => {
                 if (e) {
-                    certificates.forEach((obj, index) => {
-                        if (index != 0) {
-                            obj.check = form.controls['chk' + index].value;
-                            obj.value = form.controls['cer' + index].value;
-                            if (obj.check == "" && obj.value == "") {
-                                obj.check = false;
-                                obj.value = 0;
-                            }
-                        }
-                    });
-                    let formData = new FormData();
-                    let _data = [...certificates];
-                    _data.splice(0, 1);
-                    let data: Nrq02000 = {
-                        tmbReqFormNo: this.tmbReqFormId,
-                        acceptNo: form.controls.acceptNo.value,
-                        accName: form.controls.accName.value,
-                        accNo: Acc.revertAccNo(form.controls.accNo.value),
-                        address: form.controls.address.value,
-                        changeNameFile: files.changeNameFile ? files.changeNameFile : null,
-                        copyFile: files.copyFile ? files.copyFile : null,
-                        requestFile: files.requestFile ? files.requestFile : null,
-                        corpName: form.controls.corpName.value,
-                        corpName1: form.controls.corpName1.value,
-                        corpNo: form.controls.corpNo.value,
-                        departmentName: form.controls.departmentName.value,
-                        note: form.controls.note.value,
-                        reqTypeSelect: form.controls.reqTypeSelect.value,
-                        customSegSelect: form.controls.customSegSelect.value,
-                        payMethodSelect: form.controls.payMethodSelect.value,
-                        subAccMethodSelect: form.controls.subAccMethodSelect.value,
-                        telReq: form.controls.telReq.value,
-                        tmbReceiptChk: form.controls.tmbReceiptChk.value,
-                        certificates: _data
-                    };
-                    for (let key in data) {
-                        if (data[key]) {
-                            if (key == "certificates") {
-                                console.log(data[key]);
-                                formData.append(key, JSON.stringify(data[key]));
-                            } else {
-                                formData.append(key, data[key]);
-                            }
-                        }
-                    }
+                    const formData = this.bindingData(certificates, files, form);
                     this.ajax.upload(URL.NRQ_SAVE, formData, response => {
                         if (response.json().message == "SUCCESS") {
                             const modal: Modal = {
@@ -225,12 +172,74 @@ export class Nrq02000Service {
                 }
             }, modalConf);
         } else {
-            const modalAler: Modal = {
-                msg: "กรุณากรอกข้อมูลให้ครบ",
-                success: false
+            let modalAler: Modal = { msg: "", success: false }
+            for (let key in form.controls) {
+                if (form.controls[key].invalid) {
+                    for (let enu in ValidatorMessages) {
+                        if (enu == key) {
+                            modalAler.msg = ValidatorMessages[enu];
+                            modalAler.success = false;
+                            this.modal.alert(modalAler);
+                            return;
+                        }
+                    }
+                }
             }
-            this.modal.alert(modalAler);
         }
+    }
+
+    chkCerts(certificates: Certificate[], form: FormGroup): any {
+        let has: boolean = false;
+        let hasTotal: boolean = false;
+        certificates.forEach((obj, index) => {
+            if (index != 0) {
+                if (form.controls['chk' + index].valid) {
+                    if (obj.children) {
+                        obj.children.forEach((ob, idx) => {
+                            if (form.controls['chk' + index + 'Child' + idx].valid) {
+                                has = true;
+                                if (form.controls['cer' + index + 'Child' + idx].value > 0) {
+                                    hasTotal = true;
+                                }
+                            } else {
+                                form.get('chk' + index + 'Child' + idx).setValidators([Validators.required]);
+                                form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
+                            }
+                        });
+                    } else {
+                        has = true;
+                        if (form.controls['cer' + index].value > 0) {
+                            hasTotal = true;
+                        }
+                    }
+                } else {
+                    form.get('chk' + index).setValidators([Validators.required]);
+                    form.get('chk' + index).updateValueAndValidity();
+                }
+            }
+        });
+        if (has) {
+            certificates.forEach((obj, index) => {
+                if (index != 0) {
+                    if (form.controls['chk' + index].invalid) {
+                        form.get('chk' + index).clearValidators();
+                        form.get('chk' + index).updateValueAndValidity();
+                    } else {
+                        if (obj.children) {
+                            obj.children.forEach((ob, idx) => {
+                                if (idx != 0) {
+                                    if (form.controls['chk' + index + 'Child' + idx].invalid) {
+                                        form.get('chk' + index + 'Child' + idx).clearValidators();
+                                        form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+        return { data: certificates, flag: has, total: hasTotal, form: form };
     }
 
     pdf(): boolean {
@@ -266,4 +275,105 @@ export class Nrq02000Service {
         });
     }
 
+    bindingData(certificates: Certificate[], files: any, form: FormGroup): FormData {
+        let formData = new FormData();
+        let _data = [];
+        certificates.forEach((obj, index) => {
+            if (index != 0) {
+                obj.check = form.controls['chk' + index].value;
+                obj.value = form.controls['cer' + index].value;
+                if (obj.check == "" && obj.value == "") {
+                    obj.check = false;
+                    obj.value = 0;
+                }
+                if (obj.children) {
+                    obj.children.forEach((ob, idx) => {
+                        if (idx !=0) {
+                            ob.check = form.controls['chk' + index + 'Child' + idx].value;
+                            ob.value = form.controls['cer' + index + 'Child' + idx].value;
+                            if (idx == 1) {
+                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                ob.acceptedDate = new Date(str[2], str[1], str[0]);
+                            }
+                            if (idx == 2) {
+                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                ob.registeredDate = new Date(str[2], str[1], str[0]);
+                            }
+                            if (idx == obj.children.length-1) {
+                                let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
+                                ob.statementYear = value;
+                                ob.other = form.controls['etc' + index + 'Child' + idx].value;
+                            }
+                            if (ob.check == "" && ob.value == "") {
+                                ob.check = false;
+                                ob.value = 0;
+                            }
+                            _data.push(ob);
+                        }
+                    })
+                    obj.children = [];
+                    obj.check = false;
+                    obj.value = 0;
+                }
+                _data.push(obj);
+            }
+        });
+        _data.splice(0, 1);
+        let data: Nrq02000 = {
+            tmbReqFormNo: this.tmbReqFormId,
+            acceptNo: form.controls.acceptNo.value,
+            accName: form.controls.accName.value,
+            accNo: Acc.revertAccNo(form.controls.accNo.value),
+            address: form.controls.address.value,
+            changeNameFile: files.changeNameFile ? files.changeNameFile : null,
+            copyFile: files.copyFile ? files.copyFile : null,
+            requestFile: files.requestFile ? files.requestFile : null,
+            corpName: form.controls.corpName.value,
+            corpName1: form.controls.corpName1.value,
+            corpNo: form.controls.corpNo.value,
+            departmentName: form.controls.departmentName.value,
+            note: form.controls.note.value,
+            reqTypeSelect: form.controls.reqTypeSelect.value,
+            customSegSelect: form.controls.customSegSelect.value,
+            payMethodSelect: form.controls.payMethodSelect.value,
+            subAccMethodSelect: form.controls.subAccMethodSelect.value,
+            telReq: form.controls.telReq.value,
+            tmbReceiptChk: form.controls.tmbReceiptChk.value,
+            certificates: _data
+        };
+        for (let key in data) {
+            if (data[key]) {
+                if (key == "certificates") {
+                    formData.append(key, JSON.stringify(data[key]));
+                } else {
+                    formData.append(key, data[key]);
+                }
+            }
+        }
+        return formData;
+    }
+
+}
+
+export enum ValidatorMessages {
+    totalCerts = "กรุณาระบุจำนวนเอกสารรับรอง ที่ทำการยื่นคำขอ",
+    selectSomeCerts = "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ",
+    reqTypeSelect = "reqTypeSelect",
+    customSegSelect = "customSegSelect",
+    payMethodSelect = "payMethodSelect",
+    subAccMethodSelect = "subAccMethodSelect",
+    accNo = "accNo",
+    accName = "accName",
+    corpNo = "corpNo",
+    corpName = "corpName",
+    corpName1 = "corpName1",
+    acceptNo = "acceptNo",
+    departmentName = "departmentName",
+    tmbReceiptChk = "tmbReceiptChk",
+    telReq = "telReq",
+    address = "address",
+    note = "note",
+    requestFile = "requestFile",
+    copyFile = "copyFile",
+    changeNameFile = "changeNameFile",
 }

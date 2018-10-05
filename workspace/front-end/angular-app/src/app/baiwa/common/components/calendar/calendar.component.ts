@@ -1,6 +1,7 @@
 import { Component, Input, AfterViewInit, Output, EventEmitter } from "@angular/core";
 import { Calendar } from "models/";
 import { dateLocale, digit } from "app/baiwa/common/helpers";
+import { NgControl } from "@angular/forms";
 
 declare var $: any;
 
@@ -12,10 +13,11 @@ declare var $: any;
 export class CalendarComponent implements AfterViewInit {
 
     @Input() calendar: Calendar;
+    @Input() disableCalendar: NgControl;
 
     @Output() calendarValue: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() { }
+    constructor() {}
 
     ngAfterViewInit() {
         $(`#${this.calendar.calendarId}`).calendar({
@@ -87,7 +89,7 @@ class DateConstant {
                         return DateConstant[`${local}Date`](date).split("/")[2];
                     },
                     date: (date, mode, settings) => {
-                        return DateConstant[`${local}Date`](date).split("/")[1]+"/"+DateConstant[`${local}Date`](date).split("/")[2];
+                        return DateConstant[`${local}Date`](date).split("/")[1] + "/" + DateConstant[`${local}Date`](date).split("/")[2];
                     }
                 };
             case 'dd/mm/yyyy':
@@ -99,6 +101,15 @@ class DateConstant {
                     },
                     date: (date, settings) => {
                         return DateConstant[`${local}Date`](date);
+                    }
+                };
+            case 'yyyy':
+                return {
+                    header: (date, mode, settings) => {
+                        return DateConstant[`${local}Date`](date).split("/")[2];
+                    },
+                    date: (date, mode, settings) => {
+                        return DateConstant[`${local}Date`](date).split("/")[2];
                     }
                 };
             default:
@@ -116,7 +127,7 @@ class DateConstant {
     }
 
     public static thDate = (date: Date) => {
-        if (date.getFullYear() > (new Date().getFullYear() + 540)) {
+        if (date.getFullYear() > (new Date().getFullYear() + 500)) {
             return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`;
         } else {
             const _date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())); // Date.UTC()
@@ -127,6 +138,6 @@ class DateConstant {
     }
 
     public static enDate = (date: Date) => {
-        return `${digit(date.getDate())}/${digit(date.getMonth()+1)}/${date.getFullYear()}`;
+        return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`;
     }
 }

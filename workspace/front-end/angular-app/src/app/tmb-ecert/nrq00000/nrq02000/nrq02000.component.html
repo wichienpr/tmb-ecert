@@ -1,7 +1,7 @@
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h2>
-    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form)">
+    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form, $event)">
       <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h4>
       <div class="inline fields">
         <div class="two wide field">
@@ -18,7 +18,7 @@
           </label>
         </div>
         <div class="five wide field">
-          {{ ( tmbReqFormId | async ) | emptyString }}
+          {{ tmbReqFormId | emptyString }}
         </div>
       </div>
 
@@ -26,7 +26,7 @@
         <div class="two wide field">
           <label>ประเภทคำขอ</label>
         </div>
-        <div class="five wide field {{ validate('reqTypeSelect', ngForm.submitted) ? '' : 'error' }}">
+        <div #reqTypeSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.reqTypeSelect) }">
           <ui-dropdown [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
@@ -68,12 +68,12 @@
                   <td style="display: none">&nbsp;</td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="req.code">
+              <ng-container *ngIf="req.code&&req.feeDbd">
                 <tr>
                   <td class="center aligned">
-                    <div class="field {{ validateChk() ? 'error' : '' }}">
+                    <div class="field" [ngClass]="{'error': invalid(form.controls['chk'+i]) }">
                       <div class="ui checkbox">
-                        <input type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
+                        <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
                         <label></label>
                       </div>
                     </div>
@@ -82,14 +82,57 @@
                   <td>{{ req.feeDbd }}</td>
                   <td>{{ req.feeTmb }}</td>
                   <td>
-                    <div class="field {{ validate('cer'+i, ngForm.submitted) ? '' : 'error' }}">
+                    <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i]) }">
                       <div class="ui input">
-                        <input type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
+                        <input #cer type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
                           formControlName="cer{{i}}" style="width: 100%;">
                       </div>
                     </div>
                   </td>
                 </tr>
+              </ng-container>
+              <ng-container *ngIf="req.code&&!req.feeDbd&&req.children">
+                <ng-container>
+                  <tr>
+                    <td>
+                      <div class="center aligned field" [ngClass]="{'error': invalid(form.controls['chk'+i]) }">
+                        <div class="ui checkbox">
+                          <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
+                          <label></label>
+                        </div>
+                      </div>
+                    </td>
+                    <td colspan="4">{{ req.certificate }}</td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngFor="let item of req.children; let j = index">
+                  <tr *ngIf="j>0" [ngClass]="{ 'hidden': !showChildren }">
+                    <td></td>
+                    <td class="left aligned" colspan="3">
+                      <div class="inline field"
+                      [ngClass]="{'error': invalid(form.controls['etc'+i+'Child'+j])||invalid(form.controls['cal'+i+'Child'+j])||invalid(form.controls['chk'+i+'Child'+j]) }">
+                        <div class="ui checkbox">
+                          <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (click)="toggleChkChild(i, j)" formControlName="chk{{i}}Child{{j}}">
+                          <label>{{ item.certificate }}</label>
+                        </div>
+                        <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
+                          <input #etcChild type="text" formControlName="etc{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value">
+                        </div>
+                        <div class="ui input right floated">
+                          <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value" (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i+'Child'+j]) }">
+                        <div class="ui input">
+                          <input #cerChild type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
+                            formControlName="cer{{i}}Child{{j}}" style="width: 100%;">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
               </ng-container>
             </ng-container>
           </tbody>
@@ -100,15 +143,15 @@
           <label>เลขที่นิติบุคคล
           </label>
         </div>
-        <div class="five wide field {{ validate('corpNo', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="corpNo" placeholder="เลขที่นิติบุคคล">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.corpNo) }">
+          <input type="text" #corpNo formControlName="corpNo" placeholder="เลขที่นิติบุคคล">
         </div>
         <div class="two wide field">
           <label>ชื่อนิติบุคคล
           </label>
         </div>
-        <div class="five wide field {{ validate('corpName', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="corpName" placeholder="ชื่อนิติบุคคล">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.corpName) }">
+          <input type="text" #corpName formControlName="corpName" placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
       <div class="inline fields">
@@ -116,15 +159,15 @@
           <label>Customer Segment
           </label>
         </div>
-        <div class="five wide field {{ validate('customSegSelect', ngForm.submitted) ? '' : 'error' }}">
+        <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect) }">
           <ui-dropdown [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field">
           <label>เลขที่ CA/มติอนุมัติ
           </label>
         </div>
-        <div class="five wide field {{ validate('acceptNo', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="acceptNo" placeholder="เลขที่ CA/มติอนุมัติ">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.acceptNo) }">
+          <input type="text" #acceptNo formControlName="acceptNo" placeholder="เลขที่ CA/มติอนุมัติ">
         </div>
       </div>
 
@@ -133,8 +176,8 @@
           <label>ชื่อหน่วยงาน
           </label>
         </div>
-        <div class="five wide field {{ validate('departmentName', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.departmentName) }">
+          <input type="text" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
       <div class="inline fields">
@@ -142,7 +185,7 @@
           <label>วิธีการรับชำระ</label>
         </div>
         <div class="two wide field"></div>
-        <div class="five wide field {{ validate('payMethodSelect', ngForm.submitted) ? '' : 'error' }}">
+        <div #payMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.payMethodSelect) }">
           <ui-dropdown [dropdown]="dropdownObj.payMethod" (valueChange)="payMethodChange($event)"></ui-dropdown>
         </div>
       </div>
@@ -152,7 +195,7 @@
           <label>วิธีหักบัญชีจาก</label>
         </div>
 
-        <div class="five wide field {{ validate('subAccMethodSelect', ngForm.submitted) ? '' : 'error' }}">
+        <div #subAccMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.subAccMethodSelect) }">
           <ui-dropdown [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
@@ -190,35 +233,35 @@
         <div class="four wide field">
           <label>เลขที่บัญชี</label>
         </div>
-        <div class="five wide field {{ validate('accNo', ngForm.submitted) ? '' : 'error' }}">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.accNo) }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" (keypress)="accNoPress($event)" autocomplete="off" placeholder="123-1-12345-9">
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off" placeholder="123-1-12345-9">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>
         </div>
-        <div class="five wide field {{ validate('accName', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="accName" placeholder="ชื่อบัญชี">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.accName) }">
+          <input type="text" #accName formControlName="accName" placeholder="ชื่อบัญชี">
         </div>
       </div>
       <div class="inline fields">
         <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
-        <div class="two wide field {{ validate('tmbReceiptChk', ngForm.submitted) ? '' : 'error' }}">
+        <div class="two wide field" [ngClass]="{'error': invalid(form.controls.tmbReceiptChk) }">
           <div class="ui checkbox" style="width: 100%">
-            <input type="checkbox" formControlName="tmbReceiptChk">
+            <input type="checkbox" #tmbReceiptChk formControlName="tmbReceiptChk">
             <label class="custom-rt">ชื่อนิติบุคคล</label>
           </div>
         </div>
-        <div class="three wide field {{ validate('corpName1', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
+        <div class="three wide field" [ngClass]="{'error': invalid(form.controls.corpName1) }">
+          <input type="text" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
-        <div class="five wide field {{ validate('telReq', ngForm.submitted) ? '' : 'error' }}">
-          <input type="text" formControlName="telReq" placeholder="เบอร์โทรผู้ขอ/ลูกค้า">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.telReq) }">
+          <input type="text" #telReq formControlName="telReq" placeholder="เบอร์โทรผู้ขอ/ลูกค้า">
         </div>
       </div>
 
@@ -227,14 +270,14 @@
           <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
           </label>
         </div>
-        <div class="five wide field {{ validate('requestFile', ngForm.submitted) ? '' : 'error' }}">
-          <input type="file" (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.requestFile) }">
+          <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
         <div class="two wide field">
           <label>ที่อยู่</label>
         </div>
-        <div class="five wide field {{ validate('address', ngForm.submitted) ? '' : 'error' }}">
-          <textarea formControlName="address" rows="3"></textarea>
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.address) }">
+          <textarea #address formControlName="address" rows="3"></textarea>
         </div>
       </div>
 
@@ -243,15 +286,15 @@
         <div class="four wide field">
           <label>สำเนาบัตรประชาชน</label>
         </div>
-        <div class="five wide field {{ validate('copyFile', ngForm.submitted) ? '' : 'error' }}">
-          <input type="file" (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.address) }">
+          <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
       </div>
       <div class="inline fields">
         <div class="four wide field">
           <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
-        <div class="five wide field {{ validate('changeNameFile', ngForm.submitted) ? '' : 'error' }}">
+        <div class="five wide field">
           <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
         </div>
       </div>
@@ -260,7 +303,7 @@
         <div class="four wide field">
           <label>หมายเหตุ</label>
         </div>
-        <div class="five wide field {{ validate('note', ngForm.submitted) ? '' : 'error' }}">
+        <div class="five wide field">
           <textarea rows="2" formControlName="note"></textarea>
         </div>
       </div>
@@ -271,7 +314,7 @@
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button class="ui blue basic {{ isdownload ? '' : 'disabled' }} button" type="submit">
+            <button class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="submit">
               <i class="file alternate outline icon"></i>
               ยื่นใบคำขอ
             </button>

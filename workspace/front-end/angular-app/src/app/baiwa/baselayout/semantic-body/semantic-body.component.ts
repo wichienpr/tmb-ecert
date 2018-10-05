@@ -10,6 +10,7 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel } from '@angul
 export class SemanticBodyComponent implements OnInit {
 
   modalAlert: Modal;
+  modalAlertFunction: Modal;
   modalAlertSuccess: Modal;
   modalConfirm: Modal;
   loading: boolean = false;
@@ -22,6 +23,14 @@ export class SemanticBodyComponent implements OnInit {
       class: "notification",
       type: "alert",
       for: "notify"
+    }
+    this.modalAlertFunction = {
+      modalId: "alert-func",
+      size: "small",
+      title: "แจ้งเตือน",
+      class: "notification",
+      type: "alert",
+      for: "confirm"
     }
     this.modalAlertSuccess = {
       modalId: "alert-success",

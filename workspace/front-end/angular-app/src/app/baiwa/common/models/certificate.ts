@@ -4,6 +4,7 @@ export interface Certificate {
     typeCode: string;
     typeDesc: string;
     certificate: string;
+    children?: Certificate[];
     feeDbd: string;
     feeTmb: string;
 }

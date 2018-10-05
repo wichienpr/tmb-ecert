@@ -24,7 +24,7 @@ export class DropdownComponent implements AfterViewInit {
     constructor() { }
 
     ngAfterViewInit() {
-        $(`#${this.dropdown.dropdownId}`).dropdown().css('width', '100%');
+        $(`#${this.dropdown.dropdownId}`).dropdown({ forceSelection: false }).css('width', '100%');
     }
 
     onChange(e) {

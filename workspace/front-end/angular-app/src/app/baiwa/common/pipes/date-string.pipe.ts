@@ -3,7 +3,7 @@ import { digit } from 'helpers/';
 
 @Pipe({ name: 'dateString' })
 export class DateStringPipe implements PipeTransform {
-    transform(value: Date, local: string = "th"): string {
+    transform(value: Date, local: string = "en"): string {
         let date = value ? new Date(value) : new Date();
         return DateString[`${local}Date`](date);
     }

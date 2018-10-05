@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
-import { Modal, RequestForm, initRequestForm, RequestCertificate } from 'models/';
-import { Observable } from 'rxjs';
-import { Certificate } from 'models/';
+import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute } from '@angular/router';
 
 const URL = {
@@ -53,7 +51,7 @@ export class Crs02000Service {
     this.modal.confirm(e => { }, modal);
   }
 
-  async getChkList(id: string) {
+  getChkList(id: string) {
     return this.ajax.get(`${URL.CER_BY_TYPE}/${id}`, response => {
       let lists = response.json();
       const list = lists.slice(0, 1);
@@ -70,21 +68,21 @@ export class Crs02000Service {
     });
   }
 
-  async getData(id: string) {
+  getData(id: string) {
     return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
       let data: RequestForm[] = response.json() as RequestForm[];
       return data.length > 0 ? data[0] : initRequestForm;
     })
   }
 
-  async getCert(id: String) {
+  getCert(id: String) {
     return this.ajax.get(`${URL.REQUEST_CERTIFICATE}/${id}`, response => {
       let data: RequestCertificate[] = response.json() as RequestCertificate[];
       return data;
     });
   }
 
-  async matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
+  matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
     return new Promise<Certificate[]>(resolve => {
       chkList.forEach((obj, index) => {
         cert.forEach((ob, idx) => {

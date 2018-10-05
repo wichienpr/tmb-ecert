@@ -18,6 +18,7 @@ export enum CalendarFormatter{
     MMMMyyyy = "mmmm yyyy",
     MMyyyy = "MM/yyyy",
     ddMMyyyy = "dd/mm/yyyy",
+    yyyy = "yyyy",
     DEFAULT = ""
 }
 

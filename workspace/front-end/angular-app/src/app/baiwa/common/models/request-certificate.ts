@@ -9,4 +9,7 @@ export interface RequestCertificate {
 	updateById: String
 	updateByName: String
 	updateDateTime: Date
+	registeredDate?: Date
+	statementYear?: Number
+	acceptedDate?: Date
 }

@@ -10,3 +10,10 @@
     width: 100%;
     text-align: right;
 }
+
+.right.floated {
+    float: right;
+}
+.hidden {
+    display: none;
+}
