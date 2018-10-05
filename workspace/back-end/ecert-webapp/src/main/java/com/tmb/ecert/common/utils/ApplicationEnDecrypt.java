@@ -1,8 +1,9 @@
-package tmb.co.th.floatingchart.common.utils;
+package com.tmb.ecert.common.utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class ApplicationEnDecrypt {
@@ -31,7 +32,7 @@ public class ApplicationEnDecrypt {
 
 	public static String decrypt(String keyStorePath,String encryptedText) throws Exception {
 
-		keyStorePath keyStore = new keyStorePath();
+		ApplicationKeyStore keyStore = new ApplicationKeyStore();
 
 		SecretKey keyFound = keyStore.loadSecretKey(keyStorePath);
 
