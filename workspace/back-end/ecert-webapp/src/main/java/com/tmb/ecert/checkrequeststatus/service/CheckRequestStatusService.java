@@ -14,12 +14,15 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.StatusVo;
 
-
+import com.tmb.ecert.common.constant.StatusConstant;
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;;
 
 @Service
 public class CheckRequestStatusService {
 
-	private Logger logger = LoggerFactory.getLogger(CheckRequestStatusService.class);
+
+
+	private Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
 	@Autowired
 	private CheckRequestStatusDao crs01000Dao;
@@ -46,27 +49,27 @@ public class CheckRequestStatusService {
 		List<StatusVo> statusVoList = crs01000Dao.countStatus();
 		
 		for (StatusVo data : statusVoList) {
-			if("10001".equals(data.getStatus())) {
+			if(StatusConstant.NEW_REQUEST.equals(data.getStatus())) {
 				countStatusVo.setNewrequest(data.getCount());
-			}else if("10002".equals(data.getStatus())) {
+			}else if(StatusConstant.PAYMENT_PROCESSING.equals(data.getStatus())) {
 				countStatusVo.setPaymentProcessing(data.getCount());
-			}else if("10003".equals(data.getStatus())) {
+			}else if(StatusConstant.REFUSE_REQUEST.equals(data.getStatus())) {
 				countStatusVo.setRefuseRequest(data.getCount());
-			}else if("10004".equals(data.getStatus())) {
+			}else if(StatusConstant.CANCEL_REQUEST.equals(data.getStatus())) {
 				countStatusVo.setCancelRequest(data.getCount());
-			}else if("10005".equals(data.getStatus())) {
+			}else if(StatusConstant.WAIT_PAYMENT_APPROVAL.equals(data.getStatus())) {
 				countStatusVo.setWaitPaymentApproval(data.getCount());
-			}else if("10006".equals(data.getStatus())) {
+			}else if(StatusConstant.PAYMENT_APPROVALS.equals(data.getStatus())) {
 				countStatusVo.setPaymentApprovals(data.getCount());
-			}else if("10007".equals(data.getStatus())) {
+			}else if(StatusConstant.CHARGE_BACK.equals(data.getStatus())) {
 				countStatusVo.setChargeback(data.getCount());
-			}else if("10008".equals(data.getStatus())) {
+			}else if(StatusConstant.PAYMENT_FAILED.equals(data.getStatus())) {
 				countStatusVo.setPaymentfailed(data.getCount());
-			}else if("10009".equals(data.getStatus())) {
+			}else if(StatusConstant.WAIT_UPLOAD_CERTIFICATE.equals(data.getStatus())) {
 				countStatusVo.setWaitUploadCertificate(data.getCount());
-			}else if("10010".equals(data.getStatus())) {
+			}else if(StatusConstant.SUCCEED.equals(data.getStatus())) {
 				countStatusVo.setSucceed(data.getCount());
-			}else if("10011".equals(data.getStatus())) {
+			}else if(StatusConstant.WAIT_SAVE_REQUEST.equals(data.getStatus())) {
 				countStatusVo.setWaitSaveRequest(data.getCount());
 			}	
 			

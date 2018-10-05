@@ -17,6 +17,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.CountStatusVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 
 
 
@@ -25,7 +26,7 @@ import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
 public class CheckRequestStatusController {
 
 	
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	private Logger log = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 	
 	
 	@Autowired
