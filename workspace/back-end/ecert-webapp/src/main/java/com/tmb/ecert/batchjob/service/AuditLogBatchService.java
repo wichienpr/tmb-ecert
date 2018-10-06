@@ -4,38 +4,32 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.dao.AuditLogDao;
+import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
+import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
+import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
-import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
 import com.tmb.ecert.common.utils.SftpUtils;
-import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
-import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 @ConditionalOnProperty(name="job.auditlog.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -47,7 +41,7 @@ public class AuditLogBatchService {
 	private AuditLogDao auditLogDao;
 	
 	@Autowired
-	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
+	private JobMonitoringDao jobMonitoringDao;
 
 	public void transferAuditLogByActionCode(String actionCode) {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
@@ -98,7 +92,7 @@ public class AuditLogBatchService {
 			
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
-			paymentGLSummaryBatchDao.insertEcertJobMonitoring(jobMonitoring);
+			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 	}
 	

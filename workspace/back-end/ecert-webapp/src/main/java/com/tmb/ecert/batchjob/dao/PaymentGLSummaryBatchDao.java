@@ -35,18 +35,6 @@ public class PaymentGLSummaryBatchDao {
 	
 	private final String QUERY_REQ_GL_SUMMARY_PROCESS = " SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10010') AND CONVERT(date, REQUEST_DATE) = ? ";
 	
-	private final String QUERY_INSERT_ECERT_JOB_MONITORING = " INSERT INTO ECERT_JOB_MONITORING ( " +
-			" JOBTYPE_CODE,  	 	" + 
-			" START_DATE,  	 		" + 
-			" STOP_DATE, 	 		" + 
-			" ENDOFDATE, 		 	" + 
-			" STATUS,  		 		" + 
-			" ERROR_DESC,  	 		" + 
-			" RERUN_NUMBER, 	 	" + 
-			" RERUN_BY_ID, 	 		" + 
-			" RERUN_BY_NAME, 	 	" + 
-			" RERUN_DATETIME ) 		" +
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 	
 	private final String QUERY_UPDATE_ECERT_JOB_MONITORING = " UPDATE ECERT_JOB_MONITORING " + 
 			" SET STOP_DATE = ?, STATUS = ? AND ERROR_DESC = ?, RERUN_ID = ?, RERUN_BY_NAME = ?, RERUN_DATETIME = ?" +
@@ -68,7 +56,6 @@ public class PaymentGLSummaryBatchDao {
 		@Override
 		public EcertRequestForm mapRow(ResultSet rs, int arg1) throws SQLException {
 			EcertRequestForm vo = new EcertRequestForm();
-			
 			vo.setReqFormId(rs.getLong("REQFORM_ID"));
 			vo.setRequestDate(rs.getTimestamp("REQUEST_DATE"));
 			vo.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
@@ -126,30 +113,6 @@ public class PaymentGLSummaryBatchDao {
 			return vo;
 		}
 	};
-	
-	public Long insertEcertJobMonitoring(EcertJobMonitoring ecertJobMonitoring) {
-		KeyHolder holder = new GeneratedKeyHolder();
-
-		jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_ECERT_JOB_MONITORING, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, ecertJobMonitoring.getJobTypeCode());
-				ps.setTimestamp(2, ecertJobMonitoring.getStartDate() != null ? new Timestamp(ecertJobMonitoring.getStartDate().getTime()) : null);
-				ps.setTimestamp(3, ecertJobMonitoring.getStopDate() != null ? new Timestamp(ecertJobMonitoring.getStopDate().getTime()) : null);
-				ps.setTimestamp(4, ecertJobMonitoring.getEndOfDate() != null ? new Timestamp(ecertJobMonitoring.getEndOfDate().getTime()) : null);
-				ps.setString(5, ecertJobMonitoring.getStatus());
-				ps.setString(6, ecertJobMonitoring.getErrorDesc());
-				ps.setInt(7, ecertJobMonitoring.getRerunNumber());
-				ps.setString(8, ecertJobMonitoring.getRerunById());
-				ps.setString(9, ecertJobMonitoring.getRerunByName());
-				ps.setTimestamp(10, ecertJobMonitoring.getRerunDatetime() != null ? new Timestamp(ecertJobMonitoring.getRerunDatetime().getTime()) : null);
-				return ps;
-			}
-		}, holder);
-		Long id = holder.getKey().longValue();
-		return id;
-	}
 	
 	public Long insertEcertJobGLFailed(EcertJobGLFailed ecertJobGLFailed) {
 		KeyHolder holder = new GeneratedKeyHolder();

@@ -1,6 +1,6 @@
 package com.tmb.ecert.common.domain;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class ParameterConfig {
 	private Long parameterconfigId;
@@ -8,7 +8,7 @@ public class ParameterConfig {
 	private String propertyValue;
 	private String updatedById;
 	private String updatedByName;
-	private Date updatedDatetime;
+	private Timestamp updatedDatetime;
 	
 	public Long getParameterconfigId() {
 		return parameterconfigId;
@@ -40,10 +40,10 @@ public class ParameterConfig {
 	public void setUpdatedByName(String updatedByName) {
 		this.updatedByName = updatedByName;
 	}
-	public Date getUpdatedDatetime() {
+	public Timestamp getUpdatedDatetime() {
 		return updatedDatetime;
 	}
-	public void setUpdatedDatetime(Date updatedDatetime) {
+	public void setUpdatedDatetime(Timestamp updatedDatetime) {
 		this.updatedDatetime = updatedDatetime;
 	}
 }

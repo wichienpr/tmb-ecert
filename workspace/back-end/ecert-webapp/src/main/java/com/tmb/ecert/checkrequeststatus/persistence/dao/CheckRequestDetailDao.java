@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.tmb.ecert.checkrequeststatus.controller.CheckRequestDetailController;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -52,13 +51,13 @@ public class CheckRequestDetailDao {
 			row.setCertificateCode(rs.getString("CERTIFICATE_CODE"));
 			row.setCreatedById(rs.getString("CREATED_BY_ID"));
 			row.setCreatedByName(rs.getString("CREATED_BY_NAME"));
-			row.setCreatedDateTime(rs.getDate("CREATED_DATETIME"));
+			row.setCreatedDateTime(rs.getTimestamp("CREATED_DATETIME"));
 			row.setReqCertificateId(rs.getLong("REQCERTIFICATE_ID"));
 			row.setReqFormId(rs.getLong("REQFORM_ID"));
 			row.setTotalNumber(rs.getInt("TOTALNUMBER"));
 			row.setUpdateById(rs.getString("UPDATED_BY_ID"));
 			row.setUpdateByName(rs.getString("UPDATED_BY_NAME"));
-			row.setUpdateDateTime(rs.getDate("UPDATED_DATETIME"));
+			row.setUpdateDateTime(rs.getTimestamp("UPDATED_DATETIME"));
 			return row;
 		}
 	};
@@ -85,7 +84,7 @@ public class CheckRequestDetailDao {
 			row.setCountPayment(rs.getInt("COUNT_PAYMENT"));
 			row.setCreatedById(rs.getString("CREATED_BY_ID"));
 			row.setCreatedByName(rs.getString("CREATED_BY_NAME"));
-			row.setCreatedDateTime(rs.getDate("CREATED_DATETIME"));
+			row.setCreatedDateTime(rs.getTimestamp("CREATED_DATETIME"));
 			row.setCustomerName(rs.getString("CUSTOMER_NAME"));
 			row.setCustomerNameReceipt(rs.getString("CUSTOMER_NAMERECEIPT"));
 			row.setCustsegmentCode(rs.getString("CUSTSEGMENT_CODE"));
@@ -98,11 +97,11 @@ public class CheckRequestDetailDao {
 			row.setMakerByName(rs.getString("MAKER_BY_NAME"));
 			row.setOrganizeId(rs.getString("ORGANIZE_ID"));
 			row.setPaidTypeCode(rs.getString("PAIDTYPE_CODE"));
-			row.setPayLoadTs(rs.getDate("PAYLOADTS"));
+			row.setPayLoadTs(rs.getTimestamp("PAYLOADTS"));
 			row.setPaymentBranchCode(rs.getString("PAYMENT_BRANCHCODE"));
-			row.setPaymentDate(rs.getDate("PAYMENT_DATE"));
+			row.setPaymentDate(rs.getTimestamp("PAYMENT_DATE"));
 			row.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
-			row.setPostDate(rs.getDate("POSTDATE"));
+			row.setPostDate(rs.getTimestamp("POSTDATE"));
 			row.setReceiptNo(rs.getString("RECEIPT_NO"));
 			row.setRef1(rs.getString("REF1"));
 			row.setRef2(rs.getString("REF2"));
@@ -110,7 +109,7 @@ public class CheckRequestDetailDao {
 			row.setRejectReasonOther(rs.getString("REJECTREASON_OTHER"));
 			row.setRemark(rs.getString("REMARK"));
 			row.setReqFormId(rs.getLong("REQFORM_ID"));
-			row.setRequestDate(rs.getDate("REQUEST_DATE"));
+			row.setRequestDate(rs.getTimestamp("REQUEST_DATE"));
 			row.setRequestFormFile(rs.getString("REQUESTFORM_FILE"));
 			row.setStatus(rs.getString("STATUS"));
 			row.setTelephone(rs.getString("TELEPHONE"));
@@ -118,7 +117,7 @@ public class CheckRequestDetailDao {
 			row.setTranCode(rs.getString("TRANCODE"));
 			row.setUpdatedById(rs.getString("UPDATED_BY_ID"));
 			row.setUpdatedByName(rs.getString("UPDATED_BY_NAME"));
-			row.setUpdatedDateTime(rs.getDate("UPDATED_DATETIME"));
+			row.setUpdatedDateTime(rs.getTimestamp("UPDATED_DATETIME"));
 			return row;
 		}
 	};

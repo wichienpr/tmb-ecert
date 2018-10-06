@@ -42,9 +42,26 @@ public class ProjectConstant {
 		public static final String BATCH_AUDITLOG_FTPUSERNAME = "auditlog.ftpserver.username";
 		public static final String BATCH_AUDITLOG_FTPPWD = "auditlog.ftpserver.password";
 		public static final String BATCH_AUDITLOG_FILENAME = "auditlog.filename";
+		
+		//Parameter Config of Payment DBD Summary Batch Job
+		public static final String BATCH_DBDSUMMARY_FTPPATH = "ftp.dbd.path";
+		public static final String BATCH_DBDSUMMARY_FTPHOST = "ftp.dbd.ip";
+		public static final String BATCH_DBDSUMMARY_FTPUSERNAME = "ftp.dbd.username";
+		public static final String BATCH_DBDSUMMARY_FTPPWD = "ftp.dbd.password";
+		public static final String BATCH_DBDSUMMARY_ARCHIVEPATH = "payment.summary.archive.path";
+		
 	}
 	
 	public static class CHANNEL {
 		public static final String BATCH = "BATCH";
+	}
+	
+	public static class SYSTEM{
+		public static final String TMB_BANKCODE = "tmb.bankcode";
+		public static final String TMB_TRANSACTION_CODE = "tmb.transactiono";
+		public static final String TMB_SERVICE_CODE = "tmb.servicecode";
+		public static final String DBD_ACCOUNT_NAME = "dbd.account.name";
+		public static final String DBD_ACCOUNT_NUMBER = "dbd.accountno ";
+		public static final String TMB_TRAN_TYPE = "tmb.transaction.type ";
 	}
 }

@@ -33,7 +33,7 @@ public class ParameterConfigDao {
 			row.setPropertyValue(rs.getString("PROPERTY_VALUE"));
 			row.setUpdatedById(rs.getString("UPDATED_BY_ID"));
 			row.setUpdatedByName(rs.getString("UPDATED_BY_NAME"));
-			row.setUpdatedDatetime(rs.getDate("UPDATED_DATETIME"));
+			row.setUpdatedDatetime(rs.getTimestamp("UPDATED_DATETIME"));
 			return row;
 		}
 	};

@@ -1,12 +1,23 @@
 package com.tmb.ecert.common.domain;
 
 public class Certificate {
+	private Long certificateId;
 	private String code;
 	private String typeCode;
 	private String typeDesc;
 	private String certificate;
 	private String feeDbd;
 	private String feeTmb;
+	
+	
+
+	public Long getCertificateId() {
+		return certificateId;
+	}
+
+	public void setCertificateId(Long certificateId) {
+		this.certificateId = certificateId;
+	}
 
 	public String getCode() {
 		return code;

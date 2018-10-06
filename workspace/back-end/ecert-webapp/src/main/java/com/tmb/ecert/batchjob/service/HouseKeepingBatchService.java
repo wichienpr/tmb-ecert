@@ -20,19 +20,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.dao.AuditLogDao;
+import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
+import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
+import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
-import th.co.baiwa.buckwaframework.support.ApplicationCache;
 import com.tmb.ecert.common.utils.ArchiveFileUtil;
-import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
-import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 @ConditionalOnProperty(name="job.housekeeping.archive.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -48,6 +49,9 @@ public class HouseKeepingBatchService {
 	
 	@Autowired
 	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
+	
+	@Autowired
+	private JobMonitoringDao jobMonitoringDao;
 
 	/**
 	 * 
@@ -112,7 +116,7 @@ public class HouseKeepingBatchService {
 			
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
-			paymentGLSummaryBatchDao.insertEcertJobMonitoring(jobMonitoring);
+			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 		log.info("HouseKeepingBatchService end process...");
 	}

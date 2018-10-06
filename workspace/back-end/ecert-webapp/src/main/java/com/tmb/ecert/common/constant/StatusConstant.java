@@ -16,6 +16,7 @@ public class StatusConstant {
 	public static class JOBMONITORING{
 		public final static String AUDITLOG_TYPE ="60005";
 		public final static String HOUSEKEEPING_TYPE ="60006";
+		public final static String DBDSUMMARY_TYPE ="60001";
 		public final static String SUCCESS ="80001";
 		public final static String FAILED ="80002";
 	}

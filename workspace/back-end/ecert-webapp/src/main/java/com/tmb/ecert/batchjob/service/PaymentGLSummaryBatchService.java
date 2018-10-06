@@ -25,6 +25,7 @@ import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOB_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAID_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAYMENT_GL_SUMMARY;
+import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
@@ -45,6 +46,9 @@ public class PaymentGLSummaryBatchService {
 	
 	@Autowired
 	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
+	
+	@Autowired
+	private JobMonitoringDao jobMonitoringDao;
 	
 	private String DATE_FORMAT_DDMMYYYY = "ddMMyyyy";
 	private String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
@@ -112,7 +116,7 @@ public class PaymentGLSummaryBatchService {
 		ecertJobMonitoring.setRerunById(CHANNEL.BATCH);
 		ecertJobMonitoring.setRerunByName(CHANNEL.BATCH);
 		ecertJobMonitoring.setRerunDatetime(nowDate);
-		return paymentGLSummaryBatchDao.insertEcertJobMonitoring(ecertJobMonitoring);
+		return jobMonitoringDao.insertEcertJobMonitoring(ecertJobMonitoring);
 	}
 	
 	private void saveEcertJobGLFailed(Date requestDate) {
