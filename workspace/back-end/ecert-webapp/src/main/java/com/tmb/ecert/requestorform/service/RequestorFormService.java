@@ -42,6 +42,9 @@ public class RequestorFormService {
 
 	@Autowired
 	private RequestorDao dao;
+	
+	@Autowired
+	private RequestGenKeyService gen;
 
 	public CommonMessage<String> save(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
@@ -143,6 +146,58 @@ public class RequestorFormService {
 	public void pdf(String name, HttpServletResponse response) {
 		String pathName = PATH + name;
 		download.pdf(pathName, response);
+	}
+
+	public CommonMessage<String> saveBySelf() {
+		String reqTmbNo = gen.getNextKey();
+		CommonMessage<String> msg = new CommonMessage<String>();
+		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
+		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+		String requestFileName = "-";
+		String copyFile = "-";
+		String changeNameFile = "-";
+		try {
+			RequestForm req = new RequestForm();
+			req.setAccountName("Unknown Acc,Name.");
+			req.setAccountNo("Unknown Acc,No.");
+			req.setTmbRequestNo(reqTmbNo);
+			req.setAccountType("OOA");
+			req.setAddress("Unknown Address");
+			req.setBranch("-");
+			req.setCaNumber("Unknown CaNumber");
+			req.setCertificateFile("");
+			req.setCerTypeCode("None");
+			req.setChangeNameFile(changeNameFile);
+			req.setCompanyName("Unknown CompanyName");
+			req.setCreatedById(userId);
+			req.setCreatedByName(userName);
+			req.setCreatedDateTime(null);
+			req.setCustomerName("Unknown CustomerName");
+			req.setCustomerNameReceipt("");
+			req.setCustsegmentCode("None");
+			req.setDebitAccountType("None");
+			req.setDepartment("Unknown Department");
+			req.setGlType("B533");
+			req.setIdCardFile(copyFile);
+			req.setMakerById(userId);
+			req.setMakerByName(userName);
+			req.setOrganizeId("Unknown OrganizeId");
+			req.setPaidTypeCode("None");
+			req.setRequestDate(null);
+			req.setRequestFormFile(requestFileName);
+			req.setStatus("10001");
+			req.setRemark("-");
+			req.setTelephone("-");
+			dao.save(req); // SAVE REQUEST FORM
+			msg.setData(reqTmbNo);
+			msg.setMessage("SUCCESS");
+			return msg;
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg.setData(null);
+			msg.setMessage("ERROR");
+			return msg;
+		}
 	}
 
 }

@@ -38,6 +38,12 @@ public class RequestorFormController {
 		return reqService.save(form);
 	}
 	
+	@PostMapping("/save/by/self")
+	@ResponseBody
+	public CommonMessage<String> saveBySelf() {
+		return reqService.saveBySelf();
+	}
+	
 	@GetMapping("/download/{filename}")
 	@ResponseBody
 	public void download(@PathVariable("filename") String fileName, HttpServletResponse response) {
