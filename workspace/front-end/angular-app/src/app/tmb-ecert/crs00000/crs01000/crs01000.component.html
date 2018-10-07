@@ -77,7 +77,7 @@
                     <label class="custom-label-w-22">วันที่ขอ</label>
                   </div>
                   <div class="five wide field {{ validate('reqDate', ngForm.submitted) ? '' : 'error' }}" >
-                      <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%"></ui-calendar>
+                      <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%" ></ui-calendar>
                   </div>
                   <div class="two wide field ">
                     <label>ถึงวันที่

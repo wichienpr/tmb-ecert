@@ -5,13 +5,14 @@ import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { isValid } from 'app/baiwa/common/helpers';
+import { DatePipe } from '@angular/common';
 
 declare var $: any;
 @Component({
   selector: 'app-crs01000',
   templateUrl: './crs01000.component.html',
   styleUrls: ['./crs01000.component.css'],
-  providers: [Crs01000Service]
+  providers: [Crs01000Service,DatePipe]
 })
 export class Crs01000Component implements OnInit {
   calendar1: Calendar;
@@ -35,7 +36,9 @@ export class Crs01000Component implements OnInit {
   countSucceed : Number;
   countWaitSaveRequest : Number;
 
-  constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, ) {
+  tmpDate:Date;
+
+  constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, private datePipe: DatePipe) {
 
     this.crs01000Service.getForm().subscribe(form => {
       this.form = form
@@ -49,6 +52,7 @@ export class Crs01000Component implements OnInit {
       type: CalendarType.DATE,
       formatter: CalendarFormatter.DEFAULT,
       local: CalendarLocal.EN,
+      initial: new Date(),
       icon: "time icon"
     };
     this.calendar2 = {
@@ -59,9 +63,13 @@ export class Crs01000Component implements OnInit {
       type: CalendarType.DATE,
       formatter: CalendarFormatter.DEFAULT,
       local: CalendarLocal.EN,
+      initial: new Date(),
       icon: "time icon"
     };
 
+
+    this.tmpDate=new Date()
+    console.log(this.datePipe.transform(this.tmpDate, 'dd/MM/yyyy'))
   }
 
   ngOnInit() {
