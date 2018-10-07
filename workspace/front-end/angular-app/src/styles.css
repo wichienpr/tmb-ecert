@@ -34,3 +34,9 @@ th {
 
 tr:nth-child(odd) {background-color: white;}
 tr:nth-child(even) {background-color: #F8F8FF;}
+
+.modal {
+    position: absolute !important;
+    margin: 5vh auto !important;
+    top: 0 !important;
+}

@@ -63,7 +63,6 @@ export class ModalService {
         $('#confirm').addClass(obj.size || 'small');
         // callback function
         $("#confirm")
-            .modal({ centered: false, autofocus: false })
             .modal({
                 centered: false,
                 autofocus: false,

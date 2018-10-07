@@ -32,7 +32,11 @@ export class CalendarComponent implements AfterViewInit {
             maxDate: maxDate || null,
             startCalendar: $(`#${startId}`) || null,
             endCalendar: $(`#${endId}`) || null,
-        });
+        })
+        if (initial) {
+            const init = new Date(Date.UTC(initial.getFullYear(), initial.getMonth(), initial.getDate()));
+            $(`#${this.calendar.calendarId}`).calendar('set date', init);
+        }
     }
 
     onChange = (date, text, mode) => {

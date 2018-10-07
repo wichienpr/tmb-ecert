@@ -126,7 +126,6 @@ export class Nrq02000Service {
      * Forms Action
      */
     save(form: FormGroup, files: any, certificates: Certificate[], viewChilds: any) {
-        let modalValid: Modal = { msg: "" }
         let chkCerts = this.chkCerts(certificates, form);
         certificates = [...chkCerts.data]; // clear validators checkbox
         if (!chkCerts.flag) {
@@ -139,7 +138,6 @@ export class Nrq02000Service {
             viewChilds.cers[0].nativeElement.focus();
             return chkCerts.form;
         }
-        console.log(form.value);
         if (!form.valid) {
             const modalConf: Modal = {
                 msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น

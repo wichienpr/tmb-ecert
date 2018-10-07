@@ -1,15 +1,11 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { UserDetail } from 'app/user.model';
-import { Router } from '@angular/router';
-import { ModalService } from 'app/baiwa/common/services';
-import { Modal } from 'models/';
-import { AuthService } from 'app/baiwa/common/services/auth.service';
-import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
-import * as UserActions from 'app/user.action';
 
-declare var $: any;
+import { Modal } from 'models/';
+import { UserDetail } from 'app/user.model';
+import { AuthService, ModalService } from 'services/';
 
 @Component({
   selector: 'app-semantic-menu',
@@ -24,46 +20,17 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
   clockdisplay: any = { text: "---" };
   timeticker;
 
-
   constructor(private store: Store<{}>, private router: Router, private modal: ModalService
     , private loginsv: AuthService) {
   }
 
   ngOnInit() {
     this.user = this.store.select('user');
-    // this.user.subscribe(obj => {
-    //   if (obj.userId === "") {
-    //     const { ADMIN } = ROLES;
-    //     let list = [];
-    //     for (let key in PAGE_AUTH) {
-    //       list.push(PAGE_AUTH[key]);
-    //     }
-    //     let data: UserDetail = { // Mock User Detail to Update
-    //       userId: "000",
-    //       username: "admin",
-    //       firstName: "Administrator",
-    //       lastName: "-",
-    //       roles: [ADMIN],
-    //       auths: list
-    //     };
-    //     this.store.dispatch(new UserActions.UpdateUser(data)); // Update UserDetail
-    //   }
-    // });
-
     this.routes = [
       { // Main Menu 1
         label: "ทำคำขอใหม่",
         url: null,
         child: [ // Sub Menu 1.1 
-          // {
-          //   label: "Examples", url: null,
-          //   child: [
-          //     { label: "Example 1", url: "/examples/ex1" },
-          //     { label: "Example 2", url: "/examples/ex2" },
-          //     { label: "Example 3", url: "/examples/ex3" },
-          //     { label: "Example 4", url: "/examples/ex4" },
-          //   ]
-          // },
           { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq01000" },
           { label: "Request Form สำหรับทำรายการให้ลูกค้าลงนาม", url: "/nrq/nrq02000" },
         ]
@@ -117,13 +84,11 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
 
   logoutConfirm(e: boolean) {
     if (e == true) {
-
       this.loginsv.logout().subscribe(rsp => {
         this.router.navigate(['login']);
       });
     }
   }
-
 
   clock() {
     let d = new Date();
@@ -134,12 +99,11 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
     // console.log(this.clockdisplay);
   }
 
-
-
 }
 
 class Routing {
   label: string;      // functional
   url: string;        // functional
+  func?: Function;    // optional
   child?: Routing[];  // optional
 }
