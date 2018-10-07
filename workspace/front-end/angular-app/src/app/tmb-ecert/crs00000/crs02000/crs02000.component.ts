@@ -42,17 +42,25 @@ export class Crs02000Component implements OnInit {
     B: ""
   };
 
-  constructor( private service: Crs02000Service ) { }
+  constructor(private service: Crs02000Service) {
+    this.init();
+  }
 
-  async ngOnInit() {
+  ngOnInit() { }
+
+  async init() {
     this.id = this.service.getId();
     if (this.id !== "") {
       this.dataLoading = true;
       this.data = await this.service.getData(this.id);
       this.cert = await this.service.getCert(this.id);
       this.chkList = await this.service.getChkList(this.id);
+      for(let i=0;i<this.chkList.length;i++) {
+        if (this.chkList[i].feeDbd == "" && i != 0) {
+          this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+        }
+      }
       this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-      console.log(this.chkList);
       setTimeout(() => {
         this.dataLoading = false;
       }, 500);

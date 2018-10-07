@@ -2,6 +2,29 @@
   <div class="ui one grid">
     <div class="row">
       <!-- nrq01000 -->
+      <ui-modal [modal]="nrq01000">
+        <ng-template>
+          <div class="header" style="background:#1678C2">
+            <div style="color: rgb(255, 255, 255)">Request Form สำหรับลูกค้าทำรายการเอง </div>
+          </div>
+          <div class="content">{{ nrq01000.msg || '...'}}</div>
+          <div class="actions">
+            <div class="ui center aligned grid">
+              <div class="seven btn-bot wide column">
+                <button class="ui blue positive basic button" type="button">
+                  <i class="check circle outline icon"></i>
+                  ตกลง
+                </button>
+                <button class="ui blue positive basic button" type="button" (click)="print()">
+                  <i class="print icon"></i>
+                  พิมพ์ใบคำขอ
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ui-modal>
+      <!-- nrq01000 -->
     </div>
   </div>
 </div>

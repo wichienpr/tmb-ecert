@@ -9,6 +9,7 @@ const URL = {
   REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
   DOWNLOAD: "/api/crs/crs02000/download/",
   CER_BY_TYPE: "/api/crs/crs02000/cert/list",
+  CER_BY_TYPECODE: "/api/cer/typeCode",
 }
 
 @Injectable({
@@ -68,6 +69,12 @@ export class Crs02000Service {
     });
   }
 
+  getChkListMore(id: string) {
+    return this.ajax.post(URL.CER_BY_TYPECODE, { typeCode: id }, res => {
+      return res.text() ? res.json() : {};
+    });
+  }
+
   getData(id: string) {
     return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
       let data: RequestForm[] = response.json() as RequestForm[];
@@ -85,22 +92,31 @@ export class Crs02000Service {
   matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
     return new Promise<Certificate[]>(resolve => {
       chkList.forEach((obj, index) => {
-        let child = [];
         obj.value = 0;
         obj.check = false;
-        cert.forEach((ob, idx) => {
-          console.log(obj, ob);
-          if (obj.code == ob.certificateCode) {
+        cert.forEach( (ob, idx) => {
+          if(obj.code == ob.certificateCode) {
             obj.check = true;
-            obj.value += ob.totalNumber;
-            child.push(ob);
+            obj.value = ob.totalNumber;
           }
         });
-        if (child.length > 0) {
-          obj.children = child;
+        if (obj.children) {
+          obj.children.forEach((ob, idx) => {
+            ob.check = false;
+            ob.value = 0;
+            cert.forEach( (o, id) => {
+              if(ob.code == o.certificateCode) {
+                ob.check = true;
+                ob.value = o.totalNumber;
+                obj.check = true;
+                obj.value += ob.value;
+                console.log(obj.value);
+              }
+            });
+          });
         }
       });
-      resolve([...chkList]);
+      resolve(chkList);
     });
   }
 

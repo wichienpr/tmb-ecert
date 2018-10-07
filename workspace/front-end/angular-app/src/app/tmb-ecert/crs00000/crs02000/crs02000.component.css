@@ -9,3 +9,8 @@
 .download-link:hover {
     color: rgb(88, 88, 88);
 }
+
+.ui.checkbox > label{
+    color: black !important;
+    opacity: 1;
+}

@@ -6,6 +6,8 @@ import { ModalService } from 'app/baiwa/common/services';
 import { Nrq01000Service } from './nrq01000.service';
 import { Router } from '@angular/router';
 
+declare var $: any;
+
 @Component({
   selector: 'app-nrq01000',
   templateUrl: './nrq01000.component.html',
@@ -13,39 +15,50 @@ import { Router } from '@angular/router';
 })
 export class Nrq01000Component implements OnInit {
 
+  nrq01000: Modal;
+
   constructor(
     private modal: ModalService,
     private service: Nrq01000Service,
     private router: Router,
     private location: Location
-  ) { }
+  ) {
+    this.nrq01000 = {
+      modalId: "nrq01000",
+      type: "custom",
+      title: "Request Form สำหรับลูกค้าทำรายการเอง",
+      msg: "TMB Req. No:  - "
+    };
+  }
 
   ngOnInit() {
     this.confirm();
   }
 
   confirm = () => {
-    const modalC: Modal = {
+    const modalConf: Modal = {
       title: "ยืนยันการทำรายการ ?"
     };
     this.modal.confirm(async e => {
       if (e) {
-        let num = await this.service.getTmbReqFormId();
+        let response = await this.service.save();
         setTimeout(() => {
-          const modalConf: Modal = {
+          this.nrq01000 = {
+            modalId: "nrq01000",
+            type: "custom",
             title: "Request Form สำหรับลูกค้าทำรายการเอง",
-            msg: "TMB Req. No: " + num
+            msg: "TMB Req. No: " + response.data
           };
-          this.modal.confirm(e => {
-            if (e) {
-              
-            }
-          }, modalConf);
+          $("#nrq01000").modal('show');
         }, 200);
       } else {
         this.location.back();
       }
-    }, modalC);
+    }, modalConf);
+  }
+
+  print = () => {
+    this.service.pdf();
   }
 
 }
