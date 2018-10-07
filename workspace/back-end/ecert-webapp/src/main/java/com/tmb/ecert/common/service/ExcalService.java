@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class ExcalService {
 	public CellStyle topCenter;
 	public CellStyle topRight;
 	public CellStyle topLeft;
+	public CellStyle bgLightBule;
+	public CellStyle bgBule;
 	public Font fontHeader;
 	
 	public XSSFWorkbook setUpExcel() {
@@ -92,6 +95,31 @@ public class ExcalService {
 		bgGreen.setBorderTop(BorderStyle.THIN);
 		bgGreen.setFillForegroundColor(IndexedColors.GREEN.getIndex());
 		bgGreen.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		
+		bgLightBule = workbook.createCellStyle();
+		bgLightBule.setAlignment(HorizontalAlignment.CENTER);
+		bgLightBule.setBorderBottom(BorderStyle.THIN);
+		bgLightBule.setBorderLeft(BorderStyle.THIN);
+		bgLightBule.setBorderRight(BorderStyle.THIN);
+		bgLightBule.setBorderTop(BorderStyle.THIN);
+		bgLightBule.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+		bgLightBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		bgLightBule.setWrapText(true);
+		
+		bgBule = workbook.createCellStyle();
+		bgBule.setAlignment(HorizontalAlignment.CENTER);
+		bgBule.setBorderBottom(BorderStyle.THIN);
+		bgBule.setBorderLeft(BorderStyle.THIN);
+		bgBule.setBorderRight(BorderStyle.THIN);
+		bgBule.setBorderTop(BorderStyle.THIN);
+		bgBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
+        XSSFFont font = workbook.createFont();
+        font.setColor(IndexedColors.WHITE1.getIndex());
+        font.setBold(true);
+        bgBule.setFont(font);
+        bgBule.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        bgBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        bgBule.setWrapText(true);
 
 		topCenter = workbook.createCellStyle();
 		topCenter.setAlignment(HorizontalAlignment.CENTER);

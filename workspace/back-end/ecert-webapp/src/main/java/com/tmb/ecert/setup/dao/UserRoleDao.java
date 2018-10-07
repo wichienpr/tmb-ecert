@@ -162,16 +162,56 @@ public class UserRoleDao {
 		List<Object> params = new ArrayList<>();
 		Long roleId = form.getRoleId();
 		
-		sql.append(" UPDATE ECERT_ROLE SET ROLE_NAME = ? , STATUS = ? , UPDATED_BY_ID = ? , " + 
-				" UPDATED_BY_NAME = ? , UPDATED_DATETIME = GETDATE()  WHERE ROLE_ID = ? ");
-		params.add(form.getRoleName());
+		sql.append(" UPDATE ECERT_ROLE SET  STATUS = ? , UPDATED_BY_ID = ? , " + 
+				" UPDATED_BY_NAME = ? , UPDATED_DATETIME = GETDATE()  WHERE 1=1 ");
+
+//		params.add(form.getRoleName());
 		params.add(form.getStatus());
 		params.add(userID);
 		params.add(username);
-		params.add(roleId);
-//		int[] types = {Types.BIGINT};
+		
+		if (form.getRoleId() != null) {
+			sql.append(" AND ROLE_ID = ?  ");
+			params.add(form.getRoleId());
+		}
+		if (!form.getRoleName().isEmpty()) {
+			sql.append(" AND ROLE_NAME = ?  ");
+			params.add(form.getRoleName());
+		} 
+		
 		jdbcTemplate.update(sql.toString(), params.toArray());
 
 	}
+	
+	public int validateDuplicateRoleName(Sup01100FormVo form ) {
+		
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		sql.append(" SELECT count(1) FROM ECERT_ROLE WHERE ROLE_NAME = ? ");
+		params.add(form.getRoleName());
+		
+		return jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
+		
+	}
+	public List<RoleVo> getRoleInfo(Sup01100FormVo form){
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		List<RoleVo> list = new ArrayList<>();
+		
+		sql.append(" SELECT ROLE_ID,ROLE_NAME,STATUS FROM ECERT_ROLE WHERE 1 = 1 ");
+		
+		if (StringUtils.isNotBlank(form.getRoleName())) {
+			sql.append(" AND  ROLE_NAME = ? ");
+			params.add(form.getRoleName());
+		}
+
+
+		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup01000RowMapper);
+		return list;
+		
+	}
+	
 
 }
