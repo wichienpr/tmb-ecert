@@ -1,3 +1,44 @@
+<ui-modal [modal]="uploadModal">
+   <ng-template>
+      <i class="close icon"></i>
+      <div class="header" style="background: #1678C2">
+         <div style="color: white">Import Role </div>
+      </div>
+      <form class="ui form segment" [formGroup]="uploadForm">
+         <div class="content">
+            <div class="ui form">
+               <div class="inline fields">
+                  <div class="two wide field">
+                     <label>เลือกไฟล์</label>
+                  </div>
+                  <div class="nine wide field">
+                     <!-- <input type="file" (change)="changeUpload($event)"> -->
+                     <input type="file" (change)="changeUpload($event)" formControlName="fileUpload">
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="actions">
+            <div class="ui center aligned grid">
+               <div class="seven wide column">
+                  <button class="ui blue  basic button" (click)="uploadRole()">
+                     <i class=" upload icon"></i>
+                     Upload
+                  </button>&nbsp;&nbsp;&nbsp;
+                  <button class="ui grey  basic button" (click)="closeModal()">
+                     <i class="times circle outline icon"></i>
+                     Cancel
+                  </button>
+               </div>
+            </div>
+         </div>
+
+      </form>
+
+   </ng-template>
+</ui-modal>
+
+
 <div class="ui grid">
    <div class="sixteen wide column">
       <h2 class="ui header">Role Management
@@ -44,7 +85,7 @@
                <i class="trash alternate outline icon"></i>
                ล้างข้อมูล
             </button>
-            <button class="ui green  basic button" type="button">
+            <button class="ui green  basic button" type="button" (click)="showModalUpload()">
                <i class="download icon"></i>
                Import Role
             </button>
@@ -107,7 +148,8 @@
 
          <div class="ui center aligned grid">
             <div class="sixteen wide column">
-               <button class="ui blue basic button" (click)="clickExportRole()">
+               <!-- <button class="ui blue basic button" (click)="clickExportRole()"> -->
+                        <button class="ui blue basic button" (click)="clickExportRole()">
                   <i class="file excel outline icon"></i>Export to Role</button>
             </div>
          </div>

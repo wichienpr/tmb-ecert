@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Sup02000Service } from 'app/tmb-ecert/sup00000/sup02000/sup02000.service';
-import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { Sup02000 } from 'app/tmb-ecert/sup00000/sup02000/sup02000.model';
+import { ModalService } from 'app/baiwa/common/services';
 
 @Component({
   selector: 'app-sup02000',
@@ -10,47 +12,89 @@ import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 export class Sup02000Component implements OnInit {
 
   paramResult: any;
-
   parameterForm = this.fb.group({
-    aliases: this.fb.array([
-      this.fb.control('')
-    ])
+    formPropArray: this.fb.array([])
   });
+  responseObj: any;
 
-  constructor(private service: Sup02000Service, private fb: FormBuilder) {
+  constructor(private service: Sup02000Service, private fb: FormBuilder,private modal: ModalService) {
     this.paramResult = [{
       parameterconfigId: "",
       propertyName: "",
       propertyValue: ""
 
-    }]
+    }];
+    
+    this.responseObj = {
+      data: "",
+      message: ""
+    }
   }
 
   ngOnInit() {
     this.service.callGetParamAPI().subscribe(src => {
       this.paramResult = src;
       // console.log("getparam sucess ", src);
-      // this.paramResult.forEach(item => {
+      let i = 0;
+      this.paramResult.forEach(item => {
 
-      //   let name = item.propertyName
-      //   // item.propertyName = new FormControl(ormControl(item.propertyName);
-      //   // this.parameterForm.addControl(name, new FormControl(item.propertyValue))
-      //   // this.parameterForm[name] = new FormControl(item.propertyName);
+        let name = item.propertyName
+        let value = item.propertyValue
+        let id = item.parameterconfigId
 
-      //   this.aliases.push(this.fb.control(name));
-      // });
+        const newFormGroup: FormGroup = this.fb.group(
+          {
+            parameterconfigId: new FormControl(id),
+            propertyName: new FormControl(name),
+            propertyValue: new FormControl(value)
+          }
+        );
+
+
+        this.formPropArray.push(newFormGroup);
+        i++;
+      });
     })
     console.log("getparam sucess ", this.parameterForm);
 
   }
 
   clickSave() {
-    this.paramResult.forEach(element => {
-      console.log("value param ", element.propertyValue);
+    let listParameter = [];
+
+    let listFormProp: any = this.parameterForm.get('formPropArray');
+    listFormProp.controls.forEach(element => {
+      if (!(element.pristine)) {
+        let obj = {
+          parameterconfigId: element.controls.parameterconfigId.value,
+          propertyName: element.controls.propertyName.value,
+          propertyValue: element.controls.propertyValue.value
+        }
+        listParameter.push(obj)
+      }
     });
+
+    this.service.callSaveParameterAPI(listParameter).subscribe(res =>{
+      this.responseObj = res;
+      if (this.responseObj.message == null) {
+        this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+      } else {
+        this.modal.alert({ msg: this.responseObj.message });
+      }
+    },err =>{
+
+    });
+
+    // listParameter.forEach(item => {
+    //   console.log("value param change ", item.parameterconfigId);
+    // });
   }
-  get aliases() {
-    return this.parameterForm.get('aliases') as FormArray;
+  get formPropArray(): FormArray {
+    return this.parameterForm.get('formPropArray') as FormArray;
+  }
+
+  get listformPropArray(): FormArray {
+    return this.parameterForm.get('formPropArray.controls') as FormArray;
   }
 
 }

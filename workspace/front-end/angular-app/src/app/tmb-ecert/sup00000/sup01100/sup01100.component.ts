@@ -280,7 +280,6 @@ export class sup01100Component implements OnInit {
 
     if (this.form.valid) {
       this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
-        console.log("save success" + res);
         this.responseObj = res;
         if (this.responseObj.message == null) {
           this.modal.alert({ msg: "ทำรายการล้มเหลว" })
@@ -336,18 +335,17 @@ export class sup01100Component implements OnInit {
     }else{
       this.rolepermisson.forEach(element => {
         element.status = data[index].status;
-        console.log("item  key ",data[index].functionCode,index++);
+        // console.log("item  key ",data[index].functionCode,index++);
         //index++;
         element.chliddata.forEach(childs => {
           childs.status = data[index].status;
-          console.log("child  key ",data[index].functionCode,"",index++);
+          // console.log("child  key ",data[index].functionCode,"",index++);
           //index++;
         });
       });
       
     }
-
-
+    
     // this.rolepermisson.forEach(element => {
     //   console.log(element.fuctioncode, " status ", element.status)
     // });

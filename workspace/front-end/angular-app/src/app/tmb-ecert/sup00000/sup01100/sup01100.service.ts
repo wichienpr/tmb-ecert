@@ -6,8 +6,8 @@ import { PAGE_AUTH } from "app/baiwa/common/constants";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 const URL = {
-    SUP_API_SAVE: "setup/api/saveUserRole",
-    CER_BY_TYPE: "cer/typeCode"
+    SUP_API_SAVE: "/api/setup/sup01000/saveUserRole",
+    SUP_API_GET:"/api/setup/sup01000/getRolePermission/"
 }
 
 @Injectable({
@@ -180,7 +180,7 @@ export class sup01100Service {
     }
 
     callSaveAPI(form, roleId) {
-        const path = "/api/setup/saveUserRole";
+        const path = URL.SUP_API_SAVE;
         const httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         };
@@ -195,8 +195,8 @@ export class sup01100Service {
     }
 
     serviceSearchPermissionByRole(roleId) {
-        const path = "/api/setup/getRolePermission/" + roleId;
-        return this.ajax.Get(path)
+        const path = URL.SUP_API_GET + roleId;
+        return this.ajax.Get(path);
 
     }
 

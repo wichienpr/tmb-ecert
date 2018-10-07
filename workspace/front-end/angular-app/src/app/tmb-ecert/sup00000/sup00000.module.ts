@@ -6,6 +6,7 @@ import { Sup01000Component } from './sup01000/sup01000.component';
 import { sup01100Component } from './sup01100/sup01100.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Sup02000Component } from './sup02000/sup02000.component';
+import { ModalModule } from 'app/baiwa/common/components';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { Sup02000Component } from './sup02000/sup02000.component';
     Sup00000RoutingModule
     ,ReactiveFormsModule
     ,FormsModule
+    ,ModalModule
   ],
   declarations: [Sup01000Component, sup01100Component, Sup02000Component]
 })

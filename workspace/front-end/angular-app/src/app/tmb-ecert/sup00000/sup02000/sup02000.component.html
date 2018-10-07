@@ -4,31 +4,41 @@
 
 <div class="ui form segment ">
   <div class="ui grid ">
+
+
     <div class="row">
       <div class="three wide column">&nbsp;</div>
-      <div class="ten wide column" formArrayName="aliases">
-        <table class="ui small celled table nowrap " id="table" style="width: 100%">
-          <thead>
-            <tr style="text-align: center;">
-              <th>Property Name</th>
-              <th>Value</th>
+      <form class="ten wide column" [formGroup]="parameterForm">
+        <div class="ten wide column" formArrayName="formPropArray">
+          <table class="ui small celled table nowrap " id="table" style="width: 100%">
+            <thead>
+              <tr style="text-align: center;">
+                <th>Property Name</th>
+                <th>Value</th>
 
-            </tr>
-          </thead>
-          <tbody>
-
-              <tr *ngFor="let item of paramResult">
-                <td>{{item.propertyName}}</td>
-                <td>
-                  <!-- <input type="text"  [formControlName]="{{item.propertyName}}" style="width: 95%;">{{ item.propertyName}} -->
-                </td>
               </tr>
+            </thead>
+            <tbody>
 
-          </tbody>
-        </table>
-      </div>
+              <tr *ngFor="let item of formPropArray.controls;let i = index">
+
+                <ng-container [formGroupName]="i">
+                  <td style="width: 40%">{{item.controls.propertyName.value}}</td>
+                  <td style="width: 60%">
+                    <input type="text" formControlName="propertyValue"  style="width: 95%;">
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
       <div class="three wide column">&nbsp;</div>
     </div>
+
+
+
+
   </div>
 
 
