@@ -193,7 +193,7 @@
                 </tr>
               </ng-container>
               <ng-container *ngIf="chk.code && chk.feeTmb">
-                <tr style="background: 	#F8F8FF">
+                <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
                       <input type="checkbox" name="chk{{i}}" value="{{ chk.check }}">
@@ -207,19 +207,31 @@
                 </tr>
               </ng-container>
               <ng-container *ngIf="chk.code && !chk.feeTmb">
-                  <tr style="background: 	#F8F8FF">
+                <tr>
+                  <td class="center aligned">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="chk{{i}}">
+                      <label></label>
+                    </div>
+                  </td>
+                  <td colspan="3">{{ chk.certificate }}</td>
+                  <td style="text-align: right">{{ '' }} ชุด</td>
+                </tr>
+                <ng-container>
+                  <tr *ngFor="let db of chk.children">
                     <td class="center aligned">
                       <div class="ui checkbox">
                         <input type="checkbox" name="chk{{i}}">
                         <label></label>
                       </div>
                     </td>
-                    <td>{{ chk.certificate }}</td>
-                    <td>{{ chk.feeTmb }}</td>
-                    <td>{{ chk.feeTmb }}</td>
-                    <td style="text-align: right"></td>
+                    <td>{{ db.certificate }}</td>
+                    <td>{{ db.feeTmb }}</td>
+                    <td>{{ db.feeTmb }}</td>
+                    <td style="text-align: right">{{ db.value }} ชุด</td>
                   </tr>
                 </ng-container>
+              </ng-container>
             </ng-container>
           </tbody>
         </table>

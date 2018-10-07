@@ -20,11 +20,18 @@ export class CalendarComponent implements AfterViewInit {
     constructor() {}
 
     ngAfterViewInit() {
+        const { type, formatter, local, initial, minDate, maxDate, startId, endId } = this.calendar;
         $(`#${this.calendar.calendarId}`).calendar({
-            type: this.calendar.type || 'date',
+            type: type || 'date',
             text: DateConstant.text,
-            formatter: DateConstant.formatter(this.calendar.formatter || '', this.calendar.local || 'en'),
-            onChange: this.onChange
+            formatter: DateConstant.formatter(formatter || '', local || 'en'),
+            onChange: this.onChange,
+            touchReadonly: true,
+            initialDate: initial || null,
+            minDate: minDate || null,
+            maxDate: maxDate || null,
+            startCalendar: $(`#${startId}`) || null,
+            endCalendar: $(`#${endId}`) || null,
         });
     }
 

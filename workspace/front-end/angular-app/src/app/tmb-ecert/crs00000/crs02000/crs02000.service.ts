@@ -85,15 +85,20 @@ export class Crs02000Service {
   matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
     return new Promise<Certificate[]>(resolve => {
       chkList.forEach((obj, index) => {
+        let child = [];
+        obj.value = 0;
+        obj.check = false;
         cert.forEach((ob, idx) => {
+          console.log(obj, ob);
           if (obj.code == ob.certificateCode) {
             obj.check = true;
-            obj.value = ob.totalNumber;
-          } else {
-            obj.check = false;
-            obj.value = 0;
+            obj.value += ob.totalNumber;
+            child.push(ob);
           }
         });
+        if (child.length > 0) {
+          obj.children = child;
+        }
       });
       resolve([...chkList]);
     });
