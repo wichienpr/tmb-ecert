@@ -2,6 +2,7 @@ package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,8 @@ import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+
 @Service
 public class RequestorFormService {
 
@@ -42,8 +45,8 @@ public class RequestorFormService {
 
 	public CommonMessage<String> save(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
-		String userId = "000";
-		String userName = "Administrator";
+		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
+		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
 		String folder = PATH;
 
 		String requestFileName = "";
@@ -81,11 +84,11 @@ public class RequestorFormService {
 				req.setChangeNameFile(
 						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
 								: null);
-				req.setCompanyName(form.getCorpName());
+				req.setCompanyName(form.getCorpName1());
 				req.setCreatedById(userId);
 				req.setCreatedByName(userName);
 				req.setCreatedDateTime(null);
-				req.setCustomerName(form.getCorpName1());
+				req.setCustomerName(form.getCorpName());
 				req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
 				req.setCustsegmentCode(form.getCustomSegSelect());
 				req.setDebitAccountType(form.getSubAccMethodSelect());
@@ -113,6 +116,10 @@ public class RequestorFormService {
 						cert.setTotalNumber(cer.getValue());
 						cert.setCreatedById(userId);
 						cert.setCreatedByName(userName);
+						cert.setRegisteredDate(cer.getRegisteredDate());
+						cert.setStatementYear(cer.getStatementYear());
+						cert.setAcceptedDate(cer.getAcceptedDate());
+						cert.setOther(cer.getOther());
 						dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
 					}
 				}

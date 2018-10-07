@@ -1,9 +1,11 @@
 package com.tmb.ecert.requestorform.persistence.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.common.utils.BeanUtils;
 
 @Repository
 public class RequestorDao {
@@ -32,8 +35,8 @@ public class RequestorDao {
 	public Long saveCertificates(RequestCertificate vo) {
 
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_CERTIFICATE_INSERT);
-		sql.append("(REQFORM_ID,CERTIFICATE_CODE,TOTALNUMBER,CREATED_BY_ID,CREATED_BY_NAME,CREATED_DATETIME)");
-		sql.append("VALUES(?,?,?,?,?,GETDATE())");
+		sql.append("(REQFORM_ID,CERTIFICATE_CODE,TOTALNUMBER,CREATED_BY_ID,CREATED_BY_NAME,CREATED_DATETIME,REGISTERED_DATE,STATEMENT_YEAR,ACCEPTED_DATE,OTHER)");
+		sql.append("VALUES(?,?,?,?,?,GETDATE(),?,?,?,?)");
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -46,6 +49,26 @@ public class RequestorDao {
 				ps.setInt(3, vo.getTotalNumber());
 				ps.setString(4, vo.getCreatedById());
 				ps.setString(5, vo.getCreatedByName());
+				if (vo.getRegisteredDate() != null) {
+					ps.setDate(6, new Date(vo.getRegisteredDate().getTime()));
+				} else {
+					ps.setNull(6, Types.DATE);
+				}
+				if (vo.getStatementYear() != null) {
+					ps.setInt(7, vo.getStatementYear());
+				} else {
+					ps.setNull(7, Types.SMALLINT);
+				}
+				if (vo.getAcceptedDate() != null) {
+					ps.setDate(8, new Date(vo.getAcceptedDate().getTime()));
+				} else {
+					ps.setNull(8, Types.DATE);
+				}
+				if (BeanUtils.isNotEmpty(vo.getOther())) {
+					ps.setString(9, vo.getOther());
+				} else {
+					ps.setString(9, null);
+				}
 				return ps;
 			}
 		}, holder);
