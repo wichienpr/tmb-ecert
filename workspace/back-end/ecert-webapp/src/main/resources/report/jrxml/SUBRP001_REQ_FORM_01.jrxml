@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_req_form" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2904f56-6e0f-4530-85b9-2ec512a2c109">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13" isBold="true"/>
+	<style name="sub_detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="160" splitType="Stretch">
+			<frame>
+				<reportElement x="280" y="0" width="275" height="44" uuid="d3957061-134f-4ce7-a5aa-d4d182f46702"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textField>
+					<reportElement style="sub_header" x="0" y="0" width="275" height="20" uuid="0e8a3d5e-f0bd-4e8d-aba5-1063918a5fec"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["ชื่อนิติบุคคล"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="" style="sub_header" x="0" y="20" width="70" height="20" uuid="dd4caad5-3262-484f-b5f0-608017307c38"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["(ระบุ)"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="76" y="20" width="177" height="20" uuid="bec5f111-3428-42b7-8d2a-536aa1c6cfa3"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="40" y="0" width="240" height="44" uuid="9310e835-15fc-4a1c-8135-65c239ae6493"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textField>
+					<reportElement style="sub_header" x="0" y="0" width="240" height="20" uuid="b0f3ad1e-d56b-4d43-a8e9-8024bb3380d1"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["เลขทะเบียน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="" style="sub_header" x="0" y="20" width="70" height="20" uuid="a86d730e-efe0-499f-820d-510f73bd6d87"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["(ระบุ)"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="76" y="20" width="164" height="20" uuid="06212506-e4a3-47f8-a5e7-d61f3b9dba7a"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="40" height="44" uuid="fc54a85d-e85a-4dce-a36a-a5e4ac5e3da9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textField>
+					<reportElement style="sub_header" x="0" y="0" width="40" height="20" uuid="f3bd7eb6-d937-439a-b71d-c4bd792d19b6"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["ลำดับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_header" x="0" y="20" width="40" height="20" uuid="10eb8737-842d-4459-b2d4-9297f5f34ff6"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["1"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="44" width="555" height="116" uuid="7e2e77d0-2055-4d5a-967c-e72f4de8893e"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textField>
+					<reportElement style="sub_detail" x="48" y="0" width="100" height="16" uuid="785cada4-c5c6-4cf8-a68b-c38a2f7bbf3c"/>
+					<textFieldExpression><![CDATA["ชื่อผู้ชำระเงินในใบเสร็จ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="174" y="0" width="44" height="16" uuid="c53fd0a1-a836-4264-8e2e-8efbfa40403b"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["เงินสด"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="232" y="0" width="18" height="16" uuid="04520b4e-3498-436f-876b-f1617f2a7382"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2611"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="254" y="0" width="78" height="16" uuid="e8576af9-e45f-4726-a925-9ec2bb0d3840"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["บัญชีเงินฝาก ระบุชื่อ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="151" y="0" width="18" height="16" uuid="12383334-5414-455b-be7b-978978822d7e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="356" y="0" width="177" height="16" uuid="b1671595-d696-4532-b298-bbcd88dab353"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="0" y="16" width="41" height="16" uuid="d8bd5cb9-9fca-4665-925f-c50581599bf2"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["1.1"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="16" width="18" height="16" uuid="c27ab899-8ae0-4f95-a5e2-c3d3176237d9"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="48" y="16" width="100" height="16" uuid="ce0b1ac2-9b1d-4737-8e21-460a0c462bc5"/>
+					<textFieldExpression><![CDATA["หนังสือรับรอง จำนวน"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="160" y="16" width="79" height="16" uuid="c65d555e-1d97-4eb3-80f3-4f8658ca5b72"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="239" y="16" width="28" height="16" uuid="dff33b44-0b15-424b-8745-dc868ae3e4c6"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="0" y="32" width="41" height="16" uuid="1276a4da-f999-4772-9e0e-4b95a9bc383e"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["1.2"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="32" width="18" height="16" uuid="d75c8803-f9b8-46b0-a2b3-eaedbd2816b8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="48" y="32" width="100" height="16" uuid="80ea161b-7291-4822-9a6d-01b14af620bb"/>
+					<textFieldExpression><![CDATA["รับรองสำเนา"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="160" y="32" width="79" height="16" uuid="37d16017-15b9-43fb-8180-b0f17ebc2e91"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="239" y="32" width="28" height="16" uuid="8514691e-8e3c-456d-8c59-8d94fc2f48de"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="48" width="12" height="16" uuid="138c20be-274e-4921-96e6-a782a57b5cd1"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="49" y="48" width="116" height="16" uuid="c69c3edf-1b2b-4779-8bc9-6a576048dfca"/>
+					<textFieldExpression><![CDATA["หนังสือบริคณห์สนธิ ฉบับจัดตั้ง"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="177" y="48" width="195" height="16" uuid="2b247210-1476-4bce-8101-915c5d3807ef"/>
+					<textFieldExpression><![CDATA["หนังสือบริคณห์สนธิ ฉบับแก้ไข ระบุวันที่รับจดทะเบียน"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="372" y="48" width="79" height="16" uuid="6282203d-ad6d-4966-9fa5-7c386e50e4ef"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="468" y="48" width="36" height="16" uuid="cb923933-f6ed-4e26-bdee-990a7806d723"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["ข้อบังคับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="522" y="48" width="28" height="16" uuid="42db6adb-879a-47b6-95e7-15a61eccee86"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["ดวงตรา"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="165" y="48" width="12" height="16" uuid="26ea79f5-e28e-4223-923c-16e9cdd4dd6b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="64" width="12" height="16" uuid="8b0d96cd-2b31-47e0-8d0b-3addcfc66476"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="49" y="64" width="28" height="16" uuid="7efcc863-17ca-40ba-984a-9acd5c5b506a"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA["อื่นๆ"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="100" y="64" width="272" height="16" uuid="90e63b31-a9e6-4151-8996-069cba898034"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="372" y="64" width="68" height="16" uuid="19cb02e4-c4bf-41bc-b5e6-3e473cc1bef1"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["ระบุวันที่"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="441" y="64" width="92" height="16" uuid="33987fee-e1a7-4057-af21-beeb2d7ef72f"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="0" y="80" width="41" height="16" uuid="2805ea49-f8cf-4a8a-8752-2f0f280525c4"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["1.3"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="80" width="18" height="16" uuid="dce119c9-5b55-4f66-a126-d16e7f39c319"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="48" y="80" width="68" height="16" uuid="5ccfda8d-be46-474f-8dba-e32b88eb63c7"/>
+					<textFieldExpression><![CDATA["งบการเงิน ระบุปี"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="116" y="80" width="204" height="16" uuid="b665e2c9-bc86-4858-80ac-1f252e520252"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="0" y="96" width="41" height="16" uuid="6098bcac-aa5b-4e88-892a-2ead96e690c3"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["1.4"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="96" width="18" height="16" uuid="108d2f47-b85c-4bdd-b938-460dfd2cee4d"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="sub_detail" x="48" y="96" width="152" height="16" uuid="6c168adf-cd6c-4228-8085-9918b7b03f9e"/>
+					<textFieldExpression><![CDATA["บัญชีรายชื่อผู้ถือหุ้น ระบุวันที่รับเอกสาร"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="sub_detail" x="200" y="96" width="240" height="16" uuid="30077ec7-1d51-4de3-bce0-5b4c9a5e6831"/>
+					<box>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Left"/>
+				</textField>
+				<textField>
+					<reportElement x="453" y="48" width="12" height="16" uuid="5105c466-566b-4e1b-8701-d445d353a12f"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="506" y="48" width="12" height="16" uuid="f97045ed-5a68-4fa0-9507-04c31c6d250f"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+</jasperReport>

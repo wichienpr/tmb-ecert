@@ -4,7 +4,7 @@ public class ReportConstants {
 	
 	// Path of JasperReports
 	public static final class PATH {
-		public static final String ROOT_PATH = "/reports";
+		public static final String ROOT_PATH = "/report";
 		public static final String FONT_PATH = ROOT_PATH + "/fonts";
 		public static final String IMAGE_PATH = ROOT_PATH + "/images";
 		public static final String JRXML_PATH = ROOT_PATH + "/jrxml";
