@@ -336,11 +336,11 @@ export class sup01100Component implements OnInit {
       this.rolepermisson.forEach(element => {
         element.status = data[index].status;
         // console.log("item  key ",data[index].functionCode,index++);
-        //index++;
+        index++;
         element.chliddata.forEach(childs => {
           childs.status = data[index].status;
           // console.log("child  key ",data[index].functionCode,"",index++);
-          //index++;
+          index++;
         });
       });
       
