@@ -26,6 +26,7 @@ import com.tmb.ecert.batchjob.domain.BankTrasactionFile.Header;
 import com.tmb.ecert.batchjob.domain.BankTrasactionFile.Total;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.ProjectConstant.SYSTEM;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
@@ -120,6 +121,10 @@ public class PaymentDBDSummaryBatchService {
 
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
+			jobMonitoring.setRerunNumber(0);
+			jobMonitoring.setRerunById(CHANNEL.BATCH);
+			jobMonitoring.setRerunByName(CHANNEL.BATCH);
+			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 		log.info("PaymentDBDSummaryBatchService end process...");

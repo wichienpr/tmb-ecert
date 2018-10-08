@@ -21,7 +21,7 @@ public class ListOfValueDao {
 	private static String template = " SELECT * FROM ECERT_LISTOFVALUE WHERE 1=1 ";
 
 	public List<ListOfValue> lovAllType() {
-		String str = " SELECT DISTINCT TYPE FROM ECERT_LISTOFVALUE WHERE 1=1 ";
+		String str = " SELECT DISTINCT TYPE FROM ECERT_LISTOFVALUE WHERE 1=1 AND STATUS=0";
 		StringBuilder sql = new StringBuilder(template);
 		sql.append(" ORDER BY TYPE ASC ");
 		List<ListOfValue> result = jdbcTemplate.query(sql.toString(), typeMapper);
@@ -59,6 +59,11 @@ public class ListOfValueDao {
 			list.setTypeDesc(rs.getString("TYPE_DESC"));
 			list.setName(rs.getString("NAME"));
 			list.setSequence(rs.getInt("SEQUENCE"));
+			list.setGlType(rs.getString("GL_TYPE"));
+			list.setTranCode(rs.getString("TRNCODE"));
+			list.setAccountType(rs.getString("ACCTYPE"));
+			list.setStatus(rs.getInt("STATUS"));
+			list.setAccountNo(rs.getString("ACCTNO"));
 			return list;
 		}
 	};

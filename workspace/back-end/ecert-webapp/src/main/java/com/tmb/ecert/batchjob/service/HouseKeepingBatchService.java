@@ -25,14 +25,16 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
-import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.utils.ArchiveFileUtil;
 
+import net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.BatchAllocator;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
@@ -46,10 +48,7 @@ public class HouseKeepingBatchService {
 		
 	@Autowired
 	private ArchiveFileUtil archiveFileUtil;
-	
-	@Autowired
-	private PaymentGLSummaryBatchDao paymentGLSummaryBatchDao;
-	
+		
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
 
@@ -116,6 +115,10 @@ public class HouseKeepingBatchService {
 			
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
+			jobMonitoring.setRerunNumber(0);
+			jobMonitoring.setRerunById(CHANNEL.BATCH);
+			jobMonitoring.setRerunByName(CHANNEL.BATCH);
+			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 		log.info("HouseKeepingBatchService end process...");
@@ -130,38 +133,40 @@ public class HouseKeepingBatchService {
 		String removeFileIndex = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_RMFILE);
 		int after = (afterDay == null) ? -7 : afterDay.intValue() * -1;
 		File actual = new File(path);
-		
-		for (File f : actual.listFiles()) {
-			String fileName = f.getName();
-			String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-			
-			if (StringUtils.contains(removeFileIndex, extension)) {
+		if(actual!=null && actual.listFiles() !=null && actual.listFiles().length>0) {
+			for (File f : actual.listFiles()) {
+				String fileName = f.getName();
+				String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 				
-				BasicFileAttributes attr = Files.readAttributes(Paths.get(f.getAbsolutePath()),
-						BasicFileAttributes.class);
-				FileTime fileCreated = attr.creationTime();
-				Date fileDate = new Date(fileCreated.toMillis());
+				if (StringUtils.contains(removeFileIndex, extension)) {
+					
+					BasicFileAttributes attr = Files.readAttributes(Paths.get(f.getAbsolutePath()),
+							BasicFileAttributes.class);
+					FileTime fileCreated = attr.creationTime();
+					Date fileDate = new Date(fileCreated.toMillis());
 
-				Calendar fileDateCalendar = Calendar.getInstance();
-				fileDateCalendar.setTime(fileDate);
-				fileDateCalendar.set(Calendar.MINUTE, 0);
-				fileDateCalendar.set(Calendar.SECOND, 0);
-				fileDateCalendar.set(Calendar.MILLISECOND, 0);
+					Calendar fileDateCalendar = Calendar.getInstance();
+					fileDateCalendar.setTime(fileDate);
+					fileDateCalendar.set(Calendar.MINUTE, 0);
+					fileDateCalendar.set(Calendar.SECOND, 0);
+					fileDateCalendar.set(Calendar.MILLISECOND, 0);
 
-				Calendar afterDate = Calendar.getInstance();
-				afterDate.add(Calendar.DATE, after);
-				afterDate.set(Calendar.MINUTE, 0);
-				afterDate.set(Calendar.SECOND, 0);
-				afterDate.set(Calendar.MILLISECOND, 0);
+					Calendar afterDate = Calendar.getInstance();
+					afterDate.add(Calendar.DATE, after);
+					afterDate.set(Calendar.MINUTE, 0);
+					afterDate.set(Calendar.SECOND, 0);
+					afterDate.set(Calendar.MILLISECOND, 0);
 
-				boolean isRemove = afterDate.after(fileDateCalendar) || afterDate.equals(fileDateCalendar);
+					boolean isRemove = afterDate.after(fileDateCalendar) || afterDate.equals(fileDateCalendar);
 
-				if (isRemove) {
-					FileUtils.forceDelete(f);
-					log.info("HouseKeepingBatchService removed old file success.");
+					if (isRemove) {
+						FileUtils.forceDelete(f);
+						log.info("HouseKeepingBatchService removed old file success.");
+					}
 				}
 			}
 		}
+		
 	}
 	
 	/**

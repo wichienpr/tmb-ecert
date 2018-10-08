@@ -23,6 +23,7 @@ import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.SftpFileVo;
@@ -92,6 +93,10 @@ public class AuditLogBatchService {
 			
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
+			jobMonitoring.setRerunNumber(0);
+			jobMonitoring.setRerunById(CHANNEL.BATCH);
+			jobMonitoring.setRerunByName(CHANNEL.BATCH);
+			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
 		}
 	}
