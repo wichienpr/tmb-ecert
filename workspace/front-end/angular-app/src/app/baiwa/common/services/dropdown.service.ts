@@ -13,6 +13,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
     private customSeg: Lov[]; // Customer Segment
     private payMethod: Lov[]; // วิธีชำระ
     private subAccMethod: Lov[]; // วีธีหักจากธนาคาร
+    private action: Lov[]; // วีธีหักจากธนาคาร
     
     constructor(private ajax: AjaxService) {
         /**
@@ -68,6 +69,18 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.subAccMethod = data;
                 }
                 obs.next([...this.subAccMethod]);
+            });
+        });
+    }
+
+    getaction(): Observable<Lov[]> { // วีธีหักจากธนาคาร
+        return new Observable(obs => {
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 7 }, result => {
+                const data = result.json();
+                if (data && data.length > 0) {
+                    this.action = data;
+                }
+                obs.next([...this.action]);
             });
         });
     }
