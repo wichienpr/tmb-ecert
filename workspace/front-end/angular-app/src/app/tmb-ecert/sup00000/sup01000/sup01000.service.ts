@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AjaxService, ModalService } from "app/baiwa/common/services";
+import { AjaxService, ModalService, DropdownService } from "app/baiwa/common/services";
 import { PAGE_AUTH } from "app/baiwa/common/constants";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, retry } from 'rxjs/operators';
@@ -21,7 +21,8 @@ export class Sup01000Service {
     log:any;
 
 
-    constructor(private ajax: AjaxService, private httpClient: HttpClient, private modal: ModalService) {
+    constructor(private ajax: AjaxService, private httpClient: HttpClient, 
+        private modal: ModalService,private dropdown : DropdownService) {
         
     }
 
@@ -55,6 +56,9 @@ export class Sup01000Service {
         //     listRole: form,
         //     fileUpload:null
         // },httpOptions);
+    }
+    getStatusType(){
+        return this.dropdown.getStatusType();
     }
 
     callExportTemplateAPI() {

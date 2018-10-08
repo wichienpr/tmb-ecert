@@ -11,9 +11,9 @@
                   <div class="two wide field">
                      <label>เลือกไฟล์</label>
                   </div>
-                  <div class="nine wide field">
+                  <div class="nine wide field" [ngClass]="{'error':(fileUpload.invalid && (fileUpload.dirty || fileUpload.touched))  || (fileUpload.invalid && onSubmitUpload)} ">
                      <!-- <input type="file" (change)="changeUpload($event)"> -->
-                     <input type="file" (change)="changeUpload($event)" formControlName="fileUpload">
+                     <input type="file" (change)="changeUpload($event)" formControlName="fileUpload" required>
                   </div>
                </div>
             </div>
@@ -67,11 +67,7 @@
                <label>ประเภทคำขอ</label>
             </div>
             <div class="five wide field ">
-               <select class="ui dropdown" formControlName="status">
-                  <option value="2">ทั้งหมด</option>
-                  <option value="0">Active</option>
-                  <option value="1">Inactive</option>
-               </select>
+               <ui-dropdown [dropdown]="dropDownStatus"></ui-dropdown>
             </div>
          </div>
          <br>
@@ -95,7 +91,7 @@
             </button>
             <button class="ui green  basic button" type="button" (click)="clickExportTemplate()">
                <i class="file excel outline icon"></i>
-               Export Template
+               Download Template
             </button>
             <br>
          </div>
@@ -149,7 +145,7 @@
          <div class="ui center aligned grid">
             <div class="sixteen wide column">
                <!-- <button class="ui blue basic button" (click)="clickExportRole()"> -->
-                        <button class="ui blue basic button" (click)="clickExportRole()">
+               <button class="ui blue basic button" (click)="clickExportRole()">
                   <i class="file excel outline icon"></i>Export to Role</button>
             </div>
          </div>

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Sup01000Service } from 'app/tmb-ecert/sup00000/sup01000/sup01000.service';
 import { ModalModule } from 'app/baiwa/common/components';
-import { Modal } from 'app/baiwa/common/models';
+import { Modal, Lov } from 'app/baiwa/common/models';
 import { ModalService, AjaxService } from 'app/baiwa/common/services';
 
 declare var $: any;
@@ -24,12 +24,14 @@ export class Sup01000Component implements OnInit {
   nodataResult: boolean;
   fileExcelUpload: any;
   responseObj: any;
-  dataStateSearch:any;
+  dataStateSearch: any;
+  onSubmitUpload:boolean;
+  dropDownStatus:any;
 
 
   userRoleForm: FormGroup = new FormGroup({
     roleName: new FormControl('', Validators.required),
-    status: new FormControl('2', Validators.required)
+    status: new FormControl('90001', Validators.required)
   });
 
   uploadForm: FormGroup = new FormGroup({
@@ -42,19 +44,20 @@ export class Sup01000Component implements OnInit {
   };
 
 
-  constructor(private router: Router, private service: Sup01000Service, private modal: ModalService,private ajax: AjaxService) {
+  constructor(private router: Router, private service: Sup01000Service, private modal: ModalService, private ajax: AjaxService) {
 
     this.objDropdownType = [{
       name: "all",
       value: "101"
     }];
-    this.objRoleResult = [{
-      roldId: "",
-      roleName: "",
-      status: "",
-      rolePermissionId: "",
-      functionCode: ""
-    }]
+    this.objRoleResult = []
+    // {
+    //   roldId: "",
+    //   roleName: "",
+    //   status: "",
+    //   rolePermissionId: "",
+    //   functionCode: ""
+    // }
     this.roleResult = {
       roldId: "",
       roleName: "",
@@ -72,6 +75,22 @@ export class Sup01000Component implements OnInit {
       roleName: "",
       status: "",
     }
+    this.onSubmitUpload = false;
+
+    this.dropDownStatus = {
+      dropdownId: "statusType",
+      dropdownName: "statusType",
+      type: "search",
+      formGroup: this.userRoleForm,
+      formControlName: "status",
+      values: [],
+      valueName: "code",
+      labelName: "name"
+  }
+  this.service.getStatusType().subscribe((obj: Lov[]) =>{
+    this.dropDownStatus.values = obj
+    console.log("drop down ",obj);
+  });
 
 
   }
@@ -98,10 +117,11 @@ export class Sup01000Component implements OnInit {
       console.log("call get error");
     });
     this.isShowResult = true;
+
   }
 
   clickClear() {
-    this.userRoleForm.reset({ roleName: "", status: "2" })
+    this.userRoleForm.reset({ roleName: "", status: "90001" })
     // console.log("clear btn");
   }
 
@@ -132,23 +152,27 @@ export class Sup01000Component implements OnInit {
     // }, error => {
     //   console.log("export error");
     // });
-    this.service.callExportAPI(this.dataStateSearch.roleName,this.dataStateSearch.status);
+    this.service.callExportAPI(this.dataStateSearch.roleName, this.dataStateSearch.status);
 
   }
   clickExportTemplate() {
     this.service.callExportTemplateAPI();
   }
   uploadRole() {
-
-    this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
-      this.responseObj = src;
-      if (this.responseObj.message == null) {
-        this.modal.alert({ msg: "ทำรายการล้มเหลว" })
-      } else {
-        this.modal.alert({ msg: this.responseObj.message });
-      }
-    });
-
+    this.onSubmitUpload = true;
+    console.log(this.uploadForm.valid);
+    if(this.uploadForm.valid){
+      this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
+        this.responseObj = src;
+        if (this.responseObj.message == null) {
+          this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+        } else {
+          this.modal.alert({ msg: this.responseObj.message });
+        }
+      }, error => {
+        console.log("call get error");
+      });
+    }
   }
   changeUpload(data: any) {
     this.fileExcelUpload = data.target.files[0];
@@ -156,12 +180,16 @@ export class Sup01000Component implements OnInit {
   }
 
   showModalUpload() {
+    this.onSubmitUpload = false;
+    this.uploadForm.reset({ fileUpload: null});
     console.log("show modal")
     $('#upload').modal('show');
   }
 
   closeModal() {
-    console.log("hide modal")
+    this.onSubmitUpload = false;
+    this.uploadForm.reset({ fileUpload: null });
+    console.log("hide modal");
     $('#upload').modal('hide');
   }
 
@@ -180,20 +208,20 @@ export class Sup01000Component implements OnInit {
 
   //   var binaryData = [];
   //   binaryData.push(blob);
-  
+
   //   const url = window.URL.createObjectURL(new Blob(binaryData, { type: type })); // <-- work with blob directly
-  
+
   //    // create hidden dom element (so it works in all browsers)
   //    const a = document.createElement('a');
   //    a.setAttribute('style', 'display:none;');
   //    document.body.appendChild(a);
-  
+
   //    // create file, attach to hidden element and open hidden element
   //    a.href = url;
   //    a.download = filename;
   //    a.click();
   // }
-  
+
 
 
 }

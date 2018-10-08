@@ -1,0 +1,136 @@
+<!-- <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
+  <i class="close icon"></i>
+  <div class="header" style="background: #1678C2">
+    <div style="color: white">Import Role </div>
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="two wide field">
+          <label>เลือกไฟล์</label>
+        </div>
+        <div class="nine wide field">
+          <input type="file">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui center aligned grid">
+      <div class="seven wide column">
+        <button class="ui blue  basic button" (click)="closeModal(modal[0])">
+          <i class=" upload icon"></i>
+          Upload
+        </button>&nbsp;&nbsp;&nbsp;
+        <button class="ui grey  basic button" (click)="closeModal(modal[0])">
+          <i class="times circle outline icon"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</modal> -->
+
+
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <h2 class="ui header">Email Configuration
+    </h2>
+
+    <div class="ui attached segment">
+      <br>
+      <div class="ui form">
+        <form [formGroup]="form">
+          <div class="inline fields">
+            <div class="four wide field"></div>
+            <div class="two wide field ">
+              <label> Email Name </label>
+            </div>
+            <div class="four wide field ">
+              <input type="text" formControlName="emailName">
+            </div>
+          </div>
+
+          <div class="inline fields">
+            <div class="four wide field"></div>
+            <div class="two wide field ">
+              <label>Status</label>
+            </div>
+            <div class="four wide field">
+              <!-- <ui-dropdown [dropdown]="dropdownObj.paidType" (valueChange)="paidTypeChange($event)"></ui-dropdown> -->
+              <ui-dropdown [dropdown]="dropDownStatus" ></ui-dropdown>
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <br>
+      <br>
+      <div class="ui center aligned grid">
+        <button class="ui blue basic button" (click)="clickSearch()">
+          <i class="search icon"></i>
+          ค้นหา
+        </button>&nbsp;&nbsp; &nbsp;
+        <button class="ui gery basic button" (click)="clickClear()">
+          <i class="trash alternate outline icon"></i>
+          ล้างข้อมูล
+        </button>
+
+        <br>
+      </div>
+      <br>
+  
+    </div>
+
+    <div class="ui segment" *ngIf="isShowResult">
+        <div class="two wide field " style="margin-bottom: 20px">
+          <b>ผลการค้นหา</b>
+        </div>
+
+        <table class="ui small celled table nowrap" id="table" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th>No.</th>
+              <th>Email Name </th>
+              <th>Status</th>
+              <th>Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr>
+              <td style="text-align: right">1</td>
+              <td>ตรวจสอบรายการการขอใช้บริการ E-Payment ไปยังระบบ DBD - ไม่สำเร็จ</td>
+              <td>Active</td>
+              <td style="text-align: center">
+                <button class="ui blue basic button">แก้ไข
+                </button>
+              </td>
+            </tr> -->
+
+            <tr *ngIf="nodataResult">
+                <td style="text-align: center" colspan="4">ไม่พบรายการ</td>
+             </tr>
+
+             <ng-template ngIf="!nodataResult">
+                <tr *ngFor="let item of responseObj; let i = index">
+                   <td style="text-align: right">{{i+1}}</td>
+                   <td>{{item.name}}</td>
+                   <td>
+                      <Span *ngIf="item.status == 1 ">Inactive</Span>
+                      <Span *ngIf="item.status == 0 ">Active</Span>
+                   </td>
+                   <td style="text-align: center">
+                      <button class="ui blue basic button" (click)="clickEditEmailTemplate(item.emailConfig_id)">แก้ไข
+                      </button>
+                   </td>
+                </tr>
+             </ng-template>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+
+
+      </div>
+  </div>

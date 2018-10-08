@@ -6,7 +6,10 @@ import { Sup01000Component } from './sup01000/sup01000.component';
 import { sup01100Component } from './sup01100/sup01100.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Sup02000Component } from './sup02000/sup02000.component';
-import { ModalModule } from 'app/baiwa/common/components';
+import { ModalModule, DropdownModule } from 'app/baiwa/common/components';
+import { Sup03000Component } from './sup03000/sup03000.component';
+import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
+import { Sup03100Component } from './sup03100/sup03100.component';
 
 @NgModule({
   imports: [
@@ -15,7 +18,9 @@ import { ModalModule } from 'app/baiwa/common/components';
     ,ReactiveFormsModule
     ,FormsModule
     ,ModalModule
+    ,DropdownModule
+    ,PipesModule
   ],
-  declarations: [Sup01000Component, sup01100Component, Sup02000Component]
+  declarations: [Sup01000Component, sup01100Component, Sup02000Component, Sup03000Component, Sup03100Component]
 })
 export class Sup00000Module { }

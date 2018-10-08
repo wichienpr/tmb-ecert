@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { sup01100Service } from 'app/tmb-ecert/sup00000/sup01100/sup01100.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalService } from 'app/baiwa/common/services';
+import { Modal } from 'app/baiwa/common/models';
 
 
 @Component({
@@ -277,21 +278,29 @@ export class sup01100Component implements OnInit {
 
   clickSave() {
     this.submited = true;
-
     if (this.form.valid) {
-      this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
-        this.responseObj = res;
-        if (this.responseObj.message == null) {
-          this.modal.alert({ msg: "ทำรายการล้มเหลว" })
-        } else {
-          this.modal.alert({ msg: this.responseObj.message });
-        }
-      }, error => {
-        console.log("error", error)
-      }, () => {
-        console.log(" save complete. ")
-      });
+      const modalConf: Modal = {
+        msg: `<label>ท่านต้องการบันทึกข้อมูลหรือไม่</label>`,
+        title: "ยืนยันการบันทึก",
+        color: "notification"
+      }
+      this.modal.confirm((e) => {
+        if (e) {
+          this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
+            this.responseObj = res;
+            if (this.responseObj.message == null) {
+              this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+            } else {
+              this.modal.alert({ msg: this.responseObj.message });
+            }
+          }, error => {
+            console.log("error", error)
+          }, () => {
+            console.log(" save complete. ")
+          });
 
+        }
+      }, modalConf);
     } else {
       this.roleNameEliment.nativeElement.focus()
 
@@ -322,8 +331,8 @@ export class sup01100Component implements OnInit {
 
   setRolePermission(data) {
     let index = 0;
-    console.log("swift toggle ",data);
-    if(data.length == 1){
+    console.log("swift toggle ", data);
+    if (data.length == 1) {
       this.rolepermisson.forEach(element => {
         element.status = 0;
         index++;
@@ -332,7 +341,7 @@ export class sup01100Component implements OnInit {
           index++;
         });
       });
-    }else{
+    } else {
       this.rolepermisson.forEach(element => {
         element.status = data[index].status;
         // console.log("item  key ",data[index].functionCode,index++);
@@ -343,9 +352,9 @@ export class sup01100Component implements OnInit {
           index++;
         });
       });
-      
+
     }
-    
+
     // this.rolepermisson.forEach(element => {
     //   console.log(element.fuctioncode, " status ", element.status)
     // });

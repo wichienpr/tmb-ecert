@@ -85,6 +85,18 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
         });
     }
 
+    getStatusType(): Observable<Lov[]> { // สถานะการทำงาน
+        return new Observable(obs => {
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 9 }, result => {
+                const data = result.json();
+                if (data && data.length > 0) {
+                    this.subAccMethod = data;
+                }
+                obs.next([...this.subAccMethod]);
+            });
+        });
+    }
+
 }
 
 

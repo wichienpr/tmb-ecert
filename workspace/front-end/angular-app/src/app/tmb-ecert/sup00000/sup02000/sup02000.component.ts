@@ -3,6 +3,7 @@ import { Sup02000Service } from 'app/tmb-ecert/sup00000/sup02000/sup02000.servic
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Sup02000 } from 'app/tmb-ecert/sup00000/sup02000/sup02000.model';
 import { ModalService } from 'app/baiwa/common/services';
+import { Modal } from 'app/baiwa/common/models';
 
 @Component({
   selector: 'app-sup02000',
@@ -74,16 +75,26 @@ export class Sup02000Component implements OnInit {
       }
     });
 
-    this.service.callSaveParameterAPI(listParameter).subscribe(res =>{
-      this.responseObj = res;
-      if (this.responseObj.message == null) {
-        this.modal.alert({ msg: "ทำรายการล้มเหลว" })
-      } else {
-        this.modal.alert({ msg: this.responseObj.message });
+    const modalConf: Modal = {
+      msg: `<label>ท่านต้องการบันทึกข้อมูลหรือไม่</label>`,
+      title: "ยืนยันการบันทึก",
+      color: "notification"
+    }
+    this.modal.confirm((e) => {
+      if (e) {
+        this.service.callSaveParameterAPI(listParameter).subscribe(res =>{
+          this.responseObj = res;
+          if (this.responseObj.message == null) {
+            this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+          } else {
+            this.modal.alert({ msg: this.responseObj.message });
+          }
+        },err =>{
+          this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+        });
       }
-    },err =>{
+    }, modalConf);
 
-    });
 
     // listParameter.forEach(item => {
     //   console.log("value param change ", item.parameterconfigId);

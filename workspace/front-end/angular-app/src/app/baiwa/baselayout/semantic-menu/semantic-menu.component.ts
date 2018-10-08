@@ -62,7 +62,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
         child: [ // Sub Menu 6.1
           { label: "Role Management", url: "/sup/sup01000" },
           { label: "Parameter Configuration", url: "/sup/sup02000" },
-          { label: "Email Configuration", url: "/email-configuration" }
+          { label: "Email Configuration", url: "/sup/sup03000" }
         ]
       },
     ];
