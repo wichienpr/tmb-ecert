@@ -48,6 +48,7 @@ public class CheckRequestDetailDao {
 		@Override
 		public RequestCertificate mapRow(ResultSet rs, int args1) throws SQLException {
 			RequestCertificate row = new RequestCertificate();
+			row.setReqCertificateId(rs.getLong("REQCERTIFICATE_ID"));
 			row.setCertificateCode(rs.getString("CERTIFICATE_CODE"));
 			row.setCreatedById(rs.getString("CREATED_BY_ID"));
 			row.setCreatedByName(rs.getString("CREATED_BY_NAME"));

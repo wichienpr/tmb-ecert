@@ -10,6 +10,13 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_SUMMARY_PATH = "gl.ftpserver.path";
 
 		public static final String VAT_PERCENT = "vat.percent";
+		
+		public static final String BATCH_HROFFICECODE_IP = "hrofficecode.ftpserver.ip";
+		public static final String BATCH_HROFFICECODE_PORT = "hrofficecode.ftpserver.port";
+		public static final String BATCH_HROFFICECODE_USERNAME = "hrofficecode.ftpserver.username";
+		public static final String BATCH_HROFFICECODE_PASSWORD = "hrofficecode.ftpserver.password";
+		public static final String BATCH_HROFFICECODE_PATH = "hrofficecode.ftpserver.path";
+		public static final String BATCH_HROFFICECODE_FILENAME = "hrofficecode.ftpserver.filename";
 	}
 	
 	public static class PAYMENT_GL_SUMMARY {
@@ -80,6 +87,7 @@ public class BatchJobConstant {
 	
 	public static class JOB_TYPE {
 		public static final String GL_BATCH_JOB = "60003";
+		public static final String HR_BATCH_JOB = "60004";
 	}
 
 	public static Integer RERUN_DEFAULT = 1;

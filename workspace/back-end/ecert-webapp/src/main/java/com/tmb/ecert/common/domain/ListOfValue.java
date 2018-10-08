@@ -6,6 +6,11 @@ public class ListOfValue {
 	private String typeDesc;
 	private String name;
 	private Integer sequence;
+	private Integer status;
+	private String glType;
+	private String tranCode;
+	private String accountType;
+	private String accountNo;
 
 	public String getCode() {
 		return code;
@@ -46,5 +51,47 @@ public class ListOfValue {
 	public void setSequence(Integer sequence) {
 		this.sequence = sequence;
 	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getGlType() {
+		return glType;
+	}
+
+	public void setGlType(String glType) {
+		this.glType = glType;
+	}
+
+	public String getTranCode() {
+		return tranCode;
+	}
+
+	public void setTranCode(String tranCode) {
+		this.tranCode = tranCode;
+	}
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+	
+	
 
 }

@@ -29,10 +29,11 @@ import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
-import com.tmb.ecert.batchjob.domain.EcertRequestForm;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
+import com.tmb.ecert.common.domain.RequestCertificate;
+import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
 import com.tmb.ecert.common.utils.SftpUtils;
@@ -60,15 +61,15 @@ public class PaymentGLSummaryBatchService {
 		Date runDate = new Date();
 		long start = System.currentTimeMillis();
 		log.info(" Start PaymentGLSummaryBatch Process... ");
-		List<EcertRequestForm> requestGlProcessList = paymentGLSummaryBatchDao.queryReqGlSummaryProcess(runDate);
+		List<RequestForm> requestForms = paymentGLSummaryBatchDao.queryReqGlSummaryProcess(runDate);
 		
-		log.info(" PaymentGLSummaryBatch find process ==> {}", requestGlProcessList.size());
+		log.info(" PaymentGLSummaryBatch find process ==> {}", requestForms.size());
 		
 		String errorDesc = "";
 		Date requestDate = runDate;
 		try {
-			List<String> contents = this.createContentFile(requestGlProcessList);
-			contents.add(this.createTrailer(requestGlProcessList));
+			List<String> contents = this.createContentFile(requestForms);
+			contents.add(this.createTrailer(requestForms));
 			
 			File file = this.writeFile(contents, StandardCharsets.UTF_8.name());
 			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
@@ -125,10 +126,10 @@ public class PaymentGLSummaryBatchService {
 		paymentGLSummaryBatchDao.insertEcertJobGLFailed(ecertJobGLFailed);
 	}
 	
-	private List<String> createContentFile(List<EcertRequestForm> requestGlProcessList) {
+	private List<String> createContentFile(List<RequestForm> requestForms) {
 		List<String> contents = new ArrayList<>();
 		String effrectiveDate = this.covertDate(new Date(), DATE_FORMAT_DDMMYYYY);
-		for (EcertRequestForm request : requestGlProcessList) {
+		for (RequestForm request : requestForms) {
 			if (PAID_TYPE.CUSTOMER_PAY_DBD.equals(request.getPaidTypeCode())) {
 				contents.add(this.customerPayContent(request, effrectiveDate));
 			} else if (PAID_TYPE.CUSTOMER_PAY_DBD_TMB.equals(request.getPaidTypeCode())) {
@@ -141,23 +142,23 @@ public class PaymentGLSummaryBatchService {
 		return contents;
 	}
 	
-	private String customerPayContent(EcertRequestForm request, String effrectiveDate) {
+	private String customerPayContent(RequestForm request, String effrectiveDate) {
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR1), 0, 1));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER1), 0, 30));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_SOURCECODE1), 0, 3));
 		tmp.add(this.replaceValue(effrectiveDate, 0, 8));
-		tmp.add(this.replaceValue(this.covertDate(request.getPayloadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
+		tmp.add(this.replaceValue(this.covertDate(request.getPayLoadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_EVENTDESC1), 0, 80));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_ENTITYCODE1), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INTERCODE1), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_OWNDER_BRANCHCODE1), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_ENTRY_BRANCHCODE), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESTINATION_BRANCHCODE1), 0, 4));
-		tmp.add(this.replaceValue(this.getOfficeCode(request.getCustSegmentCode(), request.getOfficeCode()), 0, 10));
+		tmp.add(this.replaceValue(this.getOfficeCode(request.getCustsegmentCode(), request.getOfficeCode()), 0, 10));
 		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESCTICATION_OFFICECODE1), 0, 10));
-		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustSegmentCode()), 0, 3));
+		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PRODUCTCODE1), 0, 240));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE1), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE1), 0, 8));
@@ -169,7 +170,7 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE1), 0, 3));
-		tmp.add(this.replaceValue(getCertificateRequest(request.getReqFormId()), 0, 240));
+		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
 		tmp.add("");
 		tmp.add("");
@@ -279,13 +280,13 @@ public class PaymentGLSummaryBatchService {
 		return StringUtils.join(tmp, CONST_PIPE);
 	}
 	
-	private String tmbPayContent(EcertRequestForm request, String effrectiveDate) {
+	private String tmbPayContent(RequestForm request, String effrectiveDate) {
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR2), 0, 1));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER2), 0, 30));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_SOURCECODE2), 0, 3));
 		tmp.add(this.replaceValue(effrectiveDate, 0, 8));
-		tmp.add(this.replaceValue(this.covertDate(request.getPayloadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
+		tmp.add(this.replaceValue(this.covertDate(request.getPayLoadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_EVENTDESC2), 0, 80));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_ENTITYCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INTERCODE2), 0, 2));
@@ -295,7 +296,7 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
 		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESCTICATION_OFFICECODE2), 0, 10));
-		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustSegmentCode()), 0, 3));
+		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PRODUCTCODE2), 0, 240));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE2), 0, 8));
@@ -307,7 +308,7 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
-		tmp.add(this.replaceValue(getCertificateRequest(request.getReqFormId()), 0, 240));
+		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
 		tmp.add("");
 		tmp.add("");
@@ -417,12 +418,12 @@ public class PaymentGLSummaryBatchService {
 		return StringUtils.join(tmp, CONST_PIPE);
 	}
 	
-	private String createTrailer(List<EcertRequestForm> requestGlProcessList) {
+	private String createTrailer(List<RequestForm> requestForms) {
 		List<String> trailer = new ArrayList<>();
-		String totalCount = String.valueOf(requestGlProcessList.size());
+		String totalCount = String.valueOf(requestForms.size());
 		String indicator = "T"; 
 		BigDecimal calSumTransaction = new BigDecimal(0.0);
-		for (EcertRequestForm request : requestGlProcessList) {
+		for (RequestForm request : requestForms) {
 			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd()));
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
@@ -515,9 +516,14 @@ public class PaymentGLSummaryBatchService {
 		return v;
 	}
 	
-	private String getCertificateRequest(Long reqFormId) {
-		List<String> certificateReqs = paymentGLSummaryBatchDao.queryCertificateReq(reqFormId);
-		return StringUtils.join(certificateReqs, CONST_COMMA);
+	private String getCertificateRequest(List<RequestCertificate> certificateList) {
+		List<String> certificates = new ArrayList<>();
+		for (RequestCertificate requestCertificate : certificateList) {
+			if (requestCertificate.getCertificate() != null) {
+				certificates.add(requestCertificate.getCertificate().getCertificate());
+			}
+		}
+		return StringUtils.join(certificates, CONST_COMMA);
 	}
 	
 	private File writeFile(List<String> content, String encoding) throws Exception {

@@ -24,14 +24,14 @@ public class PaymentDBDSummaryBatchDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private final String QUERY_REQUEST_FORM = " SELECT A.*,B.REQFORM_ID AS REQFORM_ID_1,B.CERTIFICATE_CODE,"
+	private final String QUERY_REQUEST_FORM = " SELECT A.*,B.REQFORM_ID AS REQFORM_ID_1,B.CERTIFICATE_CODE, "
 			+ "C.CERTIFICATE_ID,C.CODE AS CERT_CODE,C.CERTIFICATE FROM ECERT_REQUEST_FORM A "
 			+ "INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID "
-			+ "INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE ";
-	        //+"WHERE STATUS IN ('10009','10010') AND CONVERT(date, REQUEST_DATE) = ? ";
+			+ "INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE "
+	        + "WHERE STATUS IN ('10009','10010') AND CONVERT(date, REQUEST_DATE) = ? ";
 
 	public List<RequestForm> getPaymentDBDReqFormWithReqDate(Date runDate) {
-		return jdbcTemplate.query(QUERY_REQUEST_FORM, new ResultSetExtractor<List<RequestForm>>() {
+		return jdbcTemplate.query(QUERY_REQUEST_FORM, new Object[] {runDate}, new ResultSetExtractor<List<RequestForm>>() {
 			@Override
 			public List<RequestForm> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				Map<Long, RequestForm> map = new HashMap<Long, RequestForm>();

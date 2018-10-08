@@ -3,6 +3,8 @@ package com.tmb.ecert.checkrequeststatus.persistence.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,15 +40,26 @@ public class CheckRequestStatusDao {
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
-		sql.append(" INNER JOIN ECERT_LISTOFVALUE C ");
+		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
-
-
+	
 		if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
-			sql.append(" AND H.REQUEST_DATE BETWEEN convert(datetime, ? , 103) AND convert(datetime, ? , 103) ");
-			valueList.add(formVo.getReqDate());
-			valueList.add(formVo.getToReqDate());
+			sql.append(" AND H.REQUEST_DATE BETWEEN ? AND ? ");
+			Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.getReqDate()));
+			Date fromDate = Calendar.getInstance().getTime();
+			fromDate.setHours(0);
+			fromDate.setMinutes(0);
+			fromDate.setSeconds(0);
+			
+			Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.getToReqDate()));	
+			Date toDate = Calendar.getInstance().getTime();
+			toDate.setHours(23);
+			toDate.setMinutes(59);
+			toDate.setSeconds(59);
+			
+			valueList.add(fromDate);
+			valueList.add(toDate);
 		}
 
 		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
@@ -81,7 +94,7 @@ public class CheckRequestStatusDao {
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
-		sql.append(" INNER JOIN ECERT_LISTOFVALUE C ");
+		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
 

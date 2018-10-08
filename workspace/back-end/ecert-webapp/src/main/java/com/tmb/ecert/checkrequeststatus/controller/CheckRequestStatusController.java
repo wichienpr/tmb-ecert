@@ -39,12 +39,7 @@ public class CheckRequestStatusController {
 	public List<Crs01000Vo> findReq(@RequestBody Crs01000FormVo formVo) {
 		log.info("findReq_C");
 		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-		try {
-			crs01000VoList = crs01000Service.findReq(formVo);	
-		} catch (Exception e) {
-			log.error("Error ! ==> CheckRequestStatusController method findReq",e);
-		}
-		
+		crs01000VoList = crs01000Service.findReq(formVo);	
 		return  crs01000VoList;
 	}
 	

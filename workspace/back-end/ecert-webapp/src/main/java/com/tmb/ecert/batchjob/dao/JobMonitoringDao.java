@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -45,11 +46,11 @@ public class JobMonitoringDao {
 				ps.setTimestamp(2, ecertJobMonitoring.getStartDate() != null ? new Timestamp(ecertJobMonitoring.getStartDate().getTime()) : null);
 				ps.setTimestamp(3, ecertJobMonitoring.getStopDate() != null ? new Timestamp(ecertJobMonitoring.getStopDate().getTime()) : null);
 				ps.setTimestamp(4, ecertJobMonitoring.getEndOfDate() != null ? new Timestamp(ecertJobMonitoring.getEndOfDate().getTime()) : null);
-				ps.setString(5, ecertJobMonitoring.getStatus());
-				ps.setString(6, ecertJobMonitoring.getErrorDesc());
-				ps.setInt(7, ecertJobMonitoring.getRerunNumber());
-				ps.setString(8, ecertJobMonitoring.getRerunById());
-				ps.setString(9, ecertJobMonitoring.getRerunByName());
+				ps.setString(5, ecertJobMonitoring.getStatus()!=null ? ecertJobMonitoring.getStatus() : null);
+				ps.setString(6, ecertJobMonitoring.getErrorDesc()!=null ? ecertJobMonitoring.getErrorDesc() : null);
+				ps.setInt(7, ecertJobMonitoring.getRerunNumber()!=null ? ecertJobMonitoring.getRerunNumber() : null);
+				ps.setString(8, ecertJobMonitoring.getRerunById()!=null ? ecertJobMonitoring.getRerunById() : null);
+				ps.setString(9, ecertJobMonitoring.getRerunByName()!=null ? ecertJobMonitoring.getRerunByName() : null);
 				ps.setTimestamp(10, ecertJobMonitoring.getRerunDatetime() != null ? new Timestamp(ecertJobMonitoring.getRerunDatetime().getTime()) : null);
 				return ps;
 			}

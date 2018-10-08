@@ -1,5 +1,7 @@
 package com.tmb.ecert.requestorform.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.common.domain.CommonMessage;
+import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.service.RequestGenKeyService;
 import com.tmb.ecert.requestorform.service.RequestorFormService;
@@ -36,6 +39,24 @@ public class RequestorFormController {
 	@ResponseBody
 	public CommonMessage<String> save(@ModelAttribute Nrq02000FormVo form) {
 		return reqService.save(form);
+	}
+	
+	@PostMapping("/update")
+	@ResponseBody
+	public CommonMessage<String> update(@ModelAttribute Nrq02000FormVo form) {
+		return reqService.update(form);
+	}
+	
+	@GetMapping("/data/{id}")
+	@ResponseBody
+	public List<RequestForm> formFromId(@PathVariable("id") String id) {
+		return reqService.findReqFormById(id);
+	}
+	
+	@PostMapping("/save/by/self")
+	@ResponseBody
+	public CommonMessage<String> saveBySelf() {
+		return reqService.saveBySelf();
 	}
 	
 	@GetMapping("/download/{filename}")
