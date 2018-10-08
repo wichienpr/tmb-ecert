@@ -4,6 +4,7 @@ public class Rep02000FormVo {
 
 	public String dateForm;
 	public String dateTo;
+	public String paidtypeCode;
 
 
 	public String getDateForm() {
@@ -20,6 +21,14 @@ public class Rep02000FormVo {
 
 	public void setDateTo(String dateTo) {
 		this.dateTo = dateTo;
+	}
+
+	public String getPaidtypeCode() {
+		return paidtypeCode;
+	}
+
+	public void setPaidtypeCode(String paidtypeCode) {
+		this.paidtypeCode = paidtypeCode;
 	}
 
 	

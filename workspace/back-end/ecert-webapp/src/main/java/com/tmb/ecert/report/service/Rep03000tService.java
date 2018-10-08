@@ -220,7 +220,7 @@ public class Rep03000tService {
 			outStream.flush();
 			outStream.close();
 			
-			log.info("Done {}",outStream.getClass().getComponentType());
+			log.info("Done");
 		}
 	
 	public String convertAccountNo(String accountNo) {

@@ -48,12 +48,12 @@ public class RepDao {
 			sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 		
 		if (StringUtils.isNotBlank(formVo.getDateForm())) {
-			sql.append(" AND  a.REQUEST_DATE >= ? ");
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) >= ? ");
 			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateForm());
 			params.add(date);
 		}
 		if (StringUtils.isNotBlank(formVo.getDateTo())) {
-			sql.append(" AND  a.REQUEST_DATE <= ? ");
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) <= ? ");
 			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
 			params.add(date);
 		}
@@ -184,6 +184,11 @@ public class RepDao {
 				params.add(date);
 				params.add(date);
 			}
+
+			if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+				sql.append(" AND a.PAIDTYPE_CODE = ?");
+				params.add(formVo.getPaidtypeCode());
+			}
 			sql.append(" GROUP BY c.NAME,c.CODE,a.DEPARTMENT ORDER BY c.CODE ");
 			
 //			log.info("sql getCountCertificateRep02000 : {}",sql.toString());
@@ -232,6 +237,12 @@ public class RepDao {
 				params.add(date);
 				params.add(date);
 			}
+			
+
+			if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+				sql.append(" AND a.PAIDTYPE_CODE = ?");
+				params.add(formVo.getPaidtypeCode());
+			}
 			sql.append(" GROUP BY c.NAME,c.CODE,a.DEPARTMENT ORDER BY c.CODE ");
 			
 //			log.info("sql getUnCountCertificateRep02000 : {}",sql.toString());
@@ -278,6 +289,11 @@ public class RepDao {
 				params.add(date);
 				params.add(date);
 			}
+
+			if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+				sql.append(" AND a.PAIDTYPE_CODE = ?");
+				params.add(formVo.getPaidtypeCode());
+			}
 			
 			count = jdbcTemplate.queryForObject(sql.toString(),params.toArray(), int.class);
 			return count;
@@ -302,6 +318,11 @@ public class RepDao {
 				Date date = DateConstant.convertStringMMYYYYToDate(formVo.getDateTo());
 				params.add(date);
 				params.add(date);
+			}
+
+			if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+				sql.append(" AND a.PAIDTYPE_CODE = ?");
+				params.add(formVo.getPaidtypeCode());
 			}
 			
 			count = jdbcTemplate.queryForObject(sql.toString(),params.toArray(), int.class);
@@ -339,6 +360,10 @@ public class RepDao {
 				Date date = DateConstant.convertStringMMYYYYToDate(formVo.getDateTo());
 				params.add(date);
 				params.add(date);
+			}
+			if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+				sql.append(" AND a.PAIDTYPE_CODE = ?");
+				params.add(formVo.getPaidtypeCode());
 			}
 			
 			sql.append("  GROUP BY c.NAME,c.CODE,a.DEPARTMENT ORDER BY c.CODE ");
