@@ -3,6 +3,7 @@ package com.tmb.ecert.requestorform.persistence.vo;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Nrq02000FormVo {
+	private Long reqFormId;
 	private String tmbReqFormNo;
 	private String reqTypeSelect;
 	private String customSegSelect;
@@ -14,6 +15,11 @@ public class Nrq02000FormVo {
 	private String corpName;
 	private String corpName1;
 	private String acceptNo;
+	private String glType;
+    private String status;
+	private String tranCode;
+    private String accountNo;
+    private String accountType;
 	private String departmentName;
 	private Boolean tmbReceiptChk;
 	private String telReq;
@@ -24,6 +30,14 @@ public class Nrq02000FormVo {
 	private MultipartFile copyFile;
 	private MultipartFile changeNameFile;
 	
+	public Long getReqFormId() {
+		return reqFormId;
+	}
+
+	public void setReqFormId(Long reqFormId) {
+		this.reqFormId = reqFormId;
+	}
+
 	public String getTmbReqFormNo() {
 		return tmbReqFormNo;
 	}
@@ -182,5 +196,45 @@ public class Nrq02000FormVo {
 
 	public void setChangeNameFile(MultipartFile changeNameFile) {
 		this.changeNameFile = changeNameFile;
+	}
+
+	public String getGlType() {
+		return glType;
+	}
+
+	public void setGlType(String glType) {
+		this.glType = glType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getTranCode() {
+		return tranCode;
+	}
+
+	public void setTranCode(String tranCode) {
+		this.tranCode = tranCode;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
 }

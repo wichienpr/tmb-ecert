@@ -5,7 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +32,15 @@ public class RequestorDao {
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_REQFORM);
 
 	private final String SQL_ECERT_REQUEST_FORM_INSERT = "INSERT INTO ECERT_REQUEST_FORM";
+	private final String SQL_ECERT_REQUEST_FORM_UPDATE = "UPDATE ECERT_REQUEST_FORM SET";
 	private final String SQL_ECERT_REQUEST_CERTIFICATE_INSERT = "INSERT INTO ECERT_REQUEST_CERTIFICATE";
+	private final String SQL_ECERT_REQUEST_CERTIFICATE_UPDATE = "UPDATE ECERT_REQUEST_CERTIFICATE SET";
 	
 	public Long saveCertificates(RequestCertificate vo) {
 
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_CERTIFICATE_INSERT);
-		sql.append("(REQFORM_ID,CERTIFICATE_CODE,TOTALNUMBER,CREATED_BY_ID,CREATED_BY_NAME,CREATED_DATETIME,REGISTERED_DATE,STATEMENT_YEAR,ACCEPTED_DATE,OTHER)");
-		sql.append("VALUES(?,?,?,?,?,GETDATE(),?,?,?,?)");
+		sql.append("(REQFORM_ID,CERTIFICATE_CODE,TOTALNUMBER,CREATED_BY_ID,CREATED_BY_NAME,REGISTERED_DATE,CREATED_DATETIME,STATEMENT_YEAR,ACCEPTED_DATE,OTHER)");
+		sql.append("VALUES(?,?,?,?,?,?,?,?,?,?)");
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -44,6 +48,8 @@ public class RequestorDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Date date = new Date(timestamp.getTime());
 				ps.setLong(1, vo.getReqFormId());
 				ps.setString(2, vo.getCertificateCode());
 				ps.setInt(3, vo.getTotalNumber());
@@ -54,21 +60,73 @@ public class RequestorDao {
 				} else {
 					ps.setNull(6, Types.DATE);
 				}
+				ps.setTimestamp(7, timestamp);
 				if (vo.getStatementYear() != null) {
-					ps.setInt(7, vo.getStatementYear());
+					ps.setInt(8, vo.getStatementYear());
 				} else {
-					ps.setNull(7, Types.SMALLINT);
+					ps.setNull(8, Types.SMALLINT);
 				}
 				if (vo.getAcceptedDate() != null) {
-					ps.setDate(8, new Date(vo.getAcceptedDate().getTime()));
+					ps.setDate(9, new Date(vo.getAcceptedDate().getTime()));
 				} else {
-					ps.setNull(8, Types.DATE);
+					ps.setNull(9, Types.DATE);
 				}
 				if (BeanUtils.isNotEmpty(vo.getOther())) {
-					ps.setString(9, vo.getOther());
+					ps.setString(10, vo.getOther());
 				} else {
-					ps.setString(9, null);
+					ps.setString(10, null);
 				}
+				return ps;
+			}
+		}, holder);
+		
+		Long currentId = holder.getKey().longValue();
+		
+		return currentId;
+	}
+	
+	public Long updateCertificates(RequestCertificate vo) {
+
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_CERTIFICATE_UPDATE);
+		sql.append(" REQFORM_ID=?,CERTIFICATE_CODE=?,TOTALNUMBER=?,CREATED_BY_ID=?,CREATED_BY_NAME=?,CREATED_DATETIME=?,REGISTERED_DATE=?,STATEMENT_YEAR=?,ACCEPTED_DATE=?,OTHER=?");
+		sql.append(" WHERE REQFORM_ID=? AND CERTIFICATE_CODE=?");
+
+		KeyHolder holder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Date date = new Date(timestamp.getTime());
+				ps.setLong(1, vo.getReqFormId());
+				ps.setString(2, vo.getCertificateCode());
+				ps.setInt(3, vo.getTotalNumber());
+				ps.setString(4, vo.getCreatedById());
+				ps.setString(5, vo.getCreatedByName());
+				if (vo.getRegisteredDate() != null) {
+					ps.setDate(6, new Date(vo.getRegisteredDate().getTime()));
+				} else {
+					ps.setNull(6, Types.DATE);
+				}
+				ps.setTimestamp(7, timestamp);
+				if (vo.getStatementYear() != null) {
+					ps.setInt(8, vo.getStatementYear());
+				} else {
+					ps.setNull(8, Types.SMALLINT);
+				}
+				if (vo.getAcceptedDate() != null) {
+					ps.setDate(9, new Date(vo.getAcceptedDate().getTime()));
+				} else {
+					ps.setNull(9, Types.DATE);
+				}
+				if (BeanUtils.isNotEmpty(vo.getOther())) {
+					ps.setString(10, vo.getOther());
+				} else {
+					ps.setString(10, null);
+				}
+				ps.setLong(11, vo.getReqFormId());
+				ps.setString(12, vo.getCertificateCode());
 				return ps;
 			}
 		}, holder);
@@ -81,14 +139,14 @@ public class RequestorDao {
 	public Long save(RequestForm vo) {
 
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_INSERT);
-		sql.append("(REQUEST_DATE,CERTYPE_CODE,ORGANIZE_ID,CUSTOMER_NAME,COMPANY_NAME,");
+		sql.append("(CERTYPE_CODE,ORGANIZE_ID,CUSTOMER_NAME,COMPANY_NAME,");
 		sql.append("BRANCH,CUSTSEGMENT_CODE,CA_NUMBER,DEPARTMENT,PAIDTYPE_CODE,");
 		sql.append("DEBIT_ACCOUNT_TYPE,TRANCODE,GLTYPE,ACCOUNTTYPE,ACCOUNT_NO,");
 		sql.append("ACCOUNT_NAME,CUSTOMER_NAMERECEIPT,TELEPHONE,REQUESTFORM_FILE,");
 		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
 		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
-		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO");
-		sql.append(") VALUES (GETDATE(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,GETDATE(),?,?,?)"); // GETDATE()
+		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -96,6 +154,8 @@ public class RequestorDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Date date = new Date(timestamp.getTime());
 				ps.setString(1, vo.getCerTypeCode());
 				ps.setString(2, vo.getOrganizeId());
 				ps.setString(3, vo.getCustomerName());
@@ -123,9 +183,11 @@ public class RequestorDao {
 				ps.setString(25, vo.getStatus());
 				ps.setString(26, vo.getCreatedById());
 				ps.setString(27, vo.getCreatedByName());
-				ps.setString(28, vo.getMakerById());
-				ps.setString(29, vo.getMakerByName());
-				ps.setString(30, vo.getTmbRequestNo());
+				ps.setTimestamp(28, timestamp);
+				ps.setString(29, vo.getMakerById());
+				ps.setString(30, vo.getMakerByName());
+				ps.setString(31, vo.getTmbRequestNo());
+				ps.setTimestamp(32, timestamp);
 				return ps;
 			}
 		}, holder);
@@ -135,4 +197,67 @@ public class RequestorDao {
 		return currentId;
 	}
 
+	public Long update(RequestForm vo) {
+
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		sql.append(" CERTYPE_CODE=?,ORGANIZE_ID=?,CUSTOMER_NAME=?,COMPANY_NAME=?,");
+		sql.append("BRANCH=?,CUSTSEGMENT_CODE=?,CA_NUMBER=?,DEPARTMENT=?,PAIDTYPE_CODE=?,");
+		sql.append("DEBIT_ACCOUNT_TYPE=?,TRANCODE=?,GLTYPE=?,ACCOUNTTYPE=?,ACCOUNT_NO=?,");
+		sql.append("ACCOUNT_NAME=?,CUSTOMER_NAMERECEIPT=?,TELEPHONE=?,REQUESTFORM_FILE=?,");
+		sql.append("IDCARD_FILE=?,CHANGENAME_FILE=?,CERTIFICATE_FILE=?,ADDRESS=?,");
+		sql.append("REMARK=?,RECEIPT_NO=?,STATUS=?,CREATED_BY_ID=?,CREATED_BY_NAME=?,");
+		sql.append("CREATED_DATETIME=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,TMB_REQUESTNO=?,REQUEST_DATE=? WHERE REQFORM_ID = ?");
+		//sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		
+		logger.info(sql.toString());
+
+		KeyHolder holder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Date date = new Date(timestamp.getTime());
+				ps.setString(1, vo.getCerTypeCode());
+				ps.setString(2, vo.getOrganizeId());
+				ps.setString(3, vo.getCustomerName());
+				ps.setString(4, vo.getCompanyName());
+				ps.setString(5, vo.getBranch());
+				ps.setString(6, vo.getCustsegmentCode());
+				ps.setString(7, vo.getCaNumber());
+				ps.setString(8, vo.getDepartment());
+				ps.setString(9, vo.getPaidTypeCode());
+				ps.setString(10, vo.getDebitAccountType());
+				ps.setString(11, vo.getTranCode());
+				ps.setString(12, vo.getGlType());
+				ps.setString(13, vo.getAccountType());
+				ps.setString(14, vo.getAccountNo());
+				ps.setString(15, vo.getAccountName());
+				ps.setString(16, vo.getCustomerNameReceipt());
+				ps.setString(17, vo.getTelephone());
+				ps.setString(18, vo.getRequestFormFile());
+				ps.setString(19, vo.getIdCardFile());
+				ps.setString(20, vo.getChangeNameFile());
+				ps.setString(21, vo.getCertificateFile());
+				ps.setString(22, vo.getAddress());
+				ps.setString(23, vo.getRemark());
+				ps.setString(24, vo.getReceiptNo());
+				ps.setString(25, vo.getStatus());
+				ps.setString(26, vo.getCreatedById());
+				ps.setString(27, vo.getCreatedByName());
+				ps.setDate(28, date);
+				ps.setString(29, vo.getMakerById());
+				ps.setString(30, vo.getMakerByName());
+				ps.setString(31, vo.getTmbRequestNo());
+				ps.setDate(32, date);
+				ps.setLong(33, vo.getReqFormId());
+				return ps;
+			}
+		}, holder);
+		
+		Long currentId = holder.getKey().longValue();
+		
+		return currentId;
+	}
 }
