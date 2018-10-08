@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Crs01000Service } from 'app/tmb-ecert/crs00000/crs01000/crs01000.service';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,9 +12,9 @@ declare var $: any;
   selector: 'app-crs01000',
   templateUrl: './crs01000.component.html',
   styleUrls: ['./crs01000.component.css'],
-  providers: [Crs01000Service,DatePipe]
+  providers: [Crs01000Service, DatePipe]
 })
-export class Crs01000Component implements OnInit {
+export class Crs01000Component implements OnInit, AfterViewInit {
   calendar1: Calendar;
   calendar2: Calendar;
   form: FormGroup;
@@ -23,22 +23,27 @@ export class Crs01000Component implements OnInit {
   showData: boolean = false;
   loading: boolean = false;
   status: string;
+  statusHome: string;
 
   countNewrequest: Number;
-  countPaymentProcessing : Number;
+  countPaymentProcessing: Number;
   countRefuseRequest: Number;
-  countCancelRequest : Number;
-  countWaitPaymentApproval : Number;
+  countCancelRequest: Number;
+  countWaitPaymentApproval: Number;
   countPaymentApprovals: Number;
-  countChargeback : Number;
-  countPaymentfailed : Number;
-  countWaitUploadCertificate : Number;
-  countSucceed : Number;
-  countWaitSaveRequest : Number;
+  countChargeback: Number;
+  countPaymentfailed: Number;
+  countWaitUploadCertificate: Number;
+  countSucceed: Number;
+  countWaitSaveRequest: Number;
 
-  tmpDate:Date;
+  tmpDate: Date;
 
-  constructor(private crs01000Service: Crs01000Service, private ajax: AjaxService, private router: Router, private datePipe: DatePipe) {
+  constructor(private crs01000Service: Crs01000Service, 
+    private ajax: AjaxService, 
+    private router: Router,
+    private route: ActivatedRoute, 
+    private datePipe: DatePipe) {
 
     this.crs01000Service.getForm().subscribe(form => {
       this.form = form
@@ -68,23 +73,34 @@ export class Crs01000Component implements OnInit {
     };
 
 
-    this.tmpDate=new Date()
+    this.tmpDate = new Date()
     console.log(this.datePipe.transform(this.tmpDate, 'dd/MM/yyyy'))
   }
 
   ngOnInit() {
     this.dataT = [];
     this.getCountStatus();
+    
+    this.statusHome = this.route.snapshot.queryParams["codeStatus"];
 
-  }
 
-  ngAfterViewInit() {
-    $('.ui.sidebar')
+    if(this.statusHome){
+      this.searchStatusByHomePage(this.statusHome)
+    }else{
+      $('.ui.sidebar')
       .sidebar({
         context: '.ui.grid.pushable'
       })
       .sidebar('setting', 'transition', 'push')
       .sidebar('toggle');
+    }
+
+
+  }
+
+  ngAfterViewInit() {
+
+
   }
 
   onToggle() {
@@ -132,6 +148,8 @@ export class Crs01000Component implements OnInit {
 
 
 
+
+
   getDataByStatus(code) {
     this.status = code;
     const URL = "/api/crs/crs01000/findReqByStatus";
@@ -165,11 +183,11 @@ export class Crs01000Component implements OnInit {
   searchData(): void {
     console.log(this.form.controls['reqDate'].value);
     console.log("searchData");
-    if ((this.form.controls['reqDate'].value == "" ||  this.form.controls['reqDate'].value == null) &&
-        (this.form.controls['toReqDate'].value == "" || this.form.controls['toReqDate'].value == null)&&
-        (this.form.controls['organizeId'].value == "" || this.form.controls['organizeId'].value == null)&&
-        (this.form.controls['companyName'].value == "" || this.form.controls['companyName'].value == null) &&
-        (this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null)
+    if ((this.form.controls['reqDate'].value == "" || this.form.controls['reqDate'].value == null) &&
+      (this.form.controls['toReqDate'].value == "" || this.form.controls['toReqDate'].value == null) &&
+      (this.form.controls['organizeId'].value == "" || this.form.controls['organizeId'].value == null) &&
+      (this.form.controls['companyName'].value == "" || this.form.controls['companyName'].value == null) &&
+      (this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null)
     ) {
       this.dataT = [];
       this.showData = true;
@@ -183,7 +201,7 @@ export class Crs01000Component implements OnInit {
 
   }
 
-
+  
 
   searchStatus(code): void {
     $('.ui.sidebar')
@@ -200,6 +218,15 @@ export class Crs01000Component implements OnInit {
     this.dataT = [];
   }
 
+
+  searchStatusByHomePage(code): void {
+    console.log("STATUS FOR HOME::"+code);
+    this.showData = true;
+    this.getDataByStatus(code);
+    this.dataT = [];
+  }
+
+
   clearData(): void {
     console.log("clearData");
     this.form.reset();
@@ -207,19 +234,19 @@ export class Crs01000Component implements OnInit {
     this.dataT = [];
   }
 
-  detail(idReq,status): void {
-    console.log(idReq+","+status)
-    if(status =="10011"){
+  detail(idReq, status): void {
+    console.log(idReq + "," + status)
+    if (status == "10011") {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });
-    }else{
+    } else {
       this.router.navigate(["/crs/crs02000"], {
         queryParams: { id: idReq }
       });
     }
 
-   
+
   }
 
 
