@@ -28,6 +28,8 @@ export class Rep02000Component implements OnInit {
   calendar1: Calendar;
   calendar2: Calendar;
   form: FormGroup;
+  dropdownObj: any;
+  paidTypeChanged: Certificate[];
 
   constructor(
     private ajax: AjaxService,
@@ -36,6 +38,7 @@ export class Rep02000Component implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.dropdownObj = this.service.getDropdownObj();
     this.service.getForm().subscribe(form => {
       this.form = form
     });
@@ -84,6 +87,11 @@ export class Rep02000Component implements OnInit {
     // console.log(this.form.controls[name].value);
     
   }
+  paidTypeChange(e) {
+    console.log("requestTypeCode : ",e);
+      this.paidTypeChanged = e;
+  }
+
 
   getData=()=>{
     console.log(this.form);
@@ -92,7 +100,8 @@ export class Rep02000Component implements OnInit {
     const URL = "/api/rep/rep02000/list";
     this.ajax.post(URL,{
       dateForm: this.form.controls.dateForm.value,
-      dateTo: this.form.controls.dateTo.value
+      dateTo: this.form.controls.dateTo.value,
+      paidtypeCode:this.paidTypeChanged
       
     },async res => {
       const data = await res.json();
@@ -131,6 +140,8 @@ export class Rep02000Component implements OnInit {
     let param = "";
     param+="?dateForm="+this.form.controls.dateForm.value;
     param+="&dateTo="+this.form.controls.dateTo.value;
+    
+    (this.paidTypeChanged!=null)?param+="&paidtypeCode="+this.paidTypeChanged:"";
 
     this.ajax.download(URL.export+param);
   }

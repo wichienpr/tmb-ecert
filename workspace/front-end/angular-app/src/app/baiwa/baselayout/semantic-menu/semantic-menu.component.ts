@@ -54,7 +54,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
       },
       { // Main Menu 5
         label: "Audit Log",
-        url: "/auditLog"
+        url: "/adl/adl01000"
       },
       { // Main Menu 6
         label: "Setup",

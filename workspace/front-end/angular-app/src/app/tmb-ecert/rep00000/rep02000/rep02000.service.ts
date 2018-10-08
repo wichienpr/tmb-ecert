@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Certificate, Lov } from "models/";
-import { AjaxService, ModalService} from "services/";
+import { AjaxService, ModalService, DropdownService} from "services/";
 import { dateLocale } from "helpers/";
 
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -14,17 +14,32 @@ const URL = {
 
 @Injectable()
 export class Rep02000Service {
-
+    dropdownObj: any;
     form: FormGroup = new FormGroup({
         dateForm: new FormControl('', Validators.required),             // ตั้งแต่เดือน
-        dateTo: new FormControl('', Validators.required)                // ถึงเดือน
+        dateTo: new FormControl('', Validators.required),               // ถึงเดือน
+        paidTypeSelect: new FormControl()                               // ประเภทการชำระเงิน
 
     });
 
     constructor(
         private ajax: AjaxService,
-        private modal: ModalService) {
-
+        private modal: ModalService,
+        private dropdown: DropdownService) {
+            this.dropdownObj = { 
+                paidType: {
+                dropdownId: "paidtype",
+                dropdownName: "paidtype",
+                type: "search",
+                formGroup: this.form,
+                formControlName: "paidTypeSelect",
+                values: [],
+                valueName: "code",
+                labelName: "name"
+            }
+        };
+        // Dropdowns
+        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.paidType.values = obj);
     }
 
     /**
@@ -40,6 +55,12 @@ export class Rep02000Service {
         let date = new Date();
         return dateLocale(date);
     }
+
+    getDropdownObj(): any {
+        return this.dropdownObj;
+    }
+
+
 
  
 }

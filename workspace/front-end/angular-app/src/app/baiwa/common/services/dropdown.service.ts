@@ -13,7 +13,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
     private customSeg: Lov[]; // Customer Segment
     private payMethod: Lov[]; // วิธีชำระ
     private subAccMethod: Lov[]; // วีธีหักจากธนาคาร
-    private action: Lov[]; // วีธีหักจากธนาคาร
+    private action: Lov[]; // Action
     
     constructor(private ajax: AjaxService) {
         /**
@@ -73,7 +73,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
         });
     }
 
-    getaction(): Observable<Lov[]> { // วีธีหักจากธนาคาร
+    getaction(): Observable<Lov[]> { // Action
         return new Observable(obs => {
             this.ajax.post(URL.LOV_BY_TYPE, { type: 7 }, result => {
                 const data = result.json();

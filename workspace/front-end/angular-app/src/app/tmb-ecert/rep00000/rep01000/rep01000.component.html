@@ -15,13 +15,13 @@
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
-                        <label class="custom-label-w-25">วันที่ขอ</label>
+                        <label class="custom-label-w-25">วันที่ขอ<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field ">
-                        <label>ถึงวันที่</label>
+                        <label>ถึงวันที่<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
@@ -115,7 +115,7 @@
                         <th>DBD</th>
                         <th>TMB</th>
                         <th>Tax</th>
-                        <th>Success</th>
+                        <th>Success </th>
                         <th>Fail</th>
                     </tr>
                 </thead>
@@ -129,7 +129,7 @@
                         <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
                         <td style="text-align: center !important;">{{data.organizeId}}</td>
                         <td style="text-align: left   !important;">{{data.companyName}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
+                        <td style="text-align: left   !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: left   !important;">{{data.certypeDesc}}</td>
                         <td style="text-align: left   !important;"><span *ngFor="let requestTypeDesc of data.requestTypeDesc | commaStringBr ">{{requestTypeDesc}}<br></span></td>
                         <td style="text-align: center !important;">{{data.accountNo | accountNo}}</td>

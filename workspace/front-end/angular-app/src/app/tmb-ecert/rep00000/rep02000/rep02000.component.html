@@ -14,19 +14,27 @@
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
-                        <label>ตั้งแต่เดือน</label>
+                        <label>ตั้งแต่เดือน<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
                     </div>
                     <div class="two wide field">
-                        <label>ถึงเดือน</label>
+                        <label>ถึงเดือน<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
                         <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
                     </div>
                 </div>
-
+                <div class="inline fields">
+                    <div class="one wide field"></div>
+                    <div class="two wide field ">
+                        <label>ประเภทการชำระเงิน</label>
+                    </div>
+                    <div class="five wide field ">
+                        <ui-dropdown [dropdown]="dropdownObj.paidType" (valueChange)="paidTypeChange($event)"></ui-dropdown>
+                    </div>
+                </div>
 
                 <br>
                 <br>
@@ -58,22 +66,22 @@
                     <tr>
                         <th rowspan="2">Segment</th>
                         <th rowspan="2">จำนวนคำขอ</th>
+                        <th colspan="4">ประเภทการชำระเงิน</th>
                         <th colspan="2">ประเภทคำขอ : ราย</th>
                         <th colspan="2">จำนวนเงิน : บาท</th>
                         <th rowspan="2">จำนวนเงิน</th>
-                        <th colspan="4">ประเภทการชำระเงิน</th>
                         <th colspan="2">สถานะ : จำนวนราย</th>
                         <th rowspan="2" style="width: 220px">สาเหตุ</th>
                     </tr>
                     <tr>
-                        <th>หนังสือรับรอง </th>
-                        <th>รับรองสำเนา</th>
-                        <th>DBD </th>
-                        <th>TMB</th>
                         <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD,TMB</th>
                         <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD ยกเว้น TMB</th>
                         <th>TMB ชำระค่าธรรมเนียม<br>DBD ทั้งหมด</th>
                         <th>ไม่ได้ดำเนินการชำระเงิน<br>ผ่านระบบ E-Cert</th>
+                        <th>หนังสือรับรอง </th>
+                        <th>รับรองสำเนา</th>
+                        <th>DBD</th>
+                        <th>TMB</th>
                         <th>Success </th>
                         <th>Fail</th>
                     </tr>
@@ -83,17 +91,17 @@
                         <td colspan="14" style="text-align: center !important;">ไม่มีข้อมูล</td>
                     </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
-                        <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
+                        <td style="text-align: left   !important;">{{data.custsegmentDesc}}</td>
                         <td style="text-align: right  !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDNoT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDAll}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountECert}}</td>
                         <td style="text-align: right  !important;">{{data.certificate}}</td>
                         <td style="text-align: right  !important;">{{data.copyGuarantee}}</td>
                         <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: right  !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: right  !important;">{{data.paymentTypeCountDT}}</td>
-                        <td style="text-align: right  !important;">{{data.paymentTypeCountDNoT}}</td>
-                        <td style="text-align: right  !important;">{{data.paymentTypeCountDAll}}</td>
-                        <td style="text-align: right  !important;">{{data.paymentTypeCountECert}}</td>
                         <td style="text-align: right  !important;">{{data.success}}</td>
                         <td style="text-align: right  !important;">{{data.fail}}</td>
                         <td style="text-align: center">
