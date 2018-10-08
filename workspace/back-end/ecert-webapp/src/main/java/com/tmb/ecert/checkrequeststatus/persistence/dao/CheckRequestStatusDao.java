@@ -44,7 +44,18 @@ public class CheckRequestStatusDao {
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
 	
-		if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
+		if (StringUtils.isNotBlank(formVo.getReqDate())) {
+			sql.append(" AND  CAST(H.REQUEST_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getReqDate());
+			valueList.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getToReqDate())) {
+			sql.append(" AND  CAST(H.REQUEST_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getToReqDate());
+			valueList.add(date);
+		}
+		
+/*		if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
 			sql.append(" AND H.REQUEST_DATE BETWEEN ? AND ? ");
 			Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.getReqDate()));
 			Date fromDate = Calendar.getInstance().getTime();
@@ -60,7 +71,7 @@ public class CheckRequestStatusDao {
 			
 			valueList.add(fromDate);
 			valueList.add(toDate);
-		}
+		}*/
 
 		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
 			sql.append(" AND H.COMPANY_NAME LIKE ? ");
