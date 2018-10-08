@@ -164,8 +164,8 @@
                           <td style="text-align: center !important;">{{ data.ref2 | emptyString }}</td>
                           <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00" | emptyString }} </td>
                           <td style="text-align: center !important;">{{data.typeDesc| emptyString}}</td>
-                          <td style="text-align: center !important;">{{data.organizeId}}</td>
-                          <td style="text-align: center !important;">{{data.companyName}}</td>
+                          <td style="text-align: center !important;">{{data.organizeId| emptyString}}</td>
+                          <td style="text-align: center !important;">{{data.companyName| emptyString}}</td>
                           <td style="text-align: center !important;">{{data.statusName}}</td>
                           <td>
                             <button class="ui blue basic button"  (click)="detail(data.id,data.statusCode)">แสดง
