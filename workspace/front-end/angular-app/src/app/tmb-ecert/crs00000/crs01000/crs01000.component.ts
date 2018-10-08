@@ -207,11 +207,19 @@ export class Crs01000Component implements OnInit {
     this.dataT = [];
   }
 
-  description(idReq): void {
-    console.log(idReq)
-    this.router.navigate(["/crs/crs02000"], {
-      queryParams: { id: idReq }
-    });
+  detail(idReq,status): void {
+    console.log(idReq+","+status)
+    if(status =="10011"){
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq }
+      });
+    }else{
+      this.router.navigate(["/crs/crs02000"], {
+        queryParams: { id: idReq }
+      });
+    }
+
+   
   }
 
 
