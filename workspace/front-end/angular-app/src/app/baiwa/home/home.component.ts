@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { EcerDashBoard } from 'app/dash-board.reducer';
 import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import * as DashboardAction from 'app/dash-board.action';
-
+import { Router, ActivatedRoute, Params } from "@angular/router";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit ,AfterViewInit{
   userdetail: Observable<UserDetail>;
   dashboard: Observable<EcerDashBoard>;
 
-  constructor(private store: Store<AppState>, private dashboardService:DashboardService) {
+  constructor(private store: Store<AppState>, private dashboardService:DashboardService,private router: Router) {
     this.userdetail = this.store.select("user");
     this.dashboard = this.store.select("ecerdashboard");
   }
@@ -30,17 +30,17 @@ export class HomeComponent implements OnInit ,AfterViewInit{
       (data:any) => {
         // console.log(data);
         const initdashBord: EcerDashBoard = {
-          newReq: data.countStatus1,
-          paying: data.countStatus2,
-          reject: data.countStatus3,
-          cancle: data.countStatus4,
-          paywaiting: data.countStatus5,
-          payapprove: data.countStatus6,
-          payreject: data.countStatus7,
-          payfail: data.countStatus8,
-          waituploadcert: data.countStatus9,
-          complete: data.countStatus10,
-          keyinReq: data.countStatus11
+          newReq: data.newrequest,
+          paying: data.paymentProcessing,
+          reject: data.refuseRequest,
+          cancle: data.cancelRequest,
+          paywaiting: data.waitPaymentApproval,
+          payapprove: data.paymentApprovals,
+          payreject: data.chargeback,
+          payfail: data.paymentfailed,
+          waituploadcert: data.waitUploadCertificate,
+          complete: data.succeed,
+          keyinReq: data.waitSaveRequest
       };
         this.store.dispatch(new DashboardAction.Update(initdashBord));
       },
@@ -50,6 +50,16 @@ export class HomeComponent implements OnInit ,AfterViewInit{
       }
     );
   }
+
+
+
+  searchStatus(code): void {
+    this.router.navigate(["/crs/crs01000"], {
+      queryParams: { codeStatus: code }
+    });
+  }
+
+
 
 }
 
