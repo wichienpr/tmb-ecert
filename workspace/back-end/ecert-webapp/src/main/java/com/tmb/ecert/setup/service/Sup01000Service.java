@@ -65,6 +65,13 @@ public class Sup01000Service {
 	private static String EXCEL_FILE_INACTIVE = "Inactive";
 	private static String EXCEL_FILE_YES= "Yes";
 	private static String EXCEL_FILE_NO= "No";
+	private static String EXCEL_FILE_TEMPALTE_NAME = "RolePermission_Template"; 
+	private static String EXCEL_FILE_EXPORT_NAME = "RolePermission_"; 
+	private static String EXCEL_DATE_FORMAT =  "yyyyMMdd";
+	
+	private static String STATUS_ALL = "90001";
+	private static String STATUS_ACTIVE= "90002";
+	private static String STATUS_INACTIVE = "90003";
 	
 
 	private static String[] headerTable = { "Role Name ", " สถานะ ", "ยินดีต้อนรับ \n (UI-00002)",
@@ -137,6 +144,15 @@ public class Sup01000Service {
 	}
 
 	public List<RoleVo> getRole(Sup01100FormVo form) {
+		if (STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(2);
+			
+		}else if (STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(1);
+			
+		}else if (STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(0);
+		}
 		return userRoleDao.getRole(form);
 
 	}
@@ -154,6 +170,17 @@ public class Sup01000Service {
 		if(form.getRoleName().equals("NULL")) {
 			form.setRoleName(null);
 		}
+		
+		if (STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(2);
+			
+		}else if (STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(1);
+			
+		}else if (STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
+			form.setStatus(0);
+		}
+		
 		List<RoleVo> roleList = userRoleDao.getRole(form);
 		
 		XSSFWorkbook workbook = excalService.setUpExcel();
@@ -240,7 +267,7 @@ public class Sup01000Service {
 			cellNum = 0;
 		}
 
-		String fileName = "List_Role_" + DateFormatUtils.format(new Date(), "yyyyMMddHHmm");
+		String fileName = EXCEL_FILE_EXPORT_NAME+DateFormatUtils.format(new Date(),EXCEL_DATE_FORMAT);
 		logger.info(fileName);
 
 		ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
@@ -361,7 +388,7 @@ public class Sup01000Service {
 			cellNum = 0;
 		}
 
-		String fileName = "Upload_Role_Template_" + DateFormatUtils.format(new Date(), "yyyyMMddHHmm");
+		String fileName = EXCEL_FILE_TEMPALTE_NAME;
 
 		ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
 		workbook.write(outByteStream);
@@ -396,18 +423,31 @@ public class Sup01000Service {
 						Sup01100FormVo vo = new Sup01100FormVo();
 						Cell currentCell = currentRow.getCell(0);
 						vo.setRoleName(currentCell.getStringCellValue());
-						//System.out.println(" name "+currentCell.getStringCellValue());
 						currentCell = currentRow.getCell(1);
-						vo.setStatus(covertStatus(currentCell.getStringCellValue()));
-						//System.out.println(" status "+covertStatus(currentCell.getStringCellValue()));
+						int statusFlag = covertStatus(currentCell.getStringCellValue());
+						if (statusFlag == 2) {
+							logger.error("Upload Role Permission format error");
+							message.setMessage(MSG_ERR_EXC);
+							return message;
+						}else {
+							vo.setStatus(statusFlag);
+						}
+
 						
 						List<RoleVo> listRole = new ArrayList<>();
 						for (int j = 2; j < currentRow.getLastCellNum() ; j++) {
 							RoleVo roleVo = new RoleVo();
 							currentCell = currentRow.getCell(j);
+							int statusPermisFlag = covertStatus(currentCell.getStringCellValue());
+							if (statusPermisFlag == 2) {
+								logger.error("Upload Role Permission format error");
+								message.setMessage(MSG_ERR_EXC);
+								return message;
+							}else {
+								vo.setStatus(statusPermisFlag);
+							}
 							roleVo.setStatus(covertStatus(currentCell.getStringCellValue()));
 							roleVo.setFunctionCode(arrRolePermission[j-2]);
-							//System.out.print(" "+covertStatus(currentCell.getStringCellValue()));
 							listRole.add(roleVo);
 						}
 						vo.setRolePermission(listRole);
@@ -416,14 +456,23 @@ public class Sup01000Service {
 					
 					//check duplicate role name in list
 					for (int i = 0; i < listRolePermission.size(); i++) {
-						for (int j = 1; j < listRolePermission.size()-i; j++) {
-							String roleName = listRolePermission.get(j+i).getRoleName();
+						if(listRolePermission.get(i).getRoleName().isEmpty()) {
+							logger.error("Upload Role Permission role name is blank.");
+							message.setMessage(MSG_ERR_EXC);
+							return message;
+							
+						}else {
+							for (int j = 1; j < listRolePermission.size()-i; j++) {
+								String roleName = listRolePermission.get(j+i).getRoleName();
 
-							if(listRolePermission.get(i).getRoleName().equals(roleName)) {
-								message.setMessage(MSG_ERR_EXC);
-								return message;
+								if(listRolePermission.get(i).getRoleName().equals(roleName)) {
+									logger.error("Upload Role Permission role name is duplicate.");
+									message.setMessage(MSG_ERR_EXC);
+									return message;
+								}
 							}
 						}
+
 					}
 					logger.info("upload excel file success");
 					saveListRolePermission(listRolePermission);
@@ -488,7 +537,7 @@ public class Sup01000Service {
 	
 	
 	public int covertStatus(String cellVal) {
-		int val = 0;
+		int val = 2 ;
 		
 		if (EXCEL_FILE_ACTIVE.equals(cellVal)) {
 			val = 0;
