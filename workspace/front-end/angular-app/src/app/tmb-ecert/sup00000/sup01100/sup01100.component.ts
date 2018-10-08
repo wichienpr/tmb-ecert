@@ -76,7 +76,7 @@ export class sup01100Component implements OnInit {
         }
           ,
         {
-          rolename: "พิมพ์ Cover Sheet",
+          rolename: "พิมพ์ใบนำส่งเอกสาร",
           status: 0,
           fuctioncode: PAGE_AUTH.P0000405,
 
