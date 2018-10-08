@@ -20,8 +20,6 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;;
 @Service
 public class CheckRequestStatusService {
 
-
-
 	private Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
 	@Autowired
