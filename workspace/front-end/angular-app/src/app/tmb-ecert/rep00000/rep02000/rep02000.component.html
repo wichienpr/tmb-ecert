@@ -84,18 +84,18 @@
                     </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
-                        <td style="text-align: center !important;">{{data.custsegmentCount}}</td>
-                        <td style="text-align: center !important;">{{data.certificate}}</td>
-                        <td style="text-align: center !important;">{{data.copyGuarantee}}</td>
-                        <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.paymentTypeCountDT}}</td>
-                        <td style="text-align: center !important;">{{data.paymentTypeCountDNoT}}</td>
-                        <td style="text-align: center !important;">{{data.paymentTypeCountDAll}}</td>
-                        <td style="text-align: center !important;">{{data.paymentTypeCountECert}}</td>
-                        <td style="text-align: center !important;">{{data.success}}</td>
-                        <td style="text-align: center !important;">{{data.fail}}</td>
+                        <td style="text-align: right  !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: right  !important;">{{data.certificate}}</td>
+                        <td style="text-align: right  !important;">{{data.copyGuarantee}}</td>
+                        <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDNoT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDAll}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountECert}}</td>
+                        <td style="text-align: right  !important;">{{data.success}}</td>
+                        <td style="text-align: right  !important;">{{data.fail}}</td>
                         <td style="text-align: center">
                             <button class="ui mini red basic button" (click)="remark(data.custsegmentCode)"
                             *ngIf="data.fail!=0">สาเหตุ

@@ -54,7 +54,8 @@ export class Rep03000Component implements OnInit {
       type: CalendarType.MONTH,
       formatter: CalendarFormatter.MMyyyy,
       local: CalendarLocal.EN,
-      icon: "time icon"
+      icon: "time icon",
+      initial: new Date
     };
    }
 

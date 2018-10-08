@@ -46,7 +46,9 @@ export class Rep01000Component implements OnInit {
       type: CalendarType.DATE,
       formatter: CalendarFormatter.DEFAULT,
       local: CalendarLocal.EN,
-      icon: "time icon"
+      icon: "time icon",
+      endId: "cal2",
+      initial: new Date
     };
     this.calendar2 = {
       calendarId: "cal2",
@@ -56,7 +58,9 @@ export class Rep01000Component implements OnInit {
       type: CalendarType.DATE,
       formatter: CalendarFormatter.DEFAULT,
       local: CalendarLocal.EN,
-      icon: "time icon"
+      icon: "time icon",
+      startId: "cal1",
+      initial: new Date
     };
   }
 

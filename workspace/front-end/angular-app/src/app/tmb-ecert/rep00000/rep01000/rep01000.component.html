@@ -128,20 +128,20 @@
                         <td style="text-align: center !important;">{{data.requestDate}}</td>
                         <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
                         <td style="text-align: center !important;">{{data.organizeId}}</td>
-                        <td style="text-align: center !important;">{{data.companyName}}</td>
+                        <td style="text-align: left   !important;">{{data.companyName}}</td>
                         <td style="text-align: center !important;">{{data.custsegmentDesc}}</td>
-                        <td style="text-align: center !important;">{{data.certypeDesc}}</td>
-                        <td style="text-align: center !important;"><span *ngFor="let requestTypeDesc of data.requestTypeDesc | commaStringBr ">{{requestTypeDesc}}<br></span></td>
+                        <td style="text-align: left   !important;">{{data.certypeDesc}}</td>
+                        <td style="text-align: left   !important;"><span *ngFor="let requestTypeDesc of data.requestTypeDesc | commaStringBr ">{{requestTypeDesc}}<br></span></td>
                         <td style="text-align: center !important;">{{data.accountNo | accountNo}}</td>
-                        <td style="text-align: center !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.totalAmountVat | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
-                        <td style="text-align: center !important;">{{data.paidtypeDesc}}</td>
+                        <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.totalAmountVat | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: left   !important;">{{data.paidtypeDesc}}</td>
                         <td style="text-align: center !important;">{{data.makerById}}</td>
-                        <td style="text-align: center !important;">{{data.makerByName}}</td>
+                        <td style="text-align: left   !important;">{{data.makerByName}}</td>
                         <td style="text-align: center !important;">{{data.checkerById}}</td>
-                        <td style="text-align: center !important;">{{data.checkerByName}}</td>
+                        <td style="text-align: left   !important;">{{data.checkerByName}}</td>
                         <td style="text-align: center !important;">
                             <span *ngIf="data.status=='10010' || data.status=='10009'">
                                 <i class="check icon"></i>
