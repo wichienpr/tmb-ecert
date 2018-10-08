@@ -1,0 +1,113 @@
+<div class="ui grid">
+    <div class="sixteen wide column">
+
+        <h2 class="ui header">Audit Log
+        </h2>
+
+
+        <div class="ui top attached header segment">
+            <span>ระบุเงื่อนไขในการค้นหา </span>
+        </div>
+
+
+        <div class="ui attached segment">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
+                <div class="inline fields">
+                    <div class="one wide field"></div>
+                    <div class="two wide field">
+                        <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
+                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
+                    </div>
+                    <div class="two wide field ">
+                        <label>ถึงวันที่<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
+                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
+                    </div>
+                </div>
+
+
+                <div class="inline fields">
+                    <div class="one wide field"></div>
+                    <div class="two wide field ">
+                        <label>User ID</label>
+                    </div>
+                    <div class="five wide field">
+                        <input type="number" formControlName="userId" placeholder="User ID">
+                    </div>
+                    <div class="two wide field ">
+                        <label>Action</label>
+                    </div>
+                    <div class="five wide field">
+                        <ui-dropdown [dropdown]="dropdownObj.action" (valueChange)="actionChange($event)"></ui-dropdown>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="ui center aligned grid">
+
+                    <button class="ui blue basic button" type="submit" >
+                        <i class="search icon"></i>
+                        ค้นหา
+                    </button>
+                    <button class="ui grey  basic button" type="button" (click)="clearData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                    <br>
+                </div>
+                <br>
+
+                <br>
+            </form>
+        </div>
+
+    </div>
+</div>
+<br>
+<div class="sixteen wide column" *ngIf="showData">
+    <div class="ui top attached header segment">
+        <span>ผลการค้นหา </span>
+    </div>
+    <div class="ui attached segment {{ loading? 'loading' : '' }}">
+        <div style="overflow-x: auto;white-space: nowrap;">
+            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>วันที่ดำเนินการ</th>
+                        <th>User ID</th>
+                        <th>Action</th>
+                        <th>รายละเอียด</th>
+                    </tr>
+                
+                </thead>
+                <tbody>
+                    <tr class="text-center" *ngIf="dataT.length==0">
+                        <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+                    </tr>
+                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                        <td style="text-align: center !important;">{{i+1}}</td>
+                        <td style="text-align: center !important;">{{data.createdDatetime}}</td>
+                        <td style="text-align: center !important;">{{data.createdById}}</td>
+                        <td style="text-align: left   !important;">{{data.actionDesc}}</td>
+                        <td style="text-align: left   !important;">{{data.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+
+        <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+                <button class="ui blue basic button" (click)="exportFile()">
+                    <i class="file excel outline icon"></i>Export to Excel</button>
+            </div>
+        </div>
+        <br>
+
+    </div>
+</div>
