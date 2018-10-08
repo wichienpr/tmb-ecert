@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Certificate, Lov } from "models/";
+import { Certificate, Lov, RequestForm, initRequestForm } from "models/";
 import { AjaxService, ModalService, DropdownService } from "services/";
 import { dateLocale, Acc } from "helpers/";
 
@@ -7,7 +7,7 @@ import { Store } from "@ngrx/store";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Modal } from "models/";
 import { Nrq02000 } from "./nrq02000.model";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
@@ -15,7 +15,8 @@ const URL = {
     NRQ_SAVE: "/api/nrq/save",
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
-    GEN_KEY: "/api/nrq/generate/key"
+    GEN_KEY: "/api/nrq/generate/key",
+    REQUEST_FORM: "/api/nrq/data"
 }
 
 @Injectable()
@@ -33,7 +34,7 @@ export class Nrq02000Service {
         corpName: new FormControl('', Validators.required),             // ชื่อนิติบุคคล
         corpName1: new FormControl('', Validators.required),            // ชื่อนิติบุคคล 1
         acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
-        departmentName: new FormControl('', Validators.required),       // ชื่อหน่วยงาน
+        departmentName: new FormControl(),                              // ชื่อหน่วยงาน
         tmbReceiptChk: new FormControl('', Validators.required),        // ชื่อบนใบเสร็จธนาคาร TMB
         telReq: new FormControl('', Validators.required),               // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl('', Validators.required),              // ที่อยู่
@@ -48,7 +49,9 @@ export class Nrq02000Service {
         private store: Store<{}>,
         private modal: ModalService,
         private dropdown: DropdownService,
-        private router: Router) {
+        private router: Router,
+        private route: ActivatedRoute,
+    ) {
 
         this.dropdownObj = {
             reqType: {
@@ -103,19 +106,34 @@ export class Nrq02000Service {
     /**
      * Initial Data
      */
+    getData() {
+        let id = this.route.snapshot.queryParams["id"] || "";
+        if (id !== "") {
+            return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
+                let data: RequestForm[] = response.json() as RequestForm[];
+                return data.length > 0 ? data[0] : initRequestForm;
+            });
+        } else {
+            return new Promise(resolve => {
+                resolve(initRequestForm);
+            });
+        }
+    }
+
     getTmbReqFormId() {
         return this.ajax.get(URL.GEN_KEY, response => {
             this.tmbReqFormId = response.json();
             return this.tmbReqFormId;
         });
     }
+
     getForm(): FormGroup {
         return this.form;
     }
 
-    getReqDate(): string {
+    getReqDate(): Date {
         let date = new Date();
-        return dateLocale(date);
+        return date;// dateLocale(date);
     }
 
     getDropdownObj(): any {
@@ -286,7 +304,7 @@ export class Nrq02000Service {
                 }
                 if (obj.children) {
                     obj.children.forEach((ob, idx) => {
-                        if (idx !=0) {
+                        if (idx != 0) {
                             ob.check = form.controls['chk' + index + 'Child' + idx].value;
                             ob.value = form.controls['cer' + index + 'Child' + idx].value;
                             if (idx == 1) {
@@ -297,7 +315,7 @@ export class Nrq02000Service {
                                 let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                 ob.registeredDate = new Date(str[2], str[1], str[0]);
                             }
-                            if (idx == obj.children.length-1) {
+                            if (idx == obj.children.length - 1) {
                                 let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
                                 ob.statementYear = value;
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;

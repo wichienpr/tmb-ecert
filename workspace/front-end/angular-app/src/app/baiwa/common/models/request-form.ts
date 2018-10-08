@@ -1,56 +1,56 @@
 export interface RequestForm {
-    reqFormId: Number
+    reqFormId: number
     requestDate: Date
-    tmbRequestNo: String
-    cerTypeCode: String
-    organizeId: String
-    customerName: String
-    branch: String
-    custsegmentCode: String
-    caNumber: String
-    department: String
-    paidTypeCode: String
-    debitAccountType: String
-    tranCode: String
-    glType: String
-    accountType: String
-    accountNo: String
-    accountName: String
-    customerNameReceipt: String
-    telephone: String
-    requestFormFile: String
-    idCardFile: String
-    changeNameFile: String
-    certificateFile: String
-    address: String
-    remark: String
+    tmbRequestNo: string
+    cerTypeCode: string
+    organizeId: string
+    customerName: string
+    branch: string
+    custsegmentCode: string
+    canumber: string
+    department: string
+    paidTypeCode: string
+    debitAccountType: string
+    tranCode: string
+    glType: string
+    accountType: string
+    accountNo: string
+    accountName: string
+    customerNameReceipt: string
+    telephone: string
+    requestFormFile: string
+    idCardFile: string
+    changeNameFile: string
+    certificateFile: string
+    address: string
+    remark: string
     paymentDate: Date
     payLoadTs: Date
-    paymentBranchCode: String
+    paymentBranchCode: string
     postDate: Date
-    ref1: String
-    ref2: String
-    amount: Number
-    amountTmb: Number
-    amountDbd: Number
-    receiptNo: String
-    status: String
-    errorDescription: String
-    paymentStatus: String
-    countPayment: Number
-    rejectReasonCode: String
-    rejectReasonOther: String
-    createdById: String
-    createdByName: String
+    ref1: string
+    ref2: string
+    amount: number
+    amountTmb: number
+    amountDbd: number
+    receiptNo: string
+    status: string
+    errorDescription: string
+    paymentStatus: string
+    countPayment: number
+    rejectReasonCode: string
+    rejectReasonOther: string
+    createdById: string
+    createdByName: string
     createdDateTime: Date
-    updatedById: String
-    updatedByName: String
+    updatedById: string
+    updatedByName: string
     updatedDateTime: Date
-    makerById: String
-    makerByName: String
-    checkerById: String
-    checkerByName: String
-    companyName: String
+    makerById: string
+    makerByName: string
+    checkerById: string
+    checkerByName: string
+    companyName: string
 }
 
 export const initRequestForm: RequestForm = {
@@ -62,7 +62,7 @@ export const initRequestForm: RequestForm = {
     customerName: "",
     branch: "",
     custsegmentCode: "",
-    caNumber: "",
+    canumber: "",
     department: "",
     paidTypeCode: "",
     debitAccountType: "",

@@ -8,7 +8,7 @@
           <label>วันที่ขอ</label>
         </div>
         <div class="five wide field">
-          {{ null | dateString }}
+          {{ reqDate | dateString }}
         </div>
       </div>
 
@@ -27,7 +27,7 @@
           <label>ประเภทคำขอ</label>
         </div>
         <div #reqTypeSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.reqTypeSelect) }">
-          <ui-dropdown [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="data.cerTypeCode" [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
       <div class="inline field ui-table">
@@ -37,6 +37,7 @@
               <th rowspan="1" colspan="2">รายละเอียด</th>
               <th rowspan="2">ค่าธรรมเนียมของ DBD</th>
               <th rowspan="2">ค่าบริการของธนาคาร</th>
+              <th rowspan="2">วันที่รับจด/วันที่รับ/ปีงบการเงิน</th>
               <th rowspan="2" style="width: 12%">จำนวน : ชุด</th>
             </tr>
             <tr style="display: none">
@@ -54,6 +55,7 @@
                 <td style="display: none">&nbsp;</td>
                 <td style="display: none">&nbsp;</td>
                 <td style="display: none">&nbsp;</td>
+                <td style="display: none">&nbsp;</td>
               </tr>
             </ng-container>
             <ng-container *ngFor="let req of reqTypeChanged; let i = index">
@@ -62,6 +64,7 @@
                   <td colspan="5">
                     <h5>{{ req.typeDesc }}</h5>
                   </td>
+                  <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
@@ -81,6 +84,7 @@
                   <td>{{ req.certificate }}</td>
                   <td>{{ req.feeDbd }}</td>
                   <td>{{ req.feeTmb }}</td>
+                  <td></td>
                   <td>
                     <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i]) }">
                       <div class="ui input">
@@ -102,24 +106,31 @@
                         </div>
                       </div>
                     </td>
-                    <td colspan="4">{{ req.certificate }}</td>
+                    <td colspan="5">{{ req.certificate }}</td>
                   </tr>
                 </ng-container>
                 <ng-container *ngFor="let item of req.children; let j = index">
                   <tr *ngIf="j>0" [ngClass]="{ 'hidden': !showChildren }">
                     <td></td>
-                    <td class="left aligned" colspan="3">
-                      <div class="inline field"
-                      [ngClass]="{'error': invalid(form.controls['etc'+i+'Child'+j])||invalid(form.controls['cal'+i+'Child'+j])||invalid(form.controls['chk'+i+'Child'+j]) }">
+                    <td class="left aligned">
+                      <div class="inline field" [ngClass]="{'error': invalid(form.controls['etc'+i+'Child'+j])||invalid(form.controls['chk'+i+'Child'+j]) }">
                         <div class="ui checkbox">
-                          <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (click)="toggleChkChild(i, j)" formControlName="chk{{i}}Child{{j}}">
+                          <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (click)="toggleChkChild(i, j)"
+                            formControlName="chk{{i}}Child{{j}}">
                           <label>{{ item.certificate }}</label>
                         </div>
                         <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
                           <input #etcChild type="text" formControlName="etc{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value">
                         </div>
-                        <div class="ui input right floated">
-                          <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value" (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
+                      </div>
+                    </td>
+                    <td>{{ item.feeDbd }}</td>
+                    <td>{{ item.feeTmb }}</td>
+                    <td>
+                      <div class="field" [ngClass]="{'error': invalid(form.controls['cal'+i+'Child'+j])}">
+                        <div class="ui input">
+                          <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value"
+                            (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
                         </div>
                       </div>
                     </td>
@@ -160,7 +171,7 @@
           </label>
         </div>
         <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect) }">
-          <ui-dropdown [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="data ? data.custsegmentCode : ''" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field">
           <label>เลขที่ CA/มติอนุมัติ
@@ -171,12 +182,12 @@
         </div>
       </div>
 
-      <div class="inline fields">
+      <div class="inline fields" *ngIf="form.controls.customSegSelect.value == '20007'">
         <div class="four wide field">
           <label>ชื่อหน่วยงาน
           </label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.departmentName) }">
+        <div class="five wide field">
           <input type="text" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
@@ -186,11 +197,11 @@
         </div>
         <div class="two wide field"></div>
         <div #payMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.payMethodSelect) }">
-          <ui-dropdown [dropdown]="dropdownObj.payMethod" (valueChange)="payMethodChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="data ? data.paidTypeCode : ''" [dropdown]="dropdownObj.payMethod" (valueChange)="payMethodChange($event)"></ui-dropdown>
         </div>
       </div>
 
-      <div class="inline fields">
+      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
         <div class="four wide field">
           <label>วิธีหักบัญชีจาก</label>
         </div>
@@ -199,33 +210,33 @@
           <ui-dropdown [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
-      <div class="inline fields">
+      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
         <div class="four wide field">
           <label>Tran Code
           </label>
         </div>
         <div class="five wide field">
-          8880
+          {{ trncode }}
         </div>
       </div>
 
-      <div class="inline fields">
+      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
         <div class="four wide field">
           <label>GL Type
           </label>
         </div>
         <div class="five wide field">
-          B533
+          {{ glType }}
         </div>
       </div>
 
-      <div class="inline fields">
+      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
         <div class="four wide field">
           <label>Account Type
           </label>
         </div>
         <div class="five wide field">
-          OOA
+          {{ accType }}
         </div>
       </div>
 
@@ -235,7 +246,7 @@
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.accNo) }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off" placeholder="123-1-12345-9">
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{acctno}}" autocomplete="off" placeholder="">
         </div>
         <div class="two wide field">
           <label>ชื่อบัญชี</label>

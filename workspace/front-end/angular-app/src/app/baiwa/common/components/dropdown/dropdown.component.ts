@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, Output } from "@angular/core";
+import { Component, AfterViewInit, Input, Output, OnChanges, SimpleChanges } from "@angular/core";
 import { EventEmitter } from '@angular/core';
 import { Dropdown } from "models/";
 
@@ -16,15 +16,22 @@ declare var $: any;
         "[style.width.%]": "100"
     }
 })
-export class DropdownComponent implements AfterViewInit {
+export class DropdownComponent implements AfterViewInit, OnChanges {
 
     @Input() dropdown: Dropdown;
+    @Input() selected: string;
     @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() { }
 
     ngAfterViewInit() {
         $(`#${this.dropdown.dropdownId}`).dropdown({ forceSelection: false }).css('width', '100%');
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.selected) {
+            $(`#${this.dropdown.dropdownId}`).dropdown('set selected', changes.selected.currentValue);
+        }
     }
 
     onChange(e) {

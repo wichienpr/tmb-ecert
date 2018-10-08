@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
-import { Store } from '@ngrx/store';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal } from 'models/';
+import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm } from 'models/';
 import { Acc } from 'helpers/';
 
 @Component({
@@ -39,21 +37,26 @@ export class Nrq02000Component implements OnInit {
   @ViewChildren("calChild") calChilds: QueryList<ElementRef>;
   @ViewChildren("cerChild") cerChilds: QueryList<ElementRef>;
 
-  tmbReqFormId: string;
+  data: RequestForm = initRequestForm;
+  tmbReqFormId: String;
   form: FormGroup;
   files: any;
-  reqDate: string;
+  reqDate: Date;
   dropdownObj: any;
   saving: boolean = false;
   isdownload: boolean = false;
   showChildren: boolean = false;
 
+  glType: string;
+  trncode: string;
+  acctype: string;
+  status: string;
+  acctno: string;
+
   reqTypeChanged: Certificate[];
   calendar: Calendar[] = [];
 
   constructor(
-    private store: Store<{}>,
-    private router: Router,
     private service: Nrq02000Service,
     private cdRef: ChangeDetectorRef
   ) {
@@ -63,18 +66,37 @@ export class Nrq02000Component implements OnInit {
       copyFile: null,
       changeNameFile: null
     };
+    // Initial Data
+    this.init();
   }
 
-  async ngOnInit() {
-    // Initial Data
-    this.reqDate = this.service.getReqDate();
-    this.dropdownObj = this.service.getDropdownObj();
-    this.form = this.service.getForm();
-    this.tmbReqFormId = await this.service.getTmbReqFormId();
+  ngOnInit() {
   }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
+  }
+
+  async init() {
+    this.dropdownObj = this.service.getDropdownObj();
+    this.form = this.service.getForm();
+    this.data = await this.service.getData();
+    console.log(this.data);
+    if (this.data && this.data.tmbRequestNo) {
+      this.reqDate = this.data.requestDate;
+      this.glType = this.data.glType;
+      this.trncode = this.data.tranCode;
+      this.acctype = this.data.accountType;
+      this.status = this.data.status;
+      this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+      this.form.controls.accNo.setValue(Acc.convertAccNo(this.data.accountNo));
+      this.form.controls.accName.setValue(this.data.accountName);
+      this.acctno = Acc.convertAccNo(this.data.accountNo);
+      this.tmbReqFormId = this.data.tmbRequestNo;
+    } else {
+      this.reqDate = this.service.getReqDate();
+      this.tmbReqFormId = await this.service.getTmbReqFormId();
+    }
   }
 
   formSubmit(form: FormGroup, event) {
@@ -179,7 +201,6 @@ export class Nrq02000Component implements OnInit {
 
   calendarValue(name, e) {
     this.form.controls[name].setValue(e);
-    console.log(this.form.controls[name]);
   }
 
   toggleChk(index) {
@@ -194,9 +215,9 @@ export class Nrq02000Component implements OnInit {
       this.reqTypeChanged.forEach((obj, index) => {
         if (obj.children) {
           obj.children.forEach((ob, idx) => {
-            if (this.form.controls[`chk${index}Child${idx}`].invalid && idx != 0) {
-              this.form.get[`chk${index}Child${idx}`].clearValidators();
-              this.form.get[`chk${index}Child${idx}`].updateValueAndValidity();
+            if (idx != 0 && this.form.controls[`chk${index}Child${idx}`].invalid) {
+              this.form.get(`chk${index}Child${idx}`).clearValidators();
+              this.form.get(`chk${index}Child${idx}`).updateValueAndValidity();
             }
           });
         }
