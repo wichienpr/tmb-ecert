@@ -37,7 +37,8 @@ export class Nrq01000Component implements OnInit {
 
   confirm = () => {
     const modalConf: Modal = {
-      title: "ยืนยันการทำรายการ ?"
+      title: "ยืนยันการทำรายการ ?",
+      msg: ""
     };
     this.modal.confirm(async e => {
       if (e) {
@@ -59,6 +60,13 @@ export class Nrq01000Component implements OnInit {
 
   print = () => {
     this.service.pdf();
+  }
+
+  requestPage() {
+    setTimeout(() => {
+      
+    this.router.navigate(['crs/crs01000']);
+    });
   }
 
 }

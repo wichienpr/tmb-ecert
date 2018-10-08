@@ -203,7 +203,7 @@
                   <td>{{ chk.certificate }}</td>
                   <td>{{ chk.feeTmb }}</td>
                   <td>{{ chk.feeTmb }}</td>
-                  <td style="text-align: right">{{ chk.value | emptyString }} ชุด</td>
+                  <td style="text-align: right">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
               </ng-container>
               <ng-container *ngIf="chk.code && !chk.feeTmb">
@@ -215,7 +215,7 @@
                     </div>
                   </td>
                   <td colspan="3">{{ chk.certificate }}</td>
-                  <td style="text-align: right">{{ chk.value | emptyString }} ชุด</td>
+                  <td style="text-align: right">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
                 <ng-container>
                   <tr *ngFor="let db of chk.children; let j = index">
@@ -229,7 +229,7 @@
                     </td>
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
-                    <td style="text-align: right">{{ db.value | emptyString }} ชุด</td>
+                    <td style="text-align: right">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
               </ng-container>
@@ -418,6 +418,7 @@
             <a class="download-link" (click)="download(data.requestFormFile)">
               <u>Download</u>
             </a>
+            <p *ngIf="!data.requestFormFile">-</p>
           </div>
         </div>
         <div class="inline fields">
@@ -429,12 +430,13 @@
             <a class="download-link" (click)="download(data.idCardFile)">
               <u>Download</u>
             </a>
+            <p *ngIf="!data.idCardFile">-</p>
           </div>
         </div>
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
+            <label class="label grey">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
           </div>
           <div class="two wide field ">
             <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
@@ -449,9 +451,10 @@
             <label>เอกสาร e-Certificate</label>
           </div>
           <div class="two wide field">
-            <a class="download-link" (click)="download(data.certificateFile)">
+            <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
               <u>Download</u>
             </a>
+            <p *ngIf="!data.certificateFile">-</p>
           </div>
         </div>
         <div class="inline fields">

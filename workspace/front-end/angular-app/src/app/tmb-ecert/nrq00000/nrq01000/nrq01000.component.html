@@ -7,11 +7,11 @@
           <div class="header" style="background:#1678C2">
             <div style="color: rgb(255, 255, 255)">Request Form สำหรับลูกค้าทำรายการเอง </div>
           </div>
-          <div class="content">{{ nrq01000.msg || '...'}}</div>
+          <div class="content">{{ nrq01000.msg || ''}}</div>
           <div class="actions">
             <div class="ui center aligned grid">
               <div class="seven btn-bot wide column">
-                <button class="ui blue positive basic button" type="button">
+                <button class="ui blue positive basic button" type="button" (click)="requestPage()">
                   <i class="check circle outline icon"></i>
                   ตกลง
                 </button>

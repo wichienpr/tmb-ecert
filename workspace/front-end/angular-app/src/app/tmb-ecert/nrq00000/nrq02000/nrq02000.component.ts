@@ -43,15 +43,16 @@ export class Nrq02000Component implements OnInit {
   files: any;
   reqDate: Date;
   dropdownObj: any;
+  loading: boolean = false;
   saving: boolean = false;
   isdownload: boolean = false;
   showChildren: boolean = false;
 
-  glType: string;
-  trncode: string;
-  acctype: string;
-  status: string;
-  acctno: string;
+  glType: string = "";
+  tranCode: string = "";
+  accType: string = "";
+  status: string = "";
+  acctno: string = "";
 
   reqTypeChanged: Certificate[];
   calendar: Calendar[] = [];
@@ -81,27 +82,50 @@ export class Nrq02000Component implements OnInit {
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
     this.data = await this.service.getData();
-    console.log(this.data);
     if (this.data && this.data.tmbRequestNo) {
-      this.reqDate = this.data.requestDate;
-      this.glType = this.data.glType;
-      this.trncode = this.data.tranCode;
-      this.acctype = this.data.accountType;
-      this.status = this.data.status;
-      this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
-      this.form.controls.accNo.setValue(Acc.convertAccNo(this.data.accountNo));
-      this.form.controls.accName.setValue(this.data.accountName);
-      this.acctno = Acc.convertAccNo(this.data.accountNo);
-      this.tmbReqFormId = this.data.tmbRequestNo;
+      const { accNo, accName, corpName, corpName1, corpNo, address, acceptNo, telReq, reqFormId, note } = this.form.controls;
+      const {
+        accountNo, accountName, tmbRequestNo, requestDate,
+        glType, tranCode, accountType, status, companyName,
+        caNumber, organizeId, customerName, telephone, remark
+      } = this.data;
+
+      this.reqDate = requestDate;
+      this.glType = glType;
+      this.tranCode = tranCode;
+      this.accType = accountType;
+      this.status = status;
+      this.tmbReqFormId = tmbRequestNo;
+      this.acctno = Acc.convertAccNo(accountNo);
+
+      accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+      accNo.setValue(Acc.convertAccNo(accountNo));
+      accName.setValue(accountName);
+      corpName.setValue(customerName);
+      corpName1.setValue(companyName);
+      acceptNo.setValue(caNumber);
+      corpNo.setValue(organizeId);
+      address.setValue(this.data.address);
+      telReq.setValue(telephone);
+      note.setValue(remark);
+      reqFormId.setValue(this.data.reqFormId);
     } else {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
+    console.log(this.data);
   }
 
   formSubmit(form: FormGroup, event) {
     event.preventDefault();
     // this.reqTypeSelect.nativeElement.querySelector('input').focus()
+    const data = {
+      glType: this.glType,
+      tranCode: this.tranCode,
+      accType: this.accType,
+      status: this.status,
+      acctno: this.acctno,
+    }
     let viewChilds = {
       corpNo: this.corpNo,
       corpName: this.corpName,
@@ -125,7 +149,11 @@ export class Nrq02000Component implements OnInit {
       calChilds: this.chkChilds.toArray(),
       cerChilds: this.chkChilds.toArray(),
     };
-    return this.service.save(form, this.files, this.reqTypeChanged, viewChilds);
+    if (this.data && this.data.reqFormId != 0) {
+      return this.service.update(form, this.files, this.reqTypeChanged, viewChilds, data);
+    } else {
+      return this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data);
+    }
   }
 
   pdf() {
@@ -136,63 +164,76 @@ export class Nrq02000Component implements OnInit {
     this.service.cancel();
   }
 
+  toggleDataCorp(e) {
+    let data = e.target.checked ? this.form.controls.corpName.value : '';
+    this.form.controls.corpName1.setValue(data);
+  }
+
   async reqTypeChange(e) {
-    this.reqTypeChanged = await this.service.reqTypeChange(e);
-    this.reqTypeChanged.forEach(async (obj, index) => {
-      if (index != 0) {
-        if (this.form.controls[`chk${index}`]) {
-          this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
-          this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
-        } else {
-          this.form.addControl(`chk${index}`, new FormControl('', Validators.required));
-          this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
-        }
-        if (!obj.feeDbd) {
-          obj.children = await this.service.reqTypeChange(obj.code);
-          obj.children.forEach((ob, idx) => {
-            if (this.calendar.length !== obj.children.length) {
-              if (idx == obj.children.length - 1) {
-                this.calendar[idx] = {
-                  calendarId: `cal${index}Child${idx}`,
-                  calendarName: `cal${index}Child${idx}`,
-                  formGroup: this.form,
-                  formControlName: `cal${index}Child${idx}`,
-                  type: CalendarType.YEAR,
-                  formatter: CalendarFormatter.yyyy,
-                  local: CalendarLocal.EN
-                };
-              } else {
-                this.calendar[idx] = {
-                  calendarId: `cal${index}Child${idx}`,
-                  calendarName: `cal${index}Child${idx}`,
-                  formGroup: this.form,
-                  formControlName: `cal${index}Child${idx}`,
-                  type: CalendarType.DATE,
-                  formatter: CalendarFormatter.DEFAULT,
-                  local: CalendarLocal.EN
-                };
+    this.loading = true;
+    if (e != "") {
+      this.reqTypeChanged = await this.service.reqTypeChange(e);
+      this.reqTypeChanged.forEach(async (obj, index) => {
+        if (index != 0) {
+          if (this.form.controls[`chk${index}`]) {
+            this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+          } else {
+            this.form.addControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+          }
+          if (!obj.feeDbd) {
+            obj.children = await this.service.reqTypeChange(obj.code);
+            obj.children.forEach((ob, idx) => {
+              if (this.calendar.length !== obj.children.length) {
+                if (idx == obj.children.length - 1) {
+                  this.calendar[idx] = {
+                    calendarId: `cal${index}Child${idx}`,
+                    calendarName: `cal${index}Child${idx}`,
+                    formGroup: this.form,
+                    formControlName: `cal${index}Child${idx}`,
+                    type: CalendarType.YEAR,
+                    formatter: CalendarFormatter.yyyy,
+                    local: CalendarLocal.EN,
+                    icon: 'calendar'
+                  };
+                } else {
+                  this.calendar[idx] = {
+                    calendarId: `cal${index}Child${idx}`,
+                    calendarName: `cal${index}Child${idx}`,
+                    formGroup: this.form,
+                    formControlName: `cal${index}Child${idx}`,
+                    type: CalendarType.DATE,
+                    formatter: CalendarFormatter.DEFAULT,
+                    local: CalendarLocal.EN,
+                    icon: 'calendar'
+                  };
+                }
               }
-            }
-            if (idx === obj.children.length - 1) {
-              if (this.form.controls[`etc${index}Child${idx}`]) {
-                this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-              } else {
-                this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+              if (idx === obj.children.length - 1) {
+                if (this.form.controls[`etc${index}Child${idx}`]) {
+                  this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                } else {
+                  this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                }
               }
-            }
-            if (this.form.controls[`chk${index}Child${idx}`]) {
-              this.form.setControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
-              this.form.setControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
-              this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-            } else {
-              this.form.addControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
-              this.form.addControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
-              this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-            }
-          });
+              if (this.form.controls[`chk${index}Child${idx}`]) {
+                this.form.setControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
+                this.form.setControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
+                this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+              } else {
+                this.form.addControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
+                this.form.addControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
+                this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    }
+    setTimeout(() => {
+      this.loading = false;
+    }, 300);
   }
 
   accNoPress(e) {
@@ -239,6 +280,16 @@ export class Nrq02000Component implements OnInit {
   }
 
   subAccMethodChange(e) {
+    this.dropdownObj.subAccMethod.values.find(obj => {
+      if (obj.code == e) {
+        this.glType = obj.glType;
+        this.tranCode = obj.tranCode;
+        this.accType = obj.accountType;
+        this.accNo = obj.accountNo;
+        this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+        this.form.controls.accNo.setValue(Acc.convertAccNo(obj.accountNo));
+      }
+    });
     console.log('subAccMethodChange => ', e);
   }
 

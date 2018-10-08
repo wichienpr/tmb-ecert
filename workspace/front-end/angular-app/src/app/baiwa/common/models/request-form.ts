@@ -1,4 +1,5 @@
 export interface RequestForm {
+    [x: string]: any
     reqFormId: number
     requestDate: Date
     tmbRequestNo: string
@@ -7,7 +8,7 @@ export interface RequestForm {
     customerName: string
     branch: string
     custsegmentCode: string
-    canumber: string
+    caNumber: string
     department: string
     paidTypeCode: string
     debitAccountType: string
@@ -62,7 +63,7 @@ export const initRequestForm: RequestForm = {
     customerName: "",
     branch: "",
     custsegmentCode: "",
-    canumber: "",
+    caNumber: "",
     department: "",
     paidTypeCode: "",
     debitAccountType: "",
