@@ -148,7 +148,7 @@ public class Rep02000tService {
 			// No.
 
 			cell = row.createCell(cellNum++);
-			cell.setCellStyle(excalService.cellCenter);
+			cell.setCellStyle(excalService.cellLeft);
 			cell.setCellValue((StringUtils.isNotBlank(detail.getCustsegmentDesc())) ? detail.getCustsegmentDesc() : "");
 			
 			cell = row.createCell(cellNum++);
