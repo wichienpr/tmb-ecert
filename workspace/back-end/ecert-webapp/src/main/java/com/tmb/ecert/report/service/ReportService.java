@@ -39,6 +39,7 @@ import th.co.baiwa.buckwaframework.common.constant.ReportConstants.PATH;
 import th.co.baiwa.buckwaframework.common.util.ReportUtils;
 
 
+
 @Service
 public class ReportService {
 
@@ -131,5 +132,12 @@ public class ReportService {
 			responseOutputStream.write(bytes);
 		}
 	}
+	
+	
+	
+
+
+
+	
 
 }

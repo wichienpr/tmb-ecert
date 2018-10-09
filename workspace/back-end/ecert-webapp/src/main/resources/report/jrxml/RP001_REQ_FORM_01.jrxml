@@ -4,8 +4,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="title" hTextAlign="Left" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="14" isBold="true"/>
 	<style name="title-detail" hTextAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13"/>
-	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13" isBold="true"/>
-	<style name="sub_detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13"/>
+	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12" isBold="true"/>
+	<style name="sub_detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12"/>
 	<parameter name="logoDbd" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
@@ -15,7 +15,7 @@
 	<title>
 		<band height="60" splitType="Stretch">
 			<textField>
-				<reportElement style="title" x="80" y="0" width="480" height="30" uuid="8ffd6601-2b26-4319-be19-f7bbae38241b"/>
+				<reportElement style="title" x="84" y="0" width="480" height="30" uuid="8ffd6601-2b26-4319-be19-f7bbae38241b"/>
 				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรองสมาคมและหอการค้าและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate)"]]></textFieldExpression>
 			</textField>
 			<image isUsingCache="false">
@@ -76,26 +76,26 @@
 		</band>
 	</title>
 	<detail>
-		<band height="160" splitType="Stretch">
+		<band height="147" splitType="Stretch">
 			<frame>
-				<reportElement x="280" y="0" width="275" height="44" uuid="d3957061-134f-4ce7-a5aa-d4d182f46702"/>
+				<reportElement x="280" y="0" width="275" height="32" uuid="d3957061-134f-4ce7-a5aa-d4d182f46702"/>
 				<box>
 					<pen lineWidth="0.75"/>
 				</box>
 				<textField>
-					<reportElement style="sub_header" x="0" y="0" width="275" height="20" uuid="0e8a3d5e-f0bd-4e8d-aba5-1063918a5fec"/>
+					<reportElement style="sub_header" x="0" y="0" width="275" height="14" uuid="0e8a3d5e-f0bd-4e8d-aba5-1063918a5fec"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA["ชื่อนิติบุคคล"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement key="" style="sub_header" x="0" y="20" width="70" height="20" uuid="dd4caad5-3262-484f-b5f0-608017307c38"/>
+					<reportElement key="" style="sub_header" x="0" y="14" width="70" height="14" uuid="dd4caad5-3262-484f-b5f0-608017307c38"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["(ระบุ)"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="sub_detail" x="76" y="20" width="177" height="20" uuid="bec5f111-3428-42b7-8d2a-536aa1c6cfa3"/>
+					<reportElement style="sub_detail" x="76" y="14" width="177" height="14" uuid="bec5f111-3428-42b7-8d2a-536aa1c6cfa3"/>
 					<box>
 						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
 					</box>
@@ -103,12 +103,12 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="40" y="0" width="240" height="44" uuid="9310e835-15fc-4a1c-8135-65c239ae6493"/>
+				<reportElement x="40" y="0" width="240" height="32" uuid="9310e835-15fc-4a1c-8135-65c239ae6493"/>
 				<box>
 					<pen lineWidth="0.75"/>
 				</box>
 				<textField>
-					<reportElement style="sub_header" x="0" y="0" width="240" height="20" uuid="b0f3ad1e-d56b-4d43-a8e9-8024bb3380d1"/>
+					<reportElement style="sub_header" x="0" y="0" width="240" height="14" uuid="b0f3ad1e-d56b-4d43-a8e9-8024bb3380d1"/>
 					<box>
 						<bottomPen lineWidth="0.75"/>
 					</box>
@@ -116,26 +116,26 @@
 					<textFieldExpression><![CDATA["เลขทะเบียน"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement key="" style="sub_header" x="0" y="20" width="70" height="20" uuid="a86d730e-efe0-499f-820d-510f73bd6d87"/>
+					<reportElement key="" style="sub_header" x="0" y="14" width="70" height="14" uuid="a86d730e-efe0-499f-820d-510f73bd6d87"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["(ระบุ)"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="sub_detail" x="76" y="20" width="164" height="20" uuid="06212506-e4a3-47f8-a5e7-d61f3b9dba7a"/>
+					<reportElement style="sub_detail" x="76" y="14" width="164" height="14" uuid="06212506-e4a3-47f8-a5e7-d61f3b9dba7a"/>
 					<box>
 						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
 					</box>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="0" y="0" width="40" height="44" uuid="fc54a85d-e85a-4dce-a36a-a5e4ac5e3da9"/>
+				<reportElement x="0" y="0" width="40" height="32" uuid="fc54a85d-e85a-4dce-a36a-a5e4ac5e3da9"/>
 				<box>
 					<pen lineWidth="0.75"/>
 				</box>
 				<textField>
-					<reportElement style="sub_header" x="0" y="0" width="40" height="20" uuid="f3bd7eb6-d937-439a-b71d-c4bd792d19b6"/>
+					<reportElement style="sub_header" x="0" y="0" width="40" height="14" uuid="f3bd7eb6-d937-439a-b71d-c4bd792d19b6"/>
 					<box>
 						<bottomPen lineWidth="0.75"/>
 					</box>
@@ -143,7 +143,7 @@
 					<textFieldExpression><![CDATA["ลำดับ"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="sub_header" x="0" y="20" width="40" height="20" uuid="10eb8737-842d-4459-b2d4-9297f5f34ff6"/>
+					<reportElement style="sub_header" x="0" y="14" width="40" height="14" uuid="10eb8737-842d-4459-b2d4-9297f5f34ff6"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -155,7 +155,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="0" y="44" width="555" height="116" uuid="7e2e77d0-2055-4d5a-967c-e72f4de8893e"/>
+				<reportElement x="0" y="31" width="555" height="116" uuid="7e2e77d0-2055-4d5a-967c-e72f4de8893e"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
@@ -227,7 +227,7 @@
 				<textField>
 					<reportElement style="sub_detail" x="0" y="32" width="30" height="16" uuid="1276a4da-f999-4772-9e0e-4b95a9bc383e"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA["1.2"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{seq} +".2"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="30" y="32" width="18" height="16" uuid="d75c8803-f9b8-46b0-a2b3-eaedbd2816b8"/>
@@ -325,7 +325,7 @@
 				<textField>
 					<reportElement style="sub_detail" x="0" y="80" width="30" height="16" uuid="2805ea49-f8cf-4a8a-8752-2f0f280525c4"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA["1.3"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{seq} +".3"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="30" y="80" width="18" height="16" uuid="dce119c9-5b55-4f66-a126-d16e7f39c319"/>
@@ -348,7 +348,7 @@
 				<textField>
 					<reportElement style="sub_detail" x="0" y="96" width="30" height="16" uuid="6098bcac-aa5b-4e88-892a-2ead96e690c3"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA["1.4"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{seq} +".4"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="30" y="96" width="18" height="16" uuid="108d2f47-b85c-4bdd-b938-460dfd2cee4d"/>
