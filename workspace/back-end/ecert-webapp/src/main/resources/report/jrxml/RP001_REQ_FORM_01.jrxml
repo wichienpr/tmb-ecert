@@ -11,12 +11,11 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="seq" class="java.lang.String"/>
-	<field name="orgName" class="java.lang.String"/>
 	<title>
 		<band height="60" splitType="Stretch">
 			<textField>
 				<reportElement style="title" x="84" y="0" width="480" height="30" uuid="8ffd6601-2b26-4319-be19-f7bbae38241b"/>
-				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรองสมาคมและหอการค้าและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate)"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรองนิติบุคคลและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate)"]]></textFieldExpression>
 			</textField>
 			<image isUsingCache="false">
 				<reportElement x="0" y="10" width="80" height="50" uuid="663575c0-e8e3-430e-9bc7-ad3718bf44f8"/>
@@ -32,7 +31,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["เบอร์โทรศัพท์"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement key="" style="title-detail" x="200" y="25" width="333" height="15" uuid="b91e33c3-6fd0-4e0e-8f27-a2dab9ec5aed"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Dotted"/>
@@ -42,9 +41,8 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[" นายศักดิ์นรินทร์ อรัญมาลา"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement key="" style="title-detail" x="200" y="40" width="150" height="15" uuid="529a6b25-4eb4-4584-a7c3-fa4c738e85e9"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Dotted"/>
@@ -54,14 +52,13 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[" 082-121-1699"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement key="" style="title-detail" x="350" y="40" width="90" height="15" uuid="2d7a0475-da41-4e0b-9ba8-8918366475ac"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["วันที่ขอใช้บริการ"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement key="" style="title-detail" x="440" y="40" width="93" height="15" uuid="87a09f3a-0848-4362-a39e-a23ff31b83d1"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Dotted"/>
@@ -71,7 +68,6 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["5 ตุลาคม 2561"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -99,7 +95,6 @@
 					<box>
 						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
 					</box>
-					<textFieldExpression><![CDATA[$F{orgName}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -142,7 +137,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA["ลำดับ"]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement style="sub_header" x="0" y="14" width="40" height="14" uuid="10eb8737-842d-4459-b2d4-9297f5f34ff6"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -175,7 +170,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2611"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="254" y="0" width="78" height="16" uuid="e8576af9-e45f-4726-a925-9ec2bb0d3840"/>
@@ -196,7 +191,7 @@
 					</box>
 					<textElement textAlignment="Left"/>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="16" width="30" height="16" uuid="d8bd5cb9-9fca-4665-925f-c50581599bf2"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{seq} + ".1"]]></textFieldExpression>
@@ -224,7 +219,7 @@
 					<textElement textAlignment="Left"/>
 					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="32" width="30" height="16" uuid="1276a4da-f999-4772-9e0e-4b95a9bc383e"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{seq} +".2"]]></textFieldExpression>
@@ -322,7 +317,7 @@
 					</box>
 					<textElement textAlignment="Left"/>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="80" width="30" height="16" uuid="2805ea49-f8cf-4a8a-8752-2f0f280525c4"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{seq} +".3"]]></textFieldExpression>
@@ -345,7 +340,7 @@
 					</box>
 					<textElement textAlignment="Left"/>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="96" width="30" height="16" uuid="6098bcac-aa5b-4e88-892a-2ead96e690c3"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{seq} +".4"]]></textFieldExpression>

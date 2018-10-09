@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.tmb.ecert.report.domain.ExampleBean;
+import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -59,7 +61,7 @@ public class ReportService {
 		}
 	}
 
-	public byte[] reqFormObjectToPDF(String name, String param) throws IOException, JRException {
+/*	public byte[] reqFormObjectToPDF(String name, String param) throws IOException, JRException {
 		// Folder Exist ??
 		initialService();
 
@@ -114,9 +116,54 @@ public class ReportService {
 		ReportUtils.closeResourceFileInputStream(params);
 
 		return reportFile;
-	}
+	}*/
 
-	
+	public byte[] reqFormObjectToPDF(String name, String param) throws IOException, JRException {
+		// Folder Exist ??
+		initialService();
+		
+		// RP001 
+		String reportName01 = "RP001_REQ_FORM_01";
+		
+		Map<String, Object> params01 = new HashMap<>();
+		params01.put("logoDbd", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoDbd.png"));
+		
+		List<RpReqFormVo> reqFormVoList = new ArrayList<>();
+		RpReqFormVo reqFormVo = null;
+		for (int i = 0; i < 5; i++) {
+			reqFormVo = new RpReqFormVo();
+			reqFormVo.setSeq(String.valueOf(i + 1));
+
+			reqFormVoList.add(reqFormVo);
+		}
+		
+		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JRBeanCollectionDataSource(reqFormVoList)); // JRBeanCollectionDataSource(exampleList)
+			
+		// RP002
+		String reportName02 = "RP001_REQ_FORM_02";
+		
+		Map<String, Object> params02 = new HashMap<>();
+		params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));		
+		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
+
+		List<ExporterInputItem> itemList = new ArrayList<>();
+		itemList.add(new SimpleExporterInputItem(jasperPrint01));
+		itemList.add(new SimpleExporterInputItem(jasperPrint02));
+
+		JRPdfExporter exporter = new JRPdfExporter();
+		exporter.setExporterInput(new SimpleExporterInput(itemList));
+
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+		exporter.exportReport();
+
+		byte[] reportFile = os.toByteArray();
+
+		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_EXPORT + name + ".pdf"))); 
+		ReportUtils.closeResourceFileInputStream(params02);
+
+		return reportFile;
+	}
 	
 	
 	public void viewPdf(String name, HttpServletResponse response) throws Exception {
