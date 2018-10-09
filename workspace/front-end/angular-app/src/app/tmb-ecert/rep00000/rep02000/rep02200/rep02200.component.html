@@ -1,10 +1,10 @@
 <div class="ui grid">
     <div class="sixteen wide column">
 
-        <h2 class="ui header">รายการขอบริการหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly ที่ทำรายการไม่สำเร็จ</h2>
+        <h2 class="ui header">รายการขอบริการหนังสือรับรองนิติบุคคล ( e-Certificate ) :  Monthly รายละเอียดหน่วยงาน</h2>
 
         <div class="ui top attached header segment">
-            <span>รายการที่ทำรายการไม่สำเร็จ</span>
+            <span>รายการหน่วยงาน</span>
         </div>
         <div class="ui attached segment {{ loading? 'loading' : '' }}">
             <div style="overflow-x: auto;white-space: nowrap;">
@@ -14,14 +14,10 @@
                             <th class="collapsing">ลำดับ</th>
                             <th>วันที่ยื่นคำขอ</th>
                             <th>TMB Req. No.</th>
-                            <th>เลขที่คำขอ (Ref.1)</th>
-                            <th>เลขที่ตรวจสอบ (Ref.2)</th>
-                            <th>จำนวนเงิน</th>
                             <th>ประเภทคำขอ</th>
                             <th>เลขที่นิติบุคคล </th>
                             <th>ชื่อบริษัท</th>
-                            <th>สถานะดำเนินการ</th>
-                            <th>สาเหตุ</th>
+                            <th>ชื่อหน่วยงาน</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,14 +28,10 @@
                             <td style="text-align: center !important;">{{i+1}}</td>
                             <td style="text-align: center !important;">{{data.requestDate}}</td>
                             <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
-                            <td style="text-align: center !important;">{{data.ref1}}</td>
-                            <td style="text-align: center !important;">{{data.ref2}}</td>
-                            <td style="text-align: right  !important;">{{data.amount | decimalFormat :"###,###.00"}}</td>
                             <td style="text-align: left   !important;">{{data.certypeDesc}}</td>
                             <td style="text-align: center !important;">{{data.organizeId}}</td>
                             <td style="text-align: left   !important;">{{data.companyName}}</td>
-                            <td style="text-align: center !important;">{{data.status}}</td>
-                            <td style="text-align: center !important;">{{data.remark}}</td>
+                            <td style="text-align: center !important;">{{data.department}}</td>
                         </tr>
                     </tbody>
                 </table>

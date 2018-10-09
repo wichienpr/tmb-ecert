@@ -152,6 +152,13 @@ export class Rep02000Component implements OnInit {
                       dateTo:this.form.controls.dateTo.value}
     });
   }
+  departmentDetails=custsegmentCode=>{
+    this.router.navigate(['/rep/rep02200'], {
+      queryParams: {  custsegmentCode:custsegmentCode,
+                      dateForm:this.form.controls.dateForm.value,
+                      dateTo:this.form.controls.dateTo.value}
+    });
+  }
   openModalDetails=department=>{
     const modal: Modal = {
       title:"รายละเอียด",
