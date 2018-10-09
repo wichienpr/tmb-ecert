@@ -35,6 +35,10 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
           { label: "Request Form สำหรับทำรายการให้ลูกค้าลงนาม", url: "/nrq/nrq02000" },
         ]
       },
+      { // Main Menu New
+        label: "บันทึกข้อมูลจากเลขที่คำขอ (TMB Req No.)",
+        url: "/srn/srn01000"
+      },
       { // Main Menu 2
         label: "ตรวจสอบสถานะคำขอ",
         url: "/crs/crs01000"

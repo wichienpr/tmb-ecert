@@ -74,14 +74,13 @@
               
                 <div class="inline fields">
                   <div class="two wide field">
-                    <label class="custom-label-w-22">วันที่ขอ</label>
+                    <label class="custom-label-w-22">วันที่ขอ<span style="color: red"> * </span></label>
                   </div>
                   <div class="five wide field {{ validate('reqDate', ngForm.submitted) ? '' : 'error' }}" >
                       <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%" ></ui-calendar>
                   </div>
                   <div class="two wide field ">
-                    <label>ถึงวันที่
-                    </label>
+                    <label>ถึงวันที่<span style="color: red"> * </span></label>
                   </div>
                   <div class="five wide field {{ validate('toReqDate', ngForm.submitted) ? '' : 'error' }}">
                     <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('toReqDate',$event)" style="width:100%"></ui-calendar>
