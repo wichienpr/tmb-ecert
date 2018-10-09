@@ -89,7 +89,7 @@
     </div>
     <div class="ui attached segment {{ loading? 'loading' : '' }}">
         <div style="overflow-x: auto;white-space: nowrap;">
-            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+            <table class="ui small celled table" style="width: 100%" id="table">
                 <thead>
                     <tr>
                         <th rowspan="2">ลำดับ</th>
@@ -115,8 +115,8 @@
                         <th>DBD</th>
                         <th>TMB</th>
                         <th>Tax</th>
-                        <th>Success </th>
-                        <th>Fail</th>
+                        <th><label class="status">Success</label></th>
+                        <th><label class="status">Fail</label></th>
                     </tr>
                 </thead>
                 <tbody>
