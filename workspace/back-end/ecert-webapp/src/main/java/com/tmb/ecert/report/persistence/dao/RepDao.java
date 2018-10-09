@@ -22,6 +22,8 @@ import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 import com.tmb.ecert.report.persistence.vo.Rep02100FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02100Vo;
+import com.tmb.ecert.report.persistence.vo.Rep02200FormVo;
+import com.tmb.ecert.report.persistence.vo.Rep02200Vo;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 
@@ -461,6 +463,66 @@ public class RepDao {
 			    		return vo;                                                         
 			    	}
 			 };
+			 
+			 public List<Rep02200Vo> getDataRep02200(Rep02200FormVo formVo) {
+					StringBuilder sql = new StringBuilder("");
+					List<Object> params = new ArrayList<>();
+					List<Rep02200Vo> rep02200VoList = new ArrayList<Rep02200Vo>();
+					
+					    sql.append(" SELECT a.*,b.NAME AS CERTYPE_DESC, ");
+						sql.append(" c.NAME AS CUSTSEGMENT_DESC, ");  
+						sql.append(" d.NAME AS STATUS_DESC ");   
+						sql.append(" FROM ECERT_REQUEST_FORM a ");
+						sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
+						sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ");
+						sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.STATUS = d.CODE "); 
+						sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+						
+					if (StringUtils.isNotBlank(formVo.getCustsegmentCode())) {
+							sql.append(" AND c.CODE = ?");
+							params.add(formVo.getCustsegmentCode());
+						}
+					
+					if (StringUtils.isNotBlank(formVo.getDateForm())) {
+						sql.append("  AND  MONTH(a.REQUEST_DATE) >= MONTH(?) AND YEAR(a.REQUEST_DATE)>= YEAR(?) ");
+						Date date = DateConstant.convertStringMMYYYYToDate(formVo.getDateForm());
+						params.add(date);
+						params.add(date);
+					}
+					if (StringUtils.isNotBlank(formVo.getDateTo())) {
+						sql.append("  AND  MONTH(a.REQUEST_DATE) <= MONTH(?) AND YEAR(a.REQUEST_DATE)<= YEAR(?) ");
+						Date date = DateConstant.convertStringMMYYYYToDate(formVo.getDateTo());
+						params.add(date);
+						params.add(date);
+					}
+					
+			
+					sql.append(" ORDER BY a.REQUEST_DATE DESC ");
+					
+					log.info("sqlRep02200 : {}",sql.toString());
+					rep02200VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep02200RowMapper);
+					
+					return rep02200VoList;
+				}
+				
+
+				 private RowMapper<Rep02200Vo> rep02200RowMapper = new RowMapper<Rep02200Vo>() {
+				    	@Override
+				    	public Rep02200Vo mapRow(ResultSet rs, int arg1) throws SQLException {
+				    		Rep02200Vo vo = new Rep02200Vo();
+				    		
+				    		vo.setId(rs.getLong("REQFORM_ID"));
+				    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
+				    		
+				    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
+				    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));
+				    		vo.setCertypeDesc(rs.getString("CERTYPE_DESC")); 
+				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
+				    		vo.setCompanyName(rs.getString("COMPANY_NAME"));         
+				    		vo.setDepartment(rs.getString("DEPARTMENT"));                   
+				    		return vo;                                                         
+				    	}
+				 };
 			 
 			 public List<Rep03000Vo> getDataRep03000(Rep03000FormVo formVo) {
 					StringBuilder sql = new StringBuilder("");
