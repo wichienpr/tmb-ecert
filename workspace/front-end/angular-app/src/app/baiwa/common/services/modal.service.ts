@@ -13,7 +13,7 @@ export class ModalService {
         const id = obj.success ? "alert-success" : "alert";
         // message
         $(`#${id} .header`).html(obj.title || "แจ้งเตือน");
-        $(`#${id} .content`).html(obj.msg || "...");
+        $(`#${id} .content`).html(obj.msg || "");
         // color
         $(`#${id} .header`).removeClass('notification');
         $(`#${id} .header`).addClass(obj.color || '');
@@ -29,7 +29,7 @@ export class ModalService {
             const id = "alert-func";
             // message
             $(`#${id} .header`).html(obj.title || "แจ้งเตือน");
-            $(`#${id} .content`).html(obj.msg || "...");
+            $(`#${id} .content`).html(obj.msg || "");
             // color
             $(`#${id} .header`).removeClass('notification');
             $(`#${id} .header`).addClass(obj.color || '');
@@ -52,7 +52,7 @@ export class ModalService {
     confirm(func: Function, obj: Modal) {
         // message
         $('#confirm .header').html(obj.title || "การยืนยัน");
-        $('#confirm .content').html(obj.msg || "...");
+        $('#confirm .content').html(obj.msg || "");
         $('#confirm .ui.positive').html(obj.approveMsg || 'ยืนยัน');
         $('#confirm .ui.negative').html(obj.rejectMsg || 'ยกเลิก');
         // color

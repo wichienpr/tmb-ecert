@@ -150,9 +150,9 @@ export class Nrq02000Component implements OnInit {
       cerChilds: this.chkChilds.toArray(),
     };
     if (this.data && this.data.reqFormId != 0) {
-      return this.service.update(form, this.files, this.reqTypeChanged, viewChilds, data);
+      this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data, "update");
     } else {
-      return this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data);
+      this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data, "save");
     }
   }
 

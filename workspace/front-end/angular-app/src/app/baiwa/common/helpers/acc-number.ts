@@ -1,14 +1,14 @@
 export class Acc {
-    public static convertAccNo(value: string) {
-        let str = value.toString();
+    public static convertAccNo(value: string = "") {
+        let str = value ? value.toString() : "";
         if (str.length == 10)
             return `${this.sub(str, 0, 3)}-${this.sub(str, 3, 4)}-${this.sub(str, 4, 9)}-${this.sub(str, 9)}`;
         else
             return value;
     }
     
-    public static revertAccNo(value: string) {
-        let str = value.toString();
+    public static revertAccNo(value: string = "") {
+        let str = value ? value.toString() : "";
         if (str.replace(/-/g, '').length == 10)
             return str.replace(/-/g, '');
         else

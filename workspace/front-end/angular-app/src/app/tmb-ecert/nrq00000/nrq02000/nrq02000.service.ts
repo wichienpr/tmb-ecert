@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
-import { Certificate, Lov, RequestForm, initRequestForm } from "models/";
-import { AjaxService, ModalService, DropdownService } from "services/";
-import { dateLocale, Acc } from "helpers/";
-
-import { Store } from "@ngrx/store";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Modal } from "models/";
-import { Nrq02000 } from "./nrq02000.model";
 import { Router, ActivatedRoute } from "@angular/router";
+
+import { Certificate, Lov, RequestForm, initRequestForm, Modal } from "models/";
+import { AjaxService, ModalService, DropdownService } from "services/";
+import { Acc, Assigned } from "helpers/";
+
+import { Nrq02000 } from "./nrq02000.model";
 
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
@@ -29,16 +28,16 @@ export class Nrq02000Service {
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
         customSegSelect: new FormControl('', Validators.required),      // Customer Segment
         payMethodSelect: new FormControl('', Validators.required),      // วิธีการรับชำระ
-        subAccMethodSelect: new FormControl('', Validators.required),   // วิธีหักบัญชีจาก
+        subAccMethodSelect: new FormControl(),                          // วิธีหักบัญชีจาก
         accNo: new FormControl('', Validators.required),                // เลขที่บัญชี
         accName: new FormControl('', Validators.required),              // ชื่อบัญชี
         corpNo: new FormControl('', Validators.required),               // เลขที่นิติบุคคล
         corpName: new FormControl('', Validators.required),             // ชื่อนิติบุคคล
-        corpName1: new FormControl('', Validators.required),            // ชื่อนิติบุคคล 1
+        corpName1: new FormControl(),                                   // ชื่อนิติบุคคล 1
         acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
         departmentName: new FormControl(),                              // ชื่อหน่วยงาน
-        tmbReceiptChk: new FormControl('', Validators.required),        // ชื่อบนใบเสร็จธนาคาร TMB
-        telReq: new FormControl('', Validators.required),               // เบอร์โทรผู้ขอ/ลูกค้า
+        tmbReceiptChk: new FormControl(),                               // ชื่อบนใบเสร็จธนาคาร TMB
+        telReq: new FormControl(),                                      // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl(),                                     // ที่อยู่
         note: new FormControl(),                                        // หมายเหตุ
         requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
@@ -48,7 +47,6 @@ export class Nrq02000Service {
 
     constructor(
         private ajax: AjaxService,
-        private store: Store<{}>,
         private modal: ModalService,
         private dropdown: DropdownService,
         private router: Router,
@@ -146,7 +144,8 @@ export class Nrq02000Service {
     /**
      * Forms Action
      */
-    save(form: FormGroup, files: any, certificates: Certificate[], viewChilds: any, addons: any) {
+    save(form: FormGroup, files: any, _certificates: Certificate[], viewChilds: any, addons: any, what: string = "save") {
+        let certificates = new Assigned().getValue(_certificates);
         let chkCerts = this.chkCerts(certificates, form);
         certificates = [...chkCerts.data]; // clear validators checkbox
         if (!chkCerts.flag) {
@@ -159,115 +158,53 @@ export class Nrq02000Service {
             viewChilds.cers[0].nativeElement.focus();
             return chkCerts.form;
         }
-        if (!form.valid) {
-            const modalConf: Modal = {
-                msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-                <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-                <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-                title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-                approveMsg: "ดำเนินการต่อ",
-                color: "notification"
-            }
-            this.modal.confirm((e) => {
-                if (e) {
-                    const formData = this.bindingData(certificates, files, form, addons);
-                    this.ajax.upload(URL.NRQ_SAVE, formData, response => {
-                        if (response.json().message == "SUCCESS") {
-                            const modal: Modal = {
-                                msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                                success: true
-                            };
-                            this.modal.alert(modal);
-                            this.router.navigate(['/crs/crs01000']);
-                        } else {
-                            const modal: Modal = {
-                                msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
-                                success: false
-                            };
-                            this.modal.alert(modal);
-                        }
-                    }, err => {
-                        console.error(err)
-                    });
-                }
-            }, modalConf);
-        } else {
-            let modalAler: Modal = { msg: "", success: false }
-            for (let key in form.controls) {
-                if (form.controls[key].invalid) {
-                    for (let enu in ValidatorMessages) {
-                        if (enu == key) {
-                            modalAler.msg = ValidatorMessages[enu];
-                            modalAler.success = false;
-                            this.modal.alert(modalAler);
-                            return;
-                        }
+        let modalAler: Modal = { msg: "", success: false }
+        for (let key in form.controls) {
+            if (form.controls[key].invalid) {
+                for (let enu in ValidatorMessages) {
+                    if (enu == key) {
+                        modalAler.msg = ValidatorMessages[enu];
+                        modalAler.success = false;
+                        this.modal.alert(modalAler);
+                        return;
                     }
                 }
             }
         }
-    }
-
-    update(form: FormGroup, files: any, certificates: Certificate[], viewChilds: any, addons: any) {
-        let chkCerts = this.chkCerts(certificates, form);
-        certificates = [...chkCerts.data]; // clear validators checkbox
-        if (!chkCerts.flag) {
-            this.modal.alertWithAct({ msg: ValidatorMessages.selectSomeCerts });
-            viewChilds.chks[0].nativeElement.focus();
-            return chkCerts.form;
-        }
-        if (!chkCerts.total) {
-            this.modal.alertWithAct({ msg: ValidatorMessages.totalCerts });
-            viewChilds.cers[0].nativeElement.focus();
-            return chkCerts.form;
-        }
-        if (!form.valid) {
-            const modalConf: Modal = {
-                msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+        console.log(certificates);
+        const modalConf: Modal = {
+            msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
                 <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
                 <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-                title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-                approveMsg: "ดำเนินการต่อ",
-                color: "notification"
-            }
-            this.modal.confirm((e) => {
-                if (e) {
-                    const formData = this.bindingData(certificates, files, form, addons);
-                    this.ajax.upload(URL.NRQ_UPDATE, formData, response => {
-                        if (response.json().message == "SUCCESS") {
-                            const modal: Modal = {
-                                msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                                success: true
-                            };
-                            this.modal.alert(modal);
-                            this.router.navigate(['/crs/crs01000']);
-                        } else {
-                            const modal: Modal = {
-                                msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
-                                success: false
-                            };
-                            this.modal.alert(modal);
-                        }
-                    }, err => {
-                        console.error(err)
-                    });
-                }
-            }, modalConf);
-        } else {
-            let modalAler: Modal = { msg: "", success: false }
-            for (let key in form.controls) {
-                if (form.controls[key].invalid) {
-                    for (let enu in ValidatorMessages) {
-                        if (enu == key) {
-                            modalAler.msg = ValidatorMessages[enu];
-                            modalAler.success = false;
-                            this.modal.alert(modalAler);
-                            return;
-                        }
-                    }
-                }
-            }
+            title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+            approveMsg: "ดำเนินการต่อ",
+            color: "notification"
         }
+        this.modal.confirm((e) => {
+            if (e) {
+                const formData = this.bindingData(certificates, files, form, addons);
+                console.log(certificates);
+                let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
+                this.ajax.upload(url, formData, response => {
+                    if (response.json().message == "SUCCESS") {
+                        const modal: Modal = {
+                            msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                            success: true
+                        };
+                        this.modal.alert(modal);
+                        this.router.navigate(['/crs/crs01000']);
+                    } else {
+                        const modal: Modal = {
+                            msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
+                            success: false
+                        };
+                        this.modal.alert(modal);
+                    }
+                }, err => {
+                    console.error(err)
+                });
+            }
+        }, modalConf);
     }
 
     chkCerts(certificates: Certificate[], form: FormGroup): any {
@@ -390,14 +327,14 @@ export class Nrq02000Service {
                                 ob.check = false;
                                 ob.value = 0;
                             }
-                            _data.push(ob);
+                            _data = [..._data, ob];
                         }
                     })
                     obj.children = [];
                     obj.check = false;
                     obj.value = 0;
                 }
-                _data.push(obj);
+                _data = [..._data, obj];
             }
         });
         let data: Nrq02000 = {
