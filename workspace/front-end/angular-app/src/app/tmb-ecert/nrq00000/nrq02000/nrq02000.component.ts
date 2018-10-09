@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm } from 'models/';
-import { Acc } from 'helpers/';
+import { Acc, dateLocaleEN } from 'helpers/';
 
 @Component({
   selector: 'app-nrq02000',
@@ -11,7 +11,7 @@ import { Acc } from 'helpers/';
   styleUrls: ['./nrq02000.component.css'],
   providers: [Nrq02000Service]
 })
-export class Nrq02000Component implements OnInit {
+export class Nrq02000Component implements OnInit, AfterViewInit {
 
   @ViewChild("ngForm") ngForm: NgForm;
   @ViewChild("corpNo") corpNo: ElementRef;
@@ -115,7 +115,11 @@ export class Nrq02000Component implements OnInit {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
-    console.log(this.data);
+  }
+
+  ngAfterViewInit() {
+    this.form.controls.reqTypeSelect.setValue('50001');
+    this.reqTypeChange('50001');
   }
 
   formSubmit(form: FormGroup, event) {
@@ -178,7 +182,7 @@ export class Nrq02000Component implements OnInit {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
-          if (obj.code=='10007') {
+          if (obj.code == '10007') {
             this.calend[index] = {
               calendarId: `cal${index}`,
               calendarName: `cal${index}`,
@@ -191,7 +195,7 @@ export class Nrq02000Component implements OnInit {
             };
             this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
           }
-          if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
+          if (obj.code == '10006' || obj.code == '20006' || obj.code == '30005') {
             this.calend[index] = {
               calendarId: `cal${index}`,
               calendarName: `cal${index}`,
@@ -205,10 +209,10 @@ export class Nrq02000Component implements OnInit {
             this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
           }
           if (this.form.controls[`chk${index}`]) {
-            this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
             this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
           } else {
-            this.form.addControl(`chk${index}`, new FormControl('', Validators.required));
+            this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
             this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
           }
           if (!obj.feeDbd) {
@@ -227,16 +231,16 @@ export class Nrq02000Component implements OnInit {
                 //     icon: 'calendar'
                 //   };
                 // } else {
-                  this.calendar[idx] = {
-                    calendarId: `cal${index}Child${idx}`,
-                    calendarName: `cal${index}Child${idx}`,
-                    formGroup: this.form,
-                    formControlName: `cal${index}Child${idx}`,
-                    type: CalendarType.DATE,
-                    formatter: CalendarFormatter.DEFAULT,
-                    local: CalendarLocal.EN,
-                    icon: 'calendar'
-                  };
+                this.calendar[idx] = {
+                  calendarId: `cal${index}Child${idx}`,
+                  calendarName: `cal${index}Child${idx}`,
+                  formGroup: this.form,
+                  formControlName: `cal${index}Child${idx}`,
+                  type: CalendarType.DATE,
+                  formatter: CalendarFormatter.DEFAULT,
+                  local: CalendarLocal.EN,
+                  icon: 'calendar'
+                };
                 // }
               }
               if (idx === obj.children.length - 1) {
@@ -246,13 +250,13 @@ export class Nrq02000Component implements OnInit {
                   this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
                 }
               }
-              if (this.form.controls[`chk${index}Child${idx}`]) {
-                this.form.setControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
-                this.form.setControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
+              if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
+                this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
                 this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
               } else {
-                this.form.addControl(`chk${index}Child${idx}`, new FormControl('', Validators.required));
-                this.form.addControl(`cer${index}Child${idx}`, new FormControl('', Validators.required));
+                this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
                 this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
               }
             });
@@ -274,10 +278,17 @@ export class Nrq02000Component implements OnInit {
   }
 
   toggleChk(index) {
+    if (!this.form.controls[`chk${index}`].value) {
+      this.form.controls[`cer${index}`].setValue(1);
+      // if (this.form.controls[`cal${index}`]) {
+      //   this.form.controls[`cal${index}`].setValue(dateLocaleEN(new Date()).split("/")[2]);
+      // }
+    } else {
+      this.form.controls[`cer${index}`].setValue('');
+    }
     if (this.reqTypeChanged[index].children) {
       this.showChildren = !this.form.controls[`chk${index}`].value;
     }
-    this.form.controls[`cer${index}`].setValue('');
   }
 
   toggleChkChild(parent, child) {
@@ -297,6 +308,10 @@ export class Nrq02000Component implements OnInit {
     this.form.controls[`cer${parent}Child${child}`].setValue('');
     if (this.form.controls[`etc${parent}Child${child}`]) {
       this.form.controls[`etc${parent}Child${child}`].setValue('');
+    }
+    if (!this.form.controls[`chk${parent}Child${child}`].value) {
+      // this.form.controls[`cal${parent}Child${child}`].setValue(dateLocaleEN(new Date()));
+      this.form.controls[`cer${parent}Child${child}`].setValue(1);
     }
   }
 

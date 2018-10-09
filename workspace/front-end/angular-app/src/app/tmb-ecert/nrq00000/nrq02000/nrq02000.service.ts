@@ -38,7 +38,7 @@ export class Nrq02000Service {
         corpName1: new FormControl(),                                   // ชื่อนิติบุคคล 1
         acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
         departmentName: new FormControl(),                              // ชื่อหน่วยงาน
-        tmbReceiptChk: new FormControl(),                               // ชื่อบนใบเสร็จธนาคาร TMB
+        // tmbReceiptChk: new FormControl(),                            // ชื่อบนใบเสร็จธนาคาร TMB
         telReq: new FormControl(),                                      // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl(),                                     // ที่อยู่
         note: new FormControl(),                                        // หมายเหตุ
@@ -379,7 +379,7 @@ export class Nrq02000Service {
             payMethodSelect: form.controls.payMethodSelect.value,
             subAccMethodSelect: form.controls.subAccMethodSelect.value,
             telReq: form.controls.telReq.value,
-            tmbReceiptChk: form.controls.tmbReceiptChk.value,
+            // tmbReceiptChk: form.controls.tmbReceiptChk.value,
             certificates: _data
         };
         for (let key in data) {
@@ -410,7 +410,7 @@ export enum ValidatorMessages {
     corpName1 = "corpName1",
     acceptNo = "acceptNo",
     departmentName = "departmentName",
-    tmbReceiptChk = "tmbReceiptChk",
+    // tmbReceiptChk = "tmbReceiptChk",
     telReq = "telReq",
     address = "address",
     note = "note",

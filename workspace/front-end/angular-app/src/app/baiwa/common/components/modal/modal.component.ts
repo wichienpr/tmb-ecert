@@ -42,7 +42,7 @@ export class ModalComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         // On initial modal
-        $(`#${this.modal.modalId}`).modal({ centered: false, autofocus: false });
+        $(`#${this.modal.modalId}`).modal({ closable: false, centered: false, autofocus: false });
     }
 
     ngOnDestroy() {

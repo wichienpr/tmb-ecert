@@ -108,7 +108,7 @@
                       <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i]) }">
                         <div class="ui input">
                           <input #cer type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
-                            formControlName="cer{{i}}" style="width: 100%;">
+                            formControlName="cer{{i}}" min="1" style="width: 100%;">
                         </div>
                       </div>
                     </td>
@@ -146,7 +146,8 @@
                       <td>{{ item.feeDbd }}</td>
                       <td>{{ item.feeTmb }}</td>
                       <td>
-                        <div class="center aligned field" [ngClass]="{'error': invalid(form.controls['cal'+i+'Child'+j])}">
+                        <div *ngIf="!(item.code == '10003' || item.code == '20003' || item.code == '30002')" class="center aligned field"
+                          [ngClass]="{'error': invalid(form.controls['cal'+i+'Child'+j])}">
                           <div class="ui input">
                             <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value"
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
@@ -156,7 +157,7 @@
                       <td>
                         <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i+'Child'+j]) }">
                           <div class="ui input">
-                            <input #cerChild type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
+                            <input #cerChild min="1" type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
                               formControlName="cer{{i}}Child{{j}}" style="width: 100%;">
                           </div>
                         </div>
@@ -219,13 +220,18 @@
         <div #payMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.payMethodSelect) }">
           <ui-dropdown [selected]="data ? data.paidTypeCode : ''" [dropdown]="dropdownObj.payMethod" (valueChange)="payMethodChange($event)"></ui-dropdown>
         </div>
+        <div class="two wide field">
+          <label>ที่อยู่</label>
+        </div>
+        <div class="five wide field">
+          <textarea #address formControlName="address" rows="2"></textarea>
+        </div>
       </div>
 
       <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
         <div class="four wide field">
           <label>วิธีหักบัญชีจาก</label>
         </div>
-
         <div #subAccMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.subAccMethodSelect) }">
           <ui-dropdown [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
@@ -262,7 +268,7 @@
 
       <div class="inline fields">
         <div class="required four wide field">
-          <label>เลขที่บัญชี</label>
+          <label>เลขที่บัญชีหักค่าธรรมเนียม</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.accNo) }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
@@ -270,7 +276,7 @@
             placeholder="">
         </div>
         <div class="required two wide field">
-          <label>ชื่อบัญชี</label>
+          <label>ชื่อเจ้าของบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.accName) }">
           <input type="text" #accName formControlName="accName" placeholder="ชื่อบัญชี">
@@ -280,13 +286,13 @@
         <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
-        <div class="two wide field" [ngClass]="{'error': invalid(form.controls.tmbReceiptChk) }">
+        <!-- <div class="two wide field" [ngClass]="{'error': invalid(form.controls.tmbReceiptChk) }">
           <div class="ui checkbox" style="width: 100%">
             <input type="checkbox" #tmbReceiptChk (change)="toggleDataCorp($event)" formControlName="tmbReceiptChk">
             <label class="custom-rt">ชื่อนิติบุคคล</label>
           </div>
-        </div>
-        <div class="three wide field" [ngClass]="{'error': invalid(form.controls.corpName1) }">
+        </div> -->
+        <div class="five wide field" [ngClass]="{'error': invalid(form.controls.corpName1) }">
           <input type="text" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
@@ -297,20 +303,25 @@
         </div>
       </div>
 
+      <div class="inline field">
+        <h3 class="header space">&nbsp;</h3>
+        <div class="ui divider"></div>
+        <h3 class="header">โปรดแนบเอกสาร</h3>
+      </div>
+
       <div class="inline fields">
         <div class="required four wide field">
-          <label>ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-          </label>
+          <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.requestFile) }">
           <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
-        <div class="two wide field">
+        <!-- <div class="two wide field">
           <label>ที่อยู่</label>
         </div>
         <div class="five wide field">
           <textarea #address formControlName="address" rows="3"></textarea>
-        </div>
+        </div> -->
       </div>
 
 

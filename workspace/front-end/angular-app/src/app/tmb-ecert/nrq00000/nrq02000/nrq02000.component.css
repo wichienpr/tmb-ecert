@@ -13,3 +13,12 @@
 .hidden {
     display: none;
 }
+
+h3.header{
+    margin: 0
+}
+
+h3.header.space{
+    margin: 0 !important;
+    margin-top: -1em !important;
+}

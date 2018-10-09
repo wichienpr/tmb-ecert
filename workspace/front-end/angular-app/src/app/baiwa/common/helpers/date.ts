@@ -7,3 +7,7 @@ export function dateLocale(date) {
     const day = _date.toLocaleString('th-TH', { timeZone: 'UTC' }).split(" ")[0].split("/")[0];
     return digit(day) + "/" + digit(month) + "/" + digit(year);
 }
+
+export function dateLocaleEN(date) {
+    return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`;
+}

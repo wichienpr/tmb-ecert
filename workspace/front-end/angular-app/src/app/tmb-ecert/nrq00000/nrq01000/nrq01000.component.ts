@@ -35,30 +35,42 @@ export class Nrq01000Component implements OnInit {
     this.confirm();
   }
 
-  confirm = () => {
-    const modalConf: Modal = {
-      title: "ยืนยันการทำรายการ ?",
-      msg: ""
+  confirm = async () => {
+    let response = await this.service.save();
+    this.nrq01000 = {
+      modalId: "nrq01000",
+      type: "custom",
+      title: "Request Form สำหรับลูกค้าทำรายการเอง",
+      msg: "TMB Req. No: " + response.data
     };
-    this.modal.confirm(async e => {
-      if (e) {
-        let response = await this.service.save();
-        setTimeout(() => {
-          this.nrq01000 = {
-            modalId: "nrq01000",
-            type: "custom",
-            title: "Request Form สำหรับลูกค้าทำรายการเอง",
-            msg: "TMB Req. No: " + response.data
-          };
-          $("#nrq01000").modal('show');
-        }, 200);
-      } else {
-        this.location.back();
-      }
-    }, modalConf);
+    $("#nrq01000").modal('show');
   }
 
+  // confirm = async () => {
+  //   const modalConf: Modal = {
+  //     title: "ยืนยันการทำรายการ ?",
+  //     msg: ""
+  //   };
+  //   this.modal.confirm(async e => {
+  //     if (e) {
+  //       let response = await this.service.save();
+  //       setTimeout(() => {
+  //         this.nrq01000 = {
+  //           modalId: "nrq01000",
+  //           type: "custom",
+  //           title: "Request Form สำหรับลูกค้าทำรายการเอง",
+  //           msg: "TMB Req. No: " + response.data
+  //         };
+  //         $("#nrq01000").modal('show');
+  //       }, 200);
+  //     } else {
+  //       this.location.back();
+  //     }
+  //   }, modalConf);
+  // }
+
   print = () => {
+    this.requestPage();
     this.service.pdf();
   }
 
