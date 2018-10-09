@@ -197,7 +197,7 @@ public class RequestorDao {
 		return currentId;
 	}
 
-	public Long update(RequestForm vo) {
+	public void update(RequestForm vo) {
 
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
 		sql.append(" CERTYPE_CODE=?,ORGANIZE_ID=?,CUSTOMER_NAME=?,COMPANY_NAME=?,");
@@ -207,11 +207,8 @@ public class RequestorDao {
 		sql.append("IDCARD_FILE=?,CHANGENAME_FILE=?,CERTIFICATE_FILE=?,ADDRESS=?,");
 		sql.append("REMARK=?,RECEIPT_NO=?,STATUS=?,CREATED_BY_ID=?,CREATED_BY_NAME=?,");
 		sql.append("CREATED_DATETIME=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,TMB_REQUESTNO=?,REQUEST_DATE=? WHERE REQFORM_ID = ?");
-		//sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 		
 		logger.info(sql.toString());
-
-		KeyHolder holder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override
@@ -254,10 +251,7 @@ public class RequestorDao {
 				ps.setLong(33, vo.getReqFormId());
 				return ps;
 			}
-		}, holder);
+		});
 		
-		Long currentId = holder.getKey().longValue();
-		
-		return currentId;
 	}
 }

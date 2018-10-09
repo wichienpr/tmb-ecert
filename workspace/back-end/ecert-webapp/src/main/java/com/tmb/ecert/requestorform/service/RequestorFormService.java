@@ -75,7 +75,7 @@ public class RequestorFormService {
 				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
 			try {
-				Long nextId = 0L;
+				Long nextId = form.getReqFormId();
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
@@ -94,12 +94,17 @@ public class RequestorFormService {
 						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
 								: null);
 				req.setTranCode(form.getTranCode());
-				req.setCompanyName(form.getCorpName1());
 				req.setCreatedById(userId);
 				req.setCreatedByName(userName);
 				req.setCreatedDateTime(null);
 				req.setCustomerName(form.getCorpName());
-				req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
+				if (form.getTmbReceiptChk() != null) {
+					req.setCustomerNameReceipt(form.getCorpName1());
+					req.setCompanyName(form.getCorpName());
+				} else {
+					req.setCustomerNameReceipt("");
+					req.setCompanyName("");
+				}
 				req.setCustsegmentCode(form.getCustomSegSelect());
 				req.setDebitAccountType(form.getSubAccMethodSelect());
 				req.setDepartment(form.getDepartmentName());
@@ -117,7 +122,7 @@ public class RequestorFormService {
 				req.setStatus("10001");
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
-				nextId = dao.update(req); // SAVE REQUEST FORM
+				dao.update(req); // SAVE REQUEST FORM
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
@@ -130,7 +135,7 @@ public class RequestorFormService {
 						cert.setStatementYear(cer.getStatementYear());
 						cert.setAcceptedDate(cer.getAcceptedDate());
 						cert.setOther(cer.getOther());
-						dao.updateCertificates(cert); // SAVE REQUEST CERTIFICATES
+						dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
 					}
 				}
 				msg.setMessage("SUCCESS");
@@ -188,12 +193,17 @@ public class RequestorFormService {
 						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
 								: null);
 				req.setTranCode(form.getTranCode());
-				req.setCompanyName(form.getCorpName1());
 				req.setCreatedById(userId);
 				req.setCreatedByName(userName);
 				req.setCreatedDateTime(null);
 				req.setCustomerName(form.getCorpName());
-				req.setCustomerNameReceipt(form.getTmbReceiptChk() ? form.getCorpName1() : "");
+				if (form.getTmbReceiptChk() != null) {
+					req.setCustomerNameReceipt(form.getCorpName1());
+					req.setCompanyName(form.getCorpName());
+				} else {
+					req.setCustomerNameReceipt("");
+					req.setCompanyName("");
+				}
 				req.setCustsegmentCode(form.getCustomSegSelect());
 				req.setDebitAccountType(form.getSubAccMethodSelect());
 				req.setDepartment(form.getDepartmentName());
@@ -254,9 +264,6 @@ public class RequestorFormService {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
-		String requestFileName = "-";
-		String copyFile = "-";
-		String changeNameFile = "-";
 		try {
 			RequestForm req = new RequestForm();
 			req.setAccountName(null);
