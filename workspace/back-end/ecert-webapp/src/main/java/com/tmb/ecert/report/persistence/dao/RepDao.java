@@ -339,7 +339,7 @@ public class RepDao {
 			List<Rep02000Vo> rep02000VoList = new ArrayList<Rep02000Vo>();
 			
 			sql.append("  SELECT  "); 
-			sql.append("  c.NAME AS CUSTSEGMENT_DESC,c.CODE AS CUSTSEGMENT_CODE,a.DEPARTMENT AS DEPARTMENT,count(*) AS CUSTSEGMENT_COUNT , "); 
+			sql.append("  c.NAME AS CUSTSEGMENT_DESC,c.CODE AS CUSTSEGMENT_CODE,count(*) AS CUSTSEGMENT_COUNT , "); 
 			sql.append("  sum(a.AMOUNT_DBD) AS AMOUNT_DBD  , "); 
 			sql.append("  sum(a.AMOUNT_TMB) AS AMOUNT_TMB  , "); 
 			sql.append("  sum(a.AMOUNT_TMB+a.AMOUNT_DBD) AS AMOUNT_TATOL   "); 
@@ -366,7 +366,7 @@ public class RepDao {
 				params.add(formVo.getPaidtypeCode());
 			}
 			
-			sql.append("  GROUP BY c.NAME,c.CODE,a.DEPARTMENT ORDER BY c.CODE ");
+			sql.append("  GROUP BY c.NAME,c.CODE ORDER BY c.CODE ");
 //			log.info("sqlRep02000 : {}",sql.toString());
 			rep02000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep02000RowMapper);
 			
@@ -390,7 +390,7 @@ public class RepDao {
 		    		vo.setAmountTmb(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TMB")));  
 		    		vo.setTotalAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TATOL"))); 
 		    		
-		    		vo.setDepartment(rs.getString("DEPARTMENT"));
+		    		vo.setDepartment("นิติกรรมสัญญา");
 		    		vo.setSuccess(0);
 		    		vo.setFail(0);
 		    		                
