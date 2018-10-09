@@ -175,12 +175,14 @@ export class Nrq02000Service {
         }
         console.log(certificates);
         const modalConf: Modal = {
-            msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-                <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-                <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-            title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-            approveMsg: "ดำเนินการต่อ",
-            color: "notification"
+            msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
+            title: "ยืนยันการทำรายการ"
+            // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+            //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+            //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+            // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+            // approveMsg: "ดำเนินการต่อ",
+            // color: "notification"
         }
         this.modal.confirm((e) => {
             if (e) {
@@ -190,11 +192,14 @@ export class Nrq02000Service {
                 this.ajax.upload(url, formData, response => {
                     if (response.json().message == "SUCCESS") {
                         const modal: Modal = {
-                            msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                            msg: "บันทึกข้อมูลสำเร็จ",
+                            // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
                             success: true
                         };
                         this.modal.alert(modal);
-                        this.router.navigate(['/crs/crs01000']);
+                        this.router.navigate(['/crs/crs01000'],{
+                            queryParams: { codeStatus: "10001" }
+                        });
                     } else {
                         const modal: Modal = {
                             msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
@@ -310,11 +315,11 @@ export class Nrq02000Service {
                     obj.check = false;
                     obj.value = 0;
                 }
-                if (obj.code=='10007') {
+                if (obj.code == '10007') {
                     let str = form.controls['cal' + index].value.split("/");
                     obj.acceptedDate = new Date(str[2], str[1], str[0]);
                 }
-                if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
+                if (obj.code == '10006' || obj.code == '20006' || obj.code == '30005') {
                     let value = parseInt(form.controls['cal' + index].value);
                     obj.statementYear = value;
                 }
@@ -328,8 +333,8 @@ export class Nrq02000Service {
                             //     ob.acceptedDate = new Date(str[2], str[1], str[0]);
                             // }
                             // if (idx == 2) {
-                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                ob.registeredDate = new Date(str[2], str[1], str[0]);
+                            let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                            ob.registeredDate = new Date(str[2], str[1], str[0]);
                             // }
                             if (idx == obj.children.length - 1) {
                                 // let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);

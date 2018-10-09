@@ -90,14 +90,14 @@
                     <td>{{ req.certificate }}</td>
                     <td>{{ req.feeDbd }}</td>
                     <td>{{ req.feeTmb }}</td>
-                    <td>
+                    <td class="center aligned">
                       <div class="field" *ngIf="req.code=='10006'||req.code=='20006'||req.code=='30005'" [ngClass]="{'error': invalid(form.controls['cal'+i])}">
                         <div class="ui input" style="width: 100%">
                           <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value"
                             (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>
                         </div>
                       </div>
-                      <div class="field" *ngIf="req.code=='10007" [ngClass]="{'error': invalid(form.controls['cal'+i])}">
+                      <div class="field" *ngIf="req.code=='10007'" [ngClass]="{'error': invalid(form.controls['cal'+i])}">
                         <div class="ui input" style="width: 100%">
                           <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value"
                             (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>

@@ -64,8 +64,9 @@ export class Nrq01000Component implements OnInit {
 
   requestPage() {
     setTimeout(() => {
-      
-    this.router.navigate(['crs/crs01000']);
+      this.router.navigate(['crs/crs01000'], {
+        queryParams: { codeStatus: "10001" }
+      });
     });
   }
 
