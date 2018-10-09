@@ -97,6 +97,12 @@
                             (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>
                         </div>
                       </div>
+                      <div class="field" *ngIf="req.code=='10007" [ngClass]="{'error': invalid(form.controls['cal'+i])}">
+                        <div class="ui input" style="width: 100%">
+                          <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value"
+                            (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>
+                        </div>
+                      </div>
                     </td>
                     <td>
                       <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i]) }">

@@ -310,6 +310,10 @@ export class Nrq02000Service {
                     obj.check = false;
                     obj.value = 0;
                 }
+                if (obj.code=='10007') {
+                    let str = form.controls['cal' + index].value.split("/");
+                    obj.acceptedDate = new Date(str[2], str[1], str[0]);
+                }
                 if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
                     let value = parseInt(form.controls['cal' + index].value);
                     obj.statementYear = value;
