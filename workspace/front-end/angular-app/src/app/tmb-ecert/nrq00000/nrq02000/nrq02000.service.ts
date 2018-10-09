@@ -16,7 +16,9 @@ const URL = {
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
     GEN_KEY: "/api/nrq/generate/key",
-    REQUEST_FORM: "/api/nrq/data"
+    REQUEST_FORM: "/api/nrq/data",
+    CREATE_FORM: "/api/report/pdf/reqForm/",
+    FORM_PDF: "/api/report/pdf/"
 }
 
 @Injectable()
@@ -262,7 +264,10 @@ export class Nrq02000Service {
     }
 
     pdf(): boolean {
-        this.ajax.download(URL.NRQ_PDF + "nrq02000");
+        this.ajax.post(URL.CREATE_FORM + "nrq02000", {}, response => {
+            this.ajax.download(URL.FORM_PDF + "nrq02000" + "/file");
+        });
+        // this.ajax.download(URL.NRQ_PDF + "nrq02000");
         return true;
     }
 
@@ -305,22 +310,26 @@ export class Nrq02000Service {
                     obj.check = false;
                     obj.value = 0;
                 }
+                if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
+                    let value = parseInt(form.controls['cal' + index].value);
+                    obj.statementYear = value;
+                }
                 if (obj.children) {
                     obj.children.forEach((ob, idx) => {
                         if (idx != 0) {
                             ob.check = form.controls['chk' + index + 'Child' + idx].value;
                             ob.value = form.controls['cer' + index + 'Child' + idx].value;
-                            if (idx == 1) {
-                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                ob.acceptedDate = new Date(str[2], str[1], str[0]);
-                            }
-                            if (idx == 2) {
+                            // if (idx == 1) {
+                            //     let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                            //     ob.acceptedDate = new Date(str[2], str[1], str[0]);
+                            // }
+                            // if (idx == 2) {
                                 let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                 ob.registeredDate = new Date(str[2], str[1], str[0]);
-                            }
+                            // }
                             if (idx == obj.children.length - 1) {
-                                let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
-                                ob.statementYear = value;
+                                // let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
+                                // ob.statementYear = value;
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }
                             if (ob.check == "" && ob.value == "") {

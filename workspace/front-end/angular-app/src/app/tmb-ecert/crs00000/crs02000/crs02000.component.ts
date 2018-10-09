@@ -55,12 +55,13 @@ export class Crs02000Component implements OnInit {
       this.data = await this.service.getData(this.id);
       this.cert = await this.service.getCert(this.id);
       this.chkList = await this.service.getChkList(this.id);
-      for(let i=0;i<this.chkList.length;i++) {
+      for (let i = 0; i < this.chkList.length; i++) {
         if (this.chkList[i].feeDbd == "" && i != 0) {
           this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
         }
       }
       this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+      console.log(this.chkList);
       setTimeout(() => {
         this.dataLoading = false;
       }, 500);
@@ -81,6 +82,12 @@ export class Crs02000Component implements OnInit {
 
   download(fileName: string) {
     this.service.download(fileName);
+  }
+
+  pdf(what: string) {
+    const cover = "crsCover02000";
+    const receipt = "crsReceipt02000";
+    this.service.pdf(what == 'c' ? cover : receipt);
   }
 
   back() {

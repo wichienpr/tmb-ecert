@@ -1,6 +1,6 @@
 <ng-container [formGroup]="calendar.formGroup">
-    <div class="ui calendar" id="{{calendar.calendarId}}">
-        <div class="ui input {{ calendar.icon ? 'left icon' : '' }}">
+    <div class="ui calendar" id="{{calendar.calendarId}}" width="100%">
+        <div class="ui input {{ calendar.icon ? 'left icon' : '' }}" width="100%">
             <i class="{{ calendar.icon ? calendar.icon : 'calendar' }} icon" *ngIf="calendar.icon"></i>
             <input type="text" width="100%" [formControlName]="calendar.formControlName" name="{{calendar.calendarName}}"
                 placeholder="{{calendar.placeholder}}" [disableControl]="disableCalendar" autocomplete="off">

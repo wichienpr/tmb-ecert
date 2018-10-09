@@ -45,3 +45,24 @@ tr:nth-child(even) {background-color: #F8F8FF;}
 .label.grey {
     color: #767676 !important;
 }
+
+.full-width {
+    width: 100% !important;
+}
+
+.half-width {
+    width: 50% !important;
+    margin: auto;
+}
+
+.text-left {
+    text-align: left!important;
+}
+
+.text-right {
+    text-align: right!important;
+}
+
+.text-center {
+    text-align: center!important;
+}

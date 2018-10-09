@@ -10,6 +10,9 @@ const URL = {
   DOWNLOAD: "/api/crs/crs02000/download/",
   CER_BY_TYPE: "/api/crs/crs02000/cert/list",
   CER_BY_TYPECODE: "/api/cer/typeCode",
+  CREATE_COVER: "/api/report/pdf/coverSheet/",
+  CREATE_RECEIPT: "/api/report/pdf/receiptTax/",
+  PDF: "/api/report/pdf/"
 }
 
 @Injectable({
@@ -94,8 +97,8 @@ export class Crs02000Service {
       chkList.forEach((obj, index) => {
         obj.value = 0;
         obj.check = false;
-        cert.forEach( (ob, idx) => {
-          if(obj.code == ob.certificateCode) {
+        cert.forEach((ob, idx) => {
+          if (obj.code == ob.certificateCode) {
             obj.check = true;
             obj.value = ob.totalNumber;
           }
@@ -104,13 +107,12 @@ export class Crs02000Service {
           obj.children.forEach((ob, idx) => {
             ob.check = false;
             ob.value = 0;
-            cert.forEach( (o, id) => {
-              if(ob.code == o.certificateCode) {
+            cert.forEach((o, id) => {
+              if (ob.code == o.certificateCode) {
                 ob.check = true;
                 ob.value = o.totalNumber;
                 obj.check = true;
                 obj.value += ob.value;
-                console.log(obj.value);
               }
             });
           });
@@ -131,15 +133,24 @@ export class Crs02000Service {
     }
   }
 
-  cancel(): void {
-    const modal: Modal = {
-      msg: "ท่านต้องการกลับหรือไม่?"
-    }
-    this.modal.confirm(e => {
-      if (e) {
-        this.location.back();
+  pdf(what: string) {
+      const cover = "crsCover02000";
+      const receipt = "crsReceipt02000";
+      if (what == cover) {
+        this.ajax.post(URL.CREATE_COVER + cover, {}, response => {
+            this.ajax.download(URL.PDF + cover+ "/file");
+        });
       }
-    }, modal);
+
+      if (what == receipt) {
+        this.ajax.post(URL.CREATE_RECEIPT + receipt, {}, response => {
+            this.ajax.download(URL.PDF + receipt+ "/file");
+        });
+      }
+  }
+
+  cancel(): void {
+    this.location.back();
   }
 
 }

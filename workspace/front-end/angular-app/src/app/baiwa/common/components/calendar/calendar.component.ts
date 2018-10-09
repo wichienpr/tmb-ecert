@@ -1,7 +1,7 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
+import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit } from "@angular/core";
 import { Calendar } from "models/";
 import { dateLocale, digit } from "app/baiwa/common/helpers";
-import { NgControl } from "@angular/forms";
+import { NgControl, FormGroup, FormControl } from "@angular/forms";
 
 declare var $: any;
 
@@ -10,14 +10,19 @@ declare var $: any;
     templateUrl: './calendar.component.html',
     styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements AfterViewInit {
+export class CalendarComponent implements AfterViewInit, OnInit {
 
     @Input() calendar: Calendar;
     @Input() disableCalendar: NgControl;
 
     @Output() calendarValue: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor(private cdRef: ChangeDetectorRef) {}
+    constructor(private cdRef: ChangeDetectorRef) {
+    }
+
+    ngOnInit() {
+        console.log(this.calendar);
+    }
 
     ngAfterViewInit() {
         const { type, formatter, local, initial, minDate, maxDate, startId, endId } = this.calendar;

@@ -30,6 +30,7 @@ export class Nrq02000Component implements OnInit {
   @ViewChild("customSegSelect") customSegSelect: ElementRef;
   @ViewChild("payMethodSelect") payMethodSelect: ElementRef;
   @ViewChild("subAccMethodSelect") subAccMethodSelect: ElementRef;
+  @ViewChildren("cal") cals: QueryList<ElementRef>;
   @ViewChildren("cer") cers: QueryList<ElementRef>;
   @ViewChildren("chk") chks: QueryList<ElementRef>;
   @ViewChildren("chkChild") chkChilds: QueryList<ElementRef>;
@@ -55,6 +56,7 @@ export class Nrq02000Component implements OnInit {
   acctno: string = "";
 
   reqTypeChanged: Certificate[];
+  calend: Calendar[] = [];
   calendar: Calendar[] = [];
 
   constructor(
@@ -175,6 +177,19 @@ export class Nrq02000Component implements OnInit {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
+          if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
+            this.calend[index] = {
+              calendarId: `cal${index}`,
+              calendarName: `cal${index}`,
+              formGroup: this.form,
+              formControlName: `cal${index}`,
+              type: CalendarType.YEAR,
+              formatter: CalendarFormatter.yyyy,
+              local: CalendarLocal.EN,
+              icon: 'calendar'
+            };
+            this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
+          }
           if (this.form.controls[`chk${index}`]) {
             this.form.setControl(`chk${index}`, new FormControl('', Validators.required));
             this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
@@ -186,18 +201,18 @@ export class Nrq02000Component implements OnInit {
             obj.children = await this.service.reqTypeChange(obj.code);
             obj.children.forEach((ob, idx) => {
               if (this.calendar.length !== obj.children.length) {
-                if (idx == obj.children.length - 1) {
-                  this.calendar[idx] = {
-                    calendarId: `cal${index}Child${idx}`,
-                    calendarName: `cal${index}Child${idx}`,
-                    formGroup: this.form,
-                    formControlName: `cal${index}Child${idx}`,
-                    type: CalendarType.YEAR,
-                    formatter: CalendarFormatter.yyyy,
-                    local: CalendarLocal.EN,
-                    icon: 'calendar'
-                  };
-                } else {
+                // if (idx == obj.children.length - 1) {
+                //   this.calendar[idx] = {
+                //     calendarId: `cal${index}Child${idx}`,
+                //     calendarName: `cal${index}Child${idx}`,
+                //     formGroup: this.form,
+                //     formControlName: `cal${index}Child${idx}`,
+                //     type: CalendarType.YEAR,
+                //     formatter: CalendarFormatter.yyyy,
+                //     local: CalendarLocal.EN,
+                //     icon: 'calendar'
+                //   };
+                // } else {
                   this.calendar[idx] = {
                     calendarId: `cal${index}Child${idx}`,
                     calendarName: `cal${index}Child${idx}`,
@@ -208,7 +223,7 @@ export class Nrq02000Component implements OnInit {
                     local: CalendarLocal.EN,
                     icon: 'calendar'
                   };
-                }
+                // }
               }
               if (idx === obj.children.length - 1) {
                 if (this.form.controls[`etc${index}Child${idx}`]) {

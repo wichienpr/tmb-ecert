@@ -5,29 +5,32 @@
       <div style="color: rgb(255, 255, 255)">ดำเนินการชำระเงิน</div>
     </div>
     <div class="content">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="twelve wide field">
-            <label class="custom-label-w-15">เลขที่คำขอ (Ref.1)</label>
-            <input type="text" value="" />
+      <div class="ui one grid centered">
+        <div class="ui thirteen wide form column">
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">เลขที่คำขอ (Ref.1)</label>
+            </div>
+            <div class="eleven wide field">
+              <input type="text" value="" />
+            </div>
           </div>
-        </div>
-        <div class="inline fields">
-          <div class="twelve wide field">
-            <label class="custom-label-w-15">เลขที่ตรวจสอบ (Ref.2)</label>
-            <input type="text" value="" />
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">เลขที่ตรวจสอบ (Ref.2)</label>
+            </div>
+            <div class="eleven wide field">
+              <input type="text" value="" />
+            </div>
           </div>
-        </div>
-        <div class="inline fields">
-          <div class="twelve wide field">
-            <label class="custom-label-w-15">จำนวนเงิน (บาท)</label>
-            <input type="text" value="0.00" />
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">จำนวนเงิน (บาท)</label>
+            </div>
+            <div class="eleven wide field">
+              <input type="text" value="0.00" />
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="ui grid">
-        <div class="three wide column"></div>
-        <div class="eight wide column">
         </div>
       </div>
     </div>
@@ -54,28 +57,29 @@
       <diV style="color: rgb(255, 255, 255)">ระบุสาเหตุ</diV>
     </div>
     <div class="content">
-      <div class="ui form">
-        <div class="inline fields">
-          <div class="three wide field ">
-            <label>สาเหตุ</label>
+      <div class="ui one grid centered">
+        <div class="ui thirteen wide form column">
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">สาเหตุ</label>
+            </div>
+            <div class="eleven wide field">
+              <select id="allowed-drop" name="allowed-drop" class="ui search dropdown" (change)="onSelectactionStatus($event)">
+                <option *ngFor="let allowed of allowed; let i = index" value="{{i}}">
+                  {{allowed}}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="eight wide field">
-            <select id="allowed-drop" name="allowed-drop" class="ui search dropdown" (change)="onSelectactionStatus($event)">
-              <option *ngFor="let allowed of allowed; let i = index" value="{{i}}">
-                {{allowed}}
-              </option>
-            </select>
+          <div class="inline fields">
+            <div class="four wide field ">
+              <label class="full-width text-right">Remark Tracking</label>
+            </div>
+            <div class="eleven wide field ">
+              <textarea rows="2"></textarea>
+            </div>
           </div>
         </div>
-        <div class="inline fields">
-          <div class="three wide field ">
-            <label>Remark Tracking</label>
-          </div>
-          <div class="eight wide field ">
-            <textarea rows="2"></textarea>
-          </div>
-        </div>
-
       </div>
     </div>
     <div class="actions">
@@ -225,6 +229,7 @@
                       <div class="ui checkbox">
                         <input type="checkbox" [disabled]="true" [checked]="db.check" name="chk{{i}}children{{j}}">
                         <label>{{ db.certificate }}</label>
+                        <!-- {{ ' - ' + db. }} -->
                       </div>
                     </td>
                     <td>{{ db.feeTmb }}</td>
@@ -480,11 +485,11 @@
               <i class="undo icon"></i>
               ปฏิเสธ
             </button>
-            <button class="ui blue basic button" type="button">
+            <button class="ui blue basic button" (click)="pdf('r')" type="button">
               <i class="print icon"></i>
               พิมพ์ใบเสร็จ
             </button>
-            <button class="ui blue basic button" type="button">
+            <button class="ui blue basic button" (click)="pdf('c')" type="button">
               <i class="print icon"></i>
               พิมพ์ใบนำส่งเอกสาร
             </button>
