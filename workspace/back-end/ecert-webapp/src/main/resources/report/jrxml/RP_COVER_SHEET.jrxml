@@ -5,6 +5,8 @@
 	<style name="title" hTextAlign="Left" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="22" isBold="true"/>
 	<style name="detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="14" isBold="false"/>
 	<style name="label" vTextAlign="Middle" vImageAlign="Middle" pattern="" fontName="Cordia New" fontSize="14" isBold="true"/>
+	<parameter name="logoTmbCover01" class="java.io.InputStream"/>
+	<parameter name="logoTmbCover02" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -12,7 +14,7 @@
 		<band height="351" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="-27" width="150" height="100" uuid="cadb90a5-6b4a-4865-ab88-b2ebeccb50be"/>
-				<imageExpression><![CDATA["images/logoTmbCover01.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoTmbCover01}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement key="" style="title" x="180" y="0" width="200" height="30" uuid="7719f08e-f048-4c8e-9a80-d337599fdaba"/>
@@ -345,7 +347,7 @@
 		<band height="156">
 			<image>
 				<reportElement x="280" y="16" width="100" height="90" uuid="b4402128-d2d8-469a-a43a-1d4191c0f8b3"/>
-				<imageExpression><![CDATA["images/logoTmbCover02.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoTmbCover02}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement style="detail" x="430" y="87" width="92" height="17" uuid="538b5966-42e6-4af6-bdf7-21fd83257030"/>
@@ -384,11 +386,6 @@
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA["10/9/2018"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="detail" x="422" y="120" width="100" height="17" uuid="5c1ef1a8-91ae-40e8-a30b-c24fce8ad716"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["หน้า  "+$V{PAGE_NUMBER}+"/"+$V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

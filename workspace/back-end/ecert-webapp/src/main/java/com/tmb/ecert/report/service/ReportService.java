@@ -23,6 +23,7 @@ import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -154,6 +155,56 @@ public class ReportService {
 
 		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_EXPORT + name + ".pdf"))); 
 		ReportUtils.closeResourceFileInputStream(params02);
+
+		return reportFile;
+	}
+	
+	
+	
+	public byte[] receiptTaxFormObjectToPDF(String name, String param) throws IOException, JRException {
+		// Folder Exist ??
+		initialService();
+		
+		// RP001 
+		String reportName = "RP_RECEIPT_TAX";
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+		
+
+		
+		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params, new JREmptyDataSource()); // JRBeanCollectionDataSource(exampleList)
+			
+
+
+		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint);
+
+		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_EXPORT + name + ".pdf"))); 
+		ReportUtils.closeResourceFileInputStream(params);
+
+		return reportFile;
+	}
+	
+	public byte[] coverSheetObjectToPDF(String name, String param) throws IOException, JRException {
+		// Folder Exist ??
+		initialService();
+
+		// RP001 
+		String reportName = "RP_COVER_SHEET";
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("logoTmbCover01", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover01.png"));
+		params.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
+
+		
+		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params, new JREmptyDataSource()); // JRBeanCollectionDataSource(exampleList)
+			
+
+
+		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint);
+
+		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_EXPORT + name + ".pdf"))); 
+		ReportUtils.closeResourceFileInputStream(params);
 
 		return reportFile;
 	}

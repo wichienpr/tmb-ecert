@@ -45,8 +45,23 @@ public class ReportController {
 	
 	@PostMapping("/pdf/reqForm/{report}")
 	@ResponseBody // byte[]
-	public void pdfTs(@PathVariable("report") String name, @RequestBody String json) throws IOException, JRException { // byte[]
+	public void pdfReqForm(@PathVariable("report") String name, @RequestBody String json) throws IOException, JRException { // byte[]
 		byte[] report = reportService.reqFormObjectToPDF(name, json); // null
+		//return report;
+	}
+	
+	
+	@PostMapping("/pdf/receiptTax/{report}")
+	@ResponseBody // byte[]
+	public void pdfReceiptTax(@PathVariable("report") String name, @RequestBody String json) throws IOException, JRException { // byte[]
+		byte[] report = reportService.receiptTaxFormObjectToPDF(name, json); // null
+		//return report;
+	}
+
+	@PostMapping("/pdf/coverSheet/{report}")
+	@ResponseBody // byte[]
+	public void pdfCoverSheet(@PathVariable("report") String name, @RequestBody String json) throws IOException, JRException { // byte[]
+		byte[] report = reportService.receiptTaxFormObjectToPDF(name, json); // null
 		//return report;
 	}
 }
