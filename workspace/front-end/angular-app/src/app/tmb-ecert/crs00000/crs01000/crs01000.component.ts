@@ -73,8 +73,8 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     };
 
 
-    this.tmpDate = new Date()
-    console.log(this.datePipe.transform(this.tmpDate, 'dd/MM/yyyy'))
+    //this.tmpDate = new Date()
+    //console.log(this.datePipe.transform(this.tmpDate, 'dd/MM/yyyy'))
   }
 
   ngOnInit() {
@@ -116,8 +116,8 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   calendarValue(name, e) {
     this.form.controls[name].setValue(e);
-    console.log(this.form);
-    console.log(this.form.controls[name].value);
+    //console.log(this.form);
+    //console.log(this.form.controls[name].value);
 
   }
 
@@ -142,7 +142,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-      console.log("getData True : Data s", this.dataT);
+      //console.log("getData True : Data s", this.dataT);
     });
   }
 
@@ -152,9 +152,13 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   getDataByStatus(code) {
     this.status = code;
+    this.loading = true;
     const URL = "/api/crs/crs01000/findReqByStatus";
     this.ajax.post(URL, { status: this.status }, res => {
-      console.log(res.json());
+      //console.log(res.json());
+      setTimeout(() => {
+        this.loading = false;
+      }, 200);
       res.json().forEach(element => {
         this.dataT.push(element);
       });
@@ -220,7 +224,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
   searchStatusByHomePage(code): void {
-    console.log("STATUS FOR HOME::"+code);
+    //console.log("STATUS FOR HOME::"+code);
     this.showData = true;
     this.getDataByStatus(code);
     this.dataT = [];
