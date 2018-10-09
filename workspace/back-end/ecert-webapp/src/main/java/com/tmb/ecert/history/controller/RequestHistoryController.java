@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tmb.ecert.history.persistence.vo.RequestHistoryVo;
 import com.tmb.ecert.history.service.RequestHistoryService;
 
-@RequestMapping("api/rqh/")
+@RequestMapping("api/history/")
 @Controller
 public class RequestHistoryController {
 	
