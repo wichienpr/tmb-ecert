@@ -101,6 +101,8 @@ export class Crs02000Service {
           if (obj.code == ob.certificateCode) {
             obj.check = true;
             obj.value = ob.totalNumber;
+            obj.acceptedDate = ob.acceptedDate;
+            obj.statementYear = ob.statementYear;
           }
         });
         if (obj.children) {
@@ -109,6 +111,9 @@ export class Crs02000Service {
             ob.value = 0;
             cert.forEach((o, id) => {
               if (ob.code == o.certificateCode) {
+                ob.registeredDate = o.registeredDate;
+                ob.acceptedDate = o.acceptedDate;
+                ob.other = o.other;
                 ob.check = true;
                 ob.value = o.totalNumber;
                 obj.check = true;

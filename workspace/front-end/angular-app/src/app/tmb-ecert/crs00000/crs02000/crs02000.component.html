@@ -180,7 +180,8 @@
               <th rowspan="2" colspan="2">รายละเอียด </th>
               <th rowspan="2">ค่าธรรมเนียมของ DBD </th>
               <th rowspan="2">ค่าบริการของธนาคาร </th>
-              <th rowspan="2"> จำนวน : ชุด</th>
+              <th rowspan="2">วันที่รับจด/วันที่รับ/ปีงบการเงิน</th>
+              <th rowspan="2">จำนวน : ชุด</th>
             </tr>
           </thead>
           <tbody>
@@ -190,6 +191,7 @@
                   <td colspan="5">
                     <h5>{{ chk.typeDesc }}</h5>
                   </td>
+                  <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
                   <td style="display: none">&nbsp;</td>
@@ -207,7 +209,11 @@
                   <td>{{ chk.certificate }}</td>
                   <td>{{ chk.feeTmb }}</td>
                   <td>{{ chk.feeTmb }}</td>
-                  <td style="text-align: right">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
+                  <td class="center aligned">
+                    {{ chk.code == '10007' ? (chk.acceptedDate|dateString) : '' }}
+                    {{ chk.code=='10006'||chk.code=='20006'||chk.code=='30005' ? (chk.statementYear == 0 ? '2018' : chk.statementYear) : '' }}
+                  </td>
+                  <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
               </ng-container>
               <ng-container *ngIf="chk.code && !chk.feeTmb">
@@ -218,8 +224,8 @@
                       <label></label>
                     </div>
                   </td>
-                  <td colspan="3">{{ chk.certificate }}</td>
-                  <td style="text-align: right">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
+                  <td colspan="4">{{ chk.certificate }}</td>
+                  <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
                 <ng-container>
                   <tr *ngFor="let db of chk.children; let j = index">
@@ -228,13 +234,17 @@
                     <td>
                       <div class="ui checkbox">
                         <input type="checkbox" [disabled]="true" [checked]="db.check" name="chk{{i}}children{{j}}">
-                        <label>{{ db.certificate }}</label>
+                        <label>
+                          {{ db.certificate }}
+                          {{ db.other ? ' - ' + db.other : '' }}
+                        </label>
                         <!-- {{ ' - ' + db. }} -->
                       </div>
                     </td>
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
-                    <td style="text-align: right">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
+                    <td class="center aligned">{{ db.registeredDate | dateString }}</td>
+                    <td class="right aligned">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
               </ng-container>

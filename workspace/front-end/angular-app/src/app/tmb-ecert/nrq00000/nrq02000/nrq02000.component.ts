@@ -177,6 +177,19 @@ export class Nrq02000Component implements OnInit {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
+          if (obj.code=='10007') {
+            this.calend[index] = {
+              calendarId: `cal${index}`,
+              calendarName: `cal${index}`,
+              formGroup: this.form,
+              formControlName: `cal${index}`,
+              type: CalendarType.DATE,
+              formatter: CalendarFormatter.DEFAULT,
+              local: CalendarLocal.EN,
+              icon: 'calendar'
+            };
+            this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
+          }
           if (obj.code=='10006'||obj.code=='20006'||obj.code=='30005') {
             this.calend[index] = {
               calendarId: `cal${index}`,
