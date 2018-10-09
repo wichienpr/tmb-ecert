@@ -61,7 +61,7 @@ public class ReportController {
 	@PostMapping("/pdf/coverSheet/{report}")
 	@ResponseBody // byte[]
 	public void pdfCoverSheet(@PathVariable("report") String name, @RequestBody String json) throws IOException, JRException { // byte[]
-		byte[] report = reportService.receiptTaxFormObjectToPDF(name, json); // null
+		byte[] report = reportService.coverSheetObjectToPDF(name, json); // null
 		//return report;
 	}
 }
