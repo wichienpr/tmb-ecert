@@ -146,8 +146,8 @@
                       <td>{{ item.feeDbd }}</td>
                       <td>{{ item.feeTmb }}</td>
                       <td>
-                        <div class="field" [ngClass]="{'error': invalid(form.controls['cal'+i+'Child'+j])}">
-                          <div class="ui input" style="width: 100%">
+                        <div class="center aligned field" [ngClass]="{'error': invalid(form.controls['cal'+i+'Child'+j])}">
+                          <div class="ui input">
                             <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value"
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
                           </div>
