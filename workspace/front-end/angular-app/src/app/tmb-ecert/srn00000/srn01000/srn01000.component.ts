@@ -104,6 +104,18 @@ export class Srn01000Component implements OnInit {
 
 
 
+  detail(idReq, status): void {
+    console.log(idReq + "," + status)
+    if (status == "10011") {
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq }
+      });
+    }
+  }
+
+
+
+
   getFontStyeColor(status) {
     if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
       return '#2185D0';
