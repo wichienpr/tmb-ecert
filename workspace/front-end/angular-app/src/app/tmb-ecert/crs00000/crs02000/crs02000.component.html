@@ -234,7 +234,10 @@
                     <td>
                       <div class="ui checkbox">
                         <input type="checkbox" [disabled]="true" [checked]="db.check" name="chk{{i}}children{{j}}">
-                        <label>{{ db.certificate }}</label>
+                        <label>
+                          {{ db.certificate }}
+                          {{ db.other ? ' - ' + db.other : '' }}
+                        </label>
                         <!-- {{ ' - ' + db. }} -->
                       </div>
                     </td>

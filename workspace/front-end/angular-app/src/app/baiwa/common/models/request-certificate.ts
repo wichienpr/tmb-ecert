@@ -12,4 +12,5 @@ export interface RequestCertificate {
 	registeredDate?: Date
 	statementYear?: Number
 	acceptedDate?: Date
+	other?: string
 }
