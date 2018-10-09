@@ -87,7 +87,7 @@ public class CheckRequestStatusDao {
 			sql.append(" AND H.TMB_REQUESTNO = ? ");
 			valueList.add(formVo.getTmbReqNo());
 		}
-		sql.append(" ORDER BY H.REQUEST_DATE ");
+		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 		crs01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
 
 		return crs01000VoList;
@@ -113,7 +113,7 @@ public class CheckRequestStatusDao {
 			sql.append(" AND H.STATUS = ? ");
 			valueList.add(formVo.getStatus());
 		}
-		sql.append(" ORDER BY H.REQUEST_DATE ");
+		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 		crs01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
 
 		return crs01000VoList;
