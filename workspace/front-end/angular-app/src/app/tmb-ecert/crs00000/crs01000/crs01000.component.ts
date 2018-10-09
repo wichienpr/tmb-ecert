@@ -25,24 +25,24 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   status: string;
   statusHome: string;
 
-  countNewrequest: Number;
-  countPaymentProcessing: Number;
-  countRefuseRequest: Number;
-  countCancelRequest: Number;
-  countWaitPaymentApproval: Number;
-  countPaymentApprovals: Number;
-  countChargeback: Number;
-  countPaymentfailed: Number;
-  countWaitUploadCertificate: Number;
-  countSucceed: Number;
-  countWaitSaveRequest: Number;
+  countNewrequest: Number = 0;
+  countPaymentProcessing: Number = 0;
+  countRefuseRequest: Number = 0;
+  countCancelRequest: Number = 0;
+  countWaitPaymentApproval: Number = 0;
+  countPaymentApprovals: Number = 0;
+  countChargeback: Number = 0;
+  countPaymentfailed: Number = 0;
+  countWaitUploadCertificate: Number = 0;
+  countSucceed: Number = 0;
+  countWaitSaveRequest: Number = 0;
 
-  tmpDate: Date;
 
-  constructor(private crs01000Service: Crs01000Service, 
-    private ajax: AjaxService, 
+
+  constructor(private crs01000Service: Crs01000Service,
+    private ajax: AjaxService,
     private router: Router,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private datePipe: DatePipe) {
 
     this.crs01000Service.getForm().subscribe(form => {
@@ -72,34 +72,29 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       icon: "time icon"
     };
 
-
-    //this.tmpDate = new Date()
-    //console.log(this.datePipe.transform(this.tmpDate, 'dd/MM/yyyy'))
   }
 
   ngOnInit() {
     this.dataT = [];
     this.getCountStatus();
-    
+
     this.statusHome = this.route.snapshot.queryParams["codeStatus"];
 
 
-    if(this.statusHome){
+    if (this.statusHome) {
       this.searchStatusByHomePage(this.statusHome)
-    }else{
+    } else {
       $('.ui.sidebar')
-      .sidebar({
-        context: '.ui.grid.pushable'
-      })
-      .sidebar('setting', 'transition', 'push')
-      .sidebar('toggle');
+        .sidebar({
+          context: '.ui.grid.pushable'
+        })
+        .sidebar('setting', 'transition', 'push')
+        .sidebar('toggle');
     }
-
 
   }
 
   ngAfterViewInit() {
-
 
   }
 
@@ -120,6 +115,10 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     //console.log(this.form.controls[name].value);
 
   }
+
+
+
+
 
 
   getData = () => {
@@ -145,9 +144,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       //console.log("getData True : Data s", this.dataT);
     });
   }
-
-
-
 
 
   getDataByStatus(code) {
@@ -205,7 +201,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   }
 
-  
+
 
   searchStatus(code): void {
     $('.ui.sidebar')
@@ -254,6 +250,29 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
 
+
+  getFontStyeColor(status) {
+    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
+      return '#2185D0';
+    } else if (status == '10002' || status == '10006' || status == '10010') {
+      return 'gray';
+    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
+      return 'red';
+    }
+
+  }
+
+
+  getButtonStyeColor(status) {
+    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
+      return 'ui blue basic button center';
+    } else if (status == '10002' || status == '10006' || status == '10010') {
+      return 'ui gray basic button center';
+    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
+      return 'ui red basic button center';
+    }
+
+  }
 
   validate(input: string, submitted: boolean) {
     return isValid(this.form, input, submitted);

@@ -2,48 +2,48 @@
     <div class="ui left vertical sidebar menu"  >
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
         คำขอใหม่
-        <div class="ui  label blue" style="font-size: 13px">{{countNewrequest || '0'}}</div>
+        <div class="ui  label blue" style="font-size: 13px">{{countNewrequest}}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10002')">
         ดำเนินการชำระเงิน
-        <div class="ui label ">{{countPaymentProcessing || '0'}}</div>
+        <div class="ui label ">{{countPaymentProcessing }}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
         ปฏิเสธคำขอ
-        <div class="ui label red">{{countRefuseRequest || '0'}}</div>
+        <div class="ui label red">{{countRefuseRequest}}</div>
       </a>
       <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
         ยกเลิกคำขอ
-        <div class="ui label red ">{{countCancelRequest  || '0'}}</div>
+        <div class="ui label red ">{{countCancelRequest}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
         รออนุมัติการชำระเงิน
-        <div class="ui label blue">{{countWaitPaymentApproval  || '0'}}</div>
+        <div class="ui label blue">{{countWaitPaymentApproval }}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
         อนุมัติการชำระเงิน
-        <div class="ui label ">{{countPaymentApprovals || '0'}}</div>
+        <div class="ui label ">{{countPaymentApprovals}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
         ปฏิเสธการชำระเงิน
-        <div class="ui label red">{{countChargeback  || '0'}}</div>
+        <div class="ui label red">{{countChargeback}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
         ชำระเงินไม่สำเร็จ
-        <div class="ui label red">{{countPaymentfailed  || '0'}}</div>
+        <div class="ui label red">{{countPaymentfailed}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
         รออัพโหลด Certificate
-        <div class="ui label blue">{{countWaitUploadCertificate  || '0'}}</div>
+        <div class="ui label blue">{{countWaitUploadCertificate}}</div>
       </a>
       <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
         ดำเนินการสำเร็จ
-        <div class="ui label ">{{countSucceed  || '0'}}</div>
+        <div class="ui label ">{{countSucceed}}</div>
       </a>
       <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
         รอบันทึกคำขอ
         (ลูกค้าทำรายเอง)
-        <div class="ui label blue">{{countWaitSaveRequest  || '0'}}</div>
+        <div class="ui label blue">{{countWaitSaveRequest}}</div>
       </a>
     </div>
 
@@ -156,7 +156,7 @@
                     </thead>
                     <tbody>
 
-                      <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                      <tr class="text-center" *ngFor="let data of dataT; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
                           <td style="text-align: center !important;">{{i+1}}</td>
                           <td style="text-align: center !important;">{{data.reqDateStr}}</td>
                           <td style="text-align: center !important;">{{data.tmbReqNo}}</td>
@@ -168,25 +168,16 @@
                           <td style="text-align: left !important;">{{data.companyName| emptyString}}</td>
                           <td style="text-align: left !important;">{{data.statusName}}</td>
                           <td>
-                            <button class="ui blue basic button center"  (click)="detail(data.id,data.statusCode)">แสดง
+                            <button [ngClass]="getButtonStyeColor(data.statusCode)"  (click)="detail(data.id,data.statusCode)">แสดง
                               <i class="arrow alternate circle right outline icon"></i>
                             </button>
                           </td>
                       </tr>
                       <ng-container *ngIf="!dataT || dataT.length == 0">
                           <tr class="center aligned">
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
                             <td colspan="12"><h5> ไม่พบรายการ </h5></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
-                            <td style="display: none"></td>
                           </tr>
-                        </ng-container>
+                      </ng-container>
                     </tbody>
                   </table>
                 </div>
