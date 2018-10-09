@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.setup.service.Sup03000Service;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
@@ -31,6 +32,12 @@ public class Sup03000Controller {
 	@ResponseBody
 	public List<Sup03100Vo> getEmailDetail(@RequestBody Sup03000Vo form) {
 		return service.getEmailDetail(form);
+	}
+	
+	@PostMapping("/saveEmailDetail")
+	@ResponseBody
+	public  CommonMessage<String> saveEmailDetail(@RequestBody Sup03100Vo form) {
+		return service.saveEmailDetail(form);
 	}
 
 }

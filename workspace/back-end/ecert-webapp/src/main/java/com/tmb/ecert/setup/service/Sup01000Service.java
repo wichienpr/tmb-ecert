@@ -444,9 +444,9 @@ public class Sup01000Service {
 								message.setMessage(MSG_ERR_EXC);
 								return message;
 							}else {
-								vo.setStatus(statusPermisFlag);
+								roleVo.setStatus(statusPermisFlag);
 							}
-							roleVo.setStatus(covertStatus(currentCell.getStringCellValue()));
+//							roleVo.setStatus(covertStatus(currentCell.getStringCellValue()));
 							roleVo.setFunctionCode(arrRolePermission[j-2]);
 							listRole.add(roleVo);
 						}

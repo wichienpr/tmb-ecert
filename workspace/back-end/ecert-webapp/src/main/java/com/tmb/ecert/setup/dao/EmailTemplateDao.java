@@ -3,6 +3,7 @@ package com.tmb.ecert.setup.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
 
@@ -22,8 +24,8 @@ public class EmailTemplateDao {
 
 	private static String SELECT_EMAILTEMPLATE = " SELECT EMAILCONFIG_ID,NAME,STATUS FROM ECERT_EMAIL_CONFIG WHERE 1 = 1 ";
 	
-	private static String SELECT_EMAILDETAIL = "  SELECT [EMAILDETAIL_ID] ,[EMAILCONFIG_ID] ,[SUBJECT] ,[BODY],[FROM],[TO] ,[ATTACHFILE_FLAG]\r\n" + 
-			" FROM [ecert].[dbo].[ECERT_EMAILCONFIG_DETAIL]  WHERE EMAILDETAIL_ID = ?  ";
+	private static String SELECT_EMAILDETAIL = "  SELECT EMAILDETAIL_ID ,EMAILCONFIG_ID ,SUBJECT ,BODY,[FROM],[TO] , ATTACHFILE_FLAG  " + 
+			" FROM ECERT_EMAILCONFIG_DETAIL  WHERE EMAILDETAIL_ID = ?  ";
 
 	public List<Sup03000Vo> getEmailTemplate(Sup03000Vo form) {
 		StringBuilder sql = new StringBuilder("");
@@ -92,5 +94,44 @@ public class EmailTemplateDao {
 		}
 
 	};
+	
+	public void updateEmailDetail(Sup03100Vo form , String username , String userID ) {
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		sql.append(" UPDATE ECERT_EMAILCONFIG_DETAIL  SET  SUBJECT = ? , BODY = ? , [FROM] = ? , [TO] = ? ,  UPDATED_BY_ID = ? , " + 
+				" UPDATED_BY_NAME = ? , UPDATED_DATETIME = ?  WHERE EMAILDETAIL_ID = ? ");
+
+		params.add(form.getSubject());
+		params.add(form.getBody());
+		params.add(form.getFrom());
+		params.add(form.getTo());
+		
+		params.add(userID);
+		params.add(username);
+		params.add(new Date());
+		params.add(form.getEmailDetail_id());
+		
+		jdbcTemplate.update(sql.toString(), params.toArray());
+
+	}
+	
+	public void updateEmailTemplate(Sup03100Vo form , String username , String userID ) {
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		sql.append(" UPDATE ECERT_EMAIL_CONFIG  SET  STATUS = ? ,  UPDATED_BY_ID = ? , " + 
+				" UPDATED_BY_NAME = ? , UPDATED_DATETIME = ?  WHERE EMAILCONFIG_ID = ? ");
+
+		params.add(form.getAttachFile_flag());
+		
+		params.add(userID);
+		params.add(username);
+		params.add(new Date());
+		params.add(form.getEmailConfig_id());
+		
+		jdbcTemplate.update(sql.toString(), params.toArray());
+
+	}
 
 }
