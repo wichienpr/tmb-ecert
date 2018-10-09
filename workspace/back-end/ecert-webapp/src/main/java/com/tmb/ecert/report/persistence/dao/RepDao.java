@@ -516,7 +516,7 @@ public class RepDao {
 				    		
 				    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
 				    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));
-				    		vo.setCertypeDesc(rs.getString("CERTYPE_DESC")); 
+				    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
 				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
 				    		vo.setCompanyName(rs.getString("COMPANY_NAME"));         
 				    		vo.setDepartment(rs.getString("DEPARTMENT"));                   
