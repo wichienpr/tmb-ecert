@@ -54,9 +54,16 @@ export class HomeComponent implements OnInit ,AfterViewInit{
 
 
   searchStatus(code): void {
-    this.router.navigate(["/crs/crs01000"], {
-      queryParams: { codeStatus: code }
-    });
+    if(code==10011){
+      this.router.navigate(["/srn/srn01000"], {
+        queryParams: { codeStatus: code }
+      });
+    }else{
+      this.router.navigate(["/crs/crs01000"], {
+        queryParams: { codeStatus: code }
+      });
+    }
+   
   }
 
 

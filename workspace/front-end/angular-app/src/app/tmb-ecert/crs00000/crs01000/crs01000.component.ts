@@ -190,7 +190,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       (this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null)
     ) {
       this.dataT = [];
-      this.showData = true;
+      //this.showData = true;
     } else {
       this.showData = true;
       this.getData();
@@ -204,18 +204,27 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
   searchStatus(code): void {
-    $('.ui.sidebar')
-      .sidebar({
-        context: '.ui.grid.pushable'
-      })
-      .sidebar('setting', 'transition', 'push')
-      .sidebar('toggle');
+
+    if (code == 10011) {
+      this.router.navigate(["/srn/srn01000"], {
+        queryParams: { codeStatus: code }
+      });
+    } else {
+      $('.ui.sidebar')
+        .sidebar({
+          context: '.ui.grid.pushable'
+        })
+        .sidebar('setting', 'transition', 'push')
+        .sidebar('toggle');
 
 
-    console.log("searchStatus");
-    this.showData = true;
-    this.getDataByStatus(code);
-    this.dataT = [];
+      console.log("searchStatus");
+      this.showData = true;
+      this.getDataByStatus(code);
+      this.dataT = [];
+    }
+
+
   }
 
 
