@@ -147,9 +147,10 @@ export class Nrq02000Component implements OnInit {
       subAccMethodSelect: this.subAccMethodSelect,
       chks: this.chks.toArray(),
       cers: this.cers.toArray(),
+      cals: this.cals.toArray(),
       chkChilds: this.chkChilds.toArray(),
-      calChilds: this.chkChilds.toArray(),
-      cerChilds: this.chkChilds.toArray(),
+      calChilds: this.calChilds.toArray(),
+      cerChilds: this.cerChilds.toArray(),
     };
     if (this.data && this.data.reqFormId != 0) {
       this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data, "update");

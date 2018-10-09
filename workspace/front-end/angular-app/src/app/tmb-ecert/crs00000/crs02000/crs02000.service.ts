@@ -12,6 +12,7 @@ const URL = {
   CER_BY_TYPECODE: "/api/cer/typeCode",
   CREATE_COVER: "/api/report/pdf/coverSheet/",
   CREATE_RECEIPT: "/api/report/pdf/receiptTax/",
+  REQUEST_HISTORY: "/api/history/list",
   PDF: "/api/report/pdf/"
 }
 
@@ -53,6 +54,13 @@ export class Crs02000Service {
       title: "อนุมัติการชำระเงินค่าธรรมเนียม"
     };
     this.modal.confirm(e => { }, modal);
+  }
+
+  getHistory(id: string) {
+    return this.ajax.get(`${URL.REQUEST_HISTORY}/${id}`, response => {
+      let data: RequestForm[] = response.json() as RequestForm[];
+      return data;
+    });
   }
 
   getChkList(id: string) {

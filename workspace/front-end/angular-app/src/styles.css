@@ -66,3 +66,12 @@ tr:nth-child(even) {background-color: #F8F8FF;}
 .text-center {
     text-align: center!important;
 }
+
+.btn-group > button {
+    margin: 0 0.5em !important;
+}
+
+.scrollable {
+    overflow-x: auto;
+    white-space: nowrap;
+}

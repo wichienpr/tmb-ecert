@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { Crs02000Service } from './crs02000.service';
 
@@ -14,6 +13,7 @@ export class Crs02000Component implements OnInit {
   id: string = "";
   date: Date = new Date();
   dataLoading: boolean = false;
+  history: RequestForm[] = [];
   chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
   cert: RequestCertificate[] = [];
@@ -54,6 +54,7 @@ export class Crs02000Component implements OnInit {
       this.dataLoading = true;
       this.data = await this.service.getData(this.id);
       this.cert = await this.service.getCert(this.id);
+      this.history = await this.service.getHistory(this.id);
       this.chkList = await this.service.getChkList(this.id);
       for (let i = 0; i < this.chkList.length; i++) {
         if (this.chkList[i].feeDbd == "" && i != 0) {
@@ -61,7 +62,6 @@ export class Crs02000Component implements OnInit {
         }
       }
       this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-      console.log(this.chkList);
       setTimeout(() => {
         this.dataLoading = false;
       }, 500);
@@ -78,6 +78,10 @@ export class Crs02000Component implements OnInit {
 
   modalToggle(name: string) {
     $(`#${name}`).modal('show');
+  }
+
+  selectColor() {
+    return 'blue';
   }
 
   download(fileName: string) {

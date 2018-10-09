@@ -1,10 +1,36 @@
 import { NgModule } from "@angular/core";
-import { AccountNumberPipe, DateStringPipe, DecimalFormatPipe, EmptyStringPipe, ExponentialStrengthPipe ,CommaStringBrPipe } from "pipes/";
-import { ThaiMoneyString } from "./thai-money-string.pipe";
+import {
+    AccountNumberPipe,
+    DateStringPipe,
+    DecimalFormatPipe,
+    EmptyStringPipe,
+    ExponentialStrengthPipe,
+    CommaStringBrPipe,
+    ThaiMoneyString,
+    DatetimeStringPipe
+} from "pipes/";
 
 @NgModule({
     imports: [],
-    declarations: [AccountNumberPipe, DateStringPipe, DecimalFormatPipe, EmptyStringPipe, ExponentialStrengthPipe ,CommaStringBrPipe,ThaiMoneyString],
-    exports: [AccountNumberPipe, DateStringPipe, DecimalFormatPipe, EmptyStringPipe, ExponentialStrengthPipe ,CommaStringBrPipe,ThaiMoneyString]
+    declarations: [
+        AccountNumberPipe,
+        DateStringPipe,
+        DecimalFormatPipe,
+        EmptyStringPipe,
+        ExponentialStrengthPipe,
+        CommaStringBrPipe,
+        ThaiMoneyString,
+        DatetimeStringPipe
+    ],
+    exports: [
+        AccountNumberPipe,
+        DateStringPipe,
+        DecimalFormatPipe,
+        EmptyStringPipe,
+        ExponentialStrengthPipe,
+        CommaStringBrPipe,
+        ThaiMoneyString,
+        DatetimeStringPipe
+    ]
 })
 export class PipesModule { }

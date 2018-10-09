@@ -211,7 +211,8 @@
                   <td>{{ chk.feeTmb }}</td>
                   <td class="center aligned">
                     {{ chk.code == '10007' ? (chk.acceptedDate|dateString) : '' }}
-                    {{ chk.code=='10006'||chk.code=='20006'||chk.code=='30005' ? (chk.statementYear == 0 ? '2018' : chk.statementYear) : '' }}
+                    {{ chk.code=='10006'||chk.code=='20006'||chk.code=='30005' ? (chk.statementYear == 0 ? '2018' :
+                    chk.statementYear) : '' }}
                   </td>
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
@@ -238,7 +239,6 @@
                           {{ db.certificate }}
                           {{ db.other ? ' - ' + db.other : '' }}
                         </label>
-                        <!-- {{ ' - ' + db. }} -->
                       </div>
                     </td>
                     <td>{{ db.feeTmb }}</td>
@@ -265,7 +265,7 @@
           <div class="three wide field ">
             <label>เลขที่นิติบุคคล</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.organizeId | emptyString }}
           </div>
         </div>
@@ -274,7 +274,7 @@
           <div class="three wide field ">
             <label>ชื่อนิติบุคคล</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.companyName | emptyString }}
           </div>
         </div>
@@ -283,7 +283,7 @@
           <div class="three wide field ">
             <label>Customer Segment</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.custsegmentCode | emptyString }}
           </div>
         </div>
@@ -292,7 +292,7 @@
           <div class="three wide field ">
             <label>ชื่อหน่วยงาน</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.department | emptyString }}
           </div>
         </div>
@@ -303,7 +303,7 @@
             <label>เลขที่ CA/มติอนุมัติ</label>
           </div>
 
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.caNumber | emptyString }}
           </div>
         </div>
@@ -314,7 +314,7 @@
           <div class="three wide field ">
             <label>วิธีการรับชำระ</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.paidTypeCode | emptyString }}
           </div>
         </div>
@@ -323,7 +323,7 @@
           <div class="three wide field ">
             <label>วิธีหักบัญชีจาก</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.debitAccountType | emptyString }}
           </div>
         </div>
@@ -332,7 +332,7 @@
           <div class="three wide field ">
             <label>Tran Code</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.tranCode | emptyString }}
           </div>
         </div>
@@ -342,7 +342,7 @@
           <div class="three wide field ">
             <label>GL Type</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.glType | emptyString }}
           </div>
         </div>
@@ -353,24 +353,24 @@
             <label>Account Type
             </label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.accountType | emptyString }}
           </div>
         </div>
 
         <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>เลขที่บัญชี
             </label>
           </div>
-          <div class="three wide field ">
+          <div class="three wide field">
             {{ data.accountNo | accountNo }}
           </div>
-          <div class="one wide field ">
+          <div class="one wide field">
             <label>ชื่อบัญชี</label>
           </div>
-          <div class="two wide field ">
+          <div class="seven wide field">
             {{ data.accountName | emptyString }}
           </div>
         </div>
@@ -379,7 +379,7 @@
           <div class="three wide field ">
             <label>เลขที่อ้างอิง (Ref.1)</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.ref1 | emptyString }}
           </div>
         </div>
@@ -389,7 +389,7 @@
           <div class="three wide field ">
             <label>เลขที่ตรวจสอบ (Ref.2)</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ data.ref2 | emptyString }}
           </div>
         </div>
@@ -398,7 +398,7 @@
           <div class="three wide field ">
             <label>จำนวนเงิน (บาท)</label>
           </div>
-          <div class="five wide field ">
+          <div class="eleven wide field ">
             {{ (data.amount||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
@@ -407,7 +407,7 @@
           <div class="three wide field ">
             <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
           </div>
-          <div class="two wide field ">
+          <div class="eleven wide field ">
             {{ data.customerNameReceipt | emptyString }}
           </div>
         </div>
@@ -416,7 +416,7 @@
           <div class="three wide field ">
             <label>เบอร์โทรลูกค้า</label>
           </div>
-          <div class="two wide field ">
+          <div class="eleven wide field ">
             {{ data.telephone | emptyString }}
           </div>
         </div>
@@ -429,7 +429,7 @@
               หนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
             </label>
           </div>
-          <div class="two wide field ">
+          <div class="eleven wide field">
             <a class="download-link" (click)="download(data.requestFormFile)">
               <u>Download</u>
             </a>
@@ -441,7 +441,7 @@
           <div class="three wide field ">
             <label>สำเนาบัตรประชาชน</label>
           </div>
-          <div class="two wide field ">
+          <div class="eleven wide field ">
             <a class="download-link" (click)="download(data.idCardFile)">
               <u>Download</u>
             </a>
@@ -453,7 +453,7 @@
           <div class="three wide field ">
             <label class="label grey">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
           </div>
-          <div class="two wide field ">
+          <div class="eleven wide field ">
             <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
               <u>Download</u>
             </a>
@@ -465,7 +465,7 @@
           <div class="three wide field ">
             <label>เอกสาร e-Certificate</label>
           </div>
-          <div class="two wide field">
+          <div class="eleven wide field">
             <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
               <u>Download</u>
             </a>
@@ -475,14 +475,14 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>หมายเหตุ</label>
+            <label [ngStyle]="{ 'color' : selectColor() }">หมายเหตุ</label>
           </div>
-          <div class="five wide field ">
-            <textarea rows="2">{{ data.remark }}</textarea>
+          <div class="eleven wide field ">
+            <textarea rows="2" disabled>{{ data.remark }}</textarea>
           </div>
         </div>
         <div class="inline field">
-          <div class="ui btn-bot center aligned grid">
+          <div class="ui btn-group center aligned grid">
             <button class="ui blue basic button" type="button" (click)="modalToggle('desp')">
               <i class="check circle outline icon"></i>
               ดำเนินการชำระเงิน
@@ -515,88 +515,44 @@
         </div>
       </div>
       <div class="ui bottom attached tab segment {{ tab.B }}">
-        <table class="ui small celled table nowrap" cellpadding="0" cellspacing="0" id="table">
-          <thead>
-            <tr style="text-align: center;">
-              <th>ลำดับ</th>
-              <th>วันเวลาที่ดำเนินการ</th>
-              <th>ผู้ดำเนินการ </th>
-              <th>วันที่ยื่นคำขอ</th>
-              <th>TMB Req. No</th>
-              <th>เลขที่คำขอ (Ref.1)</th>
-              <th>เลขที่ตรวจสอบ (Ref.2)</th>
-              <th>จำนวนเงิน </th>
-              <th>ประเภทคำขอ</th>
-              <th>เลขที่นิติบุคคล</th>
-              <th>ชื่อบริษัท</th>
-              <th>สถานะการดำเนินการ</th>
-              <th>สาเหตุ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center">1</td>
-              <td>01/01/2561 09:00</td>
-              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>{{ date | dateString }}</td>
-              <td>20180900001</td>
-              <td>-</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>1023456321234</td>
-              <td>บริษัท เอ</td>
-              <td>คำขอใหม่</td>
-              <td>-</td>
-            </tr>
-            <tr style="background: 	#F8F8FF">
-              <td style="text-align: center">2</td>
-              <td>01/01/2561 09:10</td>
-              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>{{ date | dateString }}</td>
-              <td>20180900002</td>
-              <td>-</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>1023456321234</td>
-              <td>บริษัท เอ</td>
-              <td>ดำเนินการชำระเงิน</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td style="text-align: center">3</td>
-              <td>01/01/2561 09:20</td>
-              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>{{ date | dateString }}</td>
-              <td>20180900003</td>
-              <td>61100920717022</td>
-              <td>6110092071702211</td>
-              <td style="text-align: right">350.00</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>1023456321234</td>
-              <td>บริษัท เอ</td>
-              <td>รออัพโหลด Certificate</td>
-              <td>-</td>
-            </tr>
-            <tr style="background: 	#F8F8FF">
-              <td style="text-align: center">4</td>
-              <td>01/01/2561 09:25</td>
-              <td>10001 - นายธนาคาร ซื่อสัตย์</td>
-              <td>01/01/2561</td>
-              <td>20180900004</td>
-              <td>61100920717022</td>
-              <td>6110092071702211</td>
-              <td style="text-align: right">350.00</td>
-              <td>ห้างหุ้นส่วนจำกัด บริษัทจำกัดและบริษัทมหาชนจำกัด</td>
-              <td>1023456321234</td>
-              <td>บริษัท เอ</td>
-              <td>ดำเนินการสำเร็จ</td>
-              <td>-</td>
-            </tr>
-
-          </tbody>
-        </table>
+        <div class="scrollable">
+          <table class="ui small celled table" cellpadding="0" cellspacing="0" id="table">
+            <thead>
+              <tr style="text-align: center;">
+                <th>ลำดับ</th>
+                <th>วันเวลาที่ดำเนินการ</th>
+                <th>ผู้ดำเนินการ </th>
+                <th>วันที่ยื่นคำขอ</th>
+                <th>TMB Req. No</th>
+                <th>เลขที่คำขอ (Ref.1)</th>
+                <th>เลขที่ตรวจสอบ (Ref.2)</th>
+                <th>จำนวนเงิน </th>
+                <th>ประเภทคำขอ</th>
+                <th>เลขที่นิติบุคคล</th>
+                <th>ชื่อบริษัท</th>
+                <th>สถานะการดำเนินการ</th>
+                <th>สาเหตุ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let h of history; let i = index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ h.createdDateTime | datetimeString }}</td>
+                <td>{{ h.makerById + ' - ' + h.makerByName }}</td>
+                <td>{{ h.requestDate | datetimeString }}</td>
+                <td>{{ h.tmbRequestNo | emptyString }}</td>
+                <td>{{ h.ref1 | emptyString }}</td>
+                <td>{{ h.ref2 | emptyString }}</td>
+                <td>{{ h.amount | emptyString }}</td>
+                <td>{{ h.cerTypeCode | emptyString }}</td>
+                <td>{{ h.organizeId | emptyString }}</td>
+                <td>{{ h.companyName | emptyString }}</td>
+                <td>{{ h.status | emptyString }}</td>
+                <td>{{ h.rejectReasonCode | emptyString }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
