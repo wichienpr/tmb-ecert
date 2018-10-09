@@ -67,7 +67,8 @@
       <br>
       <br>
       <div class="ui center aligned grid">
-        <button class="ui blue basic button" (click)="clickSearch()">
+          <!-- *ngIf="isCanSerch" -->
+        <button class="ui blue basic button" (click)="clickSearch()"  >
           <i class="search icon"></i>
           ค้นหา
         </button>&nbsp;&nbsp; &nbsp;
@@ -120,7 +121,7 @@
                       <Span *ngIf="item.status == 0 ">Active</Span>
                    </td>
                    <td style="text-align: center">
-                      <button class="ui blue basic button" (click)="clickEditEmailTemplate(item.emailConfig_id)">แก้ไข
+                      <button class="ui blue basic button" (click)="clickEditEmailTemplate(item)">แก้ไข
                       </button>
                    </td>
                 </tr>

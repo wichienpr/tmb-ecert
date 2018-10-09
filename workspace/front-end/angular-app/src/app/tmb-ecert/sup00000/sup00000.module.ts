@@ -10,6 +10,9 @@ import { ModalModule, DropdownModule } from 'app/baiwa/common/components';
 import { Sup03000Component } from './sup03000/sup03000.component';
 import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 import { Sup03100Component } from './sup03100/sup03100.component';
+import { StoreModule } from '@ngrx/store';
+import { emailReducer } from 'app/tmb-ecert/sup00000/sup03000/sup03000.reducer';
+import { roleReducer } from 'app/tmb-ecert/sup00000/sup01000/sup01000.reducer';
 
 @NgModule({
   imports: [
@@ -20,6 +23,7 @@ import { Sup03100Component } from './sup03100/sup03100.component';
     ,ModalModule
     ,DropdownModule
     ,PipesModule
+    ,StoreModule.forFeature("sup00000" ,{ sup01000:roleReducer,sup03000: emailReducer}),
   ],
   declarations: [Sup01000Component, sup01100Component, Sup02000Component, Sup03000Component, Sup03100Component]
 })

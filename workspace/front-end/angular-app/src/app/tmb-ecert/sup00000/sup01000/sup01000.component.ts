@@ -5,6 +5,10 @@ import { Sup01000Service } from 'app/tmb-ecert/sup00000/sup01000/sup01000.servic
 import { ModalModule } from 'app/baiwa/common/components';
 import { Modal, Lov } from 'app/baiwa/common/models';
 import { ModalService, AjaxService } from 'app/baiwa/common/services';
+import { Sup01000 } from 'app/tmb-ecert/sup00000/sup01000/sup01000.model';
+import * as SUP01000ACTION from "app/tmb-ecert/sup00000/sup01000/sup01000.action";
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -25,8 +29,10 @@ export class Sup01000Component implements OnInit {
   fileExcelUpload: any;
   responseObj: any;
   dataStateSearch: any;
-  onSubmitUpload:boolean;
-  dropDownStatus:any;
+  onSubmitUpload: boolean;
+  dropDownStatus: any;
+  storeRole: Observable<Sup01000>
+  sup01000: Sup01000;
 
 
   userRoleForm: FormGroup = new FormGroup({
@@ -44,20 +50,15 @@ export class Sup01000Component implements OnInit {
   };
 
 
-  constructor(private router: Router, private service: Sup01000Service, private modal: ModalService, private ajax: AjaxService) {
+  constructor(private store: Store<AppState>, private router: Router, private service: Sup01000Service, private modal: ModalService,
+    private ajax: AjaxService) {
 
     this.objDropdownType = [{
       name: "all",
       value: "101"
     }];
     this.objRoleResult = []
-    // {
-    //   roldId: "",
-    //   roleName: "",
-    //   status: "",
-    //   rolePermissionId: "",
-    //   functionCode: ""
-    // }
+
     this.roleResult = {
       roldId: "",
       roleName: "",
@@ -65,6 +66,7 @@ export class Sup01000Component implements OnInit {
       rolePermissionId: "",
       functionCode: ""
     }
+    
     this.nodataResult = false;
 
     this.responseObj = {
@@ -86,19 +88,29 @@ export class Sup01000Component implements OnInit {
       values: [],
       valueName: "code",
       labelName: "name"
-  }
-  this.service.getStatusType().subscribe((obj: Lov[]) =>{
-    this.dropDownStatus.values = obj
-    console.log("drop down ",obj);
-  });
+    }
+    this.service.getStatusType().subscribe((obj: Lov[]) => {
+      this.dropDownStatus.values = obj
+      console.log("drop down ", obj);
+    });
 
+
+    this.storeRole = this.store.select(state => state.sup00000.sup01000);
+    this.storeRole.subscribe(data => {
+      this.sup01000 = data;
+
+    });
 
   }
 
   ngOnInit() {
-  }
-  reqTypeChange(e) {
-    console.log("requestTypeCode : ", e);
+    if (this.sup01000.isSearch) {
+      this.isShowResult = true;
+      this.userRoleForm.setValue({ roleName: this.sup01000.searchRoleName, status: this.sup01000.searchRoleStatus });
+      this.clickSerch();
+    }
+
+
   }
 
   clickSerch() {
@@ -115,13 +127,16 @@ export class Sup01000Component implements OnInit {
       }
     }, error => {
       console.log("call get error");
+    },() =>{
+      this.store.dispatch(new SUP01000ACTION.ClearRole());
     });
     this.isShowResult = true;
 
   }
 
   clickClear() {
-    this.userRoleForm.reset({ roleName: "", status: "90001" })
+    this.userRoleForm.reset({ roleName: "", status: "90001" });
+    this.store.dispatch(new SUP01000ACTION.ClearRole());
     // console.log("clear btn");
   }
 
@@ -135,7 +150,20 @@ export class Sup01000Component implements OnInit {
   }
   clickEditRole(roleObj) {
     this.roleResult = roleObj;
-    console.log("role id " + this.roleResult.roldId);
+    const roleState: Sup01000 = {
+      roldId: this.roleResult.roldId,
+      status: this.roleResult.status,
+      roleName: this.roleResult.roleName,
+      rolePermissionId: '',
+      functionCode: '',
+
+      searchRoleName: this.userRoleForm.value.roleName,
+      searchRoleStatus: this.userRoleForm.value.status,
+      isSearch: true
+    }
+
+    this.store.dispatch(new SUP01000ACTION.UpdateRole(roleState));
+    // console.log("role id " + this.roleResult.roldId);
     this.router.navigate(["/sup/sup01100"], {
       queryParams: {
         roleId: this.roleResult.roldId
@@ -161,7 +189,7 @@ export class Sup01000Component implements OnInit {
   uploadRole() {
     this.onSubmitUpload = true;
     console.log(this.uploadForm.valid);
-    if(this.uploadForm.valid){
+    if (this.uploadForm.valid) {
       this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
         this.responseObj = src;
         if (this.responseObj.message == null) {
@@ -181,7 +209,7 @@ export class Sup01000Component implements OnInit {
 
   showModalUpload() {
     this.onSubmitUpload = false;
-    this.uploadForm.reset({ fileUpload: null});
+    this.uploadForm.reset({ fileUpload: null });
     console.log("show modal")
     $('#upload').modal('show');
   }
@@ -225,3 +253,9 @@ export class Sup01000Component implements OnInit {
 
 
 }
+class AppState {
+  sup00000: {
+    "sup01000": Sup01000
+  }
+}
+

@@ -5,6 +5,9 @@ import { sup01100Service } from 'app/tmb-ecert/sup00000/sup01100/sup01100.servic
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalService } from 'app/baiwa/common/services';
 import { Modal } from 'app/baiwa/common/models';
+import { Sup01000 } from 'app/tmb-ecert/sup00000/sup01000/sup01000.model';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -20,13 +23,12 @@ export class sup01100Component implements OnInit {
   userRolePermission: any
   roleId: Number;
   submited: boolean;
-
-
   form: FormGroup;
   responseObj: any;
-  // roleName = new FormControl('');
+  storeRole: Observable<Sup01000>
+  sup01000: Sup01000;
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: sup01100Service, private modal: ModalService) {
+  constructor(private store: Store<AppState>,private router: Router, private route: ActivatedRoute, private service: sup01100Service, private modal: ModalService) {
     this.rolepermisson = [
       {
         rolename: "UI-00002 - ยินดีต้อนรับ",
@@ -246,8 +248,14 @@ export class sup01100Component implements OnInit {
       data: "",
       message: ""
     }
-
     this.submited = false;
+
+    this.storeRole = this.store.select(state => state.sup00000.sup01000);
+    this.storeRole.subscribe(data => {
+      this.sup01000 = data;
+
+    });
+
 
   }
 
@@ -284,6 +292,11 @@ export class sup01100Component implements OnInit {
         title: "ยืนยันการบันทึก",
         color: "notification"
       }
+      const modalresp: Modal = {
+        msg: '',
+        title: "แจ้งเตือน",
+        color: "alert"
+      }
       this.modal.confirm((e) => {
         if (e) {
           this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
@@ -291,12 +304,15 @@ export class sup01100Component implements OnInit {
             if (this.responseObj.message == null) {
               this.modal.alert({ msg: "ทำรายการล้มเหลว" })
             } else {
-              this.modal.alert({ msg: this.responseObj.message });
+              modalresp.msg  = this.responseObj.message;
+              this.modal.confirm((e) => {
+                if (e) {
+              // this.modal.alert({ msg: this.responseObj.message });
+                this.router.navigate(["/sup/sup01000"], {});
+                }
+              },modalresp);
             }
           }, error => {
-            console.log("error", error)
-          }, () => {
-            console.log(" save complete. ")
           });
 
         }
@@ -308,7 +324,7 @@ export class sup01100Component implements OnInit {
   }
   // swich check
   chanageStatus(fuctioncode, index, index2) {
-    console.log("swift toggle ", fuctioncode, " index", index, " j ", index2);
+    // console.log("swift toggle ", fuctioncode, " index", index, " j ", index2);
     if (index2 == -1) {
       if (this.rolepermisson[index].status == 0) {
         this.rolepermisson[index].status = 1
@@ -368,4 +384,9 @@ export class sup01100Component implements OnInit {
   }
 
 
+}
+class AppState {
+  sup00000: {
+    "sup01000": Sup01000
+  }
 }
