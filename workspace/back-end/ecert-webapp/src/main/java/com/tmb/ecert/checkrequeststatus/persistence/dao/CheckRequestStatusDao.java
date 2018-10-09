@@ -3,7 +3,6 @@ package com.tmb.ecert.checkrequeststatus.persistence.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,14 +35,15 @@ public class CheckRequestStatusDao {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
-	
+
 		if (StringUtils.isNotBlank(formVo.getReqDate())) {
 			sql.append(" AND  CAST(H.REQUEST_DATE as DATE) >= ? ");
 			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getReqDate());
@@ -54,35 +54,32 @@ public class CheckRequestStatusDao {
 			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getToReqDate());
 			valueList.add(date);
 		}
-		
-/*		if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
-			sql.append(" AND H.REQUEST_DATE BETWEEN ? AND ? ");
-			Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.getReqDate()));
-			Date fromDate = Calendar.getInstance().getTime();
-			fromDate.setHours(0);
-			fromDate.setMinutes(0);
-			fromDate.setSeconds(0);
-			
-			Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.getToReqDate()));	
-			Date toDate = Calendar.getInstance().getTime();
-			toDate.setHours(23);
-			toDate.setMinutes(59);
-			toDate.setSeconds(59);
-			
-			valueList.add(fromDate);
-			valueList.add(toDate);
-		}*/
+
+		/*
+		 * if (StringUtils.isNotBlank(formVo.getReqDate()) &&
+		 * StringUtils.isNotBlank(formVo.getToReqDate())) {
+		 * sql.append(" AND H.REQUEST_DATE BETWEEN ? AND ? ");
+		 * Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.
+		 * getReqDate())); Date fromDate = Calendar.getInstance().getTime();
+		 * fromDate.setHours(0); fromDate.setMinutes(0); fromDate.setSeconds(0);
+		 * 
+		 * Calendar.getInstance().setTime(DateConstant.convertStrDDMMYYYYToDate(formVo.
+		 * getToReqDate())); Date toDate = Calendar.getInstance().getTime();
+		 * toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59);
+		 * 
+		 * valueList.add(fromDate); valueList.add(toDate); }
+		 */
 
 		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
 			sql.append(" AND H.COMPANY_NAME LIKE ? ");
-			valueList.add("%"+formVo.getCompanyName()+"%");
+			valueList.add("%" + formVo.getCompanyName() + "%");
 		}
-		
+
 		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
 			sql.append(" AND H.ORGANIZE_ID = ? ");
 			valueList.add(formVo.getOrganizeId());
 		}
-		
+
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO = ? ");
 			valueList.add(formVo.getTmbReqNo());
@@ -93,7 +90,6 @@ public class CheckRequestStatusDao {
 		return crs01000VoList;
 	}
 
-	
 	public List<Crs01000Vo> findReqByStatus(Crs01000FormVo formVo) {
 		logger.info("findReqByStatus_Dao");
 		logger.info(formVo.toString());
@@ -101,7 +97,8 @@ public class CheckRequestStatusDao {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,H.STATUS,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -118,9 +115,7 @@ public class CheckRequestStatusDao {
 
 		return crs01000VoList;
 	}
-	
-	
-	
+
 	private RowMapper<Crs01000Vo> reqFormByStatusMapping = new RowMapper<Crs01000Vo>() {
 
 		@Override
@@ -143,8 +138,7 @@ public class CheckRequestStatusDao {
 		}
 
 	};
-	
-	
+
 	public List<StatusVo> countStatus() {
 		logger.info("CountStatus_Dao");
 		List<StatusVo> statusVoList = new ArrayList<StatusVo>();
@@ -153,12 +147,12 @@ public class CheckRequestStatusDao {
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" GROUP BY H.STATUS ");
 		sql.append(" ORDER BY H.STATUS ASC ");
-		
+
 		statusVoList = jdbcTemplate.query(sql.toString(), countStatusMapping);
-	
+
 		return statusVoList;
 	}
-	
+
 	private RowMapper<StatusVo> countStatusMapping = new RowMapper<StatusVo>() {
 		@Override
 		public StatusVo mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -168,7 +162,7 @@ public class CheckRequestStatusDao {
 
 			return vo;
 		}
-		
+
 	};
 
 }
