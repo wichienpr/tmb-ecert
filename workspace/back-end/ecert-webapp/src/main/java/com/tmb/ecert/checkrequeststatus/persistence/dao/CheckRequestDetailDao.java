@@ -59,6 +59,10 @@ public class CheckRequestDetailDao {
 			row.setUpdateById(rs.getString("UPDATED_BY_ID"));
 			row.setUpdateByName(rs.getString("UPDATED_BY_NAME"));
 			row.setUpdateDateTime(rs.getTimestamp("UPDATED_DATETIME"));
+			row.setAcceptedDate(rs.getDate("ACCEPTED_DATE"));
+			row.setOther(rs.getString("OTHER"));
+			row.setRegisteredDate(rs.getDate("REGISTERED_DATE"));
+			row.setStatementYear(rs.getInt("STATEMENT_YEAR"));
 			return row;
 		}
 	};
