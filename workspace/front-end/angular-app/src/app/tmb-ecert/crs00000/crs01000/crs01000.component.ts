@@ -254,7 +254,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   getFontStyeColor(status) {
     if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
       return '#2185D0';
-    } else if (status == '10002' || status == '10006' || status == '10010') {
+    } else if (status == '10002' || status == '10007' || status == '10010') {
       return 'gray';
     } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
       return 'red';
@@ -266,7 +266,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   getButtonStyeColor(status) {
     if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
       return 'ui blue basic button center';
-    } else if (status == '10002' || status == '10006' || status == '10010') {
+    } else if (status == '10002' || status == '10007' || status == '10010') {
       return 'ui gray basic button center';
     } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
       return 'ui red basic button center';
