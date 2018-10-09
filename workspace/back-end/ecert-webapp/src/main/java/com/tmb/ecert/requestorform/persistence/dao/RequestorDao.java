@@ -206,7 +206,7 @@ public class RequestorDao {
 		sql.append("ACCOUNT_NAME=?,CUSTOMER_NAMERECEIPT=?,TELEPHONE=?,REQUESTFORM_FILE=?,");
 		sql.append("IDCARD_FILE=?,CHANGENAME_FILE=?,CERTIFICATE_FILE=?,ADDRESS=?,");
 		sql.append("REMARK=?,RECEIPT_NO=?,STATUS=?,CREATED_BY_ID=?,CREATED_BY_NAME=?,");
-		sql.append("CREATED_DATETIME=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,TMB_REQUESTNO=?,REQUEST_DATE=? WHERE REQFORM_ID = ?");
+		sql.append("MAKER_BY_ID=?,MAKER_BY_NAME=?,TMB_REQUESTNO=?,REQUEST_DATE=? WHERE REQFORM_ID = ?");
 		
 		logger.info(sql.toString());
 
@@ -243,12 +243,11 @@ public class RequestorDao {
 				ps.setString(25, vo.getStatus());
 				ps.setString(26, vo.getCreatedById());
 				ps.setString(27, vo.getCreatedByName());
-				ps.setDate(28, date);
-				ps.setString(29, vo.getMakerById());
-				ps.setString(30, vo.getMakerByName());
-				ps.setString(31, vo.getTmbRequestNo());
-				ps.setDate(32, date);
-				ps.setLong(33, vo.getReqFormId());
+				ps.setString(28, vo.getMakerById());
+				ps.setString(29, vo.getMakerByName());
+				ps.setString(30, vo.getTmbRequestNo());
+				ps.setDate(31, date);
+				ps.setLong(32, vo.getReqFormId());
 				return ps;
 			}
 		});
