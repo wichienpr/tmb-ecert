@@ -14,6 +14,9 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
     private payMethod: Lov[]; // วิธีชำระ
     private subAccMethod: Lov[]; // วีธีหักจากธนาคาร
     private action: Lov[]; // Action
+    private operationTypeLOV: Lov[]; // สถานะการทำงาน
+    private batchJobSchLOV: Lov[]; // BatchJobSchedu
+    private jobMonitoringStus: Lov[];  //Monitoring Status
     
     constructor(private ajax: AjaxService) {
         /**
@@ -90,9 +93,33 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
             this.ajax.post(URL.LOV_BY_TYPE, { type: 9 }, result => {
                 const data = result.json();
                 if (data && data.length > 0) {
-                    this.subAccMethod = data;
+                    this.operationTypeLOV = data;
                 }
-                obs.next([...this.subAccMethod]);
+                obs.next([...this.operationTypeLOV]);
+            });
+        });
+    }
+
+    getBatchJobSchedu(): Observable<Lov[]> { // Batch Job Scheduler
+        return new Observable(obs => {
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 6 }, result => {
+                const data = result.json();
+                if (data && data.length > 0) {
+                    this.batchJobSchLOV = data;
+                }
+                obs.next([...this.batchJobSchLOV]);
+            });
+        });
+    }
+
+    getMonitoringStatus(): Observable<Lov[]> { // Monitoring Status
+        return new Observable(obs => {
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 8 }, result => {
+                const data = result.json();
+                if (data && data.length > 0) {
+                    this.jobMonitoringStus = data;
+                }
+                obs.next([...this.jobMonitoringStus]);
             });
         });
     }

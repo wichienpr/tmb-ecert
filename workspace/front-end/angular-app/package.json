@@ -23,9 +23,11 @@
     "@ngrx/store": "^6.1.0",
     "core-js": "^2.5.4",
     "jquery": "^3.3.1",
+    "ngx-summernote": "^0.5.5",
     "rxjs": "^6.0.0",
     "semantic-ui-calendar": "0.0.8",
     "semantic-ui-css": "^2.4.0",
+    "summernote": "^0.8.10",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

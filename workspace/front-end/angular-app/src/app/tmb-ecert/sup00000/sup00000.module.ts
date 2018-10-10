@@ -13,6 +13,7 @@ import { Sup03100Component } from './sup03100/sup03100.component';
 import { StoreModule } from '@ngrx/store';
 import { emailReducer } from 'app/tmb-ecert/sup00000/sup03000/sup03000.reducer';
 import { roleReducer } from 'app/tmb-ecert/sup00000/sup01000/sup01000.reducer';
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { roleReducer } from 'app/tmb-ecert/sup00000/sup01000/sup01000.reducer';
     ,ModalModule
     ,DropdownModule
     ,PipesModule
+    ,NgxSummernoteModule
     ,StoreModule.forFeature("sup00000" ,{ sup01000:roleReducer,sup03000: emailReducer}),
   ],
   declarations: [Sup01000Component, sup01100Component, Sup02000Component, Sup03000Component, Sup03100Component]

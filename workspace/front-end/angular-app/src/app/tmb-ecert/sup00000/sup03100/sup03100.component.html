@@ -59,9 +59,10 @@
                         <tr style="background: 	#F8F8FF">
                             <td>Body</td>
                             <td>
-                                <div class="field" [ngClass]="{'error':(body.invalid && (body.dirty || body.touched)) }">
+                                <!-- <div class="field" [ngClass]="{'error':(body.invalid && (body.dirty || body.touched)) }">
                                     <textarea rows="8" style="width: 95%;" formControlName="body"></textarea>
-                                </div>
+                                </div> -->
+                                <div class="field" formControlName="body"  [ngxSummernote]="config" ></div>
                             </td>
                         </tr>
                         <tr>

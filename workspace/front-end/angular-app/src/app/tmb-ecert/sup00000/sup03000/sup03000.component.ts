@@ -101,6 +101,8 @@ export class Sup03000Component implements OnInit {
       }
     }, error => {
 
+    },() =>{
+      this.store.dispatch(new SUP03000ACTION.ClearEmail());
     });
     this.isShowResult = true;
   }

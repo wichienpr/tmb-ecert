@@ -8,6 +8,7 @@ import { Modal } from 'app/baiwa/common/models';
 import { sup03000 } from 'app/tmb-ecert/sup00000/sup03000/sup03000.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
    selector: 'app-sup03100',
@@ -16,7 +17,7 @@ import { Observable } from 'rxjs';
 })
 export class Sup03100Component implements OnInit {
    emailId: any;
-   responseObj: Sup03100;
+   responseObj: any;
    emailForm: FormGroup;
    requestObj: any;
    response: any;
@@ -25,8 +26,21 @@ export class Sup03100Component implements OnInit {
    emailTemplate: Observable<sup03000>;
    sup03000: sup03000;
 
+   config = {
+    tabsize: 2,
+    height: 150,
+    toolbar: [
+        // [groupName, [list of button]]
+        ['misc', ['codeview', 'undo', 'redo']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+        ['fontsize', ['fontsize', 'color']],
+        ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']]
+    ],
+  };
+
    constructor(private store: Store<AppState>, private service: Sup03100Service, private router: Router,
-      private route: ActivatedRoute, private modal: ModalService) {
+      private route: ActivatedRoute, private modal: ModalService,private sanitizer: DomSanitizer) {
 
       this.emailTemplate = this.store.select(state => state.sup00000.sup03000);
       this.emailTemplate.subscribe(data => {
@@ -49,7 +63,7 @@ export class Sup03100Component implements OnInit {
 
    ngOnInit() {
       this.service.callSearchEmailDetailAPI(this.sup03000.emailConfigId).subscribe(res => {
-         this.responseObj = res[0];
+         this.responseObj = res;
          console.debug("response ", this.responseObj)
          this.emailForm.setValue({
             subject: this.responseObj.subject,
@@ -64,6 +78,8 @@ export class Sup03100Component implements OnInit {
    }
 
    clickSave() {
+    console.log("html tag ==> ",this.emailForm.value.body);
+    // console.log("html tag ==> ", this.sanitizer.bypassSecurityTrustHtml(this.emailForm.value.body))
 
       this.requestObj = {
          emailDetail_id: this.responseObj.emailDetail_id,
@@ -80,6 +96,7 @@ export class Sup03100Component implements OnInit {
          title: "ยืนยันการบันทึก",
          color: "notification"
       }
+
       const modalresp: Modal = {
          msg: '',
          title: "แจ้งเตือน",
@@ -122,8 +139,6 @@ export class Sup03100Component implements OnInit {
 
    }
 
-
-
    clickCancel() {
       this.router.navigate(["/sup/sup03000"], {});
    }
@@ -142,6 +157,10 @@ export class Sup03100Component implements OnInit {
    get attachFile_flag() {
       return this.emailForm.get("attachFile_flag");
    }
+   get sanitizedHtml() {
+    return  this.sanitizer.bypassSecurityTrustHtml(this.emailForm.get('body').value);
+  }
+
 
 }
 
