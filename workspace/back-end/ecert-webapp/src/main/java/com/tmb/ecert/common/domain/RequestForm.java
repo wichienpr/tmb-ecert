@@ -69,6 +69,7 @@ public class RequestForm {
 	
 	private String officeCode;
 	private Timestamp receiptDate;
+	private String receiptFile;
 	
 	private List<RequestCertificate> certificateList = new ArrayList<RequestCertificate>();
 
@@ -609,6 +610,15 @@ public class RequestForm {
 
 	public void setReceiptDate(Timestamp receiptDate) {
 		this.receiptDate = receiptDate;
+	}
+	
+	public String getReceiptFile() {
+		return receiptFile;
+	}
+
+
+	public void setReceiptFile(String receiptFile) {
+		this.receiptFile = receiptFile;
 	}
 
 
