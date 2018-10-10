@@ -39,7 +39,8 @@ export class CommonService {
 
   blockui() {
     $.blockUI({
-      message: null
+      css: { border: 0 },
+      message: `<div class="ui active dimmer" style="background:transparent"><div class="ui text loader">กำลังโหลด</div></div>`
     });
   }
 

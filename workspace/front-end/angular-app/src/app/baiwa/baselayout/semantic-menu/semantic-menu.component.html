@@ -13,45 +13,45 @@
         <i class="dropdown icon"></i>
         <div class="menu">
           <ng-container *ngFor="let sub1 of main.child">
-            <ng-container *ngIf="sub1.func">
+            <ng-container *ngIf="sub1.func&&sub1.role">
               <a class="ui dropdown item" (click)="sub1.func()">{{sub1.label}}</a>
             </ng-container>
-            <ng-container *ngIf="sub1.url&&!sub1.func">
+            <ng-container *ngIf="sub1.url&&!sub1.func&&sub1.role">
               <a class="ui dropdown item" routerLink="{{sub1.url}}" routerLinkActive="active">{{sub1.label}}</a>
             </ng-container>
-            <ng-container *ngIf="!sub1.url&&sub1.child&&sub1.child.length>0&&!sub1.func">
+            <ng-container *ngIf="!sub1.url&&sub1.child&&sub1.child.length>0&&!sub1.func&&sub1.role">
               <div class="ui simple dropdown item">
                 <i class="dropdown icon"></i>
                 {{sub1.label}}
                 <div class="menu">
                   <ng-container *ngFor="let sub2 of sub1.child">
-                    <ng-container *ngIf="sub2.func">
+                    <ng-container *ngIf="sub2.func&&sub2.role">
                       <a class="ui dropdown item" (click)="sub2.func()">{{sub2.label}}</a>
                     </ng-container>
-                    <ng-container *ngIf="sub2.url&&!sub2.func">
+                    <ng-container *ngIf="sub2.url&&!sub2.func&&sub2.role">
                       <a class="ui dropdown item" routerLink="{{sub2.url}}" routerLinkActive="active">{{sub2.label}}</a>
                     </ng-container>
-                    <ng-container *ngIf="!sub2.url&&sub2.child&&sub2.child.length>0&&!sub2.func">
+                    <ng-container *ngIf="!sub2.url&&sub2.child&&sub2.child.length>0&&!sub2.func&&sub2.role">
                       <div class="ui simple dropdown item">
                         <i class="dropdown icon"></i>
                         {{sub2.label}}
                         <div class="menu">
                           <ng-container *ngFor="let sub3 of sub2.child">
-                            <ng-container *ngIf="sub3.func">
+                            <ng-container *ngIf="sub3.func&&sub3.role">
                               <a class="ui dropdown item" (click)="sub3.func()">{{sub3.label}}</a>
                             </ng-container>
-                            <ng-container *ngIf="sub3.url&&!sub3.func">
+                            <ng-container *ngIf="sub3.url&&!sub3.func&&sub3.role">
                               <a class="ui dropdown item" routerLink="{{sub3.url}}" routerLinkActive="active">{{sub3.label}}</a>
                             </ng-container>
-                            <ng-container *ngIf="!sub3.url&&sub3.child&&sub3.child.length>0&&!sub3.func">
+                            <ng-container *ngIf="!sub3.url&&sub3.child&&sub3.child.length>0&&!sub3.func&&sub3.role">
                               <i class="dropdown icon"></i>
                               {{sub3.label}}
                               <div class="menu">
                                 <ng-container *ngFor="let sub4 of sub3.child">
-                                  <ng-container *ngIf="sub4.func">
+                                  <ng-container *ngIf="sub4.func&&sub4.role">
                                     <a class="ui dropdown item" (click)="sub4.func()">{{sub4.label}}</a>
                                   </ng-container>
-                                  <ng-container *ngIf="sub4.url&&!sub4.func">
+                                  <ng-container *ngIf="sub4.url&&!sub4.func&&sub4.role">
                                     <a class="ui dropdown item" routerLink="{{sub4.url}}" routerLinkActive="active">{{sub4.label}}</a>
                                   </ng-container>
                                 </ng-container>

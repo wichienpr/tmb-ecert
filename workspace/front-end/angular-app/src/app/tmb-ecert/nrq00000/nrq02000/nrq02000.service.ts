@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { Certificate, Lov, RequestForm, initRequestForm, Modal } from "models/";
+import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
 import { AjaxService, ModalService, DropdownService } from "services/";
 import { Acc, Assigned } from "helpers/";
 
@@ -11,6 +11,8 @@ import { Nrq02000 } from "./nrq02000.model";
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
     CER_BY_TYPE: "/api/cer/typeCode",
+    CER_BY_CODE: "/api/crs/crs02000/cert/list",
+    CER_BY_TYPECODE: "/api/cer/typeCode",
     NRQ_SAVE: "/api/nrq/save",
     NRQ_UPDATE: "/api/nrq/update",
     NRQ_DOWNLOAD: "/api/nrq/download/",
@@ -18,7 +20,8 @@ const URL = {
     GEN_KEY: "/api/nrq/generate/key",
     REQUEST_FORM: "/api/nrq/data",
     CREATE_FORM: "/api/report/pdf/reqForm/",
-    FORM_PDF: "/api/report/pdf/"
+    FORM_PDF: "/api/report/pdf/",
+    REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
 }
 
 @Injectable()
@@ -127,6 +130,36 @@ export class Nrq02000Service {
         return this.ajax.get(URL.GEN_KEY, response => {
             this.tmbReqFormId = response.json();
             return this.tmbReqFormId;
+        });
+    }
+
+    getChkList(id: string) {
+        return this.ajax.get(`${URL.CER_BY_CODE}/${id}`, response => {
+            let lists = response.json();
+            const list = lists.slice(0, 1);
+            let data: Certificate = {
+                code: "",
+                typeCode: list[0].typeCode,
+                typeDesc: list[0].typeDesc,
+                certificate: list[0].certificate,
+                feeDbd: list[0].feeDbd,
+                feeTmb: list[0].feeTmb,
+            };
+            lists.unshift(data);
+            return [...lists];
+        });
+    }
+
+    getChkListMore(id: string) {
+        return this.ajax.post(URL.CER_BY_TYPECODE, { typeCode: id }, res => {
+            return res.text() ? res.json() : {};
+        });
+    }
+
+    getCert(id: String) {
+        return this.ajax.get(`${URL.REQUEST_CERTIFICATE}/${id}`, response => {
+            let data: RequestCertificate[] = response.json() as RequestCertificate[];
+            return data;
         });
     }
 
