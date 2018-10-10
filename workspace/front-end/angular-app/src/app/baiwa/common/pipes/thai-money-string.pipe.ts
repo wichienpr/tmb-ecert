@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 // @credit https://github.com/tpsumeta/ThaiBath.git
 declare var $;
 
-@Pipe({ name: 'thaiMoneyStrig' })
+@Pipe({ name: 'thaiMoneyString' })
 export class ThaiMoneyString implements PipeTransform {
     transform(value: string, exponent: string): string {
         let trimstr = $.trim(value);
