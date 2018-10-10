@@ -18,10 +18,9 @@ public class ListOfValueDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private static String template = " SELECT * FROM ECERT_LISTOFVALUE WHERE 1=1 ";
+	private static String template = " SELECT * FROM ECERT_LISTOFVALUE WHERE 1=1 AND STATUS=0 ";
 
 	public List<ListOfValue> lovAllType() {
-		String str = " SELECT DISTINCT TYPE FROM ECERT_LISTOFVALUE WHERE 1=1 AND STATUS=0";
 		StringBuilder sql = new StringBuilder(template);
 		sql.append(" ORDER BY TYPE ASC ");
 		List<ListOfValue> result = jdbcTemplate.query(sql.toString(), typeMapper);
