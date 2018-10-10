@@ -13,3 +13,8 @@ export interface Dropdown {
     values: any[];
     activeValue?: string;
 }
+
+export enum DropdownMode{
+    "SEARCH" = "search",
+    "SELECTION" = "selection",
+}

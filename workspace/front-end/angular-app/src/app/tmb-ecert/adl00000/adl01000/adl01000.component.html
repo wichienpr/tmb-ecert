@@ -11,20 +11,21 @@
 
 
         <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
+            <form class="ui form" [formGroup]="formadl" >
                 <div class="inline fields">
                     <div class="one wide field"></div>
                     <div class="two wide field">
                         <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
                     </div>
-                    <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
-                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
+                    <div class="five wide field" [ngClass]="{'error':(dateForm.invalid && (dateForm.dirty || dateForm.touched))}">
+                        <ng-calendar [config]="calendar1"  style="width:100%"></ng-calendar>
                     </div>
                     <div class="two wide field ">
                         <label>ถึงวันที่<span style="color: red"> * </span></label>
                     </div>
-                    <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
-                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
+
+                    <div class="five wide field" [ngClass]="{'error':(dateTo.invalid && (dateTo.dirty || dateTo.touched))}">
+                        <ng-calendar [config]="calendar2" style="width:100%"></ng-calendar>
                     </div>
                 </div>
 
@@ -35,20 +36,20 @@
                         <label>User ID</label>
                     </div>
                     <div class="five wide field">
-                        <input type="number" formControlName="userId" placeholder="User ID">
+                        <input type="number" formControlName="createdById" placeholder="User ID">
                     </div>
                     <div class="two wide field ">
                         <label>Action</label>
                     </div>
                     <div class="five wide field">
-                        <ui-dropdown [dropdown]="dropdownObj.action" (valueChange)="actionChange($event)"></ui-dropdown>
+                        <ui-dropdown [dropdown]="actionDropdown"></ui-dropdown>
                     </div>
                 </div>
                 <br>
                 <br>
-                <div class="ui center aligned grid">
+                <div class="ui center aligned grid btn-group">
 
-                    <button class="ui blue basic button" type="submit" >
+                    <button class="ui blue basic button" type="button" (click)="searchData()" >
                         <i class="search icon"></i>
                         ค้นหา
                     </button>
@@ -67,13 +68,16 @@
     </div>
 </div>
 <br>
-<div class="sixteen wide column" *ngIf="showData">
+<div class="sixteen wide column">
     <div class="ui top attached header segment">
         <span>ผลการค้นหา </span>
     </div>
-    <div class="ui attached segment {{ loading? 'loading' : '' }}">
+    <div class="ui attached segment">
+
+        <ng-datatable-search [ng-datatable]="auditDt" ></ng-datatable-search>
+        <br>
         <div style="overflow-x: auto;white-space: nowrap;">
-            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+            <table [ngDatatable]="auditConfig" #auditDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%" id="table">
                 <thead>
                     <tr>
                         <th>ลำดับ</th>
@@ -85,11 +89,11 @@
                 
                 </thead>
                 <tbody>
-                    <tr class="text-center" *ngIf="dataT.length==0">
+                    <tr class="text-center" *ngIf="auditDt.isEmpty">
                         <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
                     </tr>
-                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
-                        <td style="text-align: center !important;">{{i+1}}</td>
+                    <tr class="text-center" *ngFor="let data of auditDt.datas; let i=index">
+                        <td style="text-align: center !important;">{{ auditDt.rownum + (i+1) }}</td>
                         <td style="text-align: center !important;">{{data.createdDatetime}}</td>
                         <td style="text-align: center !important;">{{data.createdById}}</td>
                         <td style="text-align: left   !important;">{{data.actionDesc}}</td>
@@ -98,6 +102,10 @@
                 </tbody>
             </table>
         </div>
+
+        <br>
+        <ng-datatable-footer [ng-datatable]="auditDt"  ></ng-datatable-footer>
+
         <br>
         <br>
 

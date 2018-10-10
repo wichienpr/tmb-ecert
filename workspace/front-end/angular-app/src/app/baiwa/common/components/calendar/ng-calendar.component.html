@@ -1,0 +1,7 @@
+    <div class="ui calendar" id="{{configObj.id}}" width="100%" [formGroup]="configObj.formControll.parent" >
+        <div class="ui input left icon" width="100%">
+            <i class="time icon"></i>
+            <input type="text" width="100%" name="{{configObj.id}}" [formControl]="configObj.formControll"
+                placeholder="{{configObj.placeholder}}" autocomplete="off">
+        </div>
+    </div>

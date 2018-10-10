@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
 import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 import { Adl01000Component } from 'app/tmb-ecert/adl00000/adl01000/adl01000.component';
+import { DatatableModule } from 'app/baiwa/common/directives';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { Adl01000Component } from 'app/tmb-ecert/adl00000/adl01000/adl01000.comp
     DropdownModule,
     CalendarModule,
     // PipesModule
-    PipesModule
+    PipesModule,
+    DatatableModule
     // StoreModule.forRoot({ adl01000: adlReducer })
   ],
   declarations: [

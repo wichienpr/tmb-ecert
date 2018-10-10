@@ -16,53 +16,23 @@ const URL = {
 export class Adl01000Service {
 
     dropdownObj: any;
-    form: FormGroup = new FormGroup({
-        dateForm: new FormControl('', Validators.required),             // วันที่ดำเนินการ
-        dateTo: new FormControl('', Validators.required),               // ถึงวันที่
-        userId: new FormControl(),                                      // User ID
-        action: new FormControl(),                                      // Action
-       
-    });
+
 
     constructor(
         private ajax: AjaxService,
         private modal: ModalService,
         private dropdown: DropdownService) {
 
-        this.dropdownObj = {
-            action: {
-                dropdownId: "action",
-                dropdownName: "action",
-                type: "search",
-                formGroup: this.form,
-                formControlName: "action",
-                values: [],
-                valueName: "code",
-                labelName: "name"
-            }
-            
-        };
-        // Dropdowns
-        this.dropdown.getaction().subscribe((obj: Lov[]) => this.dropdownObj.action.values = obj);
     }
 
-
-    /**
-     * Initial Data
-     */
-    getForm(): Observable<FormGroup> {
-        return new Observable<FormGroup>(obs => {
-            obs.next(this.form);
-        });
+    getActionDropdown(){
+        return this.dropdown.getaction();
     }
+
 
     getReqDate(): string {
         let date = new Date();
         return dateLocale(date);
-    }
-
-    getDropdownObj(): any {
-        return this.dropdownObj;
     }
 
 

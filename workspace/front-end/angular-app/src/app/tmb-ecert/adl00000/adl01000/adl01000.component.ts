@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
-import { forEach } from '@angular/router/src/utils/collection';
-import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
+import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Dropdown, Lov, DropdownMode } from 'models/';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Adl01000Service } from './adl01000.service';
 import { Certificate } from 'models/';
-import { isValid } from 'app/baiwa/common/helpers';
+import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
+import { CommonService } from 'app/baiwa/common/services';
 declare var $: any;
 const URL = {
-  export:"/api/adl/adl01000/exportFile"
+  export: "/api/adl/adl01000/exportFile"
 }
 @Component({
   selector: 'app-adl01000',
@@ -17,127 +18,117 @@ const URL = {
   providers: [Adl01000Service]
 })
 export class Adl01000Component implements OnInit {
-  showData: boolean = false; 
-  dataT: any[]= [];
+  showData: boolean = false;
+  dataT: any[] = [];
   loading: boolean = false;
 
-  dropdownObj: any;
+  actionDropdown: Dropdown;
   actionChanged: Certificate[];
 
 
-  calendar1: Calendar;
-  calendar2: Calendar;
-  form: FormGroup;
+  calendar1: NgCalendarConfig;
+  calendar2: NgCalendarConfig;
+  formadl: FormGroup;
+  auditConfig: DatatableCofnig;
+  @ViewChild("auditDt")
+  auditDt: DatatableDirective
 
   constructor(
     private ajax: AjaxService,
-    private service: Adl01000Service
-  ) { 
-    this.dropdownObj = this.service.getDropdownObj();
-    this.service.getForm().subscribe(form => {
-      this.form = form
-    });
-    this.calendar1 = {
-      calendarId: "cal1",
-      calendarName: "cal1",
-      formGroup: this.form,
-      formControlName: "dateForm",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      endId: "cal2",
-      initial: new Date
-    };
-    this.calendar2 = {
-      calendarId: "cal2",
-      calendarName: "cal2",
-      formGroup: this.form,
-      formControlName: "dateTo",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      startId: "cal1",
-      initial: new Date
-    };
+    private service: Adl01000Service,
+    private commonsvr : CommonService
+  ) {
   }
 
   ngOnInit() {
-  }
 
-  ngAfterViewInit() {}
-
-  calendarValue(name,e) {
-    this.form.controls[name].setValue(e);
-    console.log(this.form);
-    console.log(this.form.controls[name].value);
-    
-  }
-  actionChange(e) {
-    console.log("actionChanged : ",e);
-      this.actionChanged = e;
-  }
-
-
-  getData=()=>{
-    console.log(this.form);
-    this.loading = true;
-    this.dataT=[];
-    const URL = "/api/adl/adl01000/list";
-    this.ajax.post(URL,{
-      dateForm: this.form.controls.dateForm.value,
-      dateTo: this.form.controls.dateTo.value,
-      createdById: this.form.controls.userId.value,
-      actionCode:this.actionChanged
-    
-    },async res => {
-      const data = await res.json();
-      
-      setTimeout(() => {
-        this.loading = false;
-      },200);
-      data.forEach(element => {
-        this.dataT.push(element);
-      });
-    console.log("getData True : Data s",this.dataT);
+    this.formadl = new FormGroup({
+      dateForm: new FormControl('', Validators.required),             // วันที่ดำเนินการ
+      dateTo: new FormControl('', Validators.required),               // ถึงวันที่
+      createdById: new FormControl(''),                                      // User ID
+      actionCode: new FormControl(''),                                      // Action
     });
+
+    this.actionDropdown = {
+      dropdownId: "actionCode",
+      dropdownName: "actionCode",
+      type: DropdownMode.SEARCH,
+      formGroup: this.formadl,
+      formControlName: "actionCode",
+      values: [],
+      valueName: "code",
+      labelName: "name",
+      placehold: "กรุณาเลือก"
+    };
+
+    this.service.getActionDropdown().subscribe((obj: Lov[]) => this.actionDropdown.values = obj)
+
+    this.calendar1 = {
+      id: "calendar1",
+      formControll: this.formadl.get("dateForm"),
+      endCalendar: "calendar2"
+    };
+
+    this.calendar2 = {
+      id: "calendar2",
+      formControll: this.formadl.get("dateTo"),
+      startCalendar: "calendar1"
+    };
+
+    this.auditConfig = {
+      url: "/api/adl/adl01000/list",
+      serverSide: true,
+      useBlockUi : true
+    };
+
+  }
+
+  ngAfterViewInit() { }
+
+  calendarValueDateForm(value) {
+    console.log("calendarValueDateForm : ", value);
+    // this.formadl.controls[name].setValue(e);
+
+    this.formadl.patchValue({ "dateForm": value })
+  }
+
+  calendarValueDateTo(value) {
+    console.log("calendarValueDateTo : ", value);
+    // this.formadl.controls[name].setValue(e);
+
+    this.formadl.patchValue({ "dateTo": value })
   }
 
 
   searchData(): void {
-    if(this.form.valid){
-    console.log("searchData True");
-        this.showData = true;
-        this.getData();
-    }else{
-      console.log("searchData False");
-    }
-   
+    console.log("searchData False", this.formadl.value);
+    this.auditDt.searchParams(this.formadl.value);
+    this.auditDt.search();
   }
-  
+
   clearData(): void {
-    console.log("clearData");
-    this.form.reset();
-    $('#action').dropdown('restore defaults');
-    this.showData = false;
+    this.formadl.reset();
   }
 
-  exportFile=()=>{
-    console.log("exportFile");
-    let param = "";
-    param+="?dateForm="+this.form.controls.dateForm.value;
-    param+="&dateTo="+this.form.controls.dateTo.value;
+  exportFile() {
+    // console.log("exportFile");
+    // let param = "";
+    // param += "?dateForm=" + this.form.controls.dateForm.value;
+    // param += "&dateTo=" + this.form.controls.dateTo.value;
 
-    (this.form.controls.userId.value!=null)?param+="&userId="+this.form.controls.userId.value:"";
+    // (this.formadl.controls.userId.value != null) ? param += "&userId=" + this.form.controls.userId.value : "";
 
-    (this.actionChanged!=null)?param+="&action="+this.actionChanged:"";
+    // (this.actionChanged != null) ? param += "&action=" + this.actionChanged : "";
 
-    this.ajax.download(URL.export+param);
+    // this.ajax.download(URL.export + param);
   }
 
-  validate(input: string, submitted: boolean) {
-    return isValid(this.form, input, submitted);
+  get dateForm() {
+    return this.formadl.get("dateForm");
   }
- 
+
+  get dateTo() {
+    return this.formadl.get("dateTo");
+  }
+
 }

@@ -1,6 +1,6 @@
 import { Directive, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AjaxService } from '../../services';
+import { AjaxService, CommonService } from '../../services';
 
 @Directive({
   selector: '[ngDatatable]',
@@ -30,56 +30,82 @@ export class DatatableDirective implements OnInit {
     buttonRange: 5
   }
 
-  constructor(private httpclient: HttpClient) {
+  constructor(private httpclient: HttpClient,private commonsvr : CommonService) {
   }
 
   ngOnInit(): void {
-    console.log("init ngDatatable", this.config);
+    // console.log("init ngDatatable", this.config);
     if (this.config.sortColum) {
       this.sortColum = Object.assign({}, this.config.sortColum)
     }
   }
 
-  reload() {
-    if (!this.config.url) {
-      throw new Error('URL : is not defind');
-    }
+  reload(): Promise<string> {
+    return new Promise((resolve, reject) => {
 
-    let params = Object.assign(this.req, {
-      sort: this.sortColum
-    });
-
-    if (this.config.serverSide) {
-      let start = (this.pagging.page - 1) * this.pagging.currentLength;
-      let plength = this.pagging.currentLength;
-      params = Object.assign(params, {
-        "start": start,
-        "length": plength
-      });
-    }
-
-    console.log("parmas : ", params);
-    this.isSearchFlag = true;
-
-    this.httpclient.post(AjaxService.CONTEXT_PATH + this.config.url, params).subscribe(
-      (resp: DatatableResp) => {
-        this.resp = resp;
-        if (!this.config.serverSide) {
-          this.pagesplite(this.resp.data, 1);
-        } else {
-          this.pageServerside(this.resp.data, this.pagging.page);
+      if(this.config.useBlockUi){
+        this.commonsvr.blockui();
+      }
+      
+      if (!this.config.url) {
+        reject("URL : is not defind");
+        if(this.config.useBlockUi){
+          this.commonsvr.unblockui();
         }
-        // console.log(this.resp)
-      },
-      error => { throw new Error("call Datatable error"); }
-    )
+        throw new Error('URL : is not defind');
+      }
+
+      let params = Object.assign(this.req, {
+        sort: this.sortColum
+      });
+
+      if (this.config.serverSide) {
+        let start = (this.pagging.page - 1) * this.pagging.currentLength;
+        let plength = this.pagging.currentLength;
+        params = Object.assign(params, {
+          "start": start,
+          "length": plength
+        });
+      }
+
+
+      // console.log("parmas : ", params);
+      this.isSearchFlag = true;
+
+      this.httpclient.post(AjaxService.CONTEXT_PATH + this.config.url, params).subscribe(
+        (resp: DatatableResp) => {
+          this.resp = resp;
+          if (!this.config.serverSide) {
+            this.pagesplite(this.resp.data, 1);
+          } else {
+            this.pageServerside(this.resp.data, this.pagging.page);
+          }
+          // console.log(this.resp)
+          resolve("OK");
+          if(this.config.useBlockUi){
+            this.commonsvr.unblockui();
+          }
+        },
+        error => {
+          reject("error");
+          if(this.config.useBlockUi){
+            this.commonsvr.unblockui();
+          }
+          throw new Error("call Datatable error")
+        }
+      )
+
+    });
 
   }
 
   chagePage(pageLength: string) {
-    console.log("change", pageLength);
+    // console.log("change", pageLength);
     this.pagging.currentLength = parseInt(pageLength);
     this.pagging.page = 1;
+    if(!this.isSearch){
+      return false;
+    }
 
     if (!this.config.serverSide) {
       this.pagesplite(this.resp.data, this.pagging.currentLength);
@@ -92,7 +118,7 @@ export class DatatableDirective implements OnInit {
 
   private pagesplite(data: any[], pageNumber: number = 1) {
     let totalPage = Math.ceil(data.length / this.pagging.currentLength);
-    console.log("totalPage", totalPage);
+    // console.log("totalPage", totalPage);
     this.pagging.totalPage = totalPage;
     this.pagging.page = pageNumber;
     let offset = (pageNumber - 1) * this.pagging.currentLength + 1;
@@ -114,7 +140,7 @@ export class DatatableDirective implements OnInit {
   private pageServerside(data: any[], pageNumber: number = 1) {
     let totalRecrod = this.resp.recordsTotal;
     let totalPage = Math.ceil(totalRecrod / this.pagging.currentLength);
-    console.log("totalPage", totalPage);
+    // console.log("totalPage", totalPage);
     this.pagging.totalPage = totalPage;
     this.pagging.page = pageNumber;
     let offset = (pageNumber - 1) * this.pagging.currentLength + 1;
@@ -167,7 +193,7 @@ export class DatatableDirective implements OnInit {
   }
 
   nextPage(page: number) {
-    console.log("page ", page);
+    // console.log("page ", page);
     if (page < 1) {
       throw new Error("page > 1");
     }
@@ -180,7 +206,7 @@ export class DatatableDirective implements OnInit {
     } else {
       //server side
       this.pagging.page = page;
-      console.log("nextPage", page);
+      // console.log("nextPage", page);
       this.reload();
     }
   }
@@ -201,7 +227,7 @@ export class DatatableDirective implements OnInit {
     }
   }
 
-  sort(column: string) {
+  sort(column: string) : Promise<string> {
     this.pagging.page = 1;
     let columnstr = column.trim();
     let isfind: boolean = false;
@@ -226,13 +252,18 @@ export class DatatableDirective implements OnInit {
 
     this.sortColum = newSort;
 
-    console.log("this.sortColum", this.sortColum);
+    // console.log("this.sortColum", this.sortColum);
     //reload
-    this.reload();
+    return this.reload();
   }
 
   searchParams(p: any) {
     this.req = Object.assign({}, p);
+  }
+
+  search(): Promise<string> {
+    this.pagging.page = 1;
+    return this.reload();
   }
 
   get isEmpty() {
