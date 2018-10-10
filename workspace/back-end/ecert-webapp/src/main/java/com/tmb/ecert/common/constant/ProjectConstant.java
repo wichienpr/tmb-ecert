@@ -64,4 +64,8 @@ public class ProjectConstant {
 		public static final String DBD_ACCOUNT_NUMBER = "dbd.accountno ";
 		public static final String TMB_TRAN_TYPE = "tmb.transaction.type ";
 	}
+	
+	public static class ENCODING {
+		public static final String TIS_620 = "TIS-620";
+	}
 }

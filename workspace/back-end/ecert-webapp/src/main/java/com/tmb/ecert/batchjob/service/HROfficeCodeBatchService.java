@@ -1,12 +1,13 @@
 package com.tmb.ecert.batchjob.service;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,13 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOB_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.batchjob.dao.HROfficeCodeBatchDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
+import com.tmb.ecert.batchjob.domain.EcertHROfficeCode;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
+import com.tmb.ecert.common.constant.ProjectConstant.ENCODING;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
@@ -34,12 +38,16 @@ public class HROfficeCodeBatchService {
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
 	
+	@Autowired
+	private HROfficeCodeBatchDao hrOfficeCodeBatchDao;
+	
+	private final String DATE_FORMAT = "YYYYMMDD";
+	
 	public void runBatchJob() {
 
 		Date runDate = new Date();
 		long start = System.currentTimeMillis();
 		log.info(" Start HROfficeCodeBatch Process... ");
-		
 		
 		String errorDesc = "";
 		try {
@@ -53,10 +61,11 @@ public class HROfficeCodeBatchService {
 			File file = SftpUtils.getFile(sftpVo);
 			
 			if (this.validateContentFile(errorDesc, file)) {
-				List<String> contents = FileUtils.readLines(file, StandardCharsets.UTF_8);
-				for (String content : contents) {
-					
+				List<EcertHROfficeCode> ecertHROfficeCodes = this.readFile(file);
+				for (EcertHROfficeCode ecertHROfficeCode : ecertHROfficeCodes) {
+					this.saveHROfficeCode(ecertHROfficeCode);
 				}
+				log.info("HROfficeCodeBatch save success total : {} records", ecertHROfficeCodes.size());
 			} else {
 				errorDesc = sftpVo.getErrorMessage();
 			}
@@ -96,9 +105,33 @@ public class HROfficeCodeBatchService {
 		return StringUtils.isBlank(errorDesc) && file != null && file.length() > 0;
 	}
 	
-	private Long saveHROfficeCode(Date runDate) {
+	private String getValue(String content, int start, int end) {
+		return StringUtils.substring(content, start, end);
+	}
 	
-		return 0L;
+	private List<EcertHROfficeCode> readFile(File file) throws Exception {
+		List<String> contents = FileUtils.readLines(file, ENCODING.TIS_620);
+		
+		List<EcertHROfficeCode> ecerthrOfficeCodes = new ArrayList<>();
+		for (String content : contents) {
+			EcertHROfficeCode ecertHROfficeCode = new EcertHROfficeCode();
+			ecertHROfficeCode.setEffectiveDate(DateUtils.parseDate(this.getValue(content, 0, 8), this.DATE_FORMAT));
+			ecertHROfficeCode.setStatus(getValue(content, 8, 9));
+			ecertHROfficeCode.setType(getValue(content, 9, 11));
+			ecertHROfficeCode.setOfficeCode1(getValue(content, 11, 15));
+			ecertHROfficeCode.setOfficeCode2(getValue(content, 15, 25));
+			ecertHROfficeCode.setTdeptEn(getValue(content, 25, 175));
+			ecertHROfficeCode.setDescrshortEn(getValue(content, 175, 205));
+			ecertHROfficeCode.setTdeptTh(getValue(content, 205, 255));
+			ecertHROfficeCode.setDescrshortTh(getValue(content, 255, 285));
+			ecerthrOfficeCodes.add(ecertHROfficeCode);
+		}
+		
+		return ecerthrOfficeCodes;
+	}
+	
+	private Long saveHROfficeCode(EcertHROfficeCode ecertHROfficeCode) {
+		return hrOfficeCodeBatchDao.insertEcertHROfficeCode(ecertHROfficeCode);
 	}
 	
 }
