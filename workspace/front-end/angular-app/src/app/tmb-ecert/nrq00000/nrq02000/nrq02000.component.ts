@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, ViewChildr
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm } from 'models/';
+import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate } from 'models/';
 import { Acc, dateLocaleEN } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
@@ -61,6 +61,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   status: string = "";
   acctno: string = "";
 
+  cert: RequestCertificate[] = [];
+  chkList: Certificate[] = [];
   reqTypeChanged: Certificate[];
   calend: Calendar[] = [];
   calendar: Calendar[] = [];
@@ -104,8 +106,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
         glType, tranCode, accountType, status, companyName,
-        caNumber, organizeId, customerName, telephone, remark
+        caNumber, organizeId, customerName, telephone, remark,
       } = this.data;
+      const id = this.data.reqFormId.toString();
       this.reqDate = requestDate;
       this.glType = glType;
       this.tranCode = tranCode;
@@ -113,6 +116,16 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.status = status;
       this.tmbReqFormId = tmbRequestNo;
       this.acctno = Acc.convertAccNo(accountNo);
+
+      this.cert = await this.service.getCert(id);
+      this.chkList = await this.service.getChkList(id);
+      for (let i = 0; i < this.chkList.length; i++) {
+        if (this.chkList[i].feeDbd == "" && i != 0) {
+          this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+        }
+      }
+      this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+      console.log(this.chkList);
 
       accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
       accNo.setValue(Acc.convertAccNo(accountNo));
@@ -132,8 +145,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.form.controls.reqTypeSelect.setValue('50001');
-    this.reqTypeChange('50001');
+    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
+    this.form.controls.reqTypeSelect.setValue(code);
+    this.reqTypeChange(code);
   }
 
   checkRoles() {

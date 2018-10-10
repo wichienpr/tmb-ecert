@@ -43,8 +43,8 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
          */
         role: true,
         child: [ // Sub Menu 1.1 
-          { label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)", url: "/nrq/nrq01000" },
-          { label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000" },
+          { label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)", url: "/nrq/nrq01000", role: true },
+          { label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000", role: true },
         ]
       },
       { // Main Menu New
@@ -62,9 +62,9 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
         url: null,
         role: true,
         child: [ // Sub Menu 3.1
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day", url: "/rep/rep01000" },
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly", url: "/rep/rep02000" },
-          { label: "รายงาน Output VAT", url: "/rep/rep03000" },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day", url: "/rep/rep01000", role: true },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly", url: "/rep/rep02000", role: true },
+          { label: "รายงาน Output VAT", url: "/rep/rep03000", role: true },
         ]
       },
       { // Main Menu 4
@@ -82,9 +82,9 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
         url: null,
         role: true,
         child: [ // Sub Menu 6.1
-          { label: "Role Management", url: "/sup/sup01000" },
-          { label: "Parameter Configuration", url: "/sup/sup02000" },
-          { label: "Email Configuration", url: "/sup/sup03000" }
+          { label: "Role Management", url: "/sup/sup01000", role: true },
+          { label: "Parameter Configuration", url: "/sup/sup02000", role: true },
+          { label: "Email Configuration", url: "/sup/sup03000", role: true }
         ]
       },
     ];

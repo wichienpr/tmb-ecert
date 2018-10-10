@@ -334,6 +334,41 @@ export class Nrq02000Service {
         });
     }
 
+    matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
+        return new Promise<Certificate[]>(resolve => {
+            chkList.forEach((obj, index) => {
+                obj.value = 0;
+                obj.check = false;
+                cert.forEach((ob, idx) => {
+                    if (obj.code == ob.certificateCode) {
+                        obj.check = true;
+                        obj.value = ob.totalNumber;
+                        obj.acceptedDate = ob.acceptedDate;
+                        obj.statementYear = ob.statementYear;
+                    }
+                });
+                if (obj.children) {
+                    obj.children.forEach((ob, idx) => {
+                        ob.check = false;
+                        ob.value = 0;
+                        cert.forEach((o, id) => {
+                            if (ob.code == o.certificateCode) {
+                                ob.registeredDate = o.registeredDate;
+                                ob.acceptedDate = o.acceptedDate;
+                                ob.other = o.other;
+                                ob.check = true;
+                                ob.value = o.totalNumber;
+                                obj.check = true;
+                                obj.value += ob.value;
+                            }
+                        });
+                    });
+                }
+            });
+            resolve(chkList);
+        });
+    }
+
     bindingData(certificates: Certificate[], files: any, form: FormGroup, addons: any): FormData {
         let formData = new FormData();
         let _data = [];
