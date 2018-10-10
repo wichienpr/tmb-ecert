@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="req_form" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78f65f61-83a4-4bbb-96b6-d03877ab4f2e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="req_form" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="5" uuid="78f65f61-83a4-4bbb-96b6-d03877ab4f2e">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<style name="title" hTextAlign="Left" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="14" isBold="true"/>
 	<style name="title-detail" hTextAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="13"/>
 	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12" isBold="true"/>
@@ -380,4 +389,28 @@
 			</frame>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="21">
+			<textField>
+				<reportElement style="sub_detail" x="0" y="0" width="56" height="16" uuid="10f2b33e-c16c-4f7b-b3bf-d755b2e51a12"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["TMB Req. No."
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="sub_detail" x="537" y="0" width="18" height="16" uuid="bb407d55-f378-43f2-b2df-05a59e96cabc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="sub_detail" x="505" y="0" width="32" height="16" uuid="c8b9c1d0-d3bf-4359-9e75-43e7c67957dc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="sub_detail" x="61" y="1" width="116" height="16" uuid="65bb90bf-16de-4240-9326-e26de6f5ce7a"/>
+				<textElement textAlignment="Left"/>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>
