@@ -27,6 +27,8 @@ import com.tmb.ecert.auditlog.persistence.vo.Adl01000FormVo;
 import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
 import com.tmb.ecert.common.service.ExcalService;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+
 @Service
 public class Adl01000tService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -37,17 +39,20 @@ public class Adl01000tService {
 	@Autowired
 	private ExcalService excalService;
 
-	public List<Adl01000Vo> findAll(Adl01000FormVo formVo) {
-		List<Adl01000Vo> adl01000VoList = new ArrayList<Adl01000Vo>();
-		adl01000VoList = auditLogDao.getDataAdl01000(formVo);
-		return adl01000VoList;
+	public DataTableResponse<Adl01000Vo> findAll(Adl01000FormVo formVo) {
+		DataTableResponse<Adl01000Vo> dt = new DataTableResponse<>();
+		List<Adl01000Vo> adl01000VoList = auditLogDao.getDataAdl01000(formVo);
+		dt.setData(adl01000VoList);
+		int count = auditLogDao.countAudit(formVo);
+		dt.setRecordsTotal(count);
+		return dt;
 	}
 
 	public void exportFile(Adl01000FormVo formVo, HttpServletResponse response) throws IOException {
 
 		List<Adl01000Vo> dataTestList = new ArrayList<Adl01000Vo>();
 
-		dataTestList = findAll(formVo);
+//		dataTestList = findAll(formVo);
 		// dataTestList = formVo.getDataT();
 
 		/* create spreadsheet */

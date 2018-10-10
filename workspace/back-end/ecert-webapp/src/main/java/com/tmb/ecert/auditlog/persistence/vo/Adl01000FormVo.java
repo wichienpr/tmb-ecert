@@ -1,7 +1,10 @@
 package com.tmb.ecert.auditlog.persistence.vo;
 
-public class Adl01000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
 
+public class Adl01000FormVo extends DatatableRequest {
+
+	private static final long serialVersionUID = -362043556309172710L;
 	public String dateForm;
 	public String dateTo;
 	public String createdById;
