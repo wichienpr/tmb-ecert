@@ -11,7 +11,7 @@
     float: right;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 h3.header{

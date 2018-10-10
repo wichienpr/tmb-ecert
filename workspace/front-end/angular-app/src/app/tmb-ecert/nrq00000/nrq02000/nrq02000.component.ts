@@ -4,6 +4,10 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm } from 'models/';
 import { Acc, dateLocaleEN } from 'helpers/';
+import { Store } from '@ngrx/store';
+import { UserDetail } from 'app/user.model';
+import { CommonService } from 'app/baiwa/common/services';
+import { ROLES } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',
@@ -38,6 +42,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   @ViewChildren("calChild") calChilds: QueryList<ElementRef>;
   @ViewChildren("cerChild") cerChilds: QueryList<ElementRef>;
 
+  _roles = ROLES;
+
   data: RequestForm = initRequestForm;
   tmbReqFormId: String;
   form: FormGroup;
@@ -58,10 +64,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   reqTypeChanged: Certificate[];
   calend: Calendar[] = [];
   calendar: Calendar[] = [];
+  user: UserDetail;
 
   constructor(
     private service: Nrq02000Service,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private store: Store<{}>,
+    private common: CommonService
   ) {
     this.reqTypeChanged = [];
     this.files = {
@@ -69,6 +78,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       copyFile: null,
       changeNameFile: null
     };
+    this.store.select("user").subscribe(user => this.user = user);
     // Initial Data
     this.init();
   }
@@ -83,15 +93,19 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   async init() {
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
+    this.checkRoles();
     this.data = await this.service.getData();
     if (this.data && this.data.tmbRequestNo) {
-      const { accNo, accName, corpName, corpName1, corpNo, address, acceptNo, telReq, reqFormId, note } = this.form.controls;
+      this.isdownload = true;
+      const {
+        accNo, accName, corpName, corpName1, corpNo, address,
+        acceptNo, telReq, reqFormId, note
+      } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
         glType, tranCode, accountType, status, companyName,
         caNumber, organizeId, customerName, telephone, remark
       } = this.data;
-
       this.reqDate = requestDate;
       this.glType = glType;
       this.tranCode = tranCode;
@@ -120,6 +134,32 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.form.controls.reqTypeSelect.setValue('50001');
     this.reqTypeChange('50001');
+  }
+
+  checkRoles() {
+    if (this.roles(ROLES.REQUESTOR)) {
+      this.form.controls.customSegSelect.clearValidators();
+      this.form.controls.acceptNo.clearValidators();
+      this.form.controls.address.clearValidators();
+      this.form.controls.customSegSelect.setValue(this.user.segment);
+      this.form.controls.payMethodSelect.setValue('30001');
+    }
+
+    if (this.roles(ROLES.MAKER)) {
+      this.form.controls.acceptNo.clearValidators();
+      this.form.controls.address.clearValidators();
+      this.form.controls.customSegSelect.setValue(this.user.segment);
+      this.form.controls.payMethodSelect.setValue('30001');
+    }
+  }
+
+  roles(role: string) {
+    switch(role) {
+      case ROLES.REQUESTOR:
+        return this.common.isRole(ROLES.REQUESTOR);
+      case ROLES.MAKER:
+        return this.common.isRole(ROLES.MAKER);
+    }
   }
 
   formSubmit(form: FormGroup, event) {
@@ -335,6 +375,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
     });
     console.log('subAccMethodChange => ', e);
+  }
+
+  handleCorpName(e) {
+    this.form.controls.corpName1.setValue(e.target.value);
   }
 
   changeUpload(control: string, data: any) {

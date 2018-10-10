@@ -80,10 +80,6 @@ export class Crs02000Component implements OnInit {
     $(`#${name}`).modal('show');
   }
 
-  selectColor() {
-    return 'blue';
-  }
-
   download(fileName: string) {
     this.service.download(fileName);
   }

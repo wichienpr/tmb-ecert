@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
           firstName: result.firstName,
           lastName: result.lastName,
           auths: result.auths,
+          segment: result.segment || "",
         };
 
         this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
@@ -72,6 +73,7 @@ export class LoginComponent implements OnInit {
           firstName: result.firstName,
           lastName: result.lastName,
           auths: result.auths,
+          segment: result.segment || "",
         };
         this.modal.confirm((e) => {
           if (e) {
@@ -103,7 +105,8 @@ export interface AjaxLoginVo {
   lastName: string
   discription: string
   roles: string[]
-  auths: string[]
+  auths: string[],
+  segment: string
 }
 interface AppState {
   user: UserDetail

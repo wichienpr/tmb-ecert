@@ -451,7 +451,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label class="label grey">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
+            <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
           </div>
           <div class="eleven wide field ">
             <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
@@ -475,7 +475,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label [ngStyle]="{ 'color' : selectColor() }">หมายเหตุ</label>
+            <label>หมายเหตุ</label>
           </div>
           <div class="eleven wide field ">
             <textarea rows="2" disabled>{{ data.remark }}</textarea>

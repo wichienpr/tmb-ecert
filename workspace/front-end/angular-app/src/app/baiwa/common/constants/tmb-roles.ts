@@ -3,6 +3,6 @@ export enum ROLES {
     CHECKER = "CHECKER",
     IT = "IT",
     ISA = "ISA",
-    MAKER = "REQUESTOR",
+    MAKER = "MAKER",
     REQUESTOR = "REQUESTOR",
 }

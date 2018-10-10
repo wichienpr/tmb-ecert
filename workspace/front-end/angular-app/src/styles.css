@@ -46,6 +46,11 @@ tr:nth-child(even) {background-color: #F8F8FF;}
     color: #767676 !important;
 }
 
+.half.blue {
+    color: rgb(0,121,192) !important;
+    opacity: 0.5;
+}
+
 .full-width {
     width: 100% !important;
 }
@@ -74,4 +79,8 @@ tr:nth-child(even) {background-color: #F8F8FF;}
 .scrollable {
     overflow-x: auto;
     white-space: nowrap;
+}
+
+.hidden {
+    display: none !important;
 }

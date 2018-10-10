@@ -4,10 +4,10 @@
     <ng-container *ngIf="main.func">
       <a class="ui dropdown item" (click)="main.func()">{{main.label}}</a>
     </ng-container>
-    <ng-container *ngIf="main.url&&!main.func">
+    <ng-container *ngIf="main.url&&!main.func&&main.role">
       <a class="ui dropdown item" routerLink="{{main.url}}" routerLinkActive="active">{{main.label}}</a>
     </ng-container>
-    <ng-container *ngIf="!main.url&&main.child&&main.child.length>0&&!main.func">
+    <ng-container *ngIf="!main.url&&main.child&&main.child.length>0&&!main.func&&main.role">
       <div class="ui simple dropdown item">
         {{main.label}}
         <i class="dropdown icon"></i>

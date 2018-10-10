@@ -5,5 +5,6 @@ export interface UserDetail {
     username: string
     firstName: string
     lastName: string
-    auths? : string[]
+    segment: string
+    auths: string[]
 }

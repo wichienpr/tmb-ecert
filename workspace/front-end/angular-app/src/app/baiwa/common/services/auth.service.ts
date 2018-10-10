@@ -26,4 +26,9 @@ export class AuthService {
     let logouturl: string = AjaxService.CONTEXT_PATH + "/onlogout";
     return this.http.get(logouturl);
   }
+
+  // public getUser() {
+  //   let getuserurl: string = AjaxService.CONTEXT_PATH + "/onloginseccess";
+  //   return this.http.post(getuserurl, {}).toPromise();
+  // }
 }

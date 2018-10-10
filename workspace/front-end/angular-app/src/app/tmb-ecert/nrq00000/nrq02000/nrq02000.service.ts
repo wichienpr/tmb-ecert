@@ -136,7 +136,7 @@ export class Nrq02000Service {
 
     getReqDate(): Date {
         let date = new Date();
-        return date;// dateLocale(date);
+        return date; // dateLocale(date);
     }
 
     getDropdownObj(): any {
@@ -173,7 +173,6 @@ export class Nrq02000Service {
                 }
             }
         }
-        console.log(certificates);
         const modalConf: Modal = {
             msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
             title: "ยืนยันการทำรายการ"
@@ -187,7 +186,6 @@ export class Nrq02000Service {
         this.modal.confirm((e) => {
             if (e) {
                 const formData = this.bindingData(certificates, files, form, addons);
-                console.log(certificates);
                 let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                 this.ajax.upload(url, formData, response => {
                     if (response.json().message == "SUCCESS") {
@@ -272,7 +270,6 @@ export class Nrq02000Service {
         this.ajax.post(URL.CREATE_FORM + "nrq02000", {}, response => {
             this.ajax.download(URL.FORM_PDF + "nrq02000" + "/file");
         });
-        // this.ajax.download(URL.NRQ_PDF + "nrq02000");
         return true;
     }
 

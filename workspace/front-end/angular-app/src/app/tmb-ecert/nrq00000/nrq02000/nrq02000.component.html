@@ -182,18 +182,18 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.corpName) }">
-          <input type="text" #corpName formControlName="corpName" placeholder="ชื่อนิติบุคคล">
+          <input type="text" #corpName formControlName="corpName" (input)="handleCorpName($event)" placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
-      <div class="inline fields">
+      <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
         <div class="required four wide field">
           <label>Customer Segment
           </label>
         </div>
-        <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect) }">
+        <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect), 'disabled': roles(_roles.MAKER) }">
           <ui-dropdown [selected]="data ? data.custsegmentCode : ''" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
-        <div class="required two wide field">
+        <div class="two wide field" [ngClass]="{'required': !roles(_roles.MAKER)}">
           <label>เลขที่ CA/มติอนุมัติ
           </label>
         </div>
@@ -211,7 +211,7 @@
           <input type="text" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
-      <div class="inline fields">
+      <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
         <div class="required two wide field">
           <label>วิธีการรับชำระ</label>
         </div>
@@ -227,15 +227,15 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
+      <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
         <div class="four wide field">
           <label>วิธีหักบัญชีจาก</label>
         </div>
         <div #subAccMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.subAccMethodSelect) }">
-          <ui-dropdown [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="data ? data.debitAccountType : ''" [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
-      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
+      <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
         <div class="four wide field">
           <label>Tran Code
           </label>
@@ -245,7 +245,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
+      <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
         <div class="four wide field">
           <label>GL Type
           </label>
@@ -255,7 +255,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="form.controls.payMethodSelect.value == '30003'">
+      <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
         <div class="four wide field">
           <label>Account Type
           </label>
@@ -334,14 +334,14 @@
       </div>
       <div class="inline fields">
         <div class="four wide field">
-          <label class="label grey">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
+          <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
         <div class="five wide field">
           <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
         </div>
       </div>
 
-      <div class="inline fields">
+      <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
         <div class="four wide field">
           <label>หมายเหตุ</label>
         </div>

@@ -21,7 +21,7 @@ export class CalendarComponent implements AfterViewInit, OnInit {
     }
 
     ngOnInit() {
-        console.log(this.calendar);
+        // console.log(this.calendar);
     }
 
     ngAfterViewInit() {
