@@ -80,7 +80,7 @@ public class Sup01000Controller {
 	public void exportRole(HttpServletResponse response) {
 //		System.out.println("save medthod");
 		try {
-			service.ExportTemplate(response);
+			service.ExportRoleTemplate(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

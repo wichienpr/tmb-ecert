@@ -63,17 +63,18 @@ public class EmailTemplateDao {
 
 	};
 	
-	public List<Sup03100Vo> getEmailDetail(Sup03000Vo form) {
+	public Sup03100Vo getEmailDetail(Sup03000Vo form) {
 		StringBuilder sql = new StringBuilder("");
 		List<Object> params = new ArrayList<>();
 
-		List<Sup03100Vo> list = new ArrayList<>();
+		Sup03100Vo obj = new Sup03100Vo();
 
 		sql.append(SELECT_EMAILDETAIL);
 		params.add(form.getEmailConfig_id());
 
-		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03100RowMapper);
-		return list;
+//		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03100RowMapper);
+		obj = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), sup03100RowMapper);
+		return obj;
 
 	}
 

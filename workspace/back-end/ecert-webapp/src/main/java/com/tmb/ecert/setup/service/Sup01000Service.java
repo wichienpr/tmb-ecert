@@ -2,6 +2,9 @@ package com.tmb.ecert.setup.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +16,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -28,6 +32,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -52,6 +58,10 @@ public class Sup01000Service {
 
 	@Autowired
 	private ExcalService excalService;
+	
+	@Value("${app.datasource.path.report}")
+	private String PATH_EXPORT;
+	
 
 	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
 
@@ -68,6 +78,8 @@ public class Sup01000Service {
 	private static String EXCEL_FILE_TEMPALTE_NAME = "RolePermission_Template"; 
 	private static String EXCEL_FILE_EXPORT_NAME = "RolePermission_"; 
 	private static String EXCEL_DATE_FORMAT =  "yyyyMMdd";
+	private static String EXCEL_REPORT = "report/excel_template/";
+	private static String EXCEL_TEMPALTE = "RolePermission_Template.xlsx";
 	
 	private static String STATUS_ALL = "90001";
 	private static String STATUS_ACTIVE= "90002";
@@ -534,8 +546,31 @@ public class Sup01000Service {
 		
 	}
 	
-	
-	
+	public void ExportRoleTemplate(HttpServletResponse response) throws IOException {
+		ClassPathResource res = new ClassPathResource("report/excel_template/RolePermission_Template.xlsx");   
+		File file = res.getFile();
+		byte[] reportFile;
+		OutputStream responseOutputStream = null;
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+			reportFile = IOUtils.toByteArray(inputStream);
+			response.setContentType("application/vnd.ms-excel");
+			response.addHeader("Content-Disposition", "attachment;filename=" + EXCEL_TEMPALTE );
+			response.setContentLength(reportFile.length);
+			responseOutputStream = response.getOutputStream();
+			responseOutputStream.write(reportFile);
+			responseOutputStream.close();
+			
+		} catch (Exception e) {
+			logger.error("ExportRoleTemplate",e);
+		}finally {
+			responseOutputStream.close();
+			inputStream.close();
+		}
+
+		
+	}
 	public int covertStatus(String cellVal) {
 		int val = 2 ;
 		

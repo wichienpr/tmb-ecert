@@ -32,7 +32,7 @@ public class Sup03000Service {
 		return emailDao.getEmailTemplate(form);
 	}
 
-	public List<Sup03100Vo> getEmailDetail(Sup03000Vo form) {
+	public Sup03100Vo getEmailDetail(Sup03000Vo form) {
 		return emailDao.getEmailDetail(form);
 	}
 

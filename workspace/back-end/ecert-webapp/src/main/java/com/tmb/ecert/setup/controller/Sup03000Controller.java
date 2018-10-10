@@ -30,7 +30,7 @@ public class Sup03000Controller {
 	
 	@PostMapping("/getEmailDetail")
 	@ResponseBody
-	public List<Sup03100Vo> getEmailDetail(@RequestBody Sup03000Vo form) {
+	public Sup03100Vo getEmailDetail(@RequestBody Sup03000Vo form) {
 		return service.getEmailDetail(form);
 	}
 	
