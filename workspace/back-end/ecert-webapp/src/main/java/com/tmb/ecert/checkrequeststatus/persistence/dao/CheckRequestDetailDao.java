@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -22,15 +23,39 @@ public class CheckRequestDetailDao {
 	private JdbcTemplate jdbcTemplate;
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
-	
-	private final String SQL_ECERT_REQUEST_FORM = " SELECT * FROM ECERT_REQUEST_FORM WHERE 1=1 ";
-	private final String SQL_ECERT_REQUEST_CERTIFICATE = " SELECT * FROM ECERT_REQUEST_CERTIFICATE WHERE 1=1 ";
+
+	private final String SQL_ECERT_REQUEST_FORM = " SELECT F.* FROM ECERT_REQUEST_FORM F ";
+	private final String SQL_ECERT_REQUEST_CERTIFICATE = " SELECT C.* FROM ECERT_REQUEST_CERTIFICATE C ";
 
 	public List<RequestForm> findReqFormById(Long reqFormId) {
 		logger.info("RequestorDao::findReqFormById => {}", reqFormId);
+		return findReqFormById(reqFormId, true);
+	}
+
+	public List<RequestForm> findReqFormById(Long reqFormId, boolean code) {
+		logger.info("RequestorDao::findReqFormById => {} {}", reqFormId, code);
 		List<Object> params = new ArrayList<>();
-		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM);
-		sql.append(" AND REQFORM_ID = ? ");
+		StringBuilder sql = new StringBuilder("SELECT");
+		sql.append(" F.REQFORM_ID,F.REQUEST_DATE,F.TMB_REQUESTNO,F.ORGANIZE_ID,F.CUSTOMER_NAME,F.COMPANY_NAME,F.BRANCH,F.CA_NUMBER,F.DEPARTMENT,F.TRANCODE,F.GLTYPE,F.ACCOUNTTYPE,F.ACCOUNT_NO,F.ACCOUNT_NAME,F.CUSTOMER_NAMERECEIPT,F.TELEPHONE,F.REQUESTFORM_FILE,F.IDCARD_FILE,F.CHANGENAME_FILE,F.CERTIFICATE_FILE,F.ADDRESS,F.REMARK,F.PAYMENT_DATE,F.PAYLOADTS,F.PAYMENT_BRANCHCODE,F.POSTDATE,F.REF1,F.REF2,F.AMOUNT,F.AMOUNT_TMB,F.AMOUNT_DBD,F.RECEIPT_NO,F.STATUS,F.ERROR_DESCRIPTION,F.PAYMENT_STATUS,F.COUNT_PAYMENT,F.REJECTREASON_CODE,F.REJECTREASON_OTHER,F.CREATED_BY_ID,F.CREATED_BY_NAME,F.CREATED_DATETIME,F.UPDATED_BY_ID,F.UPDATED_BY_NAME,F.UPDATED_DATETIME,F.MAKER_BY_ID,F.MAKER_BY_NAME,F.CHECKER_BY_ID,F.CHECKER_BY_NAME,F.OFFICE_CODE,F.RECEIPT_DATE,F.RECEIPT_FILE");
+		if (code) {
+			sql.append(" ,L.NAME AS CUSTSEGMENT_CODE");
+			sql.append(" ,LD.NAME AS DEBIT_ACCOUNT_TYPE");
+			sql.append(" ,C.NAME AS CERTYPE_CODE");
+			sql.append(" ,P.NAME AS PAIDTYPE_CODE");
+		} else {
+			sql.append(" ,F.CUSTSEGMENT_CODE");
+			sql.append(" ,F.DEBIT_ACCOUNT_TYPE");
+			sql.append(" ,F.CERTYPE_CODE");
+			sql.append(" ,F.PAIDTYPE_CODE");
+		}
+		sql.append(" FROM ECERT_REQUEST_FORM F");
+		if (code) {
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE L ON F.CUSTSEGMENT_CODE = L.CODE ");
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE LD ON F.DEBIT_ACCOUNT_TYPE = LD.CODE ");
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ON F.CERTYPE_CODE = C.CODE ");
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE P ON F.PAIDTYPE_CODE = P.CODE ");
+		}
+		sql.append(" WHERE F.REQFORM_ID = ? ");
 		params.add(reqFormId);
 		return jdbcTemplate.query(sql.toString(), params.toArray(), formMapping);
 	}
@@ -39,11 +64,39 @@ public class CheckRequestDetailDao {
 		logger.info("RequestorDao::findCertByReqFormId => {}", reqFormId);
 		List<Object> params = new ArrayList<>();
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_CERTIFICATE);
-		sql.append(" AND REQFORM_ID = ? ");
+		sql.append(" WHERE C.REQFORM_ID = ? ");
 		params.add(reqFormId);
 		return jdbcTemplate.query(sql.toString(), params.toArray(), certMapping);
 	}
-	
+
+	public List<Certificate> findCerByCerTypeCode(String cerTypeCode) {
+		StringBuilder sql = new StringBuilder(" SELECT * FROM ECERT_CERTIFICATE ");
+		sql.append(" WHERE TYPE_CODE = ? ORDER BY CODE ASC ");
+
+		List<Object> params = new ArrayList<>();
+		params.add(cerTypeCode);
+
+		logger.info(sql.toString());
+
+		List<Certificate> result = jdbcTemplate.query(sql.toString(), params.toArray(), cerMapper);
+
+		return result;
+	}
+
+	private RowMapper<Certificate> cerMapper = new RowMapper<Certificate>() {
+		@Override
+		public Certificate mapRow(ResultSet rs, int arg1) throws SQLException {
+			Certificate list = new Certificate();
+			list.setCode(rs.getString("CODE"));
+			list.setTypeCode(rs.getString("TYPE_CODE"));
+			list.setTypeDesc(rs.getString("TYPE_DESC"));
+			list.setCertificate(rs.getString("CERTIFICATE"));
+			list.setFeeDbd(rs.getString("FEE_DBD"));
+			list.setFeeTmb(rs.getString("FEE_TMB"));
+			return list;
+		}
+	};
+
 	private RowMapper<RequestCertificate> certMapping = new RowMapper<RequestCertificate>() {
 		@Override
 		public RequestCertificate mapRow(ResultSet rs, int args1) throws SQLException {
@@ -53,7 +106,6 @@ public class CheckRequestDetailDao {
 			row.setCreatedById(rs.getString("CREATED_BY_ID"));
 			row.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 			row.setCreatedDateTime(rs.getTimestamp("CREATED_DATETIME"));
-			row.setReqCertificateId(rs.getLong("REQCERTIFICATE_ID"));
 			row.setReqFormId(rs.getLong("REQFORM_ID"));
 			row.setTotalNumber(rs.getInt("TOTALNUMBER"));
 			row.setUpdateById(rs.getString("UPDATED_BY_ID"));
@@ -126,4 +178,5 @@ public class CheckRequestDetailDao {
 			return row;
 		}
 	};
+
 }

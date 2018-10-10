@@ -11,13 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.dao.CertificateDao;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
-import com.tmb.ecert.common.utils.BeanUtils;
-
-import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class CheckRequestDetailService {
@@ -34,9 +32,9 @@ public class CheckRequestDetailService {
 	
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
-		List<RequestForm> reqForm = dao.findReqFormById(reqFormId);
-		String code = reqForm.get(0).getCerTypeCode();
-		return ApplicationCache.getCerByType(code);
+		String cerTypeCode = dao.findReqFormById(reqFormId, false).get(0).getCerTypeCode();
+		logger.info(cerTypeCode);
+		return dao.findCerByCerTypeCode(cerTypeCode);
 	}
 	
 	public List<RequestCertificate> findCertByReqFormId(String id) {
@@ -48,31 +46,6 @@ public class CheckRequestDetailService {
 	public List<RequestForm> findReqFormById(String id) {
 		Long reqFormId = Long.valueOf(id);
 		List<RequestForm> reqForm = dao.findReqFormById(reqFormId);
-		if (reqForm.size() > 0) {
-			RequestForm req = reqForm.get(0);
-			String certDesc = "";
-			if (BeanUtils.isNotEmpty(req.getCerTypeCode())) {
-				if (BeanUtils.isNotEmpty(ApplicationCache.getCerByType(req.getCerTypeCode()))) {
-					if (ApplicationCache.getCerByType(req.getCerTypeCode()).size() > 0) {
-						certDesc = ApplicationCache.getCerByType(req.getCerTypeCode()).get(0).getTypeDesc();
-					}
-				}
-			}
-			req.setCerTypeCode(certDesc);
-			if (BeanUtils.isNotEmpty(req.getDebitAccountType())) {
-				req.setDebitAccountType(ApplicationCache.getLovByCode(req.getDebitAccountType()).getName());
-			}
-			if (BeanUtils.isNotEmpty(req.getStatus())) {
-				req.setStatus(ApplicationCache.getLovByCode(req.getStatus()).getName());
-			}
-			if (BeanUtils.isNotEmpty(req.getPaidTypeCode())) {
-				req.setPaidTypeCode(ApplicationCache.getLovByCode(req.getPaidTypeCode()).getName());
-			}
-			if (BeanUtils.isNotEmpty(req.getCustsegmentCode())) {
-				req.setCustsegmentCode(ApplicationCache.getLovByCode(req.getCustsegmentCode()).getName());
-			}
-			reqForm.set(0, req);
-		}
 		return reqForm;
 	}
 	
