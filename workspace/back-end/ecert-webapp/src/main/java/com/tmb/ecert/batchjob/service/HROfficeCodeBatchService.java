@@ -59,12 +59,11 @@ public class HROfficeCodeBatchService {
 			
 			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, password);
 			File file = SftpUtils.getFile(sftpVo);
-			
 			if (this.validateContentFile(errorDesc, file)) {
 				List<EcertHROfficeCode> ecertHROfficeCodes = this.readFile(file);
-				for (EcertHROfficeCode ecertHROfficeCode : ecertHROfficeCodes) {
-					this.saveHROfficeCode(ecertHROfficeCode);
-				}
+				
+				this.clearHROfficeCode();
+				this.saveHROfficeCode(ecertHROfficeCodes);
 				log.info("HROfficeCodeBatch save success total : {} records", ecertHROfficeCodes.size());
 			} else {
 				errorDesc = sftpVo.getErrorMessage();
@@ -130,8 +129,12 @@ public class HROfficeCodeBatchService {
 		return ecerthrOfficeCodes;
 	}
 	
-	private Long saveHROfficeCode(EcertHROfficeCode ecertHROfficeCode) {
-		return hrOfficeCodeBatchDao.insertEcertHROfficeCode(ecertHROfficeCode);
+	private void clearHROfficeCode() {
+		hrOfficeCodeBatchDao.deleteEcertHROfficeCode();
+	}
+	
+	private void saveHROfficeCode(List<EcertHROfficeCode> ecertHROfficeCodes) {
+		hrOfficeCodeBatchDao.insertEcertHROfficeCode(ecertHROfficeCodes);
 	}
 	
 }

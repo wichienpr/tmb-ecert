@@ -1,16 +1,10 @@
 package com.tmb.ecert.batchjob.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.batchjob.domain.EcertHROfficeCode;
@@ -23,7 +17,7 @@ public class HROfficeCodeBatchDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private final String INSERT_ECERT_HR_OFFICE_CODE = " ( " +
+	private final String INSERT_ECERT_HR_OFFICE_CODE = " INSERT INTO ECERT_HR_OFFICECODE ( " +
 		" EFFECTIVE_DATE , " +
 		" TYPE           , " +
 		" OFFICE_CODE1   , " +
@@ -32,29 +26,31 @@ public class HROfficeCodeBatchDao {
 		" DESCRSHORT_EN  , " +
 		" TDEPT_TH       , " +
 		" DESCRSHORT_TH  , " +
-		" STATUS         , " +
+		" STATUS         ) " +
 		" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+	
+	private final String DELETE_ECERT_HR_OFFICE_CODE = " DELETE FROM ECERT_HR_OFFICECODE ";
 
-	public Long insertEcertHROfficeCode(EcertHROfficeCode ecertHROfficeCode) {
-		KeyHolder holder = new GeneratedKeyHolder();
-
-		jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(INSERT_ECERT_HR_OFFICE_CODE, Statement.RETURN_GENERATED_KEYS);
-				ps.setDate(1, ecertHROfficeCode.getEffectiveDate() != null ? new Date(ecertHROfficeCode.getEffectiveDate().getTime()) : null);
-				ps.setString(2, ecertHROfficeCode.getType());
-				ps.setString(3, ecertHROfficeCode.getOfficeCode1());
-				ps.setString(4, ecertHROfficeCode.getOfficeCode2());
-				ps.setString(5, ecertHROfficeCode.getTdeptEn());
-				ps.setString(6, ecertHROfficeCode.getDescrshortEn());
-				ps.setString(7, ecertHROfficeCode.getTdeptTh());
-				ps.setString(8, ecertHROfficeCode.getDescrshortTh());
-				ps.setString(9, ecertHROfficeCode.getStatus());
-				return ps;
-			}
-		}, holder);
-		Long id = holder.getKey().longValue();
-		return id;
+	public void insertEcertHROfficeCode(List<EcertHROfficeCode> ecertHROfficeCodes) {
+		List<Object[]> batchObj = new ArrayList<>();
+		for (EcertHROfficeCode ecertHROfficeCode : ecertHROfficeCodes) {
+			batchObj.add(new Object[] {
+					ecertHROfficeCode.getEffectiveDate(),
+					ecertHROfficeCode.getType(),
+					ecertHROfficeCode.getOfficeCode1(),
+					ecertHROfficeCode.getOfficeCode2(),
+					ecertHROfficeCode.getTdeptEn(),
+					ecertHROfficeCode.getDescrshortEn(),
+					ecertHROfficeCode.getTdeptTh(),
+					ecertHROfficeCode.getDescrshortTh(),
+					ecertHROfficeCode.getStatus()
+			});
+		}
+		
+		jdbcTemplate.batchUpdate(this.INSERT_ECERT_HR_OFFICE_CODE, batchObj);
+	}
+	
+	public void deleteEcertHROfficeCode() {
+		jdbcTemplate.update(this.DELETE_ECERT_HR_OFFICE_CODE);
 	}
 }
