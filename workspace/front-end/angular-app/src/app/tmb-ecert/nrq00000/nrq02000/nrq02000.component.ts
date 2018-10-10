@@ -92,6 +92,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.cdRef.detectChanges();
   }
 
+  ngAfterViewInit() {
+    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
+    this.form.controls.reqTypeSelect.setValue(code);
+    this.reqTypeChange(code);
+  }
+
   async init() {
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
@@ -125,7 +131,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         }
       }
       this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-      console.log(this.chkList);
 
       accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
       accNo.setValue(Acc.convertAccNo(accountNo));
@@ -142,12 +147,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
-  }
-
-  ngAfterViewInit() {
-    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
-    this.form.controls.reqTypeSelect.setValue(code);
-    this.reqTypeChange(code);
   }
 
   checkRoles() {
@@ -168,7 +167,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   roles(role: string) {
-    switch(role) {
+    switch (role) {
       case ROLES.REQUESTOR:
         return this.common.isRole(ROLES.REQUESTOR);
       case ROLES.MAKER:
@@ -234,6 +233,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.loading = true;
     if (e != "") {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
+      // if (this.reqTypeChanged[0].typeCode == this.chkList[0].typeCode) {
+      //   this.reqTypeChanged = this.chkList;
+      // }
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
           if (obj.code == '10007') {
@@ -316,11 +318,65 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             });
           }
         }
+        if (index == this.reqTypeChanged.length - 1) {
+          return;
+        }
       });
     }
     setTimeout(() => {
+      const controls = this.form.controls;
+      if (this.data && this.data.reqFormId && this.chkList && this.chkList[0].typeCode == this.reqTypeChanged[0].typeCode) {
+        this.reqTypeChanged.forEach((obj, index) => {
+          if (index != 0) {
+            obj.reqcertificateId = this.chkList[index].reqcertificateId;
+            obj.statementYear = this.chkList[index].statementYear;
+            obj.value = this.chkList[index].value;
+            obj.check = this.chkList[index].check;
+            obj.other = this.chkList[index].other;
+            obj.acceptedDate = this.chkList[index].acceptedDate;
+            obj.registeredDate = this.chkList[index].registeredDate;
+            controls[`chk${index}`].setValue(obj.check);
+            controls[`cer${index}`].setValue(obj.value);
+            if (controls[`cal${index}`] && obj.statementYear) {
+              controls[`cal${index}`].setValue(obj.statementYear);
+            }
+            if (controls[`cal${index}`] && obj.acceptedDate) {
+              const splited = obj.acceptedDate.split("-");
+              const date = new Date(splited[2], splited[1], splited[0]);
+              controls[`cal${index}`].setValue(dateLocaleEN(date));
+            }
+            if (obj.children) {
+              this.showChildren = obj.check;
+              obj.children.forEach((ob, idx) => {
+                if (idx != 0) {
+                  ob.reqcertificateId = this.chkList[index].children[idx - 1].reqcertificateId;
+                  ob.statementYear = this.chkList[index].children[idx - 1].statementYear;
+                  ob.value = this.chkList[index].children[idx - 1].value;
+                  ob.check = this.chkList[index].children[idx - 1].check;
+                  ob.other = this.chkList[index].children[idx - 1].other;
+                  ob.acceptedDate = this.chkList[index].children[idx - 1].acceptedDate;
+                  ob.registeredDate = this.chkList[index].children[idx - 1].registeredDate;
+                  controls[`chk${index}Child${idx}`].setValue(ob.check);
+                  controls[`cer${index}Child${idx}`].setValue(ob.value);
+                  if (controls[`etc${index}Child${idx}`]) {
+                    controls[`etc${index}Child${idx}`].setValue(ob.other);
+                  }
+                  if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
+                    const splited = ob.registeredDate.split("-");
+                    const date = new Date(splited[2], splited[1], splited[0]);
+                    controls[`cal${index}Child${idx}`].setValue(dateLocaleEN(date));
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+      console.log(this.chkList, this.reqTypeChanged);
+    }, 800);
+    setTimeout(() => {
       this.loading = false;
-    }, 300);
+    }, 1000);
   }
 
   accNoPress(e) {
@@ -342,6 +398,18 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
     if (this.reqTypeChanged[index].children) {
       this.showChildren = !this.form.controls[`chk${index}`].value;
+      if (this.form.controls[`chk${index}`].value) {
+        for (let i = 0; i < this.reqTypeChanged[index].children.length; i++) {
+          this.form.controls[`chk${index}Child${i}`].setValue(false);
+          this.form.controls[`cer${index}Child${i}`].setValue('');
+          if (this.form.controls[`cal${index}Child${i}`]) {
+            this.form.controls[`cal${index}Child${i}`].setValue('');
+          }
+          if (this.form.controls[`etc${index}Child${i}`]) {
+            this.form.controls[`etc${index}Child${i}`].setValue('');
+          }
+        }
+      }
     }
   }
 

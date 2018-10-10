@@ -341,6 +341,7 @@ export class Nrq02000Service {
                 obj.check = false;
                 cert.forEach((ob, idx) => {
                     if (obj.code == ob.certificateCode) {
+                        obj.reqcertificateId = ob.reqCertificateId;
                         obj.check = true;
                         obj.value = ob.totalNumber;
                         obj.acceptedDate = ob.acceptedDate;
@@ -353,6 +354,7 @@ export class Nrq02000Service {
                         ob.value = 0;
                         cert.forEach((o, id) => {
                             if (ob.code == o.certificateCode) {
+                                ob.reqcertificateId = o.reqCertificateId;
                                 ob.registeredDate = o.registeredDate;
                                 ob.acceptedDate = o.acceptedDate;
                                 ob.other = o.other;

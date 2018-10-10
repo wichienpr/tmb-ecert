@@ -106,7 +106,7 @@
                     <td>
                       <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i]) }">
                         <div class="ui input">
-                          <input #cer type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
+                          <input (keypress)="accNoPress($event)" #cer type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
                             formControlName="cer{{i}}" min="1" style="width: 100%;">
                         </div>
                       </div>
@@ -156,7 +156,7 @@
                       <td>
                         <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i+'Child'+j]) }">
                           <div class="ui input">
-                            <input #cerChild min="1" type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
+                            <input (keypress)="accNoPress($event)" #cerChild min="1" type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
                               formControlName="cer{{i}}Child{{j}}" style="width: 100%;">
                           </div>
                         </div>
