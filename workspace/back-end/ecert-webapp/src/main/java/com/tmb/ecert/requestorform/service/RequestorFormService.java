@@ -197,13 +197,8 @@ public class RequestorFormService {
 				req.setCreatedByName(userName);
 				req.setCreatedDateTime(null);
 				req.setCustomerName(form.getCorpName());
-				if (form.getTmbReceiptChk() != null) {
-					req.setCustomerNameReceipt(form.getCorpName1());
-					req.setCompanyName(form.getCorpName());
-				} else {
-					req.setCustomerNameReceipt("");
-					req.setCompanyName("");
-				}
+				req.setCustomerNameReceipt(form.getCorpName1());
+				req.setCompanyName(form.getCorpName());
 				req.setCustsegmentCode(form.getCustomSegSelect());
 				req.setDebitAccountType(form.getSubAccMethodSelect());
 				req.setDepartment(form.getDepartmentName());
