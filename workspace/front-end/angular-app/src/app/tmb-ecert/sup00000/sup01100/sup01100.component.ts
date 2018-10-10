@@ -120,14 +120,14 @@ export class sup01100Component implements OnInit {
         }]
       },
       {
-        rolename: "UI-00005 - Request Form สำหรับลูกค้าทำรายการเอง",
+        rolename: "UI-00005 - Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
         status: 0,
         fuctioncode: PAGE_AUTH.P0000500,
         chliddata: []
       }
       ,
       {
-        rolename: "UI-00006 - Request Form สำหรับทำรายการให้ลูกค้าลงนาม",
+        rolename: "UI-00006 - Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)",
         status: 0,
         fuctioncode: PAGE_AUTH.P0000600,
         chliddata: []

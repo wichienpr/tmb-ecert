@@ -1,9 +1,8 @@
 <div class="ui grid">
   <div class="sixteen wide column">
-    <h2 class="ui header">Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h2>
+    <h2 class="ui header">บันทึกคำขอ</h2>
     <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form, $event)">
       <input type="hidden" name="reqFormId" formControlName="reqFormId">
-      <h4>Request Form สำหรับทำรายการให้ลูกค้าลงนาม</h4>
       <div class="inline fields">
         <div class="two wide field">
           <label>วันที่ขอ</label>

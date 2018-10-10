@@ -31,8 +31,8 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
         label: "ทำคำขอใหม่",
         url: null,
         child: [ // Sub Menu 1.1 
-          { label: "Request Form สำหรับลูกค้าทำรายการเอง", url: "/nrq/nrq01000" },
-          { label: "Request Form สำหรับทำรายการให้ลูกค้าลงนาม", url: "/nrq/nrq02000" },
+          { label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)", url: "/nrq/nrq01000" },
+          { label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000" },
         ]
       },
       { // Main Menu New

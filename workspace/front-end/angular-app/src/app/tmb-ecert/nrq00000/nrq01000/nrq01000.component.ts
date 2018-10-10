@@ -26,7 +26,7 @@ export class Nrq01000Component implements OnInit {
     this.nrq01000 = {
       modalId: "nrq01000",
       type: "custom",
-      title: "Request Form สำหรับลูกค้าทำรายการเอง",
+      title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
       msg: "TMB Req. No:  - "
     };
   }
@@ -40,7 +40,7 @@ export class Nrq01000Component implements OnInit {
     this.nrq01000 = {
       modalId: "nrq01000",
       type: "custom",
-      title: "Request Form สำหรับลูกค้าทำรายการเอง",
+      title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
       msg: "TMB Req. No: " + response.data
     };
     $("#nrq01000").modal('show');
@@ -58,7 +58,7 @@ export class Nrq01000Component implements OnInit {
   //         this.nrq01000 = {
   //           modalId: "nrq01000",
   //           type: "custom",
-  //           title: "Request Form สำหรับลูกค้าทำรายการเอง",
+  //           title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
   //           msg: "TMB Req. No: " + response.data
   //         };
   //         $("#nrq01000").modal('show');
