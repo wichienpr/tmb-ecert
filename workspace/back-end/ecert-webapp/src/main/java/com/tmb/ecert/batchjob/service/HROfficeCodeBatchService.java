@@ -106,7 +106,7 @@ public class HROfficeCodeBatchService {
 	}
 	
 	private String getValue(String content, int start, int end) {
-		return StringUtils.substring(content, start, end);
+		return StringUtils.trim(StringUtils.substring(content, start, end));
 	}
 	
 	private List<EcertHROfficeCode> readFile(File file) throws Exception {
