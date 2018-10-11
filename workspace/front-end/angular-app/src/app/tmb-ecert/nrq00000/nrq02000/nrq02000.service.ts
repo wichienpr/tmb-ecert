@@ -410,17 +410,14 @@ export class Nrq02000Service {
                         if (idx != 0) {
                             ob.check = form.controls['chk' + index + 'Child' + idx].value;
                             ob.value = form.controls['cer' + index + 'Child' + idx].value;
-                            // if (idx == 1) {
-                            //     let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                            //     ob.acceptedDate = new Date(str[2], str[1], str[0]);
-                            // }
-                            // if (idx == 2) {
-                            let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                            ob.registeredDate = new Date(str[2], str[1], str[0]);
-                            // }
+                            if (idx == 1) {
+                                ob.registeredDate = null;
+                            }
+                            if (idx != 1) {
+                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
+                            }
                             if (idx == obj.children.length - 1) {
-                                // let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
-                                // ob.statementYear = value;
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }
                             if (ob.check == "" && ob.value == "") {
@@ -467,7 +464,6 @@ export class Nrq02000Service {
             copyFileName: addons.idCardFile,
             requestFileName: addons.requestFormFile
         };
-        console.log(form.controls.reqFormId.value);
         for (let key in data) {
             if (data[key]) {
                 if (key == "certificates") {

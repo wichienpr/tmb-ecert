@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate } from 'models/';
-import { Acc, dateLocaleEN } from 'helpers/';
+import { Acc, dateLocaleEN, digit } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
@@ -265,9 +265,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.loading = true;
     if (e != "") {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
-      // if (this.reqTypeChanged[0].typeCode == this.chkList[0].typeCode) {
-      //   this.reqTypeChanged = this.chkList;
-      // }
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
           if (obj.code == '10007') {
@@ -307,18 +304,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             obj.children = await this.service.reqTypeChange(obj.code);
             obj.children.forEach((ob, idx) => {
               if (this.calendar.length !== obj.children.length) {
-                // if (idx == obj.children.length - 1) {
-                //   this.calendar[idx] = {
-                //     calendarId: `cal${index}Child${idx}`,
-                //     calendarName: `cal${index}Child${idx}`,
-                //     formGroup: this.form,
-                //     formControlName: `cal${index}Child${idx}`,
-                //     type: CalendarType.YEAR,
-                //     formatter: CalendarFormatter.yyyy,
-                //     local: CalendarLocal.EN,
-                //     icon: 'calendar'
-                //   };
-                // } else {
                 this.calendar[idx] = {
                   calendarId: `cal${index}Child${idx}`,
                   calendarName: `cal${index}Child${idx}`,
@@ -329,7 +314,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                   local: CalendarLocal.EN,
                   icon: 'calendar'
                 };
-                // }
               }
               if (idx === obj.children.length - 1) {
                 if (this.form.controls[`etc${index}Child${idx}`]) {
@@ -375,9 +359,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
               controls[`cal${index}`].setValue(obj.statementYear);
             }
             if (controls[`cal${index}`] && obj.acceptedDate) {
-              const splited = obj.acceptedDate.split("-");
-              const date = new Date(splited[2], splited[1], splited[0]);
-              controls[`cal${index}`].setValue(dateLocaleEN(date));
+              var d = new Date(obj.acceptedDate),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+              controls[`cal${index}`].setValue([digit(day), digit(month), year].join("/"));
             }
             if (obj.children) {
               this.showChildren = obj.check;
@@ -396,9 +382,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                     controls[`etc${index}Child${idx}`].setValue(ob.other);
                   }
                   if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                    const splited = ob.registeredDate.split("-");
-                    const date = new Date(splited[2], splited[1], splited[0]);
-                    controls[`cal${index}Child${idx}`].setValue(dateLocaleEN(date));
+                    var d = new Date(ob.registeredDate),
+                      month = '' + (d.getMonth() + 1),
+                      day = '' + d.getDate(),
+                      year = d.getFullYear();
+                    controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
                   }
                 }
               });
@@ -406,10 +394,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           }
         });
       }
-    }, 800);
+    }, 1000);
     setTimeout(() => {
       this.loading = false;
-    }, 1000);
+    }, 1200);
   }
 
   accNoPress(e) {
@@ -417,6 +405,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   calendarValue(name, e) {
+    console.log(name, e);
     this.form.controls[name].setValue(e);
   }
 
