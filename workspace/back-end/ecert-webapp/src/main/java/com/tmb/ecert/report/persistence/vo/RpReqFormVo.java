@@ -1,12 +1,15 @@
 package com.tmb.ecert.report.persistence.vo;
 
+import java.util.Date;
+
 public class RpReqFormVo {
 	private String seq;
 	private String typeCertificate;
 	private String customerName;
 	private String telephone;
-	private String reqDate;
+	private Date reqDate;
 	private String organizeId;
+	private String accountNo;
 	private String companyName;
 	private String accountName;
 	private String totalNumber;
@@ -50,11 +53,11 @@ public class RpReqFormVo {
 		this.telephone = telephone;
 	}
 
-	public String getReqDate() {
+	public Date getReqDate() {
 		return reqDate;
 	}
 
-	public void setReqDate(String reqDate) {
+	public void setReqDate(Date reqDate) {
 		this.reqDate = reqDate;
 	}
 
@@ -64,6 +67,14 @@ public class RpReqFormVo {
 
 	public void setOrganizeId(String organizeId) {
 		this.organizeId = organizeId;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public String getCompanyName() {
