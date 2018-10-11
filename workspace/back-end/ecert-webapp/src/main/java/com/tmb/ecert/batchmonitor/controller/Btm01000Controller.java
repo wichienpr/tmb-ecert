@@ -13,6 +13,8 @@ import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000FormVo;
 import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000Vo;
 import com.tmb.ecert.batchmonitor.service.Btm01000Service;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+
 @RequestMapping("api/btm/btm01000")
 @Controller
 public class Btm01000Controller {
@@ -26,5 +28,13 @@ public class Btm01000Controller {
 		return service.getListBatch(form);
 	}
 	
+	
+	@PostMapping("/getListBatch2")
+	@ResponseBody
+	public DataTableResponse<Btm01000Vo> getListBatch2(@RequestBody Btm01000FormVo form) {
+		DataTableResponse datas = new DataTableResponse();
+		datas.setData(service.getListBatch(form));
+		return datas;
+	}
 
 }

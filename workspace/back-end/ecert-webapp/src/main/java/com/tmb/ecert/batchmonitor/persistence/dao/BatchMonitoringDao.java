@@ -29,10 +29,10 @@ public class BatchMonitoringDao {
 		
 		List<Btm01000Vo> list = new ArrayList<>();
 		
-		sql.append(" 	SELECT A.JOBMONITORING_ID ,B.NAME JOBTYPE_CODE,A.START_DATE, A.STOP_DATE,A.ENDOFDATE,C.NAME STATUS ,A.ERROR_DESC,   " + 
+		sql.append(" 	SELECT A.JOBMONITORING_ID ,B.NAME JOBTYPE_CODE,A.START_DATE, A.STOP_DATE,A.ENDOFDATE,A.STATUS STATUS ,C.NAME STATUS_DESC ,A.ERROR_DESC,   " + 
 				"   	A.RERUN_NUMBER,A.RERUN_BY_ID,A.RERUN_BY_NAME,A.RERUN_DATETIME  FROM ECERT_JOB_MONITORING A  "
-				+ "   	LEFT JOIN ECERT_LISTOFVALUE B  ON a.JOBTYPE_CODE = b.CODE  "
-				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON a.STATUS = C.CODE  WHERE 1=1  ");
+				+ "   	LEFT JOIN ECERT_LISTOFVALUE B  ON A.JOBTYPE_CODE = B.CODE  "
+				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON A.STATUS = C.CODE  WHERE 1=1  ");
 		
 		if(StringUtils.isNotBlank(form.getDateFrom())) {
 			sql.append(" AND CAST( A.START_DATE as DATE) >= ? ");
@@ -73,6 +73,7 @@ public class BatchMonitoringDao {
 			vo.setRerunById(rs.getString("RERUN_BY_ID"));
 			vo.setRerunByName(rs.getString("RERUN_BY_NAME"));
 			vo.setRerunDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("RERUN_DATETIME")));
+			vo.setStatusDesc(rs.getString("STATUS_DESC"));
 			
 			return vo;
 			

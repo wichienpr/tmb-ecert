@@ -16,6 +16,8 @@ public class Btm01000Vo {
 	private String rerunByName;
 	private String rerunDatetime;
 	
+	private String statusDesc;
+	
 	
 	public int getJobmonitoringId() {
 		return jobmonitoringId;
@@ -82,6 +84,12 @@ public class Btm01000Vo {
 	}
 	public void setRerunDatetime(String rerunDatetime) {
 		this.rerunDatetime = rerunDatetime;
+	}
+	public String getStatusDesc() {
+		return statusDesc;
+	}
+	public void setStatusDesc(String statusDesc) {
+		this.statusDesc = statusDesc;
 	}
 	
 	
