@@ -30,7 +30,7 @@ export class DatatableDirective implements OnInit {
     buttonRange: 5
   }
 
-  constructor(private httpclient: HttpClient,private commonsvr : CommonService) {
+  constructor(private httpclient: HttpClient, private commonsvr: CommonService) {
   }
 
   ngOnInit(): void {
@@ -43,13 +43,13 @@ export class DatatableDirective implements OnInit {
   reload(): Promise<string> {
     return new Promise((resolve, reject) => {
 
-      if(this.config.useBlockUi){
+      if (this.config.useBlockUi) {
         this.commonsvr.blockui();
       }
-      
+
       if (!this.config.url) {
         reject("URL : is not defind");
-        if(this.config.useBlockUi){
+        if (this.config.useBlockUi) {
           this.commonsvr.unblockui();
         }
         throw new Error('URL : is not defind');
@@ -82,13 +82,13 @@ export class DatatableDirective implements OnInit {
           }
           // console.log(this.resp)
           resolve("OK");
-          if(this.config.useBlockUi){
+          if (this.config.useBlockUi) {
             this.commonsvr.unblockui();
           }
         },
         error => {
           reject("error");
-          if(this.config.useBlockUi){
+          if (this.config.useBlockUi) {
             this.commonsvr.unblockui();
           }
           throw new Error("call Datatable error")
@@ -103,12 +103,12 @@ export class DatatableDirective implements OnInit {
     // console.log("change", pageLength);
     this.pagging.currentLength = parseInt(pageLength);
     this.pagging.page = 1;
-    if(!this.isSearch){
+    if (!this.isSearch) {
       return false;
     }
 
     if (!this.config.serverSide) {
-      this.pagesplite(this.resp.data, this.pagging.currentLength);
+      this.pagesplite(this.resp.data, this.pagging.page);
     } else {
       //server side
       this.reload();
@@ -227,7 +227,7 @@ export class DatatableDirective implements OnInit {
     }
   }
 
-  sort(column: string) : Promise<string> {
+  sort(column: string): Promise<string> {
     this.pagging.page = 1;
     let columnstr = column.trim();
     let isfind: boolean = false;
@@ -266,7 +266,7 @@ export class DatatableDirective implements OnInit {
     return this.reload();
   }
 
-  clear(){
+  clear() {
     this.isSearchFlag = false;
     this.pagging.page = 1;
     this.resp = {
