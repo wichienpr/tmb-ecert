@@ -48,4 +48,8 @@ export class CommonService {
     $.unblockUI()
   }
 
+  toGetQuery(param:any){
+    return $.param(param);
+  }
+
 }

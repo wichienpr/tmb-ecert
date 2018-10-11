@@ -266,6 +266,16 @@ export class DatatableDirective implements OnInit {
     return this.reload();
   }
 
+  clear(){
+    this.isSearchFlag = false;
+    this.pagging.page = 1;
+    this.resp = {
+      data: [],
+      currentPageData: [],
+      recordsTotal: 0
+    }
+  }
+
   get isEmpty() {
     return this.resp.data.length === 0;
   }

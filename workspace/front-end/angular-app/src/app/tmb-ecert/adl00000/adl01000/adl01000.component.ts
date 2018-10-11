@@ -7,10 +7,8 @@ import { Certificate } from 'models/';
 import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { CommonService } from 'app/baiwa/common/services';
-declare var $: any;
-const URL = {
-  export: "/api/adl/adl01000/exportFile"
-}
+
+
 @Component({
   selector: 'app-adl01000',
   templateUrl: './adl01000.component.html',
@@ -18,14 +16,9 @@ const URL = {
   providers: [Adl01000Service]
 })
 export class Adl01000Component implements OnInit {
-  showData: boolean = false;
-  dataT: any[] = [];
-  loading: boolean = false;
 
   actionDropdown: Dropdown;
   actionChanged: Certificate[];
-
-
   calendar1: NgCalendarConfig;
   calendar2: NgCalendarConfig;
   formadl: FormGroup;
@@ -65,13 +58,13 @@ export class Adl01000Component implements OnInit {
 
     this.calendar1 = {
       id: "calendar1",
-      formControll: this.formadl.get("dateForm"),
+      formControl: this.formadl.get("dateForm"),
       endCalendar: "calendar2"
     };
 
     this.calendar2 = {
       id: "calendar2",
-      formControll: this.formadl.get("dateTo"),
+      formControl: this.formadl.get("dateTo"),
       startCalendar: "calendar1"
     };
 
@@ -85,42 +78,39 @@ export class Adl01000Component implements OnInit {
 
   ngAfterViewInit() { }
 
-  calendarValueDateForm(value) {
-    console.log("calendarValueDateForm : ", value);
-    // this.formadl.controls[name].setValue(e);
+  searchData() {
+    // console.log(this.formadl);
 
-    this.formadl.patchValue({ "dateForm": value })
-  }
-
-  calendarValueDateTo(value) {
-    console.log("calendarValueDateTo : ", value);
-    // this.formadl.controls[name].setValue(e);
-
-    this.formadl.patchValue({ "dateTo": value })
-  }
-
-
-  searchData(): void {
-    console.log("searchData False", this.formadl.value);
+    if(!this.formadl.touched){
+      Object.keys(this.formadl.value).forEach(element => {
+        let fc = this.formadl.get(element);
+        fc.markAsTouched({onlySelf : true});
+      });
+    }
+    
+    if(this.formadl.invalid){
+      // console.log("form invalid");
+      return false;
+    }
+    // console.log("searchData False", this.formadl.value);
     this.auditDt.searchParams(this.formadl.value);
     this.auditDt.search();
   }
 
   clearData(): void {
     this.formadl.reset();
+    this.auditDt.clear();
   }
 
   exportFile() {
-    // console.log("exportFile");
-    // let param = "";
-    // param += "?dateForm=" + this.form.controls.dateForm.value;
-    // param += "&dateTo=" + this.form.controls.dateTo.value;
+    if(this.formadl.invalid){
+      // console.log("form invalid");
+      return false;
+    }
 
-    // (this.formadl.controls.userId.value != null) ? param += "&userId=" + this.form.controls.userId.value : "";
-
-    // (this.actionChanged != null) ? param += "&action=" + this.actionChanged : "";
-
-    // this.ajax.download(URL.export + param);
+    let urldownload = "/api/adl/adl01000/exportFile" + "?" + this.commonsvr.toGetQuery(this.formadl.value);
+    // console.log(urldownload);
+    this.ajax.download(urldownload);
   }
 
   get dateForm() {

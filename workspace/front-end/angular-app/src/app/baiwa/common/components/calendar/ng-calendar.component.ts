@@ -34,7 +34,7 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
     ngAfterViewInit() {
         // console.log("ngAfterViewInit" , new Date().getTime());
 
-        const { id, type, formatter, local, startCalendar, endCalendar, formControll } = this.configObj;
+        const { id, type, formatter, local, startCalendar, endCalendar, formControl } = this.configObj;
         $(`#${id}`).calendar({
             type: type || 'date',
             text: DateConstant.text,
@@ -47,22 +47,22 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
             startCalendar: (startCalendar) ? $(`#${startCalendar}`) : null,
             endCalendar: (endCalendar) ? $(`#${endCalendar}`) : null,
         })
-        if (formControll.value) {
-            // console.log("formControll.value", formControll.value);
-            this.setValue(formControll.value);
+        if (formControl.value) {
+            // console.log("formControl.value", formControl.value);
+            this.setValue(formControl.value);
         }
     }
 
     onChange = (date, text, mode) => {
         // console.log("onChange ", text);
-        const { formControll } = this.configObj;
-        formControll.patchValue(text);
+        const { formControl } = this.configObj;
+        formControl.patchValue(text);
     }
 
     setValue(inputDate: string) {
-        const { id , formControll} = this.configObj;
+        const { id , formControl} = this.configObj;
         $(`#${id}`).calendar('set date', inputDate);
-        formControll.patchValue(inputDate);
+        formControl.patchValue(inputDate);
     }
 }
 
@@ -180,7 +180,7 @@ class DateConstant {
 
 export interface NgCalendarConfig {
     id: string
-    formControll: AbstractControl
+    formControl: AbstractControl
     startCalendar?: string
     endCalendar?: string,
     placeholder?: string
