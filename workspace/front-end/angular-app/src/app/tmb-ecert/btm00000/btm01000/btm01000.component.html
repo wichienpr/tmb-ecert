@@ -1,223 +1,209 @@
 <ui-modal [modal]="detailModal">
-   <ng-template>
-      <i class="close icon"></i>
-      <div class="header" style="background: #1678C2">
-         <div style="color: white">สาเหตุ </div>
-      </div>
-      <div class="content">
-         <div class="ui form">
-            <div class="inline fields">
-               <div class="sixteen wide field">
-                  <label>{{detailMSG}}</label>
-               </div>
+    <ng-template>
+        <i class="close icon"></i>
+        <div class="header" style="background: #1678C2">
+            <div style="color: white">สาเหตุ </div>
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="sixteen wide field">
+                        <label>{{detailMSG}}</label>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="actions">
-         <div class="ui center aligned grid">
-            <div class="seven wide column">
-               <button class="ui blue  basic button" (click)="closeModal()">
-                  <i class="check circle outline icon"></i>
-                  ตกลง
-               </button>
+        </div>
+        <div class="actions">
+            <div class="ui center aligned grid">
+                <div class="seven wide column">
+                    <button class="ui blue  basic button" (click)="closeModal()">
+                        <i class="check circle outline icon"></i>
+                        ตกลง
+                    </button>
 
+                </div>
             </div>
-         </div>
-      </div>
-   </ng-template>
+        </div>
+    </ng-template>
 </ui-modal>
 
 <ui-modal [modal]="retrunModal">
-   <ng-template>
-      <i class="close icon"></i>
-      <div class="header" style="background: #1678C2">
-         <div style="color: white">ระบุวันที่ต้องการ Rerun Job </div>
-      </div>
-      <div class="content">
-         <div class="ui form">
-            <div class="inline fields">
-               <div class="two wide field">
-                  <label class="custom-label-w-25">จากวันที่</label>
-               </div>
-               <div class="six wide field">
-                  <div class="ui calendar" id="modlecalendar1" style="width:100%">
+    <ng-template [formGroup]="returnForm">
+        <i class="close icon"></i>
+        <div class="header" style="background: #1678C2">
+            <div style="color: white">ระบุวันที่ต้องการ Rerun Job </div>
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="two wide field">
+                        <label class="custom-label-w-25">จากวันที่</label>
+                    </div>
+                    <div class="six wide field">
+                        <!-- <div class="ui calendar" id="modlecalendar1" style="width:100%">
                      <div class="ui input left icon">
                         <i class="time icon"></i>
                         <input type="text">
                      </div>
-                  </div>
-               </div>
-               <div class="two wide field">
-                  <label class="custom-label-w-25">ถึงวันที่</label>
-               </div>
-               <div class="six wide field">
-                  <div class="ui calendar" id="modlecalendar2" style="width:100%">
+                  </div> -->
+                        <ui-calendar [calendar]="calendarReturnFrom" [call]="touchedReturn" (calendarValue)="calendarReturnValue('returnDateForm',$event)"
+                            style="width:100%"></ui-calendar>
+                    </div>
+                    <div class="two wide field">
+                        <label class="custom-label-w-25">ถึงวันที่</label>
+                    </div>
+                    <div class="six wide field">
+                        <!-- <div class="ui calendar" id="modlecalendar2" style="width:100%">
                      <div class="ui input left icon">
                         <i class="time icon"></i>
                         <input type="text">
                      </div>
-                  </div>
-               </div>
+                  </div> -->
+                        <ui-calendar [calendar]="calendarReturnTo" [call]="touchedReturn" (calendarValue)="calendarReturnValue('returnDateTo',$event)"
+                            style="width:100%"></ui-calendar>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="actions">
-         <div class="ui center aligned grid">
-            <div class="ten wide column">
-               <button class="ui blue  basic button" (click)="closeModal()">
-                  <i class="check circle outline icon"></i>
-                  ดำเนินการต่อ
-               </button> &nbsp;&nbsp;&nbsp;&nbsp;
-               <button class="ui gery  basic button" (click)="closeModal()">
-                  <i class="times circle outline icon"></i>
-                  ยกเลิก
-               </button>
+        </div>
+        <div class="actions">
+            <div class="ui center aligned grid">
+                <div class="ten wide column">
+                    <button class="ui blue  basic button" (click)="closeModal()">
+                        <i class="check circle outline icon"></i>
+                        ดำเนินการต่อ
+                    </button> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="ui gery  basic button" (click)="closeModal()">
+                        <i class="times circle outline icon"></i>
+                        ยกเลิก
+                    </button>
 
+                </div>
             </div>
-         </div>
-      </div>
-   </ng-template>
+        </div>
+    </ng-template>
 </ui-modal>
 
 
 <div class="ui grid">
-   <div class="sixteen wide column">
-      <h2 class="ui header"> Batch Monitoring
-      </h2>
+    <div class="sixteen wide column">
+        <h2 class="ui header"> Batch Monitoring
+        </h2>
 
-      <div class="ui top attached header segment">
-         <span>ระบุเงื่อนไขในการค้นหา </span>
-      </div>
+        <div class="ui top attached header segment">
+            <span>ระบุเงื่อนไขในการค้นหา </span>
+        </div>
 
 
-      <div class="ui attached segment">
-         <form class="ui form" [formGroup]="serchForm" (submit)="doSearch()">
-            <div class="inline fields">
-               <div class="two wide field"></div>
-               <div class="two wide field">
-                  <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
-               </div>
-               <div class="four wide field">
-                  <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
-               </div>
-               <div class="one wide field">
-                  <label class="custom-label-w-25">ถึงวันที่<span style="color: red"> * </span></label>
-               </div>
-               <div class="four wide field">
-                  <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
-               </div>
+        <div class="ui attached segment">
+            <form class="ui form" [formGroup]="serchForm">
+                <div class="inline fields">
+                    <div class="two wide field"></div>
+                    <div class="two wide field">
+                        <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="four wide field" [ngClass]="{'error':(dateForm.invalid && (dateForm.dirty || dateForm.touched)) }">
+                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
+                    </div>
+                    <div class="one wide field">
+                        <label class="custom-label-w-25">ถึงวันที่<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="four wide field" [ngClass]="{'error':(dateTo.invalid && (dateTo.dirty || dateTo.touched)) }">
+                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
+                    </div>
+                </div>
+                <div class="inline fields">
+                    <div class="two wide field"></div>
+                    <div class="two wide field ">
+                        <label>ประเภท</label>
+                    </div>
+                    <div class="four wide field">
+                        <ui-dropdown [dropdown]="dropdownBatchJob.action" (valueChange)="actionChange($event)"></ui-dropdown>
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="two wide field"></div>
+                    <div class="two wide field ">
+                        <label>สถานะการดำเนินการ</label>
+                    </div>
+                    <div class="four wide field">
+                        <ui-dropdown [dropdown]="dropdownJobMonitor.action" (valueChange)="actionChange($event)"></ui-dropdown>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="ui center aligned grid">
+                    <button class="ui blue basic button" type="button" (click)="doSearch()">
+                        <i class="search icon"></i>
+                        ค้นหา
+                    </button>
+                    <button class="ui grey  basic button" type="button" (click)="clearSearchData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                    <br>
+                </div>
+                <br>
+            </form>
+
+        </div>
+        <div class="ui segment" [hidden]="!batchMonitorDT.isSearch">
+            <div class="two wide field ">
+                <b>ผลการค้นหา</b>
             </div>
-            <div class="inline fields">
-               <div class="two wide field"></div>
-               <div class="two wide field ">
-                  <label>ประเภท</label>
-               </div>
-               <div class="four wide field">
-                  <ui-dropdown [dropdown]="dropdownBatchJob.action" (valueChange)="actionChange($event)"></ui-dropdown>
-               </div>
-            </div>
-
-            <div class="inline fields">
-               <div class="two wide field"></div>
-               <div class="two wide field ">
-                  <label>สถานะการดำเนินการ</label>
-               </div>
-               <div class="four wide field">
-                  <ui-dropdown [dropdown]="dropdownJobMonitor.action" (valueChange)="actionChange($event)"></ui-dropdown>
-               </div>
-            </div>
-
-
 
             <br>
+            <ng-datatable-search [ng-datatable]="batchMonitorDT" ></ng-datatable-search>
+            <table [ngDatatable]="batchMonitorConfig" #batchMonitorDT="ngDatatable" class="ui small celled table nowrap"
+                id="table" style="width: 100%">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th style="background:#0079C0;color: #FFF">ลำดับ</th>
+                        <th style="background:#0079C0;color: #FFF">วันที่ดำเนินการ </th>
+                        <th style="background:#0079C0;color: #FFF">ประเภท</th>
+                        <th style="background:#0079C0;color: #FFF">สถานะการดำเนินการ </th>
+                        <th style="background:#0079C0;color: #FFF">สาเหตุ</th>
+                        <th style="background:#0079C0;color: #FFF">Rerun</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" *ngIf="batchMonitorDT.isEmpty">
+                        <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+                    </tr>
+                    <tr *ngFor="let item of batchMonitorDT.datas;let i = index">
+                        <td style="text-align: right">{{ batchMonitorDT.rownum + i+1}}</td>
+                        <td style="text-align: center">{{item.startDate}}</td>
+                        <td style="text-align: center">{{item.jobtypeCode}}</td>
+                        <td style="text-align: center">{{item.statusDesc}}</td>
+                        <td style="text-align: center">
+                            <div *ngIf="item.status==80002">
+
+                                <button class="ui blue basic button" (click)="showModalDetail(i)"> <i class="exclamation icon"></i>
+                                    สาเหตุ
+                                </button>
+                            </div>
+                            <div *ngIf="!(item.status==80002)">
+                                -
+                            </div>
+
+
+                        </td>
+                        <td style="text-align: center">
+                            <div *ngIf="item.status==80002">
+
+                                <button class="ui blue basic button" (click)="showModalReturn()"> <i class="undo alternate icon"></i>
+                                    Rerun
+                                </button>
+                            </div>
+                            <div *ngIf="!(item.status==80002)">
+                                -
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <br>
-            <div class="ui center aligned grid">
-               <button class="ui blue basic button" type="submit">
-                  <i class="search icon"></i>
-                  ค้นหา
-               </button>
-               <button class="ui grey  basic button" type="button" (click)="clearData()">
-                  <i class="trash alternate outline icon"></i>
-                  ล้างข้อมูล
-               </button>
-               <br>
-            </div>
-            <br>
-         </form>
-
-      </div>
-      <div class="ui segment" *ngIf="isShowResult">
-         <div class="two wide field ">
-            <b>ผลการค้นหา</b>
-         </div>
-
-         <br>
-         <table class="ui small celled table nowrap" id="table" style="width: 100%">
-            <thead>
-               <tr style="text-align: center;">
-                  <th style="background:#0079C0;color: #FFF">ลำดับ</th>
-                  <th style="background:#0079C0;color: #FFF">วันที่ดำเนินการ </th>
-                  <th style="background:#0079C0;color: #FFF">ประเภท</th>
-                  <th style="background:#0079C0;color: #FFF">สถานะการดำเนินการ </th>
-                  <th style="background:#0079C0;color: #FFF">สาเหตุ</th>
-                  <th style="background:#0079C0;color: #FFF">Rerun</th>
-
-               </tr>
-            </thead>
-            <tbody>
-               <tr *ngFor="let item of responseObj;let i = index">
-                  <td style="text-align: right">{{i}}</td>
-                  <td style="text-align: center">{{item.startDate}}</td>
-                  <td>{{item.jobtypeCode}}</td>
-                  <td>{{item.status}}</td>
-                  <td style="text-align: center">
-                     <div *ngIf="item.rerunNumber==1">
-
-                        <button class="ui blue basic button" (click)="showModalDetail(i)"> <i class="exclamation icon"></i>
-                           สาเหตุ
-                        </button>
-                     </div>
-                     <div *ngIf="item.rerunNumber==0">
-                        -
-                     </div>
-
-
-                  </td>
-                  <td style="text-align: center">
-                     <div *ngIf="item.status=='ไม่สำเร็จ'">
-
-                        <button class="ui blue basic button" (click)="showModalReturn()"> <i class="undo alternate icon"></i>
-                           Rerun
-                        </button>
-                     </div>
-                     <div *ngIf="!(item.status=='ไม่สำเร็จ')">
-                        -
-                     </div>
-                  </td>
-               </tr>
-
-               <!-- <tr>
-                  <td style="text-align: right">3</td>
-                  <td style="text-align: center">01/01/2561 23:00:00</td>
-                  <td>GL Job</td>
-                  <td>ไม่สำเร็จ</td>
-                  <td style="text-align: center">
-
-                     <button class="ui blue basic button" (click)="openModal(modal[0])"> <i class="exclamation icon"></i>
-                        สาเหตุ
-                     </button>
-                  </td>
-                  <td style="text-align: center">
-
-                     <button class="ui blue basic button" (click)="openModal(modal[1])"><i class="undo alternate icon"></i>
-                        Rerun
-
-                     </button>
-                  </td>
-               </tr> -->
-            </tbody>
-         </table>
-         <br>
-
-      </div>
-   </div>
+            <ng-datatable-footer [ng-datatable]="batchMonitorDT"  ></ng-datatable-footer>
+        </div>
+    </div>

@@ -5,6 +5,7 @@ import { Btm00000RoutingModule } from './btm00000-routing.module';
 import { Btm01000Component } from './btm01000/btm01000.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, DropdownModule, CalendarModule } from 'app/baiwa/common/components';
+import { DatatableModule } from 'app/baiwa/common/directives';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ModalModule, DropdownModule, CalendarModule } from 'app/baiwa/common/co
     ,ModalModule
     ,DropdownModule
     ,CalendarModule
+    ,DatatableModule
   ],
   declarations: [Btm01000Component]
 })

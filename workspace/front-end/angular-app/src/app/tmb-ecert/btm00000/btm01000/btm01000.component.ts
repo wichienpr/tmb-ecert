@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Lov, Modal } from 'app/baiwa/common/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Btm01000Service } from 'app/tmb-ecert/btm00000/btm01000/btm01000.service';
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 declare var $: any;
 @Component({
   selector: 'app-btm01000',
@@ -9,10 +10,17 @@ declare var $: any;
   styleUrls: ['./btm01000.component.css']
 })
 export class Btm01000Component implements OnInit {
+
+  @ViewChild("batchMonitorDT")
+  batchMonitorDT: DatatableDirective
+  
   isShowResult:boolean;
   calendar1: Calendar;
   calendar2: Calendar;
+  calendarReturnFrom:Calendar;
+  calendarReturnTo:Calendar;
   serchForm: FormGroup;
+  returnForm :FormGroup;
 
   dropdownBatchJob: any;
   dropdownJobMonitor: any;
@@ -20,6 +28,9 @@ export class Btm01000Component implements OnInit {
   responseObj:any;
   detailMSG:String;
 
+  touchedReturn:boolean;
+
+  batchMonitorConfig:DatatableCofnig;
   detailModal: Modal = {
     modalId: "detailModalId",
     type: "custom"
@@ -36,8 +47,13 @@ export class Btm01000Component implements OnInit {
     this.serchForm = new FormGroup({
       dateForm: new FormControl(null, Validators.required),
       dateTo: new FormControl(null, Validators.required),
-      batchType: new FormControl(null, Validators.required),
-      operationType: new FormControl(null, Validators.required),
+      batchType: new FormControl(null),
+      operationType: new FormControl(null),
+    });
+
+    this.returnForm = new FormGroup({
+      returnDateForm: new FormControl(null, Validators.required),
+      returnDateTo: new FormControl(null, Validators.required),
     });
 
 
@@ -51,7 +67,7 @@ export class Btm01000Component implements OnInit {
       local: CalendarLocal.EN,
       icon: "time icon",
       endId: "cal2",
-      initial: new Date
+      // initial: new Date
     };
     this.calendar2 = {
       calendarId: "cal2",
@@ -63,7 +79,32 @@ export class Btm01000Component implements OnInit {
       local: CalendarLocal.EN,
       icon: "time icon",
       startId: "cal1",
-      initial: new Date
+      // initial: new Date
+    };
+
+    this.calendarReturnFrom = {
+      calendarId: "returnForm",
+      calendarName: "returnForm",
+      formGroup: this.returnForm,
+      formControlName: "returnDateForm",
+      type: CalendarType.DATE,
+      formatter: CalendarFormatter.DEFAULT,
+      local: CalendarLocal.EN,
+      icon: "time icon",
+      endId: "returnTo",
+      // initial: new Date
+    };
+    this.calendarReturnTo = {
+      calendarId: "returnTo",
+      calendarName: "returnTo",
+      formGroup: this.returnForm,
+      formControlName: "returnDateTo",
+      type: CalendarType.DATE,
+      formatter: CalendarFormatter.DEFAULT,
+      local: CalendarLocal.EN,
+      icon: "time icon",
+      startId: "returnForm",
+      // initial: new Date
     };
 
     this.dropdownBatchJob = {
@@ -101,6 +142,7 @@ export class Btm01000Component implements OnInit {
 
     this.isShowResult = false;
     this.detailMSG ='';
+    this.touchedReturn = false;
 
     this.service.getDropdownBatchJob().subscribe((obj: Lov[]) => this.dropdownBatchJob.action.values = obj);
     this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) => this.dropdownJobMonitor.action.values = obj);
@@ -108,6 +150,12 @@ export class Btm01000Component implements OnInit {
   }
 
   ngOnInit() {
+
+    this.batchMonitorConfig = {
+      url: "/api/btm/btm01000/getListBatch2",
+      serverSide: false,
+      useBlockUi : true
+    };
   }
 
   calendarValue(name, e) {
@@ -116,20 +164,41 @@ export class Btm01000Component implements OnInit {
     console.log(this.serchForm.controls[name].value);
   }
 
-  doSearch(){
-    // console.log("dateTo : ",  this.serchForm.value.dateTo);
-    // console.log("dateForm : ",  this.serchForm.value.dateForm);
-    this.isShowResult = true;
-    this.requestObj.dateFrom = this.serchForm.value.dateForm;
-    this.requestObj.dateTo = this.serchForm.value.dateTo;
-    this.requestObj.batchJobType = this.serchForm.value.batchType;
-    this.requestObj.batchStatus = this.serchForm.value.operationType;
-    this.service.getListBatch(this.requestObj).subscribe(res=>{
-      this.responseObj = res;
-      console.log("res =>",res );
-    },error=>{
+  calendarReturnValue(name, e) {
+    this.returnForm.controls[name].setValue(e);
+    console.log(this.returnForm);
+    console.log(this.returnForm.controls[name].value);
+  }
 
-    });
+  doSearch(){
+    // Object.keys(this.serchForm.controls).forEach(controlName => this.serchForm.controls[controlName].markAsTouched());
+    if(!this.serchForm.touched){
+      Object.keys(this.serchForm.value).forEach(element => {
+        let fc = this.serchForm.get(element);
+        fc.markAsTouched({onlySelf : true});
+      });
+    }
+    // console.log("dateTo : ", this.serchForm.valid);
+    // console.log("dateForm : ",  this.serchForm.value.dateForm);
+    if (this.serchForm.valid){
+      this.isShowResult = true;
+      this.requestObj.dateFrom = this.serchForm.value.dateForm;
+      this.requestObj.dateTo = this.serchForm.value.dateTo;
+      this.requestObj.batchJobType = this.serchForm.value.batchType;
+      this.requestObj.batchStatus = this.serchForm.value.operationType;
+      // this.service.getListBatch(this.requestObj).subscribe(res=>{
+      //   this.responseObj = res;
+      //   // console.log("res =>",res );
+      // },error=>{
+  
+      // });
+
+      this.batchMonitorDT.search()
+    }
+
+
+  }
+  actionChange(){
 
   }
   showModalDetail(index) {
@@ -138,7 +207,7 @@ export class Btm01000Component implements OnInit {
   }
 
   showModalReturn() {
-
+    this.touchedReturn = true;
     $('#retrunModalId').modal('show');
   }
   closeModal(){
@@ -146,5 +215,18 @@ export class Btm01000Component implements OnInit {
     $('#retrunModalId').modal('hide');
   }
 
+  clearSearchData(){
+    // console.log("dateTo : ",  this.serchForm.touched);
+    // var initial = new Date();
+    $('#cal1').calendar('set date', '');
+    $('#cal2').calendar('set date', '');
+    this.calendarReturnFrom
+  }
 
+  get dateForm (){
+    return this.serchForm.get("dateForm");
+  }
+  get dateTo (){
+    return this.serchForm.get("dateTo");
+  }
 }

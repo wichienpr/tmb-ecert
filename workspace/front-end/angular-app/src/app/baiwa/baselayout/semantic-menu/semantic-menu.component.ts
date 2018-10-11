@@ -69,7 +69,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
       },
       { // Main Menu 4
         label: "Batch Monitoring",
-        url: "/monitoring",
+        url: "/btm/btm01000",
         role: true,
       },
       { // Main Menu 5
