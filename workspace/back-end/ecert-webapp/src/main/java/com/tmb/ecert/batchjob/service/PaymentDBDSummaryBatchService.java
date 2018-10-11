@@ -17,23 +17,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.dao.PaymentDBDSummaryBatchDao;
-import com.tmb.ecert.batchjob.domain.BankTrasactionFile;
-import com.tmb.ecert.batchjob.domain.BankTrasactionFile.Detail;
-import com.tmb.ecert.batchjob.domain.BankTrasactionFile.Header;
-import com.tmb.ecert.batchjob.domain.BankTrasactionFile.Total;
+import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile;
+import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile.Detail;
+import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile.Header;
+import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile.Total;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
+import com.tmb.ecert.common.constant.ProjectConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.ProjectConstant.SYSTEM;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
-import com.tmb.ecert.common.utils.ArchiveFileUtil;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.common.utils.SftpUtils;
 
@@ -57,32 +56,26 @@ public class PaymentDBDSummaryBatchService {
 	public void paymentDBDSummary(Date reqDate) {
 		boolean isSuccess = false;
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
-		jobMonitoring.setStartDate(new Date());
+		Date current = new Date();
 		long start = System.currentTimeMillis();
 		log.info("PaymentDBDSummaryBatchService is starting process...");
 		StringBuilder metaData = new StringBuilder();
 		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy", new Locale("th", "TH"));
 		SimpleDateFormat formatterDD = new SimpleDateFormat("dd");
-		Date current = new Date();
 		
 		String path =  ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_FTPPATH);
 		String archivePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_ARCHIVEPATH);
-		String ftpHost = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPHOST);
-		String ftpUsername = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPUSERNAME);
-		String ftpPassword = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPPWD);
+		String ftpHost = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_FTPHOST);
+		String ftpUsername = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_FTPUSERNAME);
+		String ftpPassword = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_FTPPWD);
 
 		try {
-
-			// Insert Job Monitoring table
-			jobMonitoring.setJobTypeCode(JOBMONITORING.DBDSUMMARY_TYPE);
-			jobMonitoring.setEndOfDate(new Date());
-
+			//############################ MAPPING FIELD DBD PAYMENT SUMMARY BEGIN #################################
 			List<RequestForm> reqFormList = paymentDBDSummaryBatchDao.getPaymentDBDReqFormWithReqDate(reqDate);
 			if (reqFormList != null && reqFormList.size() > 0) {
-				BankTrasactionFile bankTrasactionFile= mapping(reqFormList);
+				DBDSummaryTransactionFile bankTrasactionFile= mapping(reqFormList);
 				if(bankTrasactionFile!=null) {
 					
-					//Define MetaData
 					metaData.append(bankTrasactionFile.tranformHeadfer());
 					metaData.append(System.lineSeparator());
 					metaData.append(StringUtils.join(bankTrasactionFile.tranformDetail(), System.lineSeparator()));
@@ -111,14 +104,18 @@ public class PaymentDBDSummaryBatchService {
 					}
 				}
 			}
-
+			//############################ MAPPING FIELD DBD PAYMENT SUMMARY END #################################
 		} catch (Exception ex) {
 			log.error("PaymentDBDSummaryBatchService Error = ", ex);
 			jobMonitoring.setErrorDesc(ex.getMessage());
 		} finally {
 			long end = System.currentTimeMillis();
 			log.info("PaymentDBDSummaryBatchService is working Time(ms) = " + (end - start));
-
+		
+			//############################ INSERT JOBMONITORING BATCH BEGIN #########################################
+			jobMonitoring.setStartDate(current);
+			jobMonitoring.setJobTypeCode(JOBMONITORING_TYPE.DBDSUMMARY_TYPE);
+			jobMonitoring.setEndOfDate(current);
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
 			jobMonitoring.setRerunNumber(0);
@@ -126,12 +123,13 @@ public class PaymentDBDSummaryBatchService {
 			jobMonitoring.setRerunByName(CHANNEL.BATCH);
 			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
+			//############################ INSERT JOBMONITORING BATCH END ###########################################
 		}
 		log.info("PaymentDBDSummaryBatchService end process...");
 
 	}
 	
-	private BankTrasactionFile mapping(List<RequestForm> reqFormList) {
+	private DBDSummaryTransactionFile mapping(List<RequestForm> reqFormList) {
 		
 		SimpleDateFormat ddMMyyyy = new SimpleDateFormat("ddMMyyyy");
 		SimpleDateFormat hhMMss = new SimpleDateFormat("HHmmss");
@@ -144,10 +142,10 @@ public class PaymentDBDSummaryBatchService {
 		String bankCode = ApplicationCache.getParamValueByName(SYSTEM.TMB_BANKCODE);
 		String tranType = ApplicationCache.getParamValueByName(SYSTEM.TMB_TRAN_TYPE);
 
-		BankTrasactionFile bf = null;
+		DBDSummaryTransactionFile bf = null;
 		
 		try {
-			bf = new BankTrasactionFile();
+			bf = new DBDSummaryTransactionFile();
 			Header header = bf.getHeader();
 			header.recordType = "H";
 			header.sequenceNumber = "1";

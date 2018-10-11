@@ -27,14 +27,13 @@ import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
-import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
+import com.tmb.ecert.common.constant.ProjectConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.utils.ArchiveFileUtil;
 
-import net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.BatchAllocator;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
@@ -57,7 +56,7 @@ public class HouseKeepingBatchService {
 	 */
 	public void archiveAuditLog() {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
-		jobMonitoring.setStartDate(new Date());
+		Date current = new Date();
 		long start = System.currentTimeMillis();
 		log.info("HouseKeepingBatchService is starting process...");
 		boolean isSuccess = false;
@@ -68,11 +67,8 @@ public class HouseKeepingBatchService {
 		int days =  Integer.parseInt(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_DAYS));
 		
 		try {
-		
-			//Insert Job Monitoring table
-			jobMonitoring.setJobTypeCode(JOBMONITORING.HOUSEKEEPING_TYPE);
-			jobMonitoring.setEndOfDate(new Date());
 			
+			//############################ WRITE AND ARCHIVE FILE HOUSE KEEPING SUMMARY BEGIN #################################
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogWithDays(days);
 			if(auditLogs!=null && auditLogs.size()>0){
 				Date currentDate = new Date();
@@ -98,7 +94,7 @@ public class HouseKeepingBatchService {
 					}
 				}
 			}
-			
+			//############################ WRITE AND ARCHIVE FILE HOUSE KEEPING SUMMARY END #################################
 		} catch (Exception ex) {
 			log.error("HouseKeepingBatchService Error = ",ex);
 			jobMonitoring.setErrorDesc(ex.getMessage());
@@ -113,6 +109,10 @@ public class HouseKeepingBatchService {
 			long end = System.currentTimeMillis();
 			log.info("HouseKeepingBatchService is working Time(ms) = " + (end - start));
 			
+			//############################ INSERT JOBMONITORING BATCH BEGIN #########################################
+			jobMonitoring.setStartDate(current);
+			jobMonitoring.setJobTypeCode(JOBMONITORING_TYPE.HOUSEKEEPING_TYPE);
+			jobMonitoring.setEndOfDate(current);
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
 			jobMonitoring.setRerunNumber(0);
@@ -120,6 +120,7 @@ public class HouseKeepingBatchService {
 			jobMonitoring.setRerunByName(CHANNEL.BATCH);
 			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
+			//############################ INSERT JOBMONITORING BATCH END ###########################################
 		}
 		log.info("HouseKeepingBatchService end process...");
 	}

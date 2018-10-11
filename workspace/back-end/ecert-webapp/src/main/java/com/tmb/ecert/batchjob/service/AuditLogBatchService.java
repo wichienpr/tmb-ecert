@@ -19,11 +19,11 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
-import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
+import com.tmb.ecert.common.constant.ProjectConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.SftpFileVo;
@@ -46,7 +46,7 @@ public class AuditLogBatchService {
 
 	public void transferAuditLogByActionCode(String actionCode) {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
-		jobMonitoring.setStartDate(new Date());
+		Date current = new Date();
 		long start = System.currentTimeMillis();
 		boolean isSuccess = false;
 		log.info("AuditLogBatchService is starting process...");	
@@ -58,11 +58,7 @@ public class AuditLogBatchService {
 		String ftpPassword = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_FTPPWD);
 
 		try {
-		
-			//Insert Job Monitoring table
-			jobMonitoring.setJobTypeCode(JOBMONITORING.AUDITLOG_TYPE);
-			jobMonitoring.setEndOfDate(new Date());
-			
+			//############################ WRITE FILE AND FTP AUDIT LOG SUMMARY BEGIN #################################
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
 			if(auditLogs!=null && auditLogs.size()>0){
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
@@ -84,6 +80,7 @@ public class AuditLogBatchService {
 					}
 				}
 			}
+			//############################ WRITE FILE AND FTP AUDIT LOG SUMMARY END #################################
 		} catch (Exception ex) {
 			log.error("AuditLogBatchService Error = ",ex);
 			jobMonitoring.setErrorDesc(ex.getMessage());
@@ -91,6 +88,10 @@ public class AuditLogBatchService {
 			long end = System.currentTimeMillis();
 			log.info("AuditLogBatchService is working Time(ms) = " + (end - start));
 			
+			//############################ INSERT JOBMONITORING BATCH BEGIN #########################################
+			jobMonitoring.setStartDate(current);
+			jobMonitoring.setJobTypeCode(JOBMONITORING_TYPE.AUDITLOG_TYPE);
+			jobMonitoring.setEndOfDate(current);
 			jobMonitoring.setStopDate(new Date());
 			jobMonitoring.setStatus(isSuccess ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED);
 			jobMonitoring.setRerunNumber(0);
@@ -98,6 +99,7 @@ public class AuditLogBatchService {
 			jobMonitoring.setRerunByName(CHANNEL.BATCH);
 			jobMonitoring.setRerunDatetime(new Date());
 			jobMonitoringDao.insertEcertJobMonitoring(jobMonitoring);
+			//############################ INSERT JOBMONITORING BATCH END ###########################################
 		}
 	}
 	

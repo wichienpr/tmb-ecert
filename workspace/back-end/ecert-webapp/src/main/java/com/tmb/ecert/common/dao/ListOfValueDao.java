@@ -63,6 +63,8 @@ public class ListOfValueDao {
 			list.setAccountType(rs.getString("ACCTYPE"));
 			list.setStatus(rs.getInt("STATUS"));
 			list.setAccountNo(rs.getString("ACCTNO"));
+			list.setShortName(rs.getString("SHORT_NAME"));
+			
 			return list;
 		}
 	};

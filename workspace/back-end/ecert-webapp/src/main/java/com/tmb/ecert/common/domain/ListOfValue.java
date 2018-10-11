@@ -11,6 +11,7 @@ public class ListOfValue {
 	private String tranCode;
 	private String accountType;
 	private String accountNo;
+	private String shortName;
 
 	public String getCode() {
 		return code;
@@ -90,6 +91,14 @@ public class ListOfValue {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 	
 	

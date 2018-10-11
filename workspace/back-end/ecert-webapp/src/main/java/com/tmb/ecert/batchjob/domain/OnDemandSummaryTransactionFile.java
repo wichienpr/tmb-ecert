@@ -1,0 +1,90 @@
+package com.tmb.ecert.batchjob.domain;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.tmb.ecert.common.constant.ProjectConstant;
+
+
+public class OnDemandSummaryTransactionFile {
+	
+	private Page page = new Page();
+	
+	public class Page{
+		public StringBuilder details = new StringBuilder();
+
+		public StringBuilder getDetails() {
+			return details;
+		}
+
+		public void setDetails(StringBuilder details) {
+			this.details = details;
+		}
+		
+		
+	}
+
+	public String tranformHeader(HeaderOndemand header,int line){
+		StringBuilder headerLine = new StringBuilder();
+		switch(line) {
+			case 1: 
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getControlPage(),StringUtils.EMPTY),1));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBranchCode(),StringUtils.EMPTY),48));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBankName(),StringUtils.EMPTY),60));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAGE,10));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getPageNo(),StringUtils.EMPTY),10));
+				break;
+			case 2: 
+				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBankName(),StringUtils.EMPTY),43));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getSystemName(),StringUtils.EMPTY),65));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.AS_DATE,10));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getAsDate(),StringUtils.EMPTY),10));
+				break;
+			case 3: 
+				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getReportId(),StringUtils.EMPTY),38));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getReportName(),StringUtils.EMPTY),70));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.RUN_DATE,10));
+				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getRunDate(),StringUtils.EMPTY),10));
+				break;
+			case 4: 
+				headerLine.append(System.lineSeparator());
+				break;
+			case 5: 
+				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.REQ_DATE,15));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.TMB_REQ_NO,17));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ORG_ID,15));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.SEGMENT,10));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAID_TYPE,35));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ACCT_NO,10));
+				headerLine.append(StringUtils.leftPad(ProjectConstant.ONDEMAND.AMOUNT,27));
+				break;
+		}
+		return (headerLine!=null&& headerLine.length()>0 ? headerLine.toString(): StringUtils.EMPTY);
+	}
+
+	public String tranformDetail(DetailOndemand detail){
+		StringBuilder obj= new StringBuilder();
+		if(detail!=null) {
+			obj.append(StringUtils.rightPad(StringUtils.EMPTY,1));
+			obj.append(StringUtils.rightPad(detail.getRequestDate(),15));
+			obj.append(StringUtils.rightPad(detail.getTmeReqNo(),17));
+			obj.append(StringUtils.rightPad(detail.getOrgId(),15));
+			obj.append(StringUtils.rightPad(detail.getSegment(),10));
+			obj.append(StringUtils.rightPad(detail.getPaidType(),47));
+			obj.append(StringUtils.rightPad(detail.getAccountNo(),10));
+			obj.append(StringUtils.leftPad(detail.getAmount(),28));
+		}
+		return (obj!=null&& obj.length()>0 ? obj.toString(): StringUtils.EMPTY);
+	}
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+}

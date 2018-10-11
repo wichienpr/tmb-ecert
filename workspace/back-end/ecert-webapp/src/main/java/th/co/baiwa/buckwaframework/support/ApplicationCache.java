@@ -70,16 +70,19 @@ public class ApplicationCache {
 	}
 	
 	public static ListOfValue getLovByCode(String code) {
-		List<ListOfValue> types = LOV_TYPE_VALUE;
-		for (ListOfValue type : types) {
-			int typeCode = type.getType();
-			List<ListOfValue> lovs = LOV_GROUP_VALUE.get(typeCode);
-			for(ListOfValue lov: lovs) {
-				if (code.equals(lov.getCode())) {
-					return lov;
+		if(code!=null) {
+			List<ListOfValue> types = LOV_TYPE_VALUE;
+			for (ListOfValue type : types) {
+				int typeCode = type.getType();
+				List<ListOfValue> lovs = LOV_GROUP_VALUE.get(typeCode);
+				for(ListOfValue lov: lovs) {
+					if (code.equals(lov.getCode())) {
+						return lov;
+					}
 				}
 			}
 		}
+		
 		return null;
 	}
 
