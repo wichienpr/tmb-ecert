@@ -55,7 +55,7 @@ public class SftpUtils {
 				SftpFileVo getFile = vo.getGetFile();
 				channelSftp.cd(getFile.getPath());
 
-				File newFile = File.createTempFile("tmp", ".txt");
+				File newFile = new File(vo.getArchivePath());
 				outputStream = new FileOutputStream(newFile);
 				channelSftp.get(getFile.getFileName(), outputStream);
 				return newFile;

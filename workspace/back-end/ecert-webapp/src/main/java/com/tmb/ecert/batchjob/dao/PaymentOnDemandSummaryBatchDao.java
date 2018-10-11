@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,8 +19,11 @@ public class PaymentOnDemandSummaryBatchDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	private final String DATE_FORMAT = "yyyy-MM-dd";
+	
 	public List<RequestForm> getPaymentDBDReqFormWithReqDate(Date runDate) {
-		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10011') AND CONVERT(date, REQUEST_DATE) = ?", new Object[] {runDate}, mapping);
+		String date = DateFormatUtils.format(runDate, this.DATE_FORMAT);
+		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10011') AND CONVERT(date, REQUEST_DATE) = ?", new Object[] {date}, mapping);
 	}
 	
 	private RowMapper<RequestForm> mapping = new RowMapper<RequestForm> () {

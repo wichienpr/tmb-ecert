@@ -22,6 +22,7 @@ import com.tmb.ecert.batchjob.constant.BatchJobConstant;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.ECERT_CUSTSEGMENT_CODE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.GL_CUSTSEGMENT_CODE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOB_TYPE;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.OFFICE_CODE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAID_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAYMENT_GL_SUMMARY;
@@ -53,6 +54,7 @@ public class PaymentGLSummaryBatchService {
 	
 	private String DATE_FORMAT_DDMMYYYY = "ddMMyyyy";
 	private String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
+	private String DATE_FILE_NAME = "yyyyMMddHHmmss";
 	private final String CONST_PIPE = "|";
 	private final String CONST_DASH = "-";
 	private final String CONST_COMMA = ",";
@@ -71,7 +73,11 @@ public class PaymentGLSummaryBatchService {
 			List<String> contents = this.createContentFile(requestForms);
 			contents.add(this.createTrailer(requestForms));
 			
-			File file = this.writeFile(contents, StandardCharsets.UTF_8.name());
+			String fileType = ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_HEADER_FILE_TYPE);
+			String achiveFilePath = String.format("%s%s%s", ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH), 
+					DateFormatUtils.format(runDate, DATE_FILE_NAME), fileType);
+			
+			File file = this.writeFile(contents, StandardCharsets.UTF_8.name(), achiveFilePath);
 			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
 			String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_IP);
 			String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
@@ -456,13 +462,13 @@ public class PaymentGLSummaryBatchService {
 		String officeCode1 = "";
 		String officeCode2 = "";
 		if (ECERT_CUSTSEGMENT_CODE.SB.equals(customerCode)) {
-			officeCode1 = PAYMENT_GL_SUMMARY.OFFICE_CODE.OFFICE_1092;
+			officeCode1 = OFFICE_CODE.OFFICE_1092;
 			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
 		} else if (ECERT_CUSTSEGMENT_CODE.BB.equals(customerCode)) {
-			officeCode1 = PAYMENT_GL_SUMMARY.OFFICE_CODE.OFFICE_1078;
+			officeCode1 = OFFICE_CODE.OFFICE_1078;
 			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
 		} else if (ECERT_CUSTSEGMENT_CODE.MB.equals(customerCode)) {
-			officeCode1 = PAYMENT_GL_SUMMARY.OFFICE_CODE.OFFICE_1078;
+			officeCode1 = OFFICE_CODE.OFFICE_1078;
 			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
 		} else {
 			officeCode2 = officeCode;
@@ -526,10 +532,9 @@ public class PaymentGLSummaryBatchService {
 		return StringUtils.join(certificates, CONST_COMMA);
 	}
 	
-	private File writeFile(List<String> content, String encoding) throws Exception {
+	private File writeFile(List<String> content, String encoding, String archiveFilePath) throws Exception {
 		OutputStreamWriter writer = null;
-		String fileType = ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_HEADER_FILE_TYPE);
-		File file = File.createTempFile("tmp", fileType);
+		File file = new File(archiveFilePath);
 		try {
 			writer = new OutputStreamWriter(new FileOutputStream(file, true), encoding);
 			FileUtils.writeLines(file, content, false);

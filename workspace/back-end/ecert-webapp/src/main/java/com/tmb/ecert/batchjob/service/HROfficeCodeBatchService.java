@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.HROFFICE_CODE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOB_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.dao.HROfficeCodeBatchDao;
@@ -42,6 +44,7 @@ public class HROfficeCodeBatchService {
 	private HROfficeCodeBatchDao hrOfficeCodeBatchDao;
 	
 	private final String DATE_FORMAT = "YYYYMMDD";
+	private String DATE_FILE_NAME = "yyyyMMddHHmmss";
 	
 	public void runBatchJob() {
 
@@ -57,7 +60,11 @@ public class HROfficeCodeBatchService {
 			String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_PASSWORD);
 			String fileName = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_FILENAME);
 			
-			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, password);
+			String fileType = ApplicationCache.getParamValueByName(HROFFICE_CODE.BATCH_HROFFICECODE_FILE_TYPE);
+			String achiveFilePath = String.format("%s%s%s", ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH), 
+					DateFormatUtils.format(runDate, DATE_FILE_NAME), fileType);
+			
+			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, password, achiveFilePath);
 			File file = SftpUtils.getFile(sftpVo);
 			if (this.validateContentFile(errorDesc, file)) {
 				List<EcertHROfficeCode> ecertHROfficeCodes = this.readFile(file);

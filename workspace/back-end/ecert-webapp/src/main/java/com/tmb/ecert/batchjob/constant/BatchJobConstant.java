@@ -8,6 +8,7 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_SUMMARY_USERNAME = "gl.ftpserver.username";
 		public static final String BATCH_GL_SUMMARY_PASSWORD = "gl.ftpserver.password";
 		public static final String BATCH_GL_SUMMARY_PATH = "gl.ftpserver.path";
+		public static final String BATCH_GL_ARCHIVE_FILE_PATH = "gl.archive.file.path";
 
 		public static final String VAT_PERCENT = "vat.percent";
 		
@@ -17,6 +18,7 @@ public class BatchJobConstant {
 		public static final String BATCH_HROFFICECODE_PASSWORD = "hrofficecode.ftpserver.password";
 		public static final String BATCH_HROFFICECODE_PATH = "hrofficecode.ftpserver.path";
 		public static final String BATCH_HROFFICECODE_FILENAME = "hrofficecode.ftpserver.filename";
+		public static final String BATCH_HROFFICECODE_ARCHIVE_FILE_PATH = "hrofficecode.archive.file.path";
 	}
 	
 	public static class PAYMENT_GL_SUMMARY {
@@ -57,12 +59,15 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_HEADER_SOURCE_TO = "gl.header.source.to";
 		public static final String BATCH_GL_HEADER_TYPE_DATA = "gl.header.type.data";
 		public static final String BATCH_GL_HEADER_FILE_TYPE = "gl.header.file.type";
-		
-		public static final class OFFICE_CODE {
-			public static final String OFFICE_1092 = "1092";
-			public static final String OFFICE_1078 = "1078";
-		}
-		
+	}
+	
+	public static class HROFFICE_CODE {
+		public static final String BATCH_HROFFICECODE_FILE_TYPE = "hrofficecode.file.type";
+	}
+	
+	public static final class OFFICE_CODE {
+		public static final String OFFICE_1092 = "1092";
+		public static final String OFFICE_1078 = "1078";
 	}
 	
 	public static class ECERT_CUSTSEGMENT_CODE {

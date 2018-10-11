@@ -11,17 +11,19 @@ public class SftpVo {
 	private SftpFileVo getFile = new SftpFileVo();
 	private List<SftpFileVo> putFiles = new ArrayList<>();
 	private String errorMessage;
+	private String archivePath;
 	
 	public SftpVo() {
 		super();
 	}
 
-	public SftpVo(SftpFileVo getFile, String host, String username, String password) {
+	public SftpVo(SftpFileVo getFile, String host, String username, String password, String archivePath) {
 		super();
 		this.host = host;
 		this.username = username;
 		this.password = password;
 		this.getFile = getFile;
+		this.archivePath = archivePath;
 	}
 
 	public SftpVo(List<SftpFileVo> putFiles, String host, String username, String password) {
@@ -78,6 +80,14 @@ public class SftpVo {
 
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+
+	public String getArchivePath() {
+		return archivePath;
+	}
+
+	public void setArchivePath(String archivePath) {
+		this.archivePath = archivePath;
 	}
 	
 }
