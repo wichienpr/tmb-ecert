@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { Crs02000Service } from './crs02000.service';
+import { ROLES } from 'app/baiwa/common/constants';
+import { CommonService } from 'app/baiwa/common/services';
 
 declare var $: any;
 @Component({
@@ -10,6 +12,8 @@ declare var $: any;
 })
 export class Crs02000Component implements OnInit {
 
+  _roles = ROLES;
+  
   id: string = "";
   date: Date = new Date();
   dataLoading: boolean = false;
@@ -42,7 +46,10 @@ export class Crs02000Component implements OnInit {
     B: ""
   };
 
-  constructor(private service: Crs02000Service) {
+  constructor(
+    private service: Crs02000Service,
+    private common: CommonService
+    ) {
     this.init();
   }
 
@@ -66,6 +73,10 @@ export class Crs02000Component implements OnInit {
         this.dataLoading = false;
       }, 500);
     }
+  }
+
+  roles(role: ROLES) {
+    return this.common.isRole(role);
   }
 
   tabs(name: string) {

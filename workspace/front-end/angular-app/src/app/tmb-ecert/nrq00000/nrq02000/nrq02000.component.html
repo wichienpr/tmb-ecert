@@ -191,7 +191,7 @@
           <label>Customer Segment
           </label>
         </div>
-        <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect), 'disabled': roles(_roles.MAKER) }">
+        <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.customSegSelect), 'disabled': roles(_roles.REQUESTOR) }">
           <ui-dropdown [selected]="data ? data.custsegmentCode : ''" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field" [ngClass]="{'required': !roles(_roles.MAKER)}">
@@ -369,13 +369,18 @@
       <div class="inline field">
         <div class="ui one grid">
           <div class="center aligned one column btn-group">
-            <button class="ui blue basic button" (click)="pdf()" type="button">
+            <button class="ui blue basic button" (click)="pdf()" *ngIf="roles(_roles.REQUESTOR)" type="button">
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
             <button class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="submit">
-              <i class="file alternate outline icon"></i>
-              ยื่นใบคำขอ
+              <i class="check circle outline icon" *ngIf="roles(_roles.MAKER)"></i>
+              <i class="file alternate outline icon" *ngIf="roles(_roles.REQUESTOR)"></i>
+              {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}
+            </button>
+            <button class="ui blue basic button" type="button" *ngIf="roles(_roles.MAKER)">
+              <i class="undo icon"></i>
+              ปฏิเสธ
             </button>
             <button class="ui grey basic button" (click)="cancel()" type="button">
               <i class="times circle outline icon"></i>

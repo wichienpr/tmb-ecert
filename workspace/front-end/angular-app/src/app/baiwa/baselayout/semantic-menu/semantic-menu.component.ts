@@ -20,6 +20,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
   currentDate: Date = new Date();
   clockdisplay: any = { text: "---" };
   timeticker;
+  R: any = ROLES;
 
   constructor(
     private store: Store<{}>,
@@ -27,7 +28,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
     private modal: ModalService,
     private loginsv: AuthService,
     private commonsv: CommonService
-    ) {
+  ) {
   }
   ngOnInit() {
     this.user = this.store.select('user');
@@ -44,7 +45,10 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
         role: true,
         child: [ // Sub Menu 1.1 
           { label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)", url: "/nrq/nrq01000", role: true },
-          { label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000", role: true },
+          {
+            label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000",
+            role: this.checkR(ROLES.ADMIN) || this.checkR(ROLES.REQUESTOR)
+          },
         ]
       },
       { // Main Menu New

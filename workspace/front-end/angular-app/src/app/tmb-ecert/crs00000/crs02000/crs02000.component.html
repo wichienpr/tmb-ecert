@@ -430,7 +430,7 @@
             </label>
           </div>
           <div class="eleven wide field">
-            <a class="download-link" (click)="download(data.requestFormFile)">
+            <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
               <u>Download</u>
             </a>
             <p *ngIf="!data.requestFormFile">-</p>
@@ -442,7 +442,7 @@
             <label>สำเนาบัตรประชาชน</label>
           </div>
           <div class="eleven wide field ">
-            <a class="download-link" (click)="download(data.idCardFile)">
+            <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
               <u>Download</u>
             </a>
             <p *ngIf="!data.idCardFile">-</p>

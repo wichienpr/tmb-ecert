@@ -107,12 +107,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.isdownload = true;
       const {
         accNo, accName, corpName, corpName1, corpNo, address,
-        acceptNo, telReq, reqFormId, note
+        acceptNo, telReq, reqFormId, note, requestFile, copyFile,
+        departmentName
       } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
         glType, tranCode, accountType, status, companyName,
         caNumber, organizeId, customerName, telephone, remark,
+        requestFormFile, idCardFile, department
       } = this.data;
       const id = this.data.reqFormId.toString();
       this.reqDate = requestDate;
@@ -136,15 +138,24 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
       accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
       accNo.setValue(Acc.convertAccNo(accountNo));
-      accName.setValue(accountName);
-      corpName.setValue(customerName);
-      corpName1.setValue(companyName);
-      acceptNo.setValue(caNumber);
-      corpNo.setValue(organizeId);
       address.setValue(this.data.address);
-      telReq.setValue(telephone);
+      accName.setValue(accountName);
+      acceptNo.setValue(caNumber);
+      corpName1.setValue(companyName);
+      corpName.setValue(customerName);
+      corpNo.setValue(organizeId);
+      departmentName.setValue(department);
       note.setValue(remark);
+      telReq.setValue(telephone);
       reqFormId.setValue(this.data.reqFormId);
+      if (requestFormFile) {
+        requestFile.clearValidators();
+        requestFile.updateValueAndValidity();
+      }
+      if (idCardFile) {
+        copyFile.clearValidators();
+        copyFile.updateValueAndValidity();
+      }
     } else {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
@@ -163,17 +174,32 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.roles(ROLES.MAKER)) {
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
-      this.form.controls.customSegSelect.setValue(this.user.segment);
+      this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
       this.form.controls.payMethodSelect.setValue('30001');
     }
   }
 
-  roles(role: string) {
-    switch (role) {
-      case ROLES.REQUESTOR:
-        return this.common.isRole(ROLES.REQUESTOR);
-      case ROLES.MAKER:
-        return this.common.isRole(ROLES.MAKER);
+  roles(role: ROLES) {
+    return this.common.isRole(role);
+  }
+
+  getStatus() {
+    // 10001	1	สถานะคำขอ	คำขอใหม่
+    // 10002	1	สถานะคำขอ	ดำเนินการชำระเงิน
+    // 10003	1	สถานะคำขอ	ปฏิเสธคำขอ
+    // 10004	1	สถานะคำขอ	ยกเลิกคำขอ
+    // 10005	1	สถานะคำขอ	รอนุมัติการชำระเงิน
+    // 10006	1	สถานะคำขอ	อนุมัติการชำระเงิน
+    // 10007	1	สถานะคำขอ	ปฏิเสธการชำระเงิน
+    // 10008	1	สถานะคำขอ	ชำระเงินไม่สำเร็จ
+    // 10009	1	สถานะคำขอ	รออัพโหลด Certificate
+    // 10010	1	สถานะคำขอ	ดำเนินการสำเร็จ
+    // 10011	1	สถานะคำขอ	รอบันทึกคำขอ(ลูกค้าทำรายการเอง)
+    if (this.common.isRole(ROLES.REQUESTOR)) {
+      return "10001";
+    }
+    if (this.common.isRole(ROLES.MAKER)) {
+      return "10002";
     }
   }
 
@@ -184,11 +210,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       glType: this.glType,
       tranCode: this.tranCode,
       accType: this.accType,
-      status: this.status,
+      // status: this.status,
       acctno: this.acctno,
       changeNameFile: this.form.controls.changeNameFile.value ? null : this.data.changeNameFile,
       idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
-      requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile
+      requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
+      status: this.getStatus()
     }
     let viewChilds = {
       corpNo: this.corpNo,
@@ -335,13 +362,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         && this.chkList[0].typeCode == this.reqTypeChanged[0].typeCode) {
         this.reqTypeChanged.forEach((obj, index) => {
           if (index != 0) {
-            obj.reqcertificateId = this.chkList[index-1].reqcertificateId;
-            obj.statementYear = this.chkList[index-1].statementYear;
-            obj.value = this.chkList[index-1].value;
-            obj.check = this.chkList[index-1].check;
-            obj.other = this.chkList[index-1].other;
-            obj.acceptedDate = this.chkList[index-1].acceptedDate;
-            obj.registeredDate = this.chkList[index-1].registeredDate;
+            obj.reqcertificateId = this.chkList[index - 1].reqcertificateId;
+            obj.statementYear = this.chkList[index - 1].statementYear;
+            obj.value = this.chkList[index - 1].value;
+            obj.check = this.chkList[index - 1].check;
+            obj.other = this.chkList[index - 1].other;
+            obj.acceptedDate = this.chkList[index - 1].acceptedDate;
+            obj.registeredDate = this.chkList[index - 1].registeredDate;
             controls[`chk${index}`].setValue(obj.check);
             controls[`cer${index}`].setValue(obj.value);
             if (controls[`cal${index}`] && obj.statementYear) {
@@ -356,13 +383,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
               this.showChildren = obj.check;
               obj.children.forEach((ob, idx) => {
                 if (idx != 0) {
-                  ob.reqcertificateId = this.chkList[index-1].children[idx - 1].reqcertificateId;
-                  ob.statementYear = this.chkList[index-1].children[idx - 1].statementYear;
-                  ob.value = this.chkList[index-1].children[idx - 1].value;
-                  ob.check = this.chkList[index-1].children[idx - 1].check;
-                  ob.other = this.chkList[index-1].children[idx - 1].other;
-                  ob.acceptedDate = this.chkList[index-1].children[idx - 1].acceptedDate;
-                  ob.registeredDate = this.chkList[index-1].children[idx - 1].registeredDate;
+                  ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
+                  ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
+                  ob.value = this.chkList[index - 1].children[idx - 1].value;
+                  ob.check = this.chkList[index - 1].children[idx - 1].check;
+                  ob.other = this.chkList[index - 1].children[idx - 1].other;
+                  ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
+                  ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
                   controls[`chk${index}Child${idx}`].setValue(ob.check);
                   controls[`cer${index}Child${idx}`].setValue(ob.value);
                   if (controls[`etc${index}Child${idx}`]) {
