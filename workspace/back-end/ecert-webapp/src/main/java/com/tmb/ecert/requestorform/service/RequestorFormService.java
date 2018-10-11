@@ -56,31 +56,37 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
 		String folder = PATH;
+		Long nextId = form.getReqFormId();
 
-		String requestFileName = "";
-		String copyFile = "";
-		String changeNameFile = "";
+		String requestFileName = form.getRequestFileName();
+		String copyFile = form.getCopyFileName();
+		String changeNameFile = form.getChangeNameFileName();
 		upload.createFolder(folder); // Create Folder
 		try {
-			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
-				requestFileName = form.getRequestFile().getOriginalFilename();
-				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
+			if (BeanUtils.isEmpty(form.getRequestFileName())) {
+				if (BeanUtils.isNotEmpty(form.getRequestFile())) {
+					requestFileName = form.getRequestFile().getOriginalFilename();
+					upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
+				}
 			}
-			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
-				copyFile = form.getCopyFile().getOriginalFilename();
-				upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
+			if (BeanUtils.isEmpty(form.getCopyFileName())) {
+				if (BeanUtils.isNotEmpty(form.getCopyFile())) {
+					copyFile = form.getCopyFile().getOriginalFilename();
+					upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
+				}
 			}
-			if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
-				changeNameFile = form.getChangeNameFile().getOriginalFilename();
-				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
+			if (BeanUtils.isEmpty(form.getChangeNameFileName())) {
+				if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
+					changeNameFile = form.getChangeNameFile().getOriginalFilename();
+					upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
+				}
 			}
 			try {
-				Long nextId = form.getReqFormId();
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
 				RequestForm req = new RequestForm();
-				req.setReqFormId(form.getReqFormId());
+				req.setReqFormId(nextId);
 				req.setAccountName(form.getAccName());
 				req.setAccountNo(form.getAccNo());
 				req.setTmbRequestNo(form.getTmbReqFormNo());
@@ -90,42 +96,30 @@ public class RequestorFormService {
 				req.setCaNumber(form.getAcceptNo());
 				req.setCertificateFile("");
 				req.setCerTypeCode(form.getReqTypeSelect());
-				req.setChangeNameFile(
-						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
-								: null);
+				req.setChangeNameFile(changeNameFile);
+				req.setStatus(form.getStatus());
 				req.setTranCode(form.getTranCode());
-				req.setCreatedById(userId);
-				req.setCreatedByName(userName);
-				req.setCreatedDateTime(null);
 				req.setCustomerName(form.getCorpName());
-				if (form.getTmbReceiptChk() != null) {
-					req.setCustomerNameReceipt(form.getCorpName1());
-					req.setCompanyName(form.getCorpName());
-				} else {
-					req.setCustomerNameReceipt("");
-					req.setCompanyName("");
-				}
+				req.setCustomerNameReceipt(form.getCorpName1());
+				req.setCompanyName(form.getCorpName());
 				req.setCustsegmentCode(form.getCustomSegSelect());
 				req.setDebitAccountType(form.getSubAccMethodSelect());
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
-				req.setIdCardFile(
-						BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename() : null);
+				req.setIdCardFile(copyFile);
 				req.setMakerById(userId);
 				req.setMakerByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestDate(null);
-				req.setRequestFormFile(
-						BeanUtils.isNotEmpty(form.getRequestFile()) ? form.getRequestFile().getOriginalFilename()
-								: null);
-				req.setStatus("10001");
+				req.setRequestFormFile(requestFileName);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
 				dao.update(req); // SAVE REQUEST FORM
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
+						cert.setReqCertificateId(cer.getReqcertificateId());
 						cert.setReqFormId(nextId);
 						cert.setCertificateCode(cer.getCode());
 						cert.setTotalNumber(cer.getValue());
@@ -135,7 +129,11 @@ public class RequestorFormService {
 						cert.setStatementYear(cer.getStatementYear());
 						cert.setAcceptedDate(cer.getAcceptedDate());
 						cert.setOther(cer.getOther());
-						dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
+						if (cer.getReqcertificateId() == null) {
+							dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
+						} else {
+							dao.updateCertificates(cert); // UPDATE REQUEST CERTIFICATES
+						}
 					}
 				}
 				msg.setMessage("SUCCESS");

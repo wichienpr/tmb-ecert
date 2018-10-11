@@ -6,6 +6,7 @@ import java.util.List;
 import com.tmb.ecert.common.domain.Certificate;
 
 public class Nrq02000CerVo extends Certificate {
+	private Long reqcertificateId;
 	private Boolean check;
 	private Integer value;
 	private Date registeredDate;
@@ -13,6 +14,14 @@ public class Nrq02000CerVo extends Certificate {
 	private Date acceptedDate;
 	private String other;
 	private List<Object> children;
+
+	public Long getReqcertificateId() {
+		return reqcertificateId;
+	}
+
+	public void setReqcertificateId(Long reqcertificateId) {
+		this.reqcertificateId = reqcertificateId;
+	}
 
 	public Boolean getCheck() {
 		return check;
@@ -69,6 +78,5 @@ public class Nrq02000CerVo extends Certificate {
 	public void setOther(String other) {
 		this.other = other;
 	}
-	
 
 }

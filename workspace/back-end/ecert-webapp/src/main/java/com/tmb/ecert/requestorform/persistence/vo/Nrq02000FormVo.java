@@ -29,7 +29,34 @@ public class Nrq02000FormVo {
 	private MultipartFile requestFile;
 	private MultipartFile copyFile;
 	private MultipartFile changeNameFile;
+	private String requestFileName;
+	private String copyFileName;
+	private String changeNameFileName;
 	
+	public String getRequestFileName() {
+		return requestFileName;
+	}
+
+	public void setRequestFileName(String requestFileName) {
+		this.requestFileName = requestFileName;
+	}
+
+	public String getCopyFileName() {
+		return copyFileName;
+	}
+
+	public void setCopyFileName(String copyFileName) {
+		this.copyFileName = copyFileName;
+	}
+
+	public String getChangeNameFileName() {
+		return changeNameFileName;
+	}
+
+	public void setChangeNameFileName(String changeNameFileName) {
+		this.changeNameFileName = changeNameFileName;
+	}
+
 	public Long getReqFormId() {
 		return reqFormId;
 	}
