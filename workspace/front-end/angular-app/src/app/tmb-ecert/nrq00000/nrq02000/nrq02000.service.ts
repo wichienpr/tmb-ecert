@@ -22,6 +22,7 @@ const URL = {
     CREATE_FORM: "/api/report/pdf/reqForm/",
     FORM_PDF: "/api/report/pdf/",
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
+    DOWNLOAD: "/api/crs/crs02000/download/",
 }
 
 @Injectable()
@@ -136,16 +137,19 @@ export class Nrq02000Service {
     getChkList(id: string) {
         return this.ajax.get(`${URL.CER_BY_CODE}/${id}`, response => {
             let lists = response.json();
-            const list = lists.slice(0, 1);
-            let data: Certificate = {
-                code: "",
-                typeCode: list[0].typeCode,
-                typeDesc: list[0].typeDesc,
-                certificate: list[0].certificate,
-                feeDbd: list[0].feeDbd,
-                feeTmb: list[0].feeTmb,
-            };
-            lists.unshift(data);
+            let list;
+            if (list && list.length > 0) {
+                list = lists.slice(0, 1);
+                let data: Certificate = {
+                    code: "",
+                    typeCode: list[0].typeCode,
+                    typeDesc: list[0].typeDesc,
+                    certificate: list[0].certificate,
+                    feeDbd: list[0].feeDbd,
+                    feeTmb: list[0].feeTmb,
+                };
+                lists.unshift(data);
+            }
             return [...lists];
         });
     }
@@ -334,6 +338,17 @@ export class Nrq02000Service {
         });
     }
 
+    download(fileName: string): void {
+        if (fileName) {
+            this.ajax.download(URL.DOWNLOAD + fileName);
+        } else {
+            const modal: Modal = {
+                msg: "ไม่พบไฟล์"
+            };
+            this.modal.alert(modal);
+        }
+    }
+
     matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
         return new Promise<Certificate[]>(resolve => {
             chkList.forEach((obj, index) => {
@@ -447,8 +462,12 @@ export class Nrq02000Service {
             subAccMethodSelect: form.controls.subAccMethodSelect.value,
             telReq: form.controls.telReq.value,
             // tmbReceiptChk: form.controls.tmbReceiptChk.value,
-            certificates: _data
+            certificates: _data,
+            changeNameFileName: addons.changeNameFile,
+            copyFileName: addons.idCardFile,
+            requestFileName: addons.requestFormFile
         };
+        console.log(form.controls.reqFormId.value);
         for (let key in data) {
             if (data[key]) {
                 if (key == "certificates") {

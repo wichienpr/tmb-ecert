@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit } from "@angular/core";
+import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit, SimpleChanges } from "@angular/core";
 import { Calendar } from "models/";
 import { dateLocale, digit } from "app/baiwa/common/helpers";
 import { NgControl, FormGroup, FormControl } from "@angular/forms";
@@ -14,6 +14,7 @@ export class CalendarComponent implements AfterViewInit, OnInit {
 
     @Input() calendar: Calendar;
     @Input() disableCalendar: NgControl;
+    @Input() call: boolean;
 
     @Output() calendarValue: EventEmitter<string> = new EventEmitter<string>();
 
@@ -43,6 +44,26 @@ export class CalendarComponent implements AfterViewInit, OnInit {
             $(`#${this.calendar.calendarId}`).calendar('set date', init);
         }
         this.cdRef.detectChanges();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        const { type, formatter, local, initial, minDate, maxDate, startId, endId } = this.calendar;
+        $(`#${this.calendar.calendarId}`).calendar({
+            type: type || 'date',
+            text: DateConstant.text,
+            formatter: DateConstant.formatter(formatter || '', local || 'en'),
+            onChange: this.onChange,
+            touchReadonly: true,
+            initialDate: initial || null,
+            minDate: minDate || null,
+            maxDate: maxDate || null,
+            startCalendar: $(`#${startId}`) || null,
+            endCalendar: $(`#${endId}`) || null,
+        })
+        if (initial) {
+            const init = new Date(Date.UTC(initial.getFullYear(), initial.getMonth(), initial.getDate()));
+            $(`#${this.calendar.calendarId}`).calendar('set date', init);
+        }
     }
 
     onChange = (date, text, mode) => {

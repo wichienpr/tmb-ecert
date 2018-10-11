@@ -10,15 +10,25 @@
 .right.floated {
     float: right;
 }
+
 .hidden {
     display: none !important;
 }
 
-h3.header{
+h3.header {
     margin: 0
 }
 
-h3.header.space{
+h3.header.space {
     margin: 0 !important;
     margin-top: -1em !important;
+}
+
+.download-link {
+    color: #000;
+    cursor: pointer;
+}
+
+.download-link:hover {
+    color: rgb(88, 88, 88);
 }

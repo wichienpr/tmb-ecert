@@ -156,8 +156,9 @@
                       <td>
                         <div class="field" [ngClass]="{'error': invalid(form.controls['cer'+i+'Child'+j]) }">
                           <div class="ui input">
-                            <input (keypress)="accNoPress($event)" #cerChild min="1" type="number" name="cer{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value"
-                              formControlName="cer{{i}}Child{{j}}" style="width: 100%;">
+                            <input (keypress)="accNoPress($event)" #cerChild min="1" type="number" name="cer{{i}}Child{{j}}"
+                              [disableControl]="!form.controls['chk'+i+'Child'+j].value" formControlName="cer{{i}}Child{{j}}"
+                              style="width: 100%;">
                           </div>
                         </div>
                       </td>
@@ -232,7 +233,8 @@
           <label>วิธีหักบัญชีจาก</label>
         </div>
         <div #subAccMethodSelect class="five wide field" [ngClass]="{'error': invalid(form.controls.subAccMethodSelect) }">
-          <ui-dropdown [selected]="data ? data.debitAccountType : ''" [dropdown]="dropdownObj.subAccMethod" (valueChange)="subAccMethodChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="data ? data.debitAccountType : ''" [dropdown]="dropdownObj.subAccMethod"
+            (valueChange)="subAccMethodChange($event)"></ui-dropdown>
         </div>
       </div>
       <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
@@ -315,6 +317,11 @@
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.requestFile) }">
           <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
+        <div class="three wide field" *ngIf="data&&data.requestFormFile">
+          <a class="download-link" (click)="download(data.requestFormFile)">
+            <u>Download</u>
+          </a>
+        </div>
         <!-- <div class="two wide field">
           <label>ที่อยู่</label>
         </div>
@@ -331,6 +338,11 @@
         <div class="five wide field" [ngClass]="{'error': invalid(form.controls.copyFile) }">
           <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
+        <div class="three wide field" *ngIf="data&&data.idCardFile">
+          <a class="download-link" (click)="download(data.idCardFile)">
+            <u>Download</u>
+          </a>
+        </div>
       </div>
       <div class="inline fields">
         <div class="four wide field">
@@ -338,6 +350,11 @@
         </div>
         <div class="five wide field">
           <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
+        </div>
+        <div class="three wide field" *ngIf="data&&data.changeNameFile">
+          <a class="download-link" (click)="download(data.changeNameFile)">
+            <u>Download</u>
+          </a>
         </div>
       </div>
 
