@@ -111,6 +111,41 @@ public class AuditLogsDao {
 		
 		return rs.intValue();
 	}
+
+
+	public List<Adl01000Vo> getExportData(Adl01000FormVo formVo) {
+		StringBuilder sql = new StringBuilder();
+		List<Object> params = new ArrayList<>();
+		List<Adl01000Vo> adl01000VoList = new ArrayList<Adl01000Vo>();
+		
+		    sql.append(" SELECT a.*,b.NAME AS ACTION_DESC FROM ECERT_AUDIT_LOG a LEFT JOIN ECERT_LISTOFVALUE b ON a.ACTION_CODE=b.CODE WHERE 1=1 ");
+		
+		if (StringUtils.isNotBlank(formVo.getDateForm())) {
+			sql.append(" AND  CAST(a.CREATED_DATETIME as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getDateTo())) {
+			sql.append(" AND  CAST(a.CREATED_DATETIME as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getCreatedById())) {
+			sql.append(" AND a.CREATED_BY_ID = ?");
+			params.add(formVo.getCreatedById());
+		}
+		if (StringUtils.isNotBlank(formVo.getActionCode())) {
+			sql.append(" AND a.ACTION_CODE = ?");
+			params.add(formVo.getActionCode());
+		}
+		
+		sql.append(" ORDER BY a.CREATED_DATETIME ");
+		
+		log.info("getExportData : {}",sql.toString());
+		adl01000VoList = jdbcTemplate.query(sql.toString() , params.toArray(), adl01000RowMapper);
+		
+		return adl01000VoList;
+	}
 	
 }
 

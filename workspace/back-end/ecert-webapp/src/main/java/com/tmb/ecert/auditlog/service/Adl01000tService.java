@@ -52,8 +52,7 @@ public class Adl01000tService {
 
 		List<Adl01000Vo> dataTestList = new ArrayList<Adl01000Vo>();
 
-//		dataTestList = findAll(formVo);
-		// dataTestList = formVo.getDataT();
+		dataTestList =  auditLogDao.getExportData(formVo);
 
 		/* create spreadsheet */
 		XSSFWorkbook workbook = excalService.setUpExcel();
