@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @PropertySource(value = {
 	"classpath:/application.properties"
 })
+@EnableAsync
 public class AppConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);

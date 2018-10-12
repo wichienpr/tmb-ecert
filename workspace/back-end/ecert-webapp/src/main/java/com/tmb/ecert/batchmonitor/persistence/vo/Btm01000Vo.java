@@ -1,8 +1,8 @@
 package com.tmb.ecert.batchmonitor.persistence.vo;
 
-import java.util.Date;
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
 
-public class Btm01000Vo {
+public class Btm01000Vo extends DatatableRequest {
 	
 	private int jobmonitoringId;
 	private String jobtypeCode;
@@ -17,6 +17,7 @@ public class Btm01000Vo {
 	private String rerunDatetime;
 	
 	private String statusDesc;
+	private String jobtypeName;
 	
 	
 	public int getJobmonitoringId() {
@@ -91,6 +92,13 @@ public class Btm01000Vo {
 	public void setStatusDesc(String statusDesc) {
 		this.statusDesc = statusDesc;
 	}
+	public String getJobtypeName() {
+		return jobtypeName;
+	}
+	public void setJobtypeName(String jobtypeName) {
+		this.jobtypeName = jobtypeName;
+	}
+	
 	
 	
 	

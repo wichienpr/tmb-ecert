@@ -1,11 +1,19 @@
 package com.tmb.ecert.batchmonitor.persistence.vo;
 
-public class Btm01000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Btm01000FormVo extends DatatableRequest  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8939020944065248006L;
 	private String dateFrom;
 	private String dateTo;
-	private String batchJobType;
-	private String batchStatus;
+	private String batchType;
+	private String operationType;
+	private String batchTypeCode;
+	private String operationTypeCode;
 	
 	
 	public String getDateFrom() {
@@ -20,17 +28,31 @@ public class Btm01000FormVo {
 	public void setDateTo(String dateTo) {
 		this.dateTo = dateTo;
 	}
-	public String getBatchJobType() {
-		return batchJobType;
+	public String getBatchType() {
+		return batchType;
 	}
-	public void setBatchJobType(String batchJobType) {
-		this.batchJobType = batchJobType;
+	public void setBatchType(String batchType) {
+		this.batchType = batchType;
 	}
-	public String getBatchStatus() {
-		return batchStatus;
+	public String getOperationType() {
+		return operationType;
 	}
-	public void setBatchStatus(String batchStatus) {
-		this.batchStatus = batchStatus;
+	public void setOperationType(String operationType) {
+		this.operationType = operationType;
 	}
+	public String getBatchTypeCode() {
+		return batchTypeCode;
+	}
+	public void setBatchTypeCode(String batchTypeCode) {
+		this.batchTypeCode = batchTypeCode;
+	}
+	public String getOperationTypeCode() {
+		return operationTypeCode;
+	}
+	public void setOperationTypeCode(String operationTypeCode) {
+		this.operationTypeCode = operationTypeCode;
+	}
+	
+
 
 }
