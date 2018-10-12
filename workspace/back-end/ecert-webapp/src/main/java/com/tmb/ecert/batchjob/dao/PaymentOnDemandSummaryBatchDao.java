@@ -23,7 +23,7 @@ public class PaymentOnDemandSummaryBatchDao {
 	
 	public List<RequestForm> getPaymentDBDReqFormWithReqDate(Date runDate) {
 		String date = DateFormatUtils.format(runDate, this.DATE_FORMAT);
-		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10011') AND CONVERT(date, REQUEST_DATE) = ?", new Object[] {date}, mapping);
+		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE STATUS IN ('10009','10010') AND CONVERT(date, REQUEST_DATE) = ?", new Object[] {date}, mapping);
 	}
 	
 	private RowMapper<RequestForm> mapping = new RowMapper<RequestForm> () {

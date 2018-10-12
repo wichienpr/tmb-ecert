@@ -60,7 +60,6 @@ public class PaymentOnDemandSummaryBatchService {
 		long start = System.currentTimeMillis();
 		log.info("PaymentOnDemandSummaryBatchService is starting process...");
 		SimpleDateFormat ddMMyyyy = new SimpleDateFormat("ddMMyyyy", Locale.US);
-		SimpleDateFormat formatterDD = new SimpleDateFormat("dd");
 		
 		
 		String path =  ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_ONDEMANDSUMMARY_FTPPATH);
@@ -83,9 +82,7 @@ public class PaymentOnDemandSummaryBatchService {
 				if(onDemandSummaryTransactionFile!=null) {
 					
 					fileName = String.format(fileName, reportId,ddMMyyyy.format(current));
-					
-					String fullPath = path + "/" + formatterDD.format(current);
-					
+										
 					String fullFileName = archivePath + File.separator + File.separator+fileName;
 					
 					File file = new File(fullFileName);
@@ -94,7 +91,7 @@ public class PaymentOnDemandSummaryBatchService {
 										
 					// Step 2. SFTP File and save log fail or success !!
 					List<SftpFileVo> files = new ArrayList<>();
-					files.add(new SftpFileVo(new File(fullFileName), fullPath, fileName));
+					files.add(new SftpFileVo(new File(fullFileName), path, fileName));
 					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
 					isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
@@ -131,7 +128,7 @@ public class PaymentOnDemandSummaryBatchService {
 	
 	private OnDemandSummaryTransactionFile mapping(List<RequestForm> reqFormList,String reportId) {		
 		SimpleDateFormat ddMMyyyy = new SimpleDateFormat("dd/MM/yyyy");
-		DecimalFormat amountFormat = new DecimalFormat("#,##0");
+		DecimalFormat amountFormat = new DecimalFormat("#,##0.00");
 		OnDemandSummaryTransactionFile onDemandTrnFile = new OnDemandSummaryTransactionFile();
 		try {
 			//############################ MAPPING FIELD ONDEMAND PAYMENT SUMMARY BEGIN #################################
@@ -193,15 +190,15 @@ public class PaymentOnDemandSummaryBatchService {
 						detail.setTmeReqNo(StringUtils.defaultString(reqForm.getTmbRequestNo(),StringUtils.EMPTY));
 						detail.setOrgId(StringUtils.defaultString(reqForm.getOrganizeId(),StringUtils.EMPTY));
 						ListOfValue segmentCode = ApplicationCache.getLovByCode(reqForm.getCustsegmentCode());
-						detail.setSegment(StringUtils.defaultString(segmentCode!=null ? segmentCode.getShortName(): null ,StringUtils.EMPTY));
+						detail.setSegment(StringUtils.defaultString(segmentCode!=null ? segmentCode.getShortName().trim(): null ,StringUtils.EMPTY));
 						ListOfValue paidType = ApplicationCache.getLovByCode(reqForm.getPaidTypeCode());
 						detail.setPaidType(StringUtils.defaultString(paidType!=null  ? paidType.getName(): null,StringUtils.EMPTY));
 						detail.setAccountNo(StringUtils.defaultString(reqForm.getAccountNo(),StringUtils.EMPTY));
 						detail.setAmount(StringUtils.defaultString(reqForm.getAmountTmb()!=null?amountFormat.format(reqForm.getAmountTmb()):"0.00"));
 						page.getDetails().append(onDemandTrnFile.tranformDetail(detail));
 						page.getDetails().append(System.lineSeparator());		
-						numberOfDetail++;
 					}
+					numberOfDetail++;
 				}
 				start++;
 			}

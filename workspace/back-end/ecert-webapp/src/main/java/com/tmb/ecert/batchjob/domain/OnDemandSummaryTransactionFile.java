@@ -56,9 +56,9 @@ public class OnDemandSummaryTransactionFile {
 				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.TMB_REQ_NO,17));
 				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ORG_ID,15));
 				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.SEGMENT,10));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAID_TYPE,35));
+				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAID_TYPE,41));
 				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ACCT_NO,10));
-				headerLine.append(StringUtils.leftPad(ProjectConstant.ONDEMAND.AMOUNT,27));
+				headerLine.append(StringUtils.leftPad(ProjectConstant.ONDEMAND.AMOUNT,22));
 				break;
 		}
 		return (headerLine!=null&& headerLine.length()>0 ? headerLine.toString(): StringUtils.EMPTY);
@@ -72,9 +72,9 @@ public class OnDemandSummaryTransactionFile {
 			obj.append(StringUtils.rightPad(detail.getTmeReqNo(),17));
 			obj.append(StringUtils.rightPad(detail.getOrgId(),15));
 			obj.append(StringUtils.rightPad(detail.getSegment(),10));
-			obj.append(StringUtils.rightPad(detail.getPaidType(),47));
+			obj.append(StringUtils.rightPad(detail.getPaidType(),41));
 			obj.append(StringUtils.rightPad(detail.getAccountNo(),10));
-			obj.append(StringUtils.leftPad(detail.getAmount(),28));
+			obj.append(StringUtils.leftPad(detail.getAmount(),22));
 		}
 		return (obj!=null&& obj.length()>0 ? obj.toString(): StringUtils.EMPTY);
 	}
