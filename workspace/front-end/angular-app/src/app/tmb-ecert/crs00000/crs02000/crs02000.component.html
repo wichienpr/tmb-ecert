@@ -483,27 +483,27 @@
         </div>
         <div class="inline field">
           <div class="ui btn-group center aligned grid">
-            <button class="ui blue basic button" type="button" (click)="modalToggle('desp')">
+            <!-- <button class="ui blue basic button" type="button" (click)="modalToggle('desp')">
               <i class="check circle outline icon"></i>
               ดำเนินการชำระเงิน
-            </button>
-            <button class="ui blue basic button" type="button" (click)="approveToggle()">
+            </button> -->
+            <button class="ui blue basic button" *ngIf="btnApprove" type="button" (click)="approveToggle()">
               <i class="check circle outline icon"></i>
               อนุมัติการชำระเงิน
             </button>
-            <button class="ui blue basic button" type="button" (click)="modalToggle('allowed')">
+            <button class="ui blue basic button" *ngIf="btnReject" type="button" (click)="modalToggle('allowed')">
               <i class="undo icon"></i>
               ปฏิเสธ
             </button>
-            <button class="ui blue basic button" (click)="pdf('r')" type="button">
+            <button class="ui blue basic button" *ngIf="btnPrintReciept" (click)="pdf('r')" type="button">
               <i class="print icon"></i>
               พิมพ์ใบเสร็จ
             </button>
-            <button class="ui blue basic button" (click)="pdf('c')" type="button">
+            <button class="ui blue basic button" *ngIf="btnPrintCover" (click)="pdf('c')" type="button">
               <i class="print icon"></i>
               พิมพ์ใบนำส่งเอกสาร
             </button>
-            <button class="ui blue basic button" (click)="modalToggle('document')">
+            <button class="ui blue basic button" *ngIf="btnUpload" (click)="modalToggle('document')">
               <i class=" upload icon"></i>
               Upload Certificate
             </button>

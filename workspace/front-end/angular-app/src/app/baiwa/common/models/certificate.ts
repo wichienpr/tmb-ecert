@@ -7,4 +7,8 @@ export interface Certificate {
     children?: Certificate[];
     feeDbd: string;
     feeTmb: string;
+    registeredDate?: Date;
+    statementYear?: number;
+    acceptedDate?: Date;
+    other?: string;
 }

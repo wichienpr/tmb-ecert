@@ -17,15 +17,6 @@ export class Nrq01000Service {
   tmbReqFormId: string = "";
 
   constructor(private ajax: AjaxService) { }
-  /**
-   * @return { tmbReqFormId: string }
-   */
-  getTmbReqFormId() {
-    return this.ajax.get(URL.GEN_KEY, response => {
-      this.tmbReqFormId = response.json();
-      return this.tmbReqFormId;
-    });
-  }
 
   /**
    * @return { data: string, msg: string }

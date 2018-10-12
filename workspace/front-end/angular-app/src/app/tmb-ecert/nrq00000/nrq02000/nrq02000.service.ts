@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
-import { AjaxService, ModalService, DropdownService } from "services/";
+import { AjaxService, ModalService, DropdownService, RequestFormService } from "services/";
 import { Acc, Assigned } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
@@ -17,7 +18,6 @@ const URL = {
     NRQ_UPDATE: "/api/nrq/update",
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
-    GEN_KEY: "/api/nrq/generate/key",
     REQUEST_FORM: "/api/nrq/data",
     CREATE_FORM: "/api/report/pdf/reqForm/",
     FORM_PDF: "/api/report/pdf/",
@@ -42,7 +42,6 @@ export class Nrq02000Service {
         corpName1: new FormControl(),                                   // ชื่อนิติบุคคล 1
         acceptNo: new FormControl('', Validators.required),             // เลขที่ CA/มติอนุมัติ
         departmentName: new FormControl(),                              // ชื่อหน่วยงาน
-        // tmbReceiptChk: new FormControl(),                            // ชื่อบนใบเสร็จธนาคาร TMB
         telReq: new FormControl(),                                      // เบอร์โทรผู้ขอ/ลูกค้า
         address: new FormControl(),                                     // ที่อยู่
         note: new FormControl(),                                        // หมายเหตุ
@@ -57,6 +56,7 @@ export class Nrq02000Service {
         private dropdown: DropdownService,
         private router: Router,
         private route: ActivatedRoute,
+        private reqService: RequestFormService
     ) {
 
         this.dropdownObj = {
@@ -110,15 +110,14 @@ export class Nrq02000Service {
 
 
     /**
-     * Initial Data
+     * @return `requestForm` ข้อมูลแบบฟอร์มคำขอจาก `id`
      */
-    getData() {
+    getData(): Promise<RequestForm> {
         let id = this.route.snapshot.queryParams["id"] || "";
         if (id !== "") {
-            return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
-                let data: RequestForm[] = response.json() as RequestForm[];
-                this.tmbReqFormId = data[0].tmbRequestNo;
-                return data.length > 0 ? data[0] : initRequestForm;
+            return new Promise(async resolve => {
+                const data = await this.reqService.getReqFormByFormId(id).toPromise();
+                resolve(data && data.length > 0 ? data[0] : initRequestForm);
             });
         } else {
             return new Promise(resolve => {
@@ -127,13 +126,24 @@ export class Nrq02000Service {
         }
     }
 
-    getTmbReqFormId() {
-        return this.ajax.get(URL.GEN_KEY, response => {
-            this.tmbReqFormId = response.json();
-            return this.tmbReqFormId;
-        });
+    /**
+     * @return `tmbReqFormId` รหัส tmbRequestFormNo
+     */
+    getTmbReqFormId(): Promise<string> {
+        return new Observable<string>(obs => {
+            this.reqService.getTmbReqFormNo().subscribe(tmbReqNo => {
+                this.tmbReqFormId = tmbReqNo;
+                obs.next(this.tmbReqFormId);
+                obs.complete();
+            });
+        }).toPromise();
     }
 
+    /**
+     * 
+     * @param id รหัส cerTypeCode
+     * @return `lists` ลิสต์ของ certificates
+     */
     getChkList(id: string) {
         return this.ajax.get(`${URL.CER_BY_CODE}/${id}`, response => {
             let lists = response.json();
@@ -154,6 +164,11 @@ export class Nrq02000Service {
         });
     }
 
+    /**
+     * 
+     * @param id รหัส typeCode
+     * @return `children` ดึงข้อมูลลูกของลิสต์ certificates
+     */
     getChkListMore(id: string) {
         return this.ajax.post(URL.CER_BY_TYPECODE, { typeCode: id }, res => {
             return res.text() ? res.json() : {};
@@ -173,7 +188,7 @@ export class Nrq02000Service {
 
     getReqDate(): Date {
         let date = new Date();
-        return date; // dateLocale(date);
+        return date;
     }
 
     getDropdownObj(): any {
@@ -181,7 +196,13 @@ export class Nrq02000Service {
     }
 
     /**
-     * Forms Action
+     * ขั้นตอนการทำการบันทึกหรืออัพเดท
+     * @param form ค่า `FormGroup` จาก `Component`
+     * @param files ค่า `Files` ที่อัพโหลดไว้
+     * @param _certificates ลิสต์ของ `certificates`
+     * @param viewChilds ตัวแปรสำหรับดึง `Element` ใน `HTML`
+     * @param addons ข้อมูลเพิ่มเติม
+     * @param what เงื่อนไข `save` หรือ `update`
      */
     save(form: FormGroup, files: any, _certificates: Certificate[], viewChilds: any, addons: any, what: string = "save") {
         let certificates = new Assigned().getValue(_certificates);
@@ -232,7 +253,7 @@ export class Nrq02000Service {
                             success: true
                         };
                         this.modal.alert(modal);
-                        this.router.navigate(['/crs/crs01000'],{
+                        this.router.navigate(['/crs/crs01000'], {
                             queryParams: { codeStatus: "10001" }
                         });
                     } else {
@@ -257,14 +278,16 @@ export class Nrq02000Service {
                 if (form.controls['chk' + index].valid) {
                     if (obj.children) {
                         obj.children.forEach((ob, idx) => {
-                            if (form.controls['chk' + index + 'Child' + idx].valid) {
-                                has = true;
-                                if (form.controls['cer' + index + 'Child' + idx].value > 0) {
-                                    hasTotal = true;
+                            if (idx != 0) {
+                                if (form.controls['chk' + index + 'Child' + idx].valid) {
+                                    has = true;
+                                    if (form.controls['cer' + index + 'Child' + idx].value > 0) {
+                                        hasTotal = true;
+                                    }
+                                } else {
+                                    form.get('chk' + index + 'Child' + idx).setValidators([Validators.required]);
+                                    form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
                                 }
-                            } else {
-                                form.get('chk' + index + 'Child' + idx).setValidators([Validators.required]);
-                                form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
                             }
                         });
                     } else {
@@ -303,10 +326,8 @@ export class Nrq02000Service {
         return { data: certificates, flag: has, total: hasTotal, form: form };
     }
 
-    pdf(): boolean {
-        this.ajax.post(URL.CREATE_FORM + "nrq02000", {}, response => {
-            this.ajax.download(URL.FORM_PDF + "nrq02000" + "/file");
-        });
+    pdf(data: any): boolean {
+        this.reqService.getPdf(URL.CREATE_FORM, data);
         return true;
     }
 
@@ -386,6 +407,13 @@ export class Nrq02000Service {
         });
     }
 
+    /**
+     * จัดการข้อมูล เพื่อส่งไป บันทึก(`save`) หรือ เปลี่ยนสถานะ (`status`)
+     * @param certificates ลิสต์ของ `certificates`
+     * @param files ค่า `Files` ที่อัพโหลดไว้
+     * @param form ค่า `FormGroup` จาก `Component`
+     * @param addons ข้อมูลเพิ่มเติม
+     */
     bindingData(certificates: Certificate[], files: any, form: FormGroup, addons: any): FormData {
         let formData = new FormData();
         let _data = [];
@@ -458,7 +486,6 @@ export class Nrq02000Service {
             payMethodSelect: form.controls.payMethodSelect.value,
             subAccMethodSelect: form.controls.subAccMethodSelect.value,
             telReq: form.controls.telReq.value,
-            // tmbReceiptChk: form.controls.tmbReceiptChk.value,
             certificates: _data,
             changeNameFileName: addons.changeNameFile,
             copyFileName: addons.idCardFile,
@@ -492,7 +519,6 @@ export enum ValidatorMessages {
     corpName1 = "corpName1",
     acceptNo = "acceptNo",
     departmentName = "departmentName",
-    // tmbReceiptChk = "tmbReceiptChk",
     telReq = "telReq",
     address = "address",
     note = "note",

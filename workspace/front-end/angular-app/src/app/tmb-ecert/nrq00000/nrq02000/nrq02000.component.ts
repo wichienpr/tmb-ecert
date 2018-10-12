@@ -81,7 +81,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       changeNameFile: null
     };
     this.store.select("user").subscribe(user => this.user = user);
-    // Initial Data
     this.init();
   }
 
@@ -98,6 +97,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.reqTypeChange(code);
   }
 
+  /**
+   * โหลดข้อมูล
+   * @ `dropdownObj` ข้อมูล dropdown {`reqType`,`customSeg`,`payMethod`,`subAccMethod`}.
+   * @ `form` ข้อมูลแบบฟอร์มคำขอ
+   */
   async init() {
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
@@ -183,6 +187,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
+  get btnRequestor() { return this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN) }
+  get btnChecker() { return this.roles(ROLES.CHECKER) || this.roles(ROLES.ADMIN) }
+  get btnMaker() { return this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN) }
+
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
     // 10002	1	สถานะคำขอ	ดำเนินการชำระเงิน
@@ -195,6 +204,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     // 10009	1	สถานะคำขอ	รออัพโหลด Certificate
     // 10010	1	สถานะคำขอ	ดำเนินการสำเร็จ
     // 10011	1	สถานะคำขอ	รอบันทึกคำขอ(ลูกค้าทำรายการเอง)
+    if (this.common.isRole(ROLES.ADMIN)) {
+      return "10001";
+    }
     if (this.common.isRole(ROLES.REQUESTOR)) {
       return "10001";
     }
@@ -205,12 +217,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, event) {
     event.preventDefault();
-    // this.reqTypeSelect.nativeElement.querySelector('input').focus()
     const data = {
       glType: this.glType,
       tranCode: this.tranCode,
       accType: this.accType,
-      // status: this.status,
       acctno: this.acctno,
       changeNameFile: this.form.controls.changeNameFile.value ? null : this.data.changeNameFile,
       idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
@@ -249,7 +259,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
-    this.isdownload = this.service.pdf();
+    const data = { data: this.form.value, addons: "jingbell" };
+    this.isdownload = this.service.pdf(data);
   }
 
   cancel() {
@@ -303,33 +314,35 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           if (!obj.feeDbd) {
             obj.children = await this.service.reqTypeChange(obj.code);
             obj.children.forEach((ob, idx) => {
-              if (this.calendar.length !== obj.children.length) {
-                this.calendar[idx] = {
-                  calendarId: `cal${index}Child${idx}`,
-                  calendarName: `cal${index}Child${idx}`,
-                  formGroup: this.form,
-                  formControlName: `cal${index}Child${idx}`,
-                  type: CalendarType.DATE,
-                  formatter: CalendarFormatter.DEFAULT,
-                  local: CalendarLocal.EN,
-                  icon: 'calendar'
-                };
-              }
-              if (idx === obj.children.length - 1) {
-                if (this.form.controls[`etc${index}Child${idx}`]) {
-                  this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-                } else {
-                  this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+              if (idx != 0) {
+                if (this.calendar.length !== obj.children.length) {
+                  this.calendar[idx] = {
+                    calendarId: `cal${index}Child${idx}`,
+                    calendarName: `cal${index}Child${idx}`,
+                    formGroup: this.form,
+                    formControlName: `cal${index}Child${idx}`,
+                    type: CalendarType.DATE,
+                    formatter: CalendarFormatter.DEFAULT,
+                    local: CalendarLocal.EN,
+                    icon: 'calendar'
+                  };
                 }
-              }
-              if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
-                this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-              } else {
-                this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                if (idx === obj.children.length - 1) {
+                  if (this.form.controls[`etc${index}Child${idx}`]) {
+                    this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                  } else {
+                    this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
+                }
+                if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
+                  this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                  this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                  this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                } else {
+                  this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                  this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                  this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                }
               }
             });
           }
@@ -454,7 +467,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls[`etc${parent}Child${child}`].setValue('');
     }
     if (!this.form.controls[`chk${parent}Child${child}`].value) {
-      // this.form.controls[`cal${parent}Child${child}`].setValue(dateLocaleEN(new Date()));
       this.form.controls[`cer${parent}Child${child}`].setValue(1);
     }
   }
@@ -501,8 +513,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls.accNo.setValue(Acc.revertAccNo(accNo.value));
   }
 
-  invalid(input: FormControl): boolean {
-    return input && (input.dirty || input.touched || this.ngForm.submitted) && input.invalid;
+  invalid(control: string): boolean {
+    const controls = this.form.controls;
+    return controls[control] && (controls[control].dirty || controls[control].touched || this.ngForm.submitted) && controls[control].invalid;
   }
 
   download(fileName: string) {

@@ -1,16 +1,16 @@
 export interface RequestCertificate {
-    reqCertificateId: Number
-	reqFormId: Number
-	certificateCode: String
-	totalNumber: Number
-	createdById: String
-	createdByName: String
+    reqCertificateId: number
+	reqFormId: number
+	certificateCode: string
+	totalNumber: number
+	createdById: string
+	createdByName: string
 	createdDateTime: Date
-	updateById: String
-	updateByName: String
+	updateById: string
+	updateByName: string
 	updateDateTime: Date
 	registeredDate?: Date
-	statementYear?: Number
+	statementYear?: number
 	acceptedDate?: Date
 	other?: string
 }

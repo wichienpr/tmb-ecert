@@ -75,8 +75,14 @@ export class Crs02000Component implements OnInit {
     }
   }
 
+  get btnApprove() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
+  get btnReject() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
+  get btnPrintReciept() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+  get btnPrintCover() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+  get btnUpload() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+
   roles(role: ROLES) {
-    return this.common.isRole(role);
+    return this.common.isRole(role) || this.common.isRole(ROLES.ADMIN);
   }
 
   tabs(name: string) {
