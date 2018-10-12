@@ -48,14 +48,6 @@ export class Sup01000Service {
         }
         let path = URL.EXPORT_EXCELL+"/"+roleName+"/"+roleStatus;
         return this.ajax.download(path);
-        // const path = "/api/setup/sup01000/exportRole";
-        // const httpOptions = {
-        //     headers: new HttpHeaders({'responseType':  'arraybuffer'})
-        // };
-        // return this.httpClient.post(AjaxService.CONTEXT_PATH + path, {
-        //     listRole: form,
-        //     fileUpload:null
-        // },httpOptions);
     }
     getStatusType(){
         return this.dropdown.getStatusType();
@@ -80,23 +72,5 @@ export class Sup01000Service {
 
     }
 
-    // DownloadData(model:any):Observable<any>{
-    //     const url = window.URL.createObjectURL(new Blob([]));
-    //     return new Observable(obs => {
-    //       var oReq = new XMLHttpRequest();
-    //       oReq.open("POST", url, true);
-    //       oReq.setRequestHeader("content-type", "application/json");
-    //       oReq.responseType = "arraybuffer";
-      
-    //       oReq.onload = function (oEvent) {
-    //         var arrayBuffer = oReq.response;
-    //         var byteArray = new Uint8Array(arrayBuffer);
-    //         obs.next(byteArray);
-    //       };
-      
-    //       const body = JSON.stringify(model);
-    //       oReq.send(body);
-    //     });
-    //   }
 
 }

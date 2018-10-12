@@ -3,7 +3,11 @@ import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Lov, Modal } 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Btm01000Service } from 'app/tmb-ecert/btm00000/btm01000/btm01000.service';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
-declare var $: any;
+import { ModalService, CommonService } from 'app/baiwa/common/services';
+import { ModalComponent } from 'app/baiwa/common/components/modal/modal.component';
+import { MESSAGE_STATUS, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/components/calendar/ng-calendar.component';
+import { Btm01000 } from './btm01000.model';
 @Component({
   selector: 'app-btm01000',
   templateUrl: './btm01000.component.html',
@@ -12,48 +16,52 @@ declare var $: any;
 export class Btm01000Component implements OnInit {
 
   @ViewChild("batchMonitorDT")
-  batchMonitorDT: DatatableDirective
-  
-  isShowResult:boolean;
+  batchMonitorDT: DatatableDirective;
+
+  @ViewChild("modalreRun")
+  modalreRun: ModalComponent;
+
+  @ViewChild("calendarRerunFrom")
+  calendarRerunFrom: NgCalendarComponent;
+
+  @ViewChild("calendarRerunTo")
+  calendarRerunTo: NgCalendarComponent;
+
+
+  isShowResult: boolean;
   calendar1: Calendar;
   calendar2: Calendar;
-  calendarReturnFrom:Calendar;
-  calendarReturnTo:Calendar;
+  calendarreRunFrom: NgCalendarConfig;
+  calendarreRunTo: NgCalendarConfig;
   serchForm: FormGroup;
-  returnForm :FormGroup;
+  reRunForm: FormGroup;
 
   dropdownBatchJob: any;
   dropdownJobMonitor: any;
-  requestObj:any;
-  responseObj:any;
-  detailMSG:String;
+  requestObj: any;
+  messageRes: any;
+  detailMSG: String;
+  touchedreRun: boolean;
 
-  touchedReturn:boolean;
+  batchMonitorConfig: DatatableCofnig;
+  rerunDateOnly: boolean = true;
+  retrunModal: Modal;
 
-  batchMonitorConfig:DatatableCofnig;
-  detailModal: Modal = {
-    modalId: "detailModalId",
-    type: "custom"
-  };
+  tempItem: Btm01000;
 
-  retrunModal: Modal = {
-    modalId: "retrunModalId",
-    type: "custom"
-  };
-
-  constructor(private service: Btm01000Service) {
+  constructor(private service: Btm01000Service, private modalService: ModalService, private commonserice: CommonService) {
 
 
     this.serchForm = new FormGroup({
-      dateForm: new FormControl(null, Validators.required),
+      dateFrom: new FormControl(null, Validators.required),
       dateTo: new FormControl(null, Validators.required),
       batchType: new FormControl(null),
       operationType: new FormControl(null),
     });
 
-    this.returnForm = new FormGroup({
-      returnDateForm: new FormControl(null, Validators.required),
-      returnDateTo: new FormControl(null, Validators.required),
+    this.reRunForm = new FormGroup({
+      reRunDateForm: new FormControl(null, Validators.required),
+      reRunDateTo: new FormControl(null, Validators.required),
     });
 
 
@@ -61,7 +69,7 @@ export class Btm01000Component implements OnInit {
       calendarId: "cal1",
       calendarName: "cal1",
       formGroup: this.serchForm,
-      formControlName: "dateForm",
+      formControlName: "dateFrom",
       type: CalendarType.DATE,
       formatter: CalendarFormatter.DEFAULT,
       local: CalendarLocal.EN,
@@ -82,30 +90,6 @@ export class Btm01000Component implements OnInit {
       // initial: new Date
     };
 
-    this.calendarReturnFrom = {
-      calendarId: "returnForm",
-      calendarName: "returnForm",
-      formGroup: this.returnForm,
-      formControlName: "returnDateForm",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      endId: "returnTo",
-      // initial: new Date
-    };
-    this.calendarReturnTo = {
-      calendarId: "returnTo",
-      calendarName: "returnTo",
-      formGroup: this.returnForm,
-      formControlName: "returnDateTo",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      startId: "returnForm",
-      // initial: new Date
-    };
 
     this.dropdownBatchJob = {
       action: {
@@ -132,101 +116,145 @@ export class Btm01000Component implements OnInit {
         labelName: "name"
       }
     };
-    this.requestObj = {
-      dateFrom:'',
-      dateTo:'',
-      batchJobType:'',
-      batchStatus:''
+    this.messageRes = {
+      data: "",
+      message: ""
     }
-    this.responseObj =[{}];
+    this.rerunDateOnly = true;
+  }
 
-    this.isShowResult = false;
-    this.detailMSG ='';
-    this.touchedReturn = false;
+  ngOnInit() {
+    this.touchedreRun = false;
+
+    this.retrunModal = {
+      modalId: "retrunModalId",
+      type: "custom"
+    };
 
     this.service.getDropdownBatchJob().subscribe((obj: Lov[]) => this.dropdownBatchJob.action.values = obj);
     this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) => this.dropdownJobMonitor.action.values = obj);
 
-  }
-
-  ngOnInit() {
-
     this.batchMonitorConfig = {
       url: "/api/btm/btm01000/getListBatch2",
-      serverSide: false,
-      useBlockUi : true
+      serverSide: true,
+      useBlockUi: true
+    };
+
+    this.calendarreRunFrom = {
+      id: "reRunDateForm",
+      formControl: this.reRunForm.get("reRunDateForm"),
+      endCalendar: "reRunDateTo",
+      formatter: "dd/mm/yyyy"
+    };
+    this.calendarreRunTo = {
+      id: "reRunDateTo",
+      formControl: this.reRunForm.get("reRunDateTo"),
+      endCalendar: "reRunDateForm",
+      formatter: "dd/mm/yyyy"
     };
   }
 
   calendarValue(name, e) {
     this.serchForm.controls[name].setValue(e);
-    console.log(this.serchForm);
-    console.log(this.serchForm.controls[name].value);
   }
 
-  calendarReturnValue(name, e) {
-    this.returnForm.controls[name].setValue(e);
-    console.log(this.returnForm);
-    console.log(this.returnForm.controls[name].value);
-  }
+  // calendarreRunValue(name, e) {
+  //   this.reRunForm.controls[name].setValue(e);
+  // }
 
-  doSearch(){
-    // Object.keys(this.serchForm.controls).forEach(controlName => this.serchForm.controls[controlName].markAsTouched());
-    if(!this.serchForm.touched){
+  doSearch() {
+    if (!this.serchForm.touched) {
       Object.keys(this.serchForm.value).forEach(element => {
         let fc = this.serchForm.get(element);
-        fc.markAsTouched({onlySelf : true});
+        fc.markAsTouched({ onlySelf: true });
       });
     }
-    // console.log("dateTo : ", this.serchForm.valid);
-    // console.log("dateForm : ",  this.serchForm.value.dateForm);
-    if (this.serchForm.valid){
-      this.isShowResult = true;
-      this.requestObj.dateFrom = this.serchForm.value.dateForm;
-      this.requestObj.dateTo = this.serchForm.value.dateTo;
-      this.requestObj.batchJobType = this.serchForm.value.batchType;
-      this.requestObj.batchStatus = this.serchForm.value.operationType;
-      // this.service.getListBatch(this.requestObj).subscribe(res=>{
-      //   this.responseObj = res;
-      //   // console.log("res =>",res );
-      // },error=>{
-  
-      // });
-
+    if (this.serchForm.valid) {
+      this.batchMonitorDT.searchParams(this.serchForm.value)
       this.batchMonitorDT.search()
     }
-
-
   }
-  actionChange(){
+  actionChange() {
 
   }
-  showModalDetail(index) {
-    this.detailMSG = this.responseObj[index].errorDesc
-    $('#detailModalId').modal('show');
+  showModalDetail(item) {
+    let modal: Modal = {
+      msg: item.errorDesc
+    }
+    this.modalService.alert(modal);
   }
 
-  showModalReturn() {
-    this.touchedReturn = true;
-    $('#retrunModalId').modal('show');
-  }
-  closeModal(){
-    $('#detailModalId').modal('hide');
-    $('#retrunModalId').modal('hide');
+  showModalreRun(item) {
+    let dateF: string = item.endofdate;
+    this.touchedreRun = true;
+    console.log("date format", dateF.substr(0, 10))
+    if (item.jobtypeCode == 60003 || item.jobtypeCode == 60002 || item.jobtypeCode == 60001) {
+      if (item.jobtypeCode != 60003) {
+        this.rerunDateOnly = false;
+        this.reRunForm.get("reRunDateForm").patchValue(dateF.substr(0, 10));
+      } else {
+        this.rerunDateOnly = true;
+      }
+      this.tempItem = item;
+      this.modalreRun.showModal();
+    } else {
+      const modalConf: Modal = {
+        msg: `<label>ท่านต้องการ Rerun Job หรือไม่</label>`,
+        title: "ยืนยันการ Rerun",
+        color: "notification"
+      }
+      this.modalService.confirm((e) => {
+        if (e) {
+          this.callRerunJobAPI(item);
+          console.log("comfirm modal ");
+        }
+      }, modalConf);
+    }
   }
 
-  clearSearchData(){
-    // console.log("dateTo : ",  this.serchForm.touched);
-    // var initial = new Date();
-    $('#cal1').calendar('set date', '');
-    $('#cal2').calendar('set date', '');
-    this.calendarReturnFrom
+  closeModal() {
+    this.modalreRun.closeModal();
   }
 
-  get dateForm (){
-    return this.serchForm.get("dateForm");
+  clearSearchData() {
+    this.serchForm.reset();
+    this.batchMonitorDT.clear();
   }
-  get dateTo (){
+  continueRerun() {
+    this.tempItem.endofdate = this.reRunForm.get("reRunDateForm").value
+    this.callRerunJobAPI(this.tempItem)
+
+  }
+  callRerunJobAPI(itme) {
+    this.service.callRerunJobService(itme).subscribe(res => {
+      this.messageRes = res;
+      if (this.messageRes.message == MESSAGE_STATUS.SUCCEED) {
+        // this.modalService.alert(this.messageRes.message);
+        this.modalreRun.closeModal();
+      } else {
+        this.modalService.alert(this.messageRes.message);
+      }
+    }, error => {
+
+    }, () => {
+      // this.tempItem = null;
+    })
+  }
+
+  modalEvent(event: any) {
+    console.log("modal event : ", event);
+    this.calendarRerunFrom.refresh();
+    this.calendarRerunTo.refresh();
+  }
+
+  get dateFrom() {
+    return this.serchForm.get("dateFrom");
+  }
+  get dateTo() {
     return this.serchForm.get("dateTo");
   }
+  get btnrerun() {
+    return this.commonserice.isAuth(PAGE_AUTH.P0001101)
+  }
+
 }

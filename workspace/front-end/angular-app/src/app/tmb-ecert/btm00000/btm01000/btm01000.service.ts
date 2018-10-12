@@ -6,7 +6,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 const URL = {
   BTM03000_GET: "/api/btm/btm01000/getListBatch",
-  SUP03000_SAVE: "/api/setup/sup02000/saveParameter"
+  // SUP03000_SAVE: "/api/setup/sup02000/saveParameter"
+  BTM01000RERUN: "/api/btm/btm01000/reRunJob"
+
 }
 
 @Injectable({
@@ -30,6 +32,10 @@ export class Btm01000Service {
   getListBatch(form){
 
     return this.httpClient.post(AjaxService.CONTEXT_PATH + URL.BTM03000_GET,form);
+  }
+
+  callRerunJobService(form){
+    return this.httpClient.post(AjaxService.CONTEXT_PATH + URL.BTM01000RERUN,form);
   }
 
 

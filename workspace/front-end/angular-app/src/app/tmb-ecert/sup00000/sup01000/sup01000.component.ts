@@ -225,32 +225,6 @@ export class Sup01000Component implements OnInit {
     return this.uploadForm.get("fileUpload");
   }
 
-  // exportToExcel() {
-  //   // this.loadingOverlayFlag = true;
-  //   this.service.DownloadData(this.objRoleResult).subscribe(result=>{
-  //     // console.log(result);
-  //     this.downloadFile(result,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'export.xlsx');
-  //   })
-  // }
-  // downloadFile(blob: any, type: string, filename: string) {
-
-  //   var binaryData = [];
-  //   binaryData.push(blob);
-
-  //   const url = window.URL.createObjectURL(new Blob(binaryData, { type: type })); // <-- work with blob directly
-
-  //    // create hidden dom element (so it works in all browsers)
-  //    const a = document.createElement('a');
-  //    a.setAttribute('style', 'display:none;');
-  //    document.body.appendChild(a);
-
-  //    // create file, attach to hidden element and open hidden element
-  //    a.href = url;
-  //    a.download = filename;
-  //    a.click();
-  // }
-
-
 
 }
 class AppState {

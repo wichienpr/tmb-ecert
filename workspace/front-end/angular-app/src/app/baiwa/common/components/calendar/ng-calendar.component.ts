@@ -29,12 +29,22 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
         }, this.config);
 
         // console.log("config", this.configObj);
+        
+        if (this.config.formControl == null){
+            throw new Error("ระบุ formcontrol ไม่ถูกต้อง กรุณาตรวจสอบ formcontrol")
+        }
     }
 
     ngAfterViewInit() {
         // console.log("ngAfterViewInit" , new Date().getTime());
 
+      this.refresh();
+
+    }
+
+    refresh(){
         const { id, type, formatter, local, startCalendar, endCalendar, formControl } = this.configObj;
+
         $(`#${id}`).calendar({
             type: type || 'date',
             text: DateConstant.text,
@@ -183,5 +193,6 @@ export interface NgCalendarConfig {
     formControl: AbstractControl
     startCalendar?: string
     endCalendar?: string,
-    placeholder?: string
+    placeholder?: string,
+    formatter?:string
 }
