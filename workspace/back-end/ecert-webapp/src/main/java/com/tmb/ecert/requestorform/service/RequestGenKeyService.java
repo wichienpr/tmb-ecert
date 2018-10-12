@@ -17,7 +17,7 @@ public class RequestGenKeyService {
 	
 	public synchronized String getNextKey() {
 		String keyyear = DateFormatUtils.format(new Date(), "yyyyMMdd");
-		String keyyearDisplay = DateFormatUtils.format(new Date(), "yyyyMMMdd");
+		String keyyearDisplay = DateFormatUtils.format(new Date(), "ddMMMyyyy");
 		Integer currentRunningNo = requestGenKeyDao.getNextKey(keyyear);
 		int nextRunning = currentRunningNo + 1;
 		if(nextRunning == 1) {
