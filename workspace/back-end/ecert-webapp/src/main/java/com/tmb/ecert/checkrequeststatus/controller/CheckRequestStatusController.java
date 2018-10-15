@@ -40,7 +40,7 @@ public class CheckRequestStatusController {
 
 	@PostMapping("/upLoadCertificate")
 	@ResponseBody
-	public CommonMessage<String> upLoadCertificate(@ModelAttribute CertificateVo certificateVo ) {
+	public CommonMessage<String> upLoadCertificate(@ModelAttribute CertificateVo certificateVo) {
 		return checkRequestCerService.upLoadCertificateByCk(certificateVo);
 	}
 	

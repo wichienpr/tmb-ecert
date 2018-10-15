@@ -101,7 +101,7 @@ public class ReportPdfService {
 		upload.createFile(reportFile, folder, name);
 
 		ReportUtils.closeResourceFileInputStream(params);
-		return name;
+		return "RECEIPT_" + req.getTmbRequestNo();
 	}
 
 	
@@ -128,7 +128,7 @@ public class ReportPdfService {
 		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
 		ReportUtils.closeResourceFileInputStream(params);
 
-		return name;
+		return "COVERSHEET_" + req.getTmbRequestNo();
 	}
 	
 	
@@ -182,7 +182,7 @@ public class ReportPdfService {
 		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
 		ReportUtils.closeResourceFileInputStream(params02);
 
-		return name;
+		return "REQFORM_"+vo.getTmpReqNo();
 	}
 
 

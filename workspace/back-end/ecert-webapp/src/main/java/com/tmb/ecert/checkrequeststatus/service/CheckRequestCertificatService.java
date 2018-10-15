@@ -36,12 +36,13 @@ public class CheckRequestCertificatService {
 			}
 			try {
 				RequestForm req = new RequestForm();
+				req.setCertificateFile(certificates);
 				req.setReqFormId(certificateVo.getId());
 				req.setStatus(StatusConstant.SUCCEED);
 				if (certificateDao.upDateCertificateByCk(req) == true) {
 					msg.setMessage("SUCCESS");
 				} else {
-					msg.setMessage("Prees_Upload_ReceiptTax");
+					msg.setMessage("PRESS_UPLOAD_RECIEPTTAX");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
