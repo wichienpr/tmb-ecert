@@ -105,26 +105,27 @@
       <diV style="color: rgb(255, 255, 255)">ระบุเอกสาร Certificate</diV>
     </div>
     <div class="content">
-      <div class="ui form">
+      <div class="ui form" [formGroup]="formCert">
 
         <div class="inline fields">
-          <div class="three wide field ">
+          <div class="three wide field">
             <label>เอกสาร Certificate</label>
           </div>
-          <div class="eight wide field ">
-            <input type="file">
+          <div class="eight wide field" [ngClass]="{ 'error': invalid(formCert, 'certFile') }">
+            <input type="file" name="certFile" (change)="changeUpload('certFile', $event)" formControlName="certFile">
           </div>
         </div>
+
       </div>
     </div>
     <div class="actions">
       <div class="ui center aligned grid">
-        <div class="seven btn-bot wide column">
-          <button class="ui blue positive basic button">
+        <div class="seven btn-group wide column">
+          <button type="submit" (click)="saveCertFile()" class="ui blue basic button" [ngClass]="{'positive': formCert.controls.certFile.value}">
             <i class="check circle outline icon"></i>
             ตกลง
           </button>
-          <button class="ui grey negative basic button">
+          <button type="button" class="ui grey negative basic button">
             <i class="times circle outline icon"></i>
             ยกเลิก
           </button>

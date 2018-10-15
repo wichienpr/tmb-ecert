@@ -6,3 +6,4 @@ export { DateStringPipe } from './date-string.pipe';
 export { CommaStringBrPipe } from './comma-string-br.pipe';
 export { DatetimeStringPipe } from './datetime-string.pipe';
 export { ThaiMoneyString } from './thai-money-string.pipe';
+export { TmbReqNumberPipe } from './tmb-req-number.pipe';

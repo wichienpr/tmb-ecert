@@ -3,6 +3,7 @@ import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } 
 import { Crs02000Service } from './crs02000.service';
 import { ROLES } from 'app/baiwa/common/constants';
 import { CommonService } from 'app/baiwa/common/services';
+import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 
 declare var $: any;
 @Component({
@@ -13,47 +14,56 @@ declare var $: any;
 export class Crs02000Component implements OnInit {
 
   _roles = ROLES;
-  
+
+  formCert: FormGroup;
+
   id: string = "";
   date: Date = new Date();
   dataLoading: boolean = false;
+  certSubmitted: boolean = false;
   history: RequestForm[] = [];
   chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
   cert: RequestCertificate[] = [];
-  paidModal: Modal = {
-    modalId: "desp",
-    type: "custom"
-  };
-  allowedModal: Modal = {
-    modalId: "allowed",
-    type: "custom"
-  };
-  documentModal: Modal = {
-    modalId: "document",
-    type: "custom"
-  };
-  allowed: string[] = [
-    "กรุณาเลือก",
-    "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย",
-    "ลูกค้าแนบเอกสารไม่ครบถ้วน",
-    "ลูกค้าขอยกเลิกคำขอ",
-    "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
-    "อื่นๆ",
-  ];
-  tab: any = {
-    A: "active",
-    B: ""
-  };
+  paidModal: Modal;
+  allowedModal: Modal;
+  documentModal: Modal;
+  allowed: string[];
+  tab: any;
+
+  files: any;
 
   constructor(
     private service: Crs02000Service,
-    private common: CommonService
-    ) {
+    private common: CommonService,
+    private formBuilder: FormBuilder
+  ) {
     this.init();
+    this.paidModal = { modalId: "desp", type: "custom" };
+    this.allowedModal = { modalId: "allowed", type: "custom" };
+    this.documentModal = { modalId: "document", type: "custom" };
+    this.allowed = [
+      "กรุณาเลือก",
+      "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย",
+      "ลูกค้าแนบเอกสารไม่ครบถ้วน",
+      "ลูกค้าขอยกเลิกคำขอ",
+      "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
+      "อื่นๆ",
+    ];
+    this.files = {
+      certFile: null,
+    };
+    this.tab = {
+      A: "active",
+      B: ""
+    };
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.formCert = this.formBuilder.group({
+      certFile: ['', Validators.required]
+    });
+  }
 
   async init() {
     this.id = this.service.getId();
@@ -104,11 +114,40 @@ export class Crs02000Component implements OnInit {
   pdf(what: string) {
     const cover = "crsCover02000";
     const receipt = "crsReceipt02000";
-    this.service.pdf(what == 'c' ? cover : receipt);
+    this.service.pdf(what == 'c' ? cover : receipt, this.id, this.data.tmbRequestNo);
+  }
+
+  invalid(formGroup: FormGroup, control: string): boolean {
+    const controls = formGroup.controls;
+    return controls[control] && (controls[control].dirty || controls[control].touched || this.certSubmitted) && controls[control].invalid;
+  }
+
+  changeUpload(control: string, data: any) {
+    this.files[control] = data.target.files[0];
   }
 
   back() {
     this.service.cancel();
   }
 
+  saveCertFile() {
+    this.certSubmitted = true;
+    if (this.formCert.valid) {
+      const data: CertFile = {
+        id: parseInt(this.id),
+        status: "",
+        certificates: "",
+        certificatesFile: this.files.certFile
+      };
+      this.service.saveCertFile(data);
+    }
+  }
+
+}
+
+interface CertFile {
+  id: number;
+  status: string;
+  certificates: string;
+  certificatesFile: FormData;
 }

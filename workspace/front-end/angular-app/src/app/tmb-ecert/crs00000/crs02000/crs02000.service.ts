@@ -11,9 +11,10 @@ const URL = {
   CER_BY_TYPE: "/api/crs/crs02000/cert/list",
   CER_BY_TYPECODE: "/api/cer/typeCode",
   CREATE_COVER: "/api/report/pdf/coverSheet/",
-  CREATE_RECEIPT: "/api/report/pdf/receiptTax/",
+  CREATE_RECEIPT: "/api/report/pdf/createAndUpload/receiptTax/",
   REQUEST_HISTORY: "/api/history/list",
-  PDF: "/api/report/pdf/"
+  PDF: "/api/report/pdf/view/",
+  UPLOAD: "/api/crs/crs01000/upLoadCertificate"
 }
 
 @Injectable({
@@ -30,30 +31,6 @@ export class Crs02000Service {
 
   getId() {
     return this.route.snapshot.queryParams["id"] || "";
-  }
-
-  tabsToggle(name: string, tab: any): any {
-    for (let key in tab) {
-      if (name == key) {
-        tab[key] = "active";
-      } else {
-        tab[key] = "";
-      }
-    }
-    return tab;
-  }
-
-  approveToggle(): any {
-    const modal: Modal = {
-      approveMsg: "ยืนยัน",
-      rejectMsg: "ยกเลิก",
-      type: "confirm",
-      size: "small",
-      modalId: "approve",
-      msg: `<label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>`,
-      title: "อนุมัติการชำระเงินค่าธรรมเนียม"
-    };
-    this.modal.confirm(e => { }, modal);
   }
 
   getHistory(id: string) {
@@ -98,6 +75,31 @@ export class Crs02000Service {
       let data: RequestCertificate[] = response.json() as RequestCertificate[];
       return data;
     });
+  }
+
+
+  tabsToggle(name: string, tab: any): any {
+    for (let key in tab) {
+      if (name == key) {
+        tab[key] = "active";
+      } else {
+        tab[key] = "";
+      }
+    }
+    return tab;
+  }
+
+  approveToggle(): any {
+    const modal: Modal = {
+      approveMsg: "ยืนยัน",
+      rejectMsg: "ยกเลิก",
+      type: "confirm",
+      size: "small",
+      modalId: "approve",
+      msg: `<label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>`,
+      title: "อนุมัติการชำระเงินค่าธรรมเนียม"
+    };
+    this.modal.confirm(e => { }, modal);
   }
 
   matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
@@ -146,24 +148,44 @@ export class Crs02000Service {
     }
   }
 
-  pdf(what: string) {
-      const cover = "crsCover02000";
-      const receipt = "crsReceipt02000";
-      if (what == cover) {
-        this.ajax.post(URL.CREATE_COVER + cover, {}, response => {
-            this.ajax.download(URL.PDF + cover+ "/file");
-        });
-      }
+  pdf(what: string, id: string, tmbNo: string = "") {
 
-      if (what == receipt) {
-        this.ajax.post(URL.CREATE_RECEIPT + receipt, {}, response => {
-            this.ajax.download(URL.PDF + receipt+ "/file");
-        });
-      }
+    const cover = "crsCover02000";
+    const receipt = "crsReceipt02000";
+
+    if (what == cover) {
+      this.ajax.post(URL.CREATE_COVER, { id: parseInt(id), tmpReqNo: tmbNo }, response => {
+        this.ajax.download(URL.PDF + response._body + "/download");
+      });
+    }
+
+    if (what == receipt) {
+      this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
+        this.ajax.download(URL.PDF + response._body + "/download");
+      });
+    }
+
+  }
+
+  saveCertFile(data: CertFile) {
+    const formData: FormData =  new FormData();
+    for(let key in data) {
+      formData.append(key, data[key]);
+    }
+    this.ajax.upload(URL.UPLOAD, formData, response => {
+      console.log('response => ', response);
+    });
   }
 
   cancel(): void {
     this.location.back();
   }
 
+}
+
+interface CertFile {
+  id: number;
+  status: string;
+  certificates: string;
+  certificatesFile: FormData;
 }

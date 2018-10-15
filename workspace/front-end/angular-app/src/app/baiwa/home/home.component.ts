@@ -11,12 +11,12 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit ,AfterViewInit{
+export class HomeComponent implements OnInit, AfterViewInit {
 
   userdetail: Observable<UserDetail>;
   dashboard: Observable<EcerDashBoard>;
 
-  constructor(private store: Store<AppState>, private dashboardService:DashboardService,private router: Router) {
+  constructor(private store: Store<AppState>, private dashboardService: DashboardService, private router: Router) {
     this.userdetail = this.store.select("user");
     this.dashboard = this.store.select("ecerdashboard");
   }
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit ,AfterViewInit{
 
   ngAfterViewInit(): void {
     this.dashboardService.getDashBoard().subscribe(
-      (data:any) => {
+      (data: any) => {
         // console.log(data);
         const initdashBord: EcerDashBoard = {
           newReq: data.newrequest,
@@ -41,10 +41,10 @@ export class HomeComponent implements OnInit ,AfterViewInit{
           waituploadcert: data.waitUploadCertificate,
           complete: data.succeed,
           keyinReq: data.waitSaveRequest
-      };
+        };
         this.store.dispatch(new DashboardAction.Update(initdashBord));
       },
-      error=>{
+      error => {
         console.log("error");
         alert("ไม่สามารถทำรายการได้.")
       }
@@ -54,16 +54,16 @@ export class HomeComponent implements OnInit ,AfterViewInit{
 
 
   searchStatus(code): void {
-    if(code==10011){
+    if (code == 10011) {
       this.router.navigate(["/srn/srn01000"], {
         queryParams: { codeStatus: code }
       });
-    }else{
+    } else {
       this.router.navigate(["/crs/crs01000"], {
         queryParams: { codeStatus: code }
       });
     }
-   
+
   }
 
 
@@ -72,5 +72,5 @@ export class HomeComponent implements OnInit ,AfterViewInit{
 
 interface AppState {
   user: UserDetail,
-  ecerdashboard : EcerDashBoard
+  ecerdashboard: EcerDashBoard
 }

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { Modal } from 'models/';
-import { ModalService } from 'app/baiwa/common/services';
 import { Nrq01000Service } from './nrq01000.service';
 import { Router } from '@angular/router';
 
@@ -16,12 +14,11 @@ declare var $: any;
 export class Nrq01000Component implements OnInit {
 
   nrq01000: Modal;
+  tmbReqNum: string = "";
 
   constructor(
-    private modal: ModalService,
     private service: Nrq01000Service,
-    private router: Router,
-    private location: Location
+    private router: Router
   ) {
     this.nrq01000 = {
       modalId: "nrq01000",
@@ -37,41 +34,18 @@ export class Nrq01000Component implements OnInit {
 
   confirm = async () => {
     let response = await this.service.save();
+    this.tmbReqNum = response.data;
     this.nrq01000 = {
       modalId: "nrq01000",
       type: "custom",
-      title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
-      msg: "TMB Req. No: " + response.data
+      title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)"
     };
     $("#nrq01000").modal('show');
   }
 
-  // confirm = async () => {
-  //   const modalConf: Modal = {
-  //     title: "ยืนยันการทำรายการ ?",
-  //     msg: ""
-  //   };
-  //   this.modal.confirm(async e => {
-  //     if (e) {
-  //       let response = await this.service.save();
-  //       setTimeout(() => {
-  //         this.nrq01000 = {
-  //           modalId: "nrq01000",
-  //           type: "custom",
-  //           title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
-  //           msg: "TMB Req. No: " + response.data
-  //         };
-  //         $("#nrq01000").modal('show');
-  //       }, 200);
-  //     } else {
-  //       this.location.back();
-  //     }
-  //   }, modalConf);
-  // }
-
   print = () => {
     this.requestPage();
-    this.service.pdf();
+    this.service.pdf(this.tmbReqNum);
   }
 
   requestPage() {

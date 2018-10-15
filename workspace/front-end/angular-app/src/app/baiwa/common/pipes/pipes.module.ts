@@ -7,7 +7,8 @@ import {
     ExponentialStrengthPipe,
     CommaStringBrPipe,
     ThaiMoneyString,
-    DatetimeStringPipe
+    DatetimeStringPipe,
+    TmbReqNumberPipe
 } from "pipes/";
 
 @NgModule({
@@ -20,7 +21,8 @@ import {
         ExponentialStrengthPipe,
         CommaStringBrPipe,
         ThaiMoneyString,
-        DatetimeStringPipe
+        DatetimeStringPipe,
+        TmbReqNumberPipe
     ],
     exports: [
         AccountNumberPipe,
@@ -30,7 +32,8 @@ import {
         ExponentialStrengthPipe,
         CommaStringBrPipe,
         ThaiMoneyString,
-        DatetimeStringPipe
+        DatetimeStringPipe,
+        TmbReqNumberPipe
     ]
 })
 export class PipesModule { }

@@ -45,7 +45,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   _roles = ROLES;
 
   data: RequestForm = initRequestForm;
-  tmbReqFormId: String;
+  tmbReqFormId: String = "";
   form: FormGroup;
   files: any;
   reqDate: Date;

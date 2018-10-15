@@ -5,8 +5,8 @@ const URL = {
   GEN_KEY: "/api/nrq/generate/key",
   SAVE_BY_SELF: "/api/nrq/save/by/self",
   NRQ_PDF: "/api/nrq/pdf/",
-  CREATE_FORM: "/api/report/pdf/reqForm/",
-  FORM_PDF: "/api/report/pdf/"
+  CREATE_FORM: "/api/report/pdf/reqFormOriginal",
+  FORM_PDF: "/api/report/pdf/view/"
 }
 
 @Injectable({
@@ -27,9 +27,9 @@ export class Nrq01000Service {
     });
   }
 
-  pdf(): boolean {
-    this.ajax.post(URL.CREATE_FORM + "nrq02000", {}, response => {
-      this.ajax.download(URL.FORM_PDF + "nrq02000" + "/file");
+  pdf(tmpNo): boolean {
+    this.ajax.post(URL.CREATE_FORM, { tmpReqNo: tmpNo, typeCertificate: "" }, response => {
+      this.ajax.download(URL.FORM_PDF + response._body + "/download");
     });
     // this.ajax.download(URL.NRQ_PDF + "nrq02000");
     return true;
