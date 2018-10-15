@@ -189,10 +189,10 @@ public class ReportPdfService {
 	
 	/* viewPdfToData */
 	public void viewPdfToData(String name, HttpServletResponse response) throws Exception {
-		File file = new File(PATH_REPORT + name);
+		File file = new File(PATH_REPORT + name + ".pdf");
 		byte[] reportFile = IOUtils.toByteArray(new FileInputStream(file)); 
 		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "inline;filename=" + name);
+		response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
 		response.setContentLength(reportFile.length);
 
 		OutputStream responseOutputStream = response.getOutputStream();
