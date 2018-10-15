@@ -151,7 +151,7 @@ public class ReportPdfService {
 
 		for (int i = 0; i < 5; i++) {
 			rpReqFormOriginalVo = new RpReqFormOriginalVo();
-			rpReqFormOriginalVo.setSeqNo(String.valueOf(i + 1));
+			rpReqFormOriginalVo.setSeq(String.valueOf(i + 1));
 			rpReqFormOriginalVoList.add(rpReqFormOriginalVo);
 		}
 

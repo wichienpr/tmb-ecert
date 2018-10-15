@@ -4,7 +4,7 @@ public class RpReqFormOriginalVo {
 
 	private Long id;
 	private String typeCertificate;
-	private String seqNo;
+	private String seq;
 	private String tmpReqNo;
 
 	public Long getId() {
@@ -23,12 +23,12 @@ public class RpReqFormOriginalVo {
 		this.typeCertificate = typeCertificate;
 	}
 
-	public String getSeqNo() {
-		return seqNo;
+	public String getSeq() {
+		return seq;
 	}
 
-	public void setSeqNo(String seqNo) {
-		this.seqNo = seqNo;
+	public void setSeq(String seq) {
+		this.seq = seq;
 	}
 
 	public String getTmpReqNo() {
