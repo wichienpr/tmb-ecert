@@ -7,16 +7,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tmb.ecert.checkrequeststatus.persistence.vo.CertificateVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.CountStatusVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
+import com.tmb.ecert.checkrequeststatus.service.CheckRequestCertificatService;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.domain.CommonMessage;
+import com.tmb.ecert.common.domain.RequestForm;
 
 @RequestMapping("api/crs/crs01000")
 @Controller
@@ -27,6 +32,20 @@ public class CheckRequestStatusController {
 	@Autowired
 	private CheckRequestStatusService crs01000Service;
 
+
+	@Autowired
+	private CheckRequestCertificatService checkRequestCerService;
+	
+	
+
+	@PostMapping("/upLoadCertificate")
+	@ResponseBody
+	public CommonMessage<String> upLoadCertificate(@ModelAttribute CertificateVo certificateVo ) {
+		return checkRequestCerService.upLoadCertificateByCk(certificateVo);
+	}
+	
+	
+	
 	@PostMapping("/findReq")
 	@ResponseBody
 	public List<Crs01000Vo> findReq(@RequestBody Crs01000FormVo formVo) {

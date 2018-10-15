@@ -16,15 +16,21 @@
 	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12" isBold="true"/>
 	<style name="sub_detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12"/>
 	<parameter name="logoDbd" class="java.io.InputStream"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="telephone" class="java.lang.String"/>
+	<parameter name="reqDate" class="java.util.Date"/>
+	<parameter name="tmpReqNo" class="java.lang.String"/>
+	<parameter name="typeCertificate" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="seq" class="java.lang.String"/>
 	<title>
 		<band height="60" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement style="title" x="84" y="0" width="480" height="30" uuid="8ffd6601-2b26-4319-be19-f7bbae38241b"/>
-				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรองนิติบุคคลและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate)"]]></textFieldExpression>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรอง"+$P{typeCertificate}+"และรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate)"]]></textFieldExpression>
 			</textField>
 			<image isUsingCache="false">
 				<reportElement x="0" y="10" width="80" height="50" uuid="663575c0-e8e3-430e-9bc7-ad3718bf44f8"/>
@@ -50,6 +56,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="" style="title-detail" x="200" y="40" width="150" height="15" uuid="529a6b25-4eb4-4584-a7c3-fa4c738e85e9"/>
@@ -61,6 +68,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{telephone}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement key="" style="title-detail" x="350" y="40" width="90" height="15" uuid="2d7a0475-da41-4e0b-9ba8-8918366475ac"/>
@@ -77,6 +85,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reqDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -394,8 +403,7 @@
 			<textField>
 				<reportElement style="sub_detail" x="0" y="0" width="56" height="16" uuid="10f2b33e-c16c-4f7b-b3bf-d755b2e51a12"/>
 				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA["TMB Req. No."
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA["TMB Req. No."]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="sub_detail" x="537" y="0" width="18" height="16" uuid="bb407d55-f378-43f2-b2df-05a59e96cabc"/>
@@ -407,9 +415,10 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["No."]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement style="sub_detail" x="61" y="1" width="116" height="16" uuid="65bb90bf-16de-4240-9326-e26de6f5ce7a"/>
 				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{tmpReqNo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
