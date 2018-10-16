@@ -1,6 +1,10 @@
 package com.tmb.ecert.setup.vo;
 
-public class Sup03000Vo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Sup03000Vo extends DatatableRequest {
+
+	private static final long serialVersionUID = -4198445133352579189L;
 	private Long emailConfig_id;
 	private String name;
 	private int status;

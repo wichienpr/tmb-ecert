@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -121,5 +122,23 @@ public class BatchMonitoringDao {
 		}
 		
 	};
+	
+	public void updateRerunJobById(Btm01000Vo form, String username, String userID) {
+		
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		sql.append(" 	UPDATE ECERT_JOB_MONITORING SET RERUN_NUMBER =  ? ,RERUN_BY_ID =  ? ,RERUN_BY_NAME = ? ");
+		sql.append(" 	,RERUN_DATETIME = ?  WHERE JOBMONITORING_ID = ?  ");
+		
+		params.add(1);
+		params.add(userID);
+		params.add(username);
+		params.add(new Date());
+		params.add(form.getJobmonitoringId());
+		
+		jdbcTemplate.update(sql.toString(), params.toArray());
+		
+	}
 
 }

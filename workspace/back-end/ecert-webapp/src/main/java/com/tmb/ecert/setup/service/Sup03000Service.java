@@ -11,6 +11,8 @@ import com.tmb.ecert.setup.dao.EmailTemplateDao;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+import th.co.baiwa.buckwaframework.preferences.constant.MessageConstants.MESSAGE_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
@@ -27,9 +29,12 @@ public class Sup03000Service {
 	private static String MSG_SUCS = "ทำรายการสำเร็จ";
 	private static String MSG_ERR = "ทำรายการล้มเหลว  ";
 
-	public List<Sup03000Vo> getEmailTemplate(Sup03000Vo form) {
+	public DataTableResponse<Sup03000Vo> getEmailTemplate(Sup03000Vo form) {
 		form.setStatus(covertDropdownValueToInt(form.getStatus()));
-		return emailDao.getEmailTemplate(form);
+		DataTableResponse<Sup03000Vo> list  = new DataTableResponse<>();
+		List<Sup03000Vo> sup03000Vo = emailDao.getEmailTemplate(form);
+		list.setData(sup03000Vo);
+		return list;
 	}
 
 	public Sup03100Vo getEmailDetail(Sup03000Vo form) {
@@ -43,11 +48,13 @@ public class Sup03000Service {
 			String fullName = user.getFirstName() + " " + user.getLastName();
 			emailDao.updateEmailTemplate(form,  fullName, user.getUserId());
 			emailDao.updateEmailDetail(form, fullName, user.getUserId());
-			message.setMessage(MSG_SUCS);
+			message.setData(MESSAGE_STATUS.SUCCEED);
+			message.setMessage(MESSAGE_STATUS.SUCCEED);
 			return message;
 		} catch (Exception e) {
 			e.printStackTrace();
-			message.setMessage(MSG_ERR);
+			message.setData(MESSAGE_STATUS.FAILED);
+			message.setMessage(MESSAGE_STATUS.FAILED);
 			return message;
 		}
 

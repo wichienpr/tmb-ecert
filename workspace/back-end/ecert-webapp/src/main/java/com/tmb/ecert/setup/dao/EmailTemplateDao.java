@@ -16,6 +16,8 @@ import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
 
+import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
+
 @Repository
 public class EmailTemplateDao {
 
@@ -44,7 +46,10 @@ public class EmailTemplateDao {
 			sql.append(" AND  STATUS =  ? ");
 			params.add(form.getStatus());
 		}
-
+		sql.append(" ORDER BY EMAILCONFIG_ID ");
+		
+//		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), sup03000RowMapper);
+		
 		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03000RowMapper);
 		return list;
 

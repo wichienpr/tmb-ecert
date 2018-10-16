@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000Vo;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.setup.service.Sup03000Service;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
+
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 
 @RequestMapping("api/setup/sup03000")
 @RestController
@@ -23,8 +26,7 @@ public class Sup03000Controller {
 	
 	@PostMapping("/getEmailTemplate")
 	@ResponseBody
-	public List<Sup03000Vo> getEmailTemplate(@RequestBody Sup03000Vo form) {
-//		System.out.println("save medthod");
+	public DataTableResponse<Sup03000Vo> getEmailTemplate(@RequestBody Sup03000Vo form) {
 		return service.getEmailTemplate(form);
 	}
 	

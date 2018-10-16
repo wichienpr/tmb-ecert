@@ -77,7 +77,9 @@ public class UserRoleDao {
 			sql.append(" AND  STATUS =  ? ");
 			params.add(form.getStatus());
 		}
-
+		
+		sql.append(" ORDER BY CREATED_DATETIME ");
+	
 		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup01000RowMapper);
 		return list;
 		

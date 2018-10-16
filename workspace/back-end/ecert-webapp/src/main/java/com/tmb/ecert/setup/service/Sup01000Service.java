@@ -46,7 +46,10 @@ import com.tmb.ecert.setup.dao.UserRoleDao;
 import com.tmb.ecert.setup.vo.Sup01000FormVo;
 import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup01100Vo;
+import com.tmb.ecert.setup.vo.Sup03000Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+import th.co.baiwa.buckwaframework.preferences.constant.MessageConstants.MESSAGE_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
@@ -127,7 +130,8 @@ public class Sup01000Service {
 				if (countDup == 0) {
 					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
 				} else {
-					message.setMessage(MSG_DUP);
+					message.setData(MESSAGE_STATUS.FAILED);
+					message.setMessage(MESSAGE_STATUS.FAILED);
 					return message;
 				}
 			} else {
@@ -145,17 +149,19 @@ public class Sup01000Service {
 			}
 
 			userRoleDao.createRolePermission(permissionList, fullName, user.getUserId());
-			message.setMessage(MSG_SUCS);
+			message.setData(MESSAGE_STATUS.SUCCEED);
+			message.setMessage(MESSAGE_STATUS.SUCCEED);
 			return message;
 		} catch (Exception e) {
 			e.printStackTrace();
-			message.setMessage(MSG_ERR);
+			message.setData(MESSAGE_STATUS.FAILED);
+			message.setMessage(MESSAGE_STATUS.FAILED);
 			return message;
 		}
 
 	}
 
-	public List<RoleVo> getRole(Sup01100FormVo form) {
+	public DataTableResponse<RoleVo> getRole(Sup01100FormVo form) {
 		if (STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(2);
 			
@@ -165,7 +171,11 @@ public class Sup01000Service {
 		}else if (STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(0);
 		}
-		return userRoleDao.getRole(form);
+		
+		DataTableResponse<RoleVo> list  = new DataTableResponse<>();
+		List<RoleVo> sup01000Vo = userRoleDao.getRole(form);
+		list.setData(sup01000Vo);
+		return list;
 
 	}
 
@@ -438,8 +448,9 @@ public class Sup01000Service {
 						currentCell = currentRow.getCell(1);
 						int statusFlag = covertStatus(currentCell.getStringCellValue());
 						if (statusFlag == 2) {
-							logger.error("Upload Role Permission format error");
-							message.setMessage(MSG_ERR_EXC);
+							logger.error("uploadFileRole","Upload Role Permission format error");
+							message.setData(MESSAGE_STATUS.FAILED);
+							message.setMessage(MESSAGE_STATUS.FAILED);
 							return message;
 						}else {
 							vo.setStatus(statusFlag);
@@ -452,8 +463,9 @@ public class Sup01000Service {
 							currentCell = currentRow.getCell(j);
 							int statusPermisFlag = covertStatus(currentCell.getStringCellValue());
 							if (statusPermisFlag == 2) {
-								logger.error("Upload Role Permission format error");
-								message.setMessage(MSG_ERR_EXC);
+								logger.error("uploadFileRole","Upload Role Permission format error");
+								message.setData(MESSAGE_STATUS.FAILED);
+								message.setMessage(MESSAGE_STATUS.FAILED);
 								return message;
 							}else {
 								roleVo.setStatus(statusPermisFlag);
@@ -469,8 +481,9 @@ public class Sup01000Service {
 					//check duplicate role name in list
 					for (int i = 0; i < listRolePermission.size(); i++) {
 						if(listRolePermission.get(i).getRoleName().isEmpty()) {
-							logger.error("Upload Role Permission role name is blank.");
-							message.setMessage(MSG_ERR_EXC);
+							logger.error("uploadFileRole","Upload Role Permission role name is blank.");
+							message.setData(MESSAGE_STATUS.FAILED);
+							message.setMessage(MESSAGE_STATUS.FAILED);
 							return message;
 							
 						}else {
@@ -478,33 +491,40 @@ public class Sup01000Service {
 								String roleName = listRolePermission.get(j+i).getRoleName();
 
 								if(listRolePermission.get(i).getRoleName().equals(roleName)) {
-									logger.error("Upload Role Permission role name is duplicate.");
-									message.setMessage(MSG_ERR_EXC);
+									logger.error("uploadFileRole","Upload Role Permission role name is duplicate.");
+									message.setData(MESSAGE_STATUS.FAILED);
+									message.setMessage(MESSAGE_STATUS.FAILED);
 									return message;
 								}
 							}
 						}
 
 					}
-					logger.info("upload excel file success");
+					logger.info("uploadFileRole","upload excel file success");
 					saveListRolePermission(listRolePermission);
-					message.setMessage(MSG_SUCS_EXC);
+					message.setData(MESSAGE_STATUS.SUCCEED);
+					message.setMessage(MESSAGE_STATUS.SUCCEED);
 					return message;
 
 				} catch (Exception e) {
-					logger.info("upload excel file fail \n ");
+					logger.info("uploadFileRole","upload excel file fail \n ");
 					e.printStackTrace();
-					message.setMessage(MSG_ERR_EXC);
+					message.setData(MESSAGE_STATUS.FAILED);
+					message.setMessage(MESSAGE_STATUS.FAILED);
 					return message;
 
 				}
 			}else {
-				message.setMessage(MSG_ERR_EXC);
+				logger.info("uploadFileRole","upload excel file format not xlsx");
+				message.setData(MESSAGE_STATUS.FAILED);
+				message.setMessage(MESSAGE_STATUS.FAILED);
 				return message;
 			}
 
 		} else {
-			message.setMessage(MSG_ERR_EXC);
+			logger.info("uploadFileRole","upload excel file is empty");
+			message.setData(MESSAGE_STATUS.FAILED);
+			message.setMessage(MESSAGE_STATUS.FAILED);
 			return message;
 		}
 

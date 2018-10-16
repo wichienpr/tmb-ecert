@@ -52,6 +52,7 @@ public class Btm01000Service {
 	@Autowired
 	private PaymentGLSummaryBatchService paymentGLService ;
 	
+	
 	private static String BATCH_DBD = "60001";
 	private static String BATCH_ONDEMAND = "60002";
 	private static String BATCH_GL = "60003";
@@ -71,9 +72,10 @@ public class Btm01000Service {
 	}
 	
 	@Async
-	public void  rerunJon(Btm01000Vo form) {
+	public void  rerunJob(Btm01000Vo form,String fullName,String userid) {
 		CommonMessage<String> msg = new CommonMessage<>();
 		try {
+
 			if(BATCH_AUDILOG.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_AUDILOG.");
 				auditlogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE));
@@ -93,12 +95,12 @@ public class Btm01000Service {
 			}else if (BATCH_GL.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_GL.");
 			}
+			batchDao.updateRerunJobById(form, fullName, userid);
 			logger.info("rerun batch success.");
 		} catch (Exception e) {
 			logger.error("rerun batch error",e);
 		}
 		
 	}
-
 
 }

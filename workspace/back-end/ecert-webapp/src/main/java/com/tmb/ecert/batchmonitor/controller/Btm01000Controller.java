@@ -19,6 +19,8 @@ import com.tmb.ecert.common.domain.CommonMessage;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 import th.co.baiwa.buckwaframework.preferences.constant.MessageConstants.MESSAGE_STATUS;
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @RequestMapping("api/btm/btm01000")
 @Controller
@@ -47,7 +49,9 @@ public class Btm01000Controller {
 	public CommonMessage<String> reRunJob(@RequestBody Btm01000Vo form) {
 		CommonMessage<String> msg = new CommonMessage<>();
 		try {
-			service.rerunJon(form);
+			UserDetails user = UserLoginUtils.getCurrentUserLogin();
+			String fullName = user.getFirstName() + " " + user.getLastName();
+			service.rerunJob(form,fullName,user.getUserId());
 			
 			msg.setData(MESSAGE_STATUS.SUCCEED);
 			msg.setMessage(MESSAGE_STATUS.SUCCEED);

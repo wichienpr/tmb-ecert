@@ -31,6 +31,8 @@ import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup01100Vo;
 import com.tmb.ecert.setup.vo.Sup01101Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+
 
 @RequestMapping("api/setup/sup01000")
 @Controller
@@ -48,7 +50,7 @@ public class Sup01000Controller {
 	
 	@PostMapping("/getRole")
 	@ResponseBody
-	public List<RoleVo> getRole(@RequestBody Sup01100FormVo form) {
+	public DataTableResponse<RoleVo> getRole(@RequestBody Sup01100FormVo form) {
 		return service.getRole(form);
 	}
 	
