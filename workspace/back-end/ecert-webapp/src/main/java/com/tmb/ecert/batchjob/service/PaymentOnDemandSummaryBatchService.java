@@ -16,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.ONDEMAND;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.dao.PaymentOnDemandSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.DetailOndemand;
@@ -23,12 +27,7 @@ import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.batchjob.domain.HeaderOndemand;
 import com.tmb.ecert.batchjob.domain.OnDemandSummaryTransactionFile;
 import com.tmb.ecert.batchjob.domain.OnDemandSummaryTransactionFile.Page;
-import com.tmb.ecert.common.constant.ProjectConstant;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
-import com.tmb.ecert.common.constant.ProjectConstant.JOBMONITORING_TYPE;
-import com.tmb.ecert.common.constant.ProjectConstant.ONDEMAND;
-import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.ListOfValue;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -136,12 +135,12 @@ public class PaymentOnDemandSummaryBatchService {
 			
 			Page page = onDemandTrnFile.getPage();
 			int totalData = reqFormList.size();
-			int totalPage = totalData / ProjectConstant.ONDEMAND.NUMBER_OF_PAGE;
+			int totalPage = totalData / ONDEMAND.NUMBER_OF_PAGE;
 			
-			if(totalData % ProjectConstant.ONDEMAND.NUMBER_OF_PAGE == 0 ) {
-				totalPage = totalData / ProjectConstant.ONDEMAND.NUMBER_OF_PAGE;
+			if(totalData % ONDEMAND.NUMBER_OF_PAGE == 0 ) {
+				totalPage = totalData / ONDEMAND.NUMBER_OF_PAGE;
 			}else {
-				totalPage = (totalData / ProjectConstant.ONDEMAND.NUMBER_OF_PAGE)+1;
+				totalPage = (totalData / ONDEMAND.NUMBER_OF_PAGE)+1;
 			}
 			
 			int start = 1;
@@ -182,7 +181,7 @@ public class PaymentOnDemandSummaryBatchService {
 				page.getDetails().append(StringUtils.rightPad("",130,"-"));
 				page.getDetails().append(System.lineSeparator());
 				
-				while(numberOfDetail < (ProjectConstant.ONDEMAND.NUMBER_OF_PAGE*start)) {
+				while(numberOfDetail < (ONDEMAND.NUMBER_OF_PAGE*start)) {
 					if(numberOfDetail < totalData && reqFormList.get(numberOfDetail)!=null) {
 						RequestForm reqForm = (RequestForm)reqFormList.get(numberOfDetail);
 						DetailOndemand detail = new DetailOndemand();

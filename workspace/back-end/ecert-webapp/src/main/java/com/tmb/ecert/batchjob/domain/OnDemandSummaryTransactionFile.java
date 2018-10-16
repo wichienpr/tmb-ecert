@@ -1,8 +1,7 @@
 package com.tmb.ecert.batchjob.domain;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.ONDEMAND;
 
 
 public class OnDemandSummaryTransactionFile {
@@ -30,21 +29,21 @@ public class OnDemandSummaryTransactionFile {
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getControlPage(),StringUtils.EMPTY),1));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBranchCode(),StringUtils.EMPTY),48));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBankName(),StringUtils.EMPTY),60));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAGE,10));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.PAGE,10));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getPageNo(),StringUtils.EMPTY),10));
 				break;
 			case 2: 
 				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getBankName(),StringUtils.EMPTY),43));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getSystemName(),StringUtils.EMPTY),65));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.AS_DATE,10));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.AS_DATE,10));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getAsDate(),StringUtils.EMPTY),10));
 				break;
 			case 3: 
 				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getReportId(),StringUtils.EMPTY),38));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getReportName(),StringUtils.EMPTY),70));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.RUN_DATE,10));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.RUN_DATE,10));
 				headerLine.append(StringUtils.rightPad(StringUtils.defaultString(header.getRunDate(),StringUtils.EMPTY),10));
 				break;
 			case 4: 
@@ -52,13 +51,13 @@ public class OnDemandSummaryTransactionFile {
 				break;
 			case 5: 
 				headerLine.append(StringUtils.rightPad(StringUtils.EMPTY,1));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.REQ_DATE,15));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.TMB_REQ_NO,17));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ORG_ID,15));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.SEGMENT,10));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.PAID_TYPE,41));
-				headerLine.append(StringUtils.rightPad(ProjectConstant.ONDEMAND.ACCT_NO,10));
-				headerLine.append(StringUtils.leftPad(ProjectConstant.ONDEMAND.AMOUNT,22));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.REQ_DATE,15));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.TMB_REQ_NO,17));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.ORG_ID,15));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.SEGMENT,10));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.PAID_TYPE,41));
+				headerLine.append(StringUtils.rightPad(ONDEMAND.ACCT_NO,10));
+				headerLine.append(StringUtils.leftPad(ONDEMAND.AMOUNT,22));
 				break;
 		}
 		return (headerLine!=null&& headerLine.length()>0 ? headerLine.toString(): StringUtils.EMPTY);

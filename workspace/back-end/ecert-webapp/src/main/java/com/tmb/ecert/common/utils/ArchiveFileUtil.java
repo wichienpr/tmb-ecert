@@ -11,8 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
@@ -21,8 +20,6 @@ public class ArchiveFileUtil {
 	
 	private static final Logger log = LoggerFactory.getLogger(ArchiveFileUtil.class);
 	
-	@Autowired
-	private ApplicationCache applicationCache;
 	
 	/**
 	 * @param srcPath
@@ -77,7 +74,7 @@ public class ArchiveFileUtil {
 	 */
 	private void archiveDirectory(File directory,TarArchiveOutputStream outputStream, String basePath) throws Exception {
 	
-		String pathFile = applicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_ROOTPATH);
+		String pathFile = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HOUSEKEEPING_ROOTPATH);
  
 		// Returns an array of abstract pathnames denoting the files in the directory denoted by this abstract pathname
 		File[] files = directory.listFiles();

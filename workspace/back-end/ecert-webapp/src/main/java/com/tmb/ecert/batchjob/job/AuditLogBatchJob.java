@@ -7,8 +7,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import com.tmb.ecert.batchjob.service.AuditLogBatchService;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
-import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 public class AuditLogBatchJob extends QuartzJobBean{

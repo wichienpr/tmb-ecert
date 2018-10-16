@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.tmb.ecert.batchjob.service.PaymentDBDSummaryBatchService;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 
 public class PaymentDBDSummaryBatchJob extends QuartzJobBean{
 

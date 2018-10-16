@@ -7,8 +7,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.service.HROfficeCodeBatchService;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
 
 public class HROfficeCodeBatchJob implements Job {
 

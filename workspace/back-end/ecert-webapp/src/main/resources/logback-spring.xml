@@ -266,10 +266,26 @@
 		</encoder>
 	</appender>
 	<appender name="ECERT_HROFFICECODE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${HOME}/e-certificate-hrofficecode.log</file>
+		<file>${HOME}/e-certificate-jobhrofficecode.log</file>
 	
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${HOME}/e-certificate-hrofficecode.log.%i</fileNamePattern>
+			<fileNamePattern>${HOME}/e-certificate-jobhrofficecode.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_IMPORTECM" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobimportecm.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobimportecm.log.%i</fileNamePattern>
 			<minIndex>${MIN_INDEX}</minIndex>
 			<maxIndex>${MAX_INDEX}</maxIndex>
 		</rollingPolicy>
@@ -334,8 +350,11 @@
 	<logger name="e-certificate-jobhousekeeping.log" level="debug" additivity="false">
 		<appender-ref ref="ECERT_HOUSEKEEPING" />
 	</logger>
-	<logger name="e-certificate-hrofficecode.log" level="debug" additivity="false">
+	<logger name="e-certificate-jobhrofficecode.log" level="debug" additivity="false">
 		<appender-ref ref="ECERT_HROFFICECODE" />
+	</logger>
+	<logger name="e-certificate-jobimportecm.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_IMPORTECM" />
 	</logger>
     <root level="INFO">
 		<appender-ref ref="FILE" />

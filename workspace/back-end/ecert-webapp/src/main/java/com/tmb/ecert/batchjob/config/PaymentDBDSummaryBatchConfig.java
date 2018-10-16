@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.tmb.ecert.batchjob.job.PaymentDBDSummaryBatchJob;
 import com.tmb.ecert.batchjob.service.PaymentDBDSummaryBatchService;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 
 @Configuration
 @ConditionalOnProperty(name="job.paymentdbd.summary.cornexpression" , havingValue="" ,matchIfMissing=false)
