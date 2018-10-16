@@ -20,7 +20,7 @@ import com.tmb.ecert.common.service.DownloadService;
 @Service
 public class CheckRequestDetailService {
 	
-	private static String PATH = "requestor/";
+	private static String PATH = "tmb-requestor/";
 	
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 	
