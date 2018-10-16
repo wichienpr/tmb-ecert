@@ -58,25 +58,21 @@
     </div>
     <div class="content">
       <div class="ui one grid centered">
-        <div class="ui thirteen wide form column">
+        <div class="ui thirteen wide form column" [formGroup]="formReject">
           <div class="inline fields">
             <div class="four wide field">
               <label class="full-width text-right">สาเหตุ</label>
             </div>
-            <div class="eleven wide field">
-              <select id="allowed-drop" name="allowed-drop" class="ui search dropdown" (change)="onSelectactionStatus($event)">
-                <option *ngFor="let allowed of allowed; let i = index" value="{{i}}">
-                  {{allowed}}
-                </option>
-              </select>
+            <div class="eleven wide field" [ngClass]="{ 'error': rejectSubmitted && allowedSelect.invalid }">
+              <ui-dropdown [dropdown]="allowed"></ui-dropdown>
             </div>
           </div>
           <div class="inline fields">
-            <div class="four wide field ">
+            <div class="four wide field">
               <label class="full-width text-right">Remark Tracking</label>
             </div>
-            <div class="eleven wide field ">
-              <textarea rows="2"></textarea>
+            <div class="eleven wide field">
+              <textarea formControlName="otherReason" name="otherReason" rows="2"></textarea>
             </div>
           </div>
         </div>
@@ -84,12 +80,13 @@
     </div>
     <div class="actions">
       <div class="ui center aligned grid">
-        <div class="seven btn-bot wide column">
-          <button class="ui blue positive basic button" type="button">
+        <div class="seven btn-group wide column">
+          <button type="button" (click)="reject()" class="ui blue basic button" [ngClass]="{ 'positive' : allowedSelect.value }"
+            type="button">
             <i class="check circle outline icon"></i>
             ตกลง
           </button>
-          <button class="ui grey negative basic button" type="button">
+          <button type="button" class="ui grey negative basic button" type="button">
             <i class="times circle outline icon"></i>
             ยกเลิก
           </button>

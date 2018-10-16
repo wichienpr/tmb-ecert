@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute } from '@angular/router';
+import { CertFile } from './crs02000.models';
 
 const URL = {
   REQUEST_FORM: "/api/crs/crs02000/data",
@@ -14,7 +15,8 @@ const URL = {
   CREATE_RECEIPT: "/api/report/pdf/createAndUpload/receiptTax/",
   REQUEST_HISTORY: "/api/history/list",
   PDF: "/api/report/pdf/view/",
-  UPLOAD: "/api/crs/crs01000/upLoadCertificate"
+  UPLOAD: "/api/crs/crs01000/upLoadCertificate",
+  CER_REJECT: "/api/crs/crs02000/cert/reject"
 }
 
 @Injectable({
@@ -77,6 +79,16 @@ export class Crs02000Service {
     });
   }
 
+  rejected(data: any) {
+    this.ajax.post(URL.CER_REJECT, data, response => {
+      const data = response.json();
+      if (data && data.message == "SUCCESS") {
+        this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+      } else {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ", success: true });
+      }
+    });
+  }
 
   tabsToggle(name: string, tab: any): any {
     for (let key in tab) {
@@ -189,11 +201,4 @@ export class Crs02000Service {
     this.location.back();
   }
 
-}
-
-interface CertFile {
-  id: number;
-  status: string;
-  certificates: string;
-  certificatesFile: FormData;
 }

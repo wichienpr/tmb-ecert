@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
+import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
 import { Crs02000Service } from './crs02000.service';
 import { ROLES } from 'app/baiwa/common/constants';
-import { CommonService } from 'app/baiwa/common/services';
-import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+import { CommonService, DropdownService } from 'app/baiwa/common/services';
+import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
+import { CertFile, Rejected } from './crs02000.models';
 
 declare var $: any;
 @Component({
@@ -16,11 +17,13 @@ export class Crs02000Component implements OnInit {
   _roles = ROLES;
 
   formCert: FormGroup;
+  formReject: FormGroup;
 
   id: string = "";
   date: Date = new Date();
   dataLoading: boolean = false;
   certSubmitted: boolean = false;
+  rejectSubmitted: boolean = false;
   history: RequestForm[] = [];
   chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
@@ -28,7 +31,7 @@ export class Crs02000Component implements OnInit {
   paidModal: Modal;
   allowedModal: Modal;
   documentModal: Modal;
-  allowed: string[];
+  allowed: Dropdown;
   tab: any;
 
   files: any;
@@ -36,20 +39,14 @@ export class Crs02000Component implements OnInit {
   constructor(
     private service: Crs02000Service,
     private common: CommonService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dropdown: DropdownService
   ) {
     this.init();
     this.paidModal = { modalId: "desp", type: "custom" };
     this.allowedModal = { modalId: "allowed", type: "custom" };
     this.documentModal = { modalId: "document", type: "custom" };
-    this.allowed = [
-      "กรุณาเลือก",
-      "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย",
-      "ลูกค้าแนบเอกสารไม่ครบถ้วน",
-      "ลูกค้าขอยกเลิกคำขอ",
-      "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ",
-      "อื่นๆ",
-    ];
+    this.allowedModal = { modalId: "allowed", type: "custom" };
     this.files = {
       certFile: null,
     };
@@ -63,6 +60,22 @@ export class Crs02000Component implements OnInit {
     this.formCert = this.formBuilder.group({
       certFile: ['', Validators.required]
     });
+    this.formReject = this.formBuilder.group({
+      allowedSelect: ['', Validators.required],
+      otherReason: [''],
+    });
+    this.allowed = {
+      type: "selection",
+      dropdownId: "allowedSelect",
+      dropdownName: "allowedSelect",
+      formControlName: "allowedSelect",
+      formGroup: this.formReject,
+      valueName: "code",
+      labelName: "name",
+      values: [],
+      placehold: "กรุณาเลือก"
+    };
+    this.getAllowed();
   }
 
   get certFile() { return this.formCert.get('certFile') }
@@ -71,6 +84,10 @@ export class Crs02000Component implements OnInit {
   get btnPrintReciept() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
   get btnPrintCover() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
   get btnUpload() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+
+  async getAllowed() {
+    this.allowed.values = await this.dropdown.getRejectReason().toPromise();
+  }
 
   async init() {
     this.id = this.service.getId();
@@ -144,11 +161,19 @@ export class Crs02000Component implements OnInit {
     }
   }
 
-}
+  reject() {
+    this.rejectSubmitted = true;
+    if (this.formReject.valid) {
+      const data: Rejected = {
+        reqFormId: this.data.reqFormId,
+        rejectReasonCode: this.allowedSelect.value,
+        rejectReasonOther: this.otherReason.value
+      };
+      this.service.rejected(data);
+    }
+  }
 
-interface CertFile {
-  id: number;
-  status: string;
-  certificates: string;
-  certificatesFile: FormData;
+  get allowedSelect() { return this.formReject.controls.allowedSelect }
+  get otherReason() { return this.formReject.controls.otherReason }
+
 }

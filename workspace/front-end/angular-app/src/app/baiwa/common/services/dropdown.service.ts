@@ -124,6 +124,20 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
         });
     }
 
+    getRejectReason(): Observable<Lov[]> {
+        return new Observable<Lov[]>( obs => {
+            const lov: Lov[] = [
+                { code: "1", name: "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย", type: 0, typeDesc: "", sequence: 0, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+                { code: "2", name: "ลูกค้าแนบเอกสารไม่ครบถ้วน", type: 0, typeDesc: "", sequence: 1, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+                { code: "3", name: "ลูกค้าขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 2, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+                { code: "4", name: "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 3, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+                { code: "5", name: "อื่นๆ", type: 0, typeDesc: "", sequence: 4, glType: null, tranCode: null, accountType: null, status: null, accountNo: null }
+            ];
+            obs.next(lov);
+            obs.complete();
+        });
+    }
+
 }
 
 

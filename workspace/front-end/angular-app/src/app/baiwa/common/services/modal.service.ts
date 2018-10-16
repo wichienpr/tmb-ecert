@@ -9,6 +9,10 @@ export class ModalService {
 
     constructor() { }
 
+    show(name: string) {
+        $(`#${name}`).modal('show');
+    }
+
     alert(obj: Modal) {
         const id = obj.success ? "alert-success" : "alert";
         // message

@@ -1,3 +1,47 @@
+<ui-modal [modal]="allowedModal">
+  <ng-template>
+    <div class="header" style="background:#1678C2">
+      <diV style="color: rgb(255, 255, 255)">ระบุสาเหตุ</diV>
+    </div>
+    <div class="content">
+      <div class="ui one grid centered">
+        <div class="ui thirteen wide form column" [formGroup]="formReject">
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">สาเหตุ</label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': rejectSubmitted && allowedSelect.invalid }">
+              <ui-dropdown [dropdown]="allowed"></ui-dropdown>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="four wide field ">
+              <label class="full-width text-right">Remark Tracking</label>
+            </div>
+            <div class="eleven wide field">
+              <textarea formControlName="otherReason" name="otherReason" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="seven btn-group wide column">
+          <button type="button" (click)="reject($event)" class="ui blue basic button" [ngClass]="{ 'positive' : allowedSelect.value }" type="button">
+            <i class="check circle outline icon"></i>
+            ตกลง
+          </button>
+          <button type="button" class="ui grey negative basic button" type="button">
+            <i class="times circle outline icon"></i>
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ui-modal>
+
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">บันทึกคำขอ</h2>
@@ -314,20 +358,20 @@
         <div class="required four wide field">
           <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('requestFile') }">
+        <div class="three wide field" [ngClass]="{'error': invalid('requestFile') }">
           <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
-        <div class="three wide field" *ngIf="data&&data.requestFormFile">
-          <a class="download-link" (click)="download(data.requestFormFile)">
+        <div class="two wide field">
+          <a class="download-link" *ngIf="data&&data.requestFormFile" (click)="download(data.requestFormFile)">
             <u>Download</u>
           </a>
         </div>
-        <!-- <div class="two wide field">
-          <label>ที่อยู่</label>
+        <div class="two wide field required" *ngIf="btnMaker">
+          <label>เลขที่คำขอ (Ref.1)</label>
         </div>
-        <div class="five wide field">
-          <textarea #address formControlName="address" rows="3"></textarea>
-        </div> -->
+        <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
+          <input type="text" name="ref1" formControlName="ref1">
+        </div>
       </div>
 
 
@@ -335,26 +379,38 @@
         <div class="required four wide field">
           <label>สำเนาบัตรประชาชน</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('copyFile') }">
+        <div class="three wide field" [ngClass]="{'error': invalid('copyFile') }">
           <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
-        <div class="three wide field" *ngIf="data&&data.idCardFile">
-          <a class="download-link" (click)="download(data.idCardFile)">
+        <div class="two wide field">
+          <a class="download-link" *ngIf="data&&data.idCardFile" (click)="download(data.idCardFile)">
             <u>Download</u>
           </a>
+        </div>
+        <div class="two wide field required" *ngIf="btnMaker">
+          <label>เลขที่ตรวจสอบ (Ref.2)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
+          <input type="text" name="ref2" formControlName="ref2">
         </div>
       </div>
       <div class="inline fields">
         <div class="four wide field">
           <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
-        <div class="five wide field">
+        <div class="three wide field">
           <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
         </div>
-        <div class="three wide field" *ngIf="data&&data.changeNameFile">
-          <a class="download-link" (click)="download(data.changeNameFile)">
+        <div class="two wide field">
+          <a class="download-link" *ngIf="data&&data.changeNameFile" (click)="download(data.changeNameFile)">
             <u>Download</u>
           </a>
+        </div>
+        <div class="two wide field required" *ngIf="btnMaker">
+          <label>จำนวนเงิน (บาท)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('amount') }" *ngIf="btnMaker">
+          <input type="number" name="amount" formControlName="amount">
         </div>
       </div>
 
@@ -378,7 +434,7 @@
               <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
               {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}
             </button>
-            <button class="ui blue basic button" type="button" *ngIf="btnMaker">
+            <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMaker">
               <i class="undo icon"></i>
               ปฏิเสธ
             </button>

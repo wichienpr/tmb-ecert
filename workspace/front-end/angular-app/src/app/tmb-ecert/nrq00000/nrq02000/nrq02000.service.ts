@@ -48,6 +48,9 @@ export class Nrq02000Service {
         requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
         copyFile: new FormControl('', Validators.required),             // สำเนาบัตรประชาชน
         changeNameFile: new FormControl(),                              // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
+        ref1: new FormControl(),
+        ref2: new FormControl(),
+        amount: new FormControl(),
     });
 
     constructor(
@@ -106,6 +109,10 @@ export class Nrq02000Service {
         this.dropdown.getCustomSeg().subscribe((obj: Lov[]) => this.dropdownObj.customSeg.values = obj);
         this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.payMethod.values = obj);
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
+    }
+
+    async getRejectReason() {
+        return await this.dropdown.getRejectReason().toPromise();
     }
 
 
@@ -204,18 +211,16 @@ export class Nrq02000Service {
      * @param addons ข้อมูลเพิ่มเติม
      * @param what เงื่อนไข `save` หรือ `update`
      */
-    save(form: FormGroup, files: any, _certificates: Certificate[], viewChilds: any, addons: any, what: string = "save") {
+    save(form: FormGroup, files: any, _certificates: Certificate[], addons: any, what: string = "save") {
         let certificates = new Assigned().getValue(_certificates);
         let chkCerts = this.chkCerts(certificates, form);
         certificates = [...chkCerts.data]; // clear validators checkbox
         if (!chkCerts.flag) {
             this.modal.alertWithAct({ msg: ValidatorMessages.selectSomeCerts });
-            viewChilds.chks[0].nativeElement.focus();
             return chkCerts.form;
         }
         if (!chkCerts.total) {
             this.modal.alertWithAct({ msg: ValidatorMessages.totalCerts });
-            viewChilds.cers[0].nativeElement.focus();
             return chkCerts.form;
         }
         let modalAler: Modal = { msg: "", success: false }
@@ -489,7 +494,12 @@ export class Nrq02000Service {
             certificates: _data,
             changeNameFileName: addons.changeNameFile,
             copyFileName: addons.idCardFile,
-            requestFileName: addons.requestFormFile
+            requestFileName: addons.requestFormFile,
+            ref1: form.controls.ref1.value,
+            ref2: form.controls.ref2.value,
+            amount: form.controls.amount.value,
+            rejectReasonCode: addons.rejectReasonCode,
+            rejectReasonOther: addons.rejectReasonOther
         };
         for (let key in data) {
             if (data[key]) {
@@ -501,6 +511,10 @@ export class Nrq02000Service {
             }
         }
         return formData;
+    }
+
+    toggleModal(name: string) {
+        this.modal.show(name);
     }
 
 }
@@ -525,4 +539,7 @@ export enum ValidatorMessages {
     requestFile = "requestFile",
     copyFile = "copyFile",
     changeNameFile = "changeNameFile",
+    ref1 = "ref1",
+    ref2 = "ref2",
+    amount = "amount",
 }

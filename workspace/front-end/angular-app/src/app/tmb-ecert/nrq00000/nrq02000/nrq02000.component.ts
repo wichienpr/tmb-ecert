@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
-import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate } from 'models/';
-import { Acc, dateLocaleEN, digit } from 'helpers/';
+import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
+import { Acc, digit } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
@@ -18,35 +18,13 @@ import { ROLES } from 'app/baiwa/common/constants';
 export class Nrq02000Component implements OnInit, AfterViewInit {
 
   @ViewChild("ngForm") ngForm: NgForm;
-  @ViewChild("corpNo") corpNo: ElementRef;
-  @ViewChild("corpName") corpName: ElementRef;
-  @ViewChild("acceptNo") acceptNo: ElementRef;
-  @ViewChild("departmentName") departmentName: ElementRef;
-  @ViewChild("accNo") accNo: ElementRef;
-  @ViewChild("accName") accName: ElementRef;
-  @ViewChild("tmbReceiptChk") tmbReceiptChk: ElementRef;
-  @ViewChild("corpName1") corpName1: ElementRef;
-  @ViewChild("telReq") telReq: ElementRef;
-  @ViewChild("requestFile") requestFile: ElementRef;
-  @ViewChild("address") address: ElementRef;
-  @ViewChild("copyFile") copyFile: ElementRef;
-  @ViewChild("reqTypeSelect") reqTypeSelect: ElementRef;
-  @ViewChild("customSegSelect") customSegSelect: ElementRef;
-  @ViewChild("payMethodSelect") payMethodSelect: ElementRef;
-  @ViewChild("subAccMethodSelect") subAccMethodSelect: ElementRef;
-  @ViewChildren("cal") cals: QueryList<ElementRef>;
-  @ViewChildren("cer") cers: QueryList<ElementRef>;
-  @ViewChildren("chk") chks: QueryList<ElementRef>;
-  @ViewChildren("chkChild") chkChilds: QueryList<ElementRef>;
-  @ViewChildren("etcChild") etcChilds: QueryList<ElementRef>;
-  @ViewChildren("calChild") calChilds: QueryList<ElementRef>;
-  @ViewChildren("cerChild") cerChilds: QueryList<ElementRef>;
 
   _roles = ROLES;
 
   data: RequestForm = initRequestForm;
   tmbReqFormId: String = "";
   form: FormGroup;
+  formReject: FormGroup;
   files: any;
   reqDate: Date;
   dropdownObj: any;
@@ -54,12 +32,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   saving: boolean = false;
   isdownload: boolean = false;
   showChildren: boolean = false;
+  rejectSubmitted: boolean = false;
 
   glType: string = "";
   tranCode: string = "";
   accType: string = "";
   status: string = "";
-  acctno: string = "";
+  accNo: string = "";
 
   cert: RequestCertificate[] = [];
   chkList: Certificate[] = [];
@@ -67,6 +46,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   calend: Calendar[] = [];
   calendar: Calendar[] = [];
   user: UserDetail;
+  allowed: Dropdown;
+  allowedModal: Modal;
 
   constructor(
     private service: Nrq02000Service,
@@ -80,12 +61,27 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       copyFile: null,
       changeNameFile: null
     };
+    this.formReject = new FormGroup({
+      allowedSelect: new FormControl('', Validators.required),
+      otherReason: new FormControl(),
+    });
+    this.allowed = {
+      type: "selection",
+      dropdownId: "allowedSelect",
+      dropdownName: "allowedSelect",
+      formControlName: "allowedSelect",
+      formGroup: this.formReject,
+      valueName: "code",
+      labelName: "name",
+      values: [],
+      placehold: "กรุณาเลือก"
+    };
+    this.allowedModal = { modalId: "allowed", type: "custom" };
     this.store.select("user").subscribe(user => this.user = user);
     this.init();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -106,13 +102,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
     this.checkRoles();
+    this.allowed.values = await this.service.getRejectReason();
     this.data = await this.service.getData();
     if (this.data && this.data.tmbRequestNo) {
       this.isdownload = true;
       const {
         accNo, accName, corpName, corpName1, corpNo, address,
         acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-        departmentName
+        departmentName, ref1, ref2, amount
       } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
@@ -127,7 +124,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.accType = accountType;
       this.status = status;
       this.tmbReqFormId = tmbRequestNo;
-      this.acctno = Acc.convertAccNo(accountNo);
+      this.accNo = Acc.convertAccNo(accountNo);
 
       this.cert = await this.service.getCert(id);
       this.chkList = await this.service.getChkList(id);
@@ -152,6 +149,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       note.setValue(remark);
       telReq.setValue(telephone);
       reqFormId.setValue(this.data.reqFormId);
+      ref1.setValue(this.data.ref1);
+      ref2.setValue(this.data.ref2);
+      amount.setValue(this.data.amount);
       if (requestFormFile) {
         requestFile.clearValidators();
         requestFile.updateValueAndValidity();
@@ -176,17 +176,24 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
 
     if (this.roles(ROLES.MAKER)) {
+      this.form.controls.ref1.setValidators([Validators.required]);
+      this.form.controls.ref2.setValidators([Validators.required]);
+      this.form.controls.amount.setValidators([Validators.required]);
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
       this.form.controls.payMethodSelect.setValue('30001');
     }
+
+    this.form.updateValueAndValidity();
   }
 
   roles(role: ROLES) {
     return this.common.isRole(role);
   }
 
+  get allowedSelect() { return this.formReject.controls.allowedSelect }
+  get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
   get btnRequestor() { return this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN) }
   get btnChecker() { return this.roles(ROLES.CHECKER) || this.roles(ROLES.ADMIN) }
@@ -215,46 +222,41 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  formSubmit(form: FormGroup, event) {
+  formSubmit(form: FormGroup, event, _data?) {
     event.preventDefault();
+    const data = _data ? _data : {
+      glType: this.glType,
+      tranCode: this.tranCode,
+      accType: this.accType,
+      acctno: this.accNo,
+      changeNameFile: this.form.controls.changeNameFile.value ? null : this.data.changeNameFile,
+      idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
+      requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
+      status: this.getStatus(),
+    }
+    if (this.data && this.data.reqFormId != 0) {
+      this.service.save(form, this.files, this.reqTypeChanged, data, "update");
+    } else {
+      this.service.save(form, this.files, this.reqTypeChanged, data, "save");
+    }
+  }
+
+  reject(event) {
+    this.rejectSubmitted = true;
     const data = {
       glType: this.glType,
       tranCode: this.tranCode,
       accType: this.accType,
-      acctno: this.acctno,
+      acctno: this.accNo,
       changeNameFile: this.form.controls.changeNameFile.value ? null : this.data.changeNameFile,
       idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
       requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
-      status: this.getStatus()
+      status: "10003", // ปฏิเสธ
+      rejectReasonCode: this.allowedSelect.value,
+      rejectReasonOther: this.otherReason.value,
     }
-    let viewChilds = {
-      corpNo: this.corpNo,
-      corpName: this.corpName,
-      acceptNo: this.acceptNo,
-      departmentName: this.departmentName,
-      accNo: this.accNo,
-      accName: this.accName,
-      tmbReceiptChk: this.tmbReceiptChk,
-      corpName1: this.corpName1,
-      telReq: this.telReq,
-      requestFile: this.requestFile,
-      address: this.address,
-      copyFile: this.copyFile,
-      reqTypeSelect: this.reqTypeSelect,
-      customSegSelect: this.customSegSelect,
-      payMethodSelect: this.payMethodSelect,
-      subAccMethodSelect: this.subAccMethodSelect,
-      chks: this.chks.toArray(),
-      cers: this.cers.toArray(),
-      cals: this.cals.toArray(),
-      chkChilds: this.chkChilds.toArray(),
-      calChilds: this.calChilds.toArray(),
-      cerChilds: this.cerChilds.toArray(),
-    };
-    if (this.data && this.data.reqFormId != 0) {
-      this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data, "update");
-    } else {
-      this.service.save(form, this.files, this.reqTypeChanged, viewChilds, data, "save");
+    if (this.formReject.valid) {
+      this.formSubmit(this.form, event, data);
     }
   }
 
@@ -271,6 +273,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   cancel() {
     this.service.cancel();
+  }
+
+  rejectModal() {
+    this.service.toggleModal('allowed');
   }
 
   toggleDataCorp(e) {
