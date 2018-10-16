@@ -19,4 +19,8 @@ public class StatusConstant {
 		public final static String SUCCESS ="80001";
 		public final static String FAILED ="80002";
 	}
+	
+	public static class PAYMENT_STATUS {
+		public final static String SUCCESS = "0";
+	}
 }

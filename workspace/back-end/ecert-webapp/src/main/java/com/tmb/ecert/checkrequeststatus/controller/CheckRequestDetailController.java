@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
@@ -71,7 +71,7 @@ public class CheckRequestDetailController {
 	
 	@GetMapping("cert/approve")
 	@ResponseBody
-	public CommonMessage<FeePaymentResponse> approve() {
+	public CommonMessage<FeePaymentRequest> approve() {
 		return this.crsService.approve();
 	}
 	
