@@ -17,16 +17,41 @@ public class DateConstant {
 	
 	public static final Locale LOCAL_TH = new Locale("th", "TH");
 	public static final Locale LOCAL_EN = new Locale("en", "US");
-
+	
+	public final static String DD_MM_YYYY_HH_mm_ss = "dd/MM/yyyy HH:mm:ss";
 	public final static String DD_MM_YYYY_HH_mm = "dd/MM/yyyy HH:mm";
 	public final static String DD_MM_YYYY = "dd/MM/yyyy";
 	public static final String MM_YYYY = "MM/yyyy";
 	public final static String YYYY = "yyyy";
-	
 	public static final String YYYYMMDD = "yyyyMMdd";
+	public static final String HH_mm_ss = "HH:mm:ss";
 	
 //	public static final String[] MONTH_SHOT_NAMES = { "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.","ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค." };
 //	public static final String[] MONTH_NAMES = { "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม" };
+	
+	public static Date  convertStringDDMMYYYYHHmmssToDate(String DDMMYYYYHHmmss) {
+		Date date = null;
+		try {
+			if (DDMMYYYYHHmmss != null) {
+				date = DateUtils.parseDate(DDMMYYYYHHmmss, DD_MM_YYYY_HH_mm_ss);
+			}
+		} catch (Exception e) {
+			log.error("Error convertDateToStrDDMMYYYY : ", e);
+		}
+		return date;
+	}
+
+	public static String convertDateToStrDDMMYYYYHHmmss(Date date) {
+		String dateString = "";
+		try {
+			if (date != null) {
+				dateString = DateFormatUtils.format(date, DD_MM_YYYY_HH_mm_ss);
+			}
+		} catch (Exception e) {
+			log.error("Error convertDateToStrDDMMYYYY : ", e);
+		}
+		return dateString;
+	}
 	
 	public static Date  convertStringDDMMYYYYHHmmToDate(String DDMMYYYYHHmm) {
 		Date date = null;
@@ -113,6 +138,29 @@ public class DateConstant {
 		}
 		return date;
 	}
+	
+	public static Date  convertStringHHmmssToDate(String HHmmss) {
+		Date date = null;
+		try {
+			if (HHmmss != null) {
+				date = DateUtils.parseDate(HHmmss, HH_mm_ss);
+			}
+		} catch (Exception e) {
+			log.error("Error convertDateToStrDDMMYYYY : ", e);
+		}
+		return date;
+	}
 
+	public static String convertDateToStrHHmmss(Date date) {
+		String dateString = "";
+		try {
+			if (date != null) {
+				dateString = DateFormatUtils.format(date, HH_mm_ss);
+			}
+		} catch (Exception e) {
+			log.error("Error convertDateToStrDDMMYYYY : ", e);
+		}
+		return dateString;
+	}
 
 }

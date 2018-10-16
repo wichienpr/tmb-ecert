@@ -130,7 +130,8 @@ public class ApplicationCache {
 		
 		List<ParameterConfig> paramConfigs = PARAM_GROUP_VALUE;
 		for (ParameterConfig param : paramConfigs) {
-			if (propertyName.equals(param.getPropertyName())) {
+			logger.info("IN: {} / OUT: {}", propertyName, param.getPropertyName());
+			if (propertyName.trim().equalsIgnoreCase(param.getPropertyName().trim())) {
 				return param.getPropertyValue();
 			}
 		}
