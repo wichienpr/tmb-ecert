@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tmb.ecert.report.persistence.vo.RpCoverSheetVo;
 import com.tmb.ecert.report.persistence.vo.RpReceiptTaxVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormOriginalVo;
+import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 import com.tmb.ecert.report.service.ReportPdfService;
 
 import net.sf.jasperreports.engine.JRException;
@@ -54,6 +55,13 @@ public class ReportPdfController {
 		return reportPdfService.reqFormOriginalToPdf(vo);
 	}
 	
-
+	/* reqForm */
+	@PostMapping("/reqForm")
+	@ResponseBody
+	public String pdfreqForm(@RequestBody RpReqFormVo vo) throws IOException, JRException { 
+		
+		
+		return null;
+	}
 	
 }

@@ -1,7 +1,5 @@
 package com.tmb.ecert.batchjob.job;
 
-import java.util.Date;
-
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -9,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.tmb.ecert.batchjob.service.PaymentOnDemandSummaryBatchService;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.service.ImportECMBatchService;
 
 public class ImportECMBatchJob extends QuartzJobBean{
 
@@ -20,8 +18,8 @@ public class ImportECMBatchJob extends QuartzJobBean{
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 	    JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 		try {
-			PaymentOnDemandSummaryBatchService paymentOnDemandSummaryBatchService = (PaymentOnDemandSummaryBatchService) dataMap.get("paymentOnDemandSummaryBatchService");
-			paymentOnDemandSummaryBatchService.paymentOnDemandSummary(new Date());
+			ImportECMBatchService importECMBatchService = (ImportECMBatchService) dataMap.get("importECMBatchService");
+			importECMBatchService.sendDocumentToECM();
 		}catch (Exception e) {
 			log.error("ImportECMBatchJob: " , e);
 		}
