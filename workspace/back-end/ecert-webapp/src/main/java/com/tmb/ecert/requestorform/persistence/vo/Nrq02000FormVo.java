@@ -1,5 +1,7 @@
 package com.tmb.ecert.requestorform.persistence.vo;
 
+import java.math.BigDecimal;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class Nrq02000FormVo {
@@ -32,7 +34,52 @@ public class Nrq02000FormVo {
 	private String requestFileName;
 	private String copyFileName;
 	private String changeNameFileName;
+	private String ref1;
+	private String ref2;
+	private BigDecimal amount; 
+	private String rejectReasonCode;
+	private String rejectReasonOther;
 	
+	public String getRejectReasonCode() {
+		return rejectReasonCode;
+	}
+
+	public void setRejectReasonCode(String rejectReasonCode) {
+		this.rejectReasonCode = rejectReasonCode;
+	}
+
+	public String getRejectReasonOther() {
+		return rejectReasonOther;
+	}
+
+	public void setRejectReasonOther(String rejectReasonOther) {
+		this.rejectReasonOther = rejectReasonOther;
+	}
+
+	public String getRef1() {
+		return ref1;
+	}
+
+	public void setRef1(String ref1) {
+		this.ref1 = ref1;
+	}
+
+	public String getRef2() {
+		return ref2;
+	}
+
+	public void setRef2(String ref2) {
+		this.ref2 = ref2;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
 	public String getRequestFileName() {
 		return requestFileName;
 	}

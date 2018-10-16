@@ -64,29 +64,31 @@ public class RequestorFormService {
 		String changeNameFile = form.getChangeNameFileName();
 		upload.createFolder(folder); // Create Folder
 		try {
-			if (BeanUtils.isEmpty(form.getRequestFileName())) {
-				if (BeanUtils.isNotEmpty(form.getRequestFile())) {
-					requestFileName = form.getRequestFile().getOriginalFilename();
-					upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
-				}
+			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
+				String ext = FilenameUtils.getExtension(form.getRequestFile().getOriginalFilename());
+				requestFileName = "RECEIPT_" + form.getTmbReqFormNo() + "." + ext;
+				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
 			}
-			if (BeanUtils.isEmpty(form.getCopyFileName())) {
-				if (BeanUtils.isNotEmpty(form.getCopyFile())) {
-					copyFile = form.getCopyFile().getOriginalFilename();
-					upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
-				}
+			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
+				String ext = FilenameUtils.getExtension(form.getCopyFile().getOriginalFilename());
+				copyFile = "IDCARD_" + form.getTmbReqFormNo() + "." + ext;
+				upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
 			}
-			if (BeanUtils.isEmpty(form.getChangeNameFileName())) {
-				if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
-					changeNameFile = form.getChangeNameFile().getOriginalFilename();
-					upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
-				}
+			if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
+				String ext = FilenameUtils.getExtension(form.getChangeNameFile().getOriginalFilename());
+				changeNameFile = "NCHANGE_" + form.getTmbReqFormNo() + "." + ext;
+				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
 			try {
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
 				RequestForm req = new RequestForm();
+				req.setRejectReasonCode(form.getRejectReasonCode());
+				req.setRejectReasonOther(form.getRejectReasonOther());
+				req.setRef1(form.getRef1());
+				req.setRef2(form.getRef2());
+				req.setAmount(form.getAmount());
 				req.setReqFormId(nextId);
 				req.setAccountName(form.getAccName());
 				req.setAccountNo(form.getAccNo());

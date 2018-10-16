@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
 import com.tmb.ecert.common.domain.Certificate;
+import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -51,6 +54,12 @@ public class CheckRequestDetailController {
 	@ResponseBody
 	public void pdf(@PathVariable("name") String name, HttpServletResponse response) {
 		crsService.pdf(name, response);
+	}
+	
+	@PostMapping("cert/reject")
+	@ResponseBody
+	public CommonMessage<String> reject(@RequestBody RequestForm req) {
+		return this.crsService.reject(req);
 	}
 	
 }

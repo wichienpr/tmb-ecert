@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
-import com.tmb.ecert.common.dao.CertificateDao;
 import com.tmb.ecert.common.domain.Certificate;
+import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
+import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
 @Service
 public class CheckRequestDetailService {
@@ -29,6 +30,9 @@ public class CheckRequestDetailService {
 	
 	@Autowired
 	private CheckRequestDetailDao dao;
+	
+	@Autowired
+	private RequestorDao reqDao;
 	
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
@@ -57,6 +61,23 @@ public class CheckRequestDetailService {
 	public void pdf(String name, HttpServletResponse response) {
 		String pathName = PATH + name;
 		download.pdf(pathName, response);
+	}
+
+	public CommonMessage<String> reject(RequestForm req) {
+		CommonMessage<String> commonMsg = new CommonMessage<String>();
+		try {
+			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false).get(0);
+			newReq.setRejectReasonCode(req.getRejectReasonCode());
+			newReq.setRejectReasonOther(req.getRejectReasonOther());
+			newReq.setStatus("10003");
+			reqDao.update(newReq);
+			commonMsg.setMessage("SUCCESS");
+			return commonMsg;
+		} catch (Exception e) {
+			e.printStackTrace();
+			commonMsg.setMessage("ERROR");
+			return commonMsg;
+		}
 	}
 	
 }
