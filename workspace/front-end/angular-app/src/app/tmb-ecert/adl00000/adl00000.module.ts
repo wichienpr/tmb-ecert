@@ -22,7 +22,7 @@ import { DatatableModule } from 'app/baiwa/common/directives';
     CalendarModule,
     // PipesModule
     PipesModule,
-    DatatableModule
+    DatatableModule,
     // StoreModule.forRoot({ adl01000: adlReducer })
   ],
   declarations: [

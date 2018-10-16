@@ -1,37 +1,3 @@
-<!-- <modal [id]="modal[0]" [size]="'small'" [type]="'custom'">
-  <i class="close icon"></i>
-  <div class="header" style="background: #1678C2">
-    <div style="color: white">Import Role </div>
-  </div>
-  <div class="content">
-    <div class="ui form">
-      <div class="inline fields">
-        <div class="two wide field">
-          <label>เลือกไฟล์</label>
-        </div>
-        <div class="nine wide field">
-          <input type="file">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="actions">
-    <div class="ui center aligned grid">
-      <div class="seven wide column">
-        <button class="ui blue  basic button" (click)="closeModal(modal[0])">
-          <i class=" upload icon"></i>
-          Upload
-        </button>&nbsp;&nbsp;&nbsp;
-        <button class="ui grey  basic button" (click)="closeModal(modal[0])">
-          <i class="times circle outline icon"></i>
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-</modal> -->
-
-
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">Email Configuration
@@ -47,7 +13,7 @@
               <label> Email Name </label>
             </div>
             <div class="four wide field ">
-              <input type="text" formControlName="emailName">
+              <input type="text" formControlName="name">
             </div>
           </div>
 
@@ -58,17 +24,16 @@
             </div>
             <div class="four wide field">
               <!-- <ui-dropdown [dropdown]="dropdownObj.paidType" (valueChange)="paidTypeChange($event)"></ui-dropdown> -->
-              <ui-dropdown [dropdown]="dropDownStatus" ></ui-dropdown>
+              <ui-dropdown [dropdown]="dropDownStatus"></ui-dropdown>
             </div>
           </div>
         </form>
 
       </div>
       <br>
-      <br>
       <div class="ui center aligned grid">
-          <!-- *ngIf="isCanSerch" -->
-        <button class="ui blue basic button" (click)="clickSearch()"  >
+        <!-- *ngIf="isCanSerch" -->
+        <button class="ui blue basic button" (click)="clickSearch()" >
           <i class="search icon"></i>
           ค้นหา
         </button>&nbsp;&nbsp; &nbsp;
@@ -80,58 +45,59 @@
         <br>
       </div>
       <br>
-  
+
     </div>
 
-    <div class="ui segment" *ngIf="isShowResult">
-        <div class="two wide field " style="margin-bottom: 20px">
-          <b>ผลการค้นหา</b>
-        </div>
-
-        <table class="ui small celled table nowrap" id="table" style="width: 100%">
-          <thead>
-            <tr style="text-align: center;">
-              <th>No.</th>
-              <th>Email Name </th>
-              <th>Status</th>
-              <th>Action </th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- <tr>
-              <td style="text-align: right">1</td>
-              <td>ตรวจสอบรายการการขอใช้บริการ E-Payment ไปยังระบบ DBD - ไม่สำเร็จ</td>
-              <td>Active</td>
-              <td style="text-align: center">
-                <button class="ui blue basic button">แก้ไข
-                </button>
-              </td>
-            </tr> -->
-
-            <tr *ngIf="nodataResult">
-                <td style="text-align: center" colspan="4">ไม่พบรายการ</td>
-             </tr>
-
-             <ng-template ngIf="!nodataResult">
-                <tr *ngFor="let item of responseObj; let i = index">
-                   <td style="text-align: right">{{i+1}}</td>
-                   <td>{{item.name}}</td>
-                   <td>
-                      <Span *ngIf="item.status == 1 ">Inactive</Span>
-                      <Span *ngIf="item.status == 0 ">Active</Span>
-                   </td>
-                   <td style="text-align: center">
-                      <button class="ui blue basic button" (click)="clickEditEmailTemplate(item)">แก้ไข
-                      </button>
-                   </td>
-                </tr>
-             </ng-template>
-
-          </tbody>
-        </table>
-        <br>
-        <br>
-
-
+    <div class="ui segment" [hidden]="!emailConfigDT.isSearch">
+      <div class="two wide field " style="margin-bottom: 20px">
+        <b>ผลการค้นหา</b>
       </div>
+      <ng-datatable-search [ng-datatable]="emailConfigDT" ></ng-datatable-search>
+      <table [ngDatatable]="emailDTConfig" #emailConfigDT="ngDatatable" class="ui small celled table nowrap" id="table"
+        style="width: 100%">
+        <thead>
+          <tr style="text-align: center;">
+            <th>No.</th>
+            <th>Email Name </th>
+            <th>Status</th>
+            <th>Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center" *ngIf="emailConfigDT.isEmpty">
+            <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+          </tr>
+          <tr *ngFor="let item of emailConfigDT.datas; let i = index">
+            <td style="text-align: center">{{i+1}}</td>
+            <td>{{item.name}}</td>
+            <td style="text-align: center"  [ngSwitch]="item.status">
+            <Span *ngSwitchCase="1">
+              Inactive
+            </Span>
+            <Span *ngSwitchCase="0">
+              Active
+            </Span>
+              <!-- <Span *ngIf="item.status == 1 ">Inactive</Span>
+              <Span *ngIf="item.status == 0 ">Active</Span> -->
+            </td>
+            <td style="text-align: center" [ngSwitch]="isCanEdit">
+              <div *ngSwitchCase="true" >
+                <button class="ui blue basic button" (click)="clickEditEmailTemplate(item)">แก้ไข
+                </button>
+              </div>
+              <div *ngSwitchCase="false" >
+                -
+              </div>
+
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+      <ng-datatable-footer [ng-datatable]="emailConfigDT"  ></ng-datatable-footer>
+      <br>
+      <br>
+
+
+    </div>
   </div>

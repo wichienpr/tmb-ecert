@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { PAGE_AUTH } from 'app/baiwa/common/constants';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { PAGE_AUTH, MESSAGE_STATUS } from 'app/baiwa/common/constants';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { sup01100Service } from 'app/tmb-ecert/sup00000/sup01100/sup01100.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalService } from 'app/baiwa/common/services';
@@ -21,14 +21,15 @@ export class sup01100Component implements OnInit {
   @ViewChild('roleNameView') roleNameEliment: ElementRef;
   rolepermisson: any
   userRolePermission: any
-  roleId: Number;
   submited: boolean;
   form: FormGroup;
   responseObj: any;
   storeRole: Observable<Sup01000>
   sup01000: Sup01000;
+  listRoleForm:FormGroup;
 
-  constructor(private store: Store<AppState>,private router: Router, private route: ActivatedRoute, private service: sup01100Service, private modal: ModalService) {
+  constructor(private store: Store<AppState>,private router: Router, private route: ActivatedRoute,
+     private service: sup01100Service, private modal: ModalService, private fb: FormBuilder ) {
     this.rolepermisson = [
       {
         rolename: "UI-00002 - ยินดีต้อนรับ",
@@ -256,6 +257,10 @@ export class sup01100Component implements OnInit {
 
     });
 
+    this.listRoleForm = this.fb.group({
+      formArray: this.fb.array([])
+    });
+
 
   }
 
@@ -265,21 +270,15 @@ export class sup01100Component implements OnInit {
       status: new FormControl('0', Validators.required)
     });
 
-    this.roleId = this.route.snapshot.queryParams["roleId"];
-    let roleName = this.route.snapshot.queryParams["roleName"];
-    let roleStatus = this.route.snapshot.queryParams["roleStatus"];
-
-
-    if (this.roleId != null || this.roleId != undefined) {
-      this.form.setValue({ roleName: roleName, status: roleStatus })
-      this.service.serviceSearchPermissionByRole(this.roleId).subscribe(res => {
+    if (this.sup01000.roldId != null || this.sup01000.roldId != undefined) {
+      this.form.setValue({ roleName: this.sup01000.roleName, status: this.sup01000.status })
+      this.service.serviceSearchPermissionByRole(this.sup01000.roldId).subscribe(res => {
         this.setRolePermission(res);
       }, error => {
-        console.log("error", error)
+        console.log("error", error);
       }, () => {
-        console.log("complete....")
-      })
-      // this.setRolePermission();
+        console.log("complete....");
+      });
     }
 
   }
@@ -299,12 +298,12 @@ export class sup01100Component implements OnInit {
       }
       this.modal.confirm((e) => {
         if (e) {
-          this.service.saveNewRole(this.form, this.rolepermisson, this.roleId).subscribe(res => {
+          this.service.saveNewRole(this.form, this.rolepermisson, this.sup01000.roldId ).subscribe(res => {
             this.responseObj = res;
-            if (this.responseObj.message == null) {
-              this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+            if (this.responseObj.message == MESSAGE_STATUS.FAILED) {
+              this.modal.alert({ msg: "ทำรายการล้มเหลว" });
             } else {
-              modalresp.msg  = this.responseObj.message;
+              modalresp.msg  = "ทำรายการสำเร็จ";
               this.modal.confirm((e) => {
                 if (e) {
               // this.modal.alert({ msg: this.responseObj.message });
@@ -376,8 +375,14 @@ export class sup01100Component implements OnInit {
     // });
 
   }
+  
+  get formPropArray(): FormArray {
+    return this.listRoleForm.get('formArray') as FormArray;
+  }
 
-
+  get listformPropArray(): FormArray {
+    return this.listRoleForm.get('formArray.controls') as FormArray;
+  }
 
   get roleName() {
     return this.form.get("roleName");

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Sup03100Service } from 'app/tmb-ecert/sup00000/sup03100/sup03100.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Sup03100 } from 'app/tmb-ecert/sup00000/sup03100/sup03100.model';
-import { ModalService } from 'app/baiwa/common/services';
+import { ModalService, CommonService } from 'app/baiwa/common/services';
 import { Modal } from 'app/baiwa/common/models';
 import { sup03000 } from 'app/tmb-ecert/sup00000/sup03000/sup03000.model';
 import { Store } from '@ngrx/store';
@@ -40,7 +40,7 @@ export class Sup03100Component implements OnInit {
   };
 
    constructor(private store: Store<AppState>, private service: Sup03100Service, private router: Router,
-      private route: ActivatedRoute, private modal: ModalService,private sanitizer: DomSanitizer) {
+      private route: ActivatedRoute, private modal: ModalService,private sanitizer: DomSanitizer ,private commonsvr: CommonService) {
 
       this.emailTemplate = this.store.select(state => state.sup00000.sup03000);
       this.emailTemplate.subscribe(data => {
@@ -106,9 +106,11 @@ export class Sup03100Component implements OnInit {
       if (this.emailForm.valid) {
          this.modal.confirm((e) => {
             if (e) {
+              this.commonsvr.blockui;
                this.service.callSaveEmailDetailAPI(this.requestObj).subscribe(res => {
                   console.debug("seve email success.", res);
                   this.response = res;
+                  this.commonsvr.unblockui;
                   if (this.response.message == null) {
                      this.modal.alert({ msg: "ทำรายการล้มเหลว" })
                   } else {
@@ -127,16 +129,12 @@ export class Sup03100Component implements OnInit {
                      }, modalresp);
                   }
                }, error => {
-
+                this.commonsvr.unblockui;
                });
             }
          }, modalConf);
 
       }
-
-
-
-
    }
 
    clickCancel() {

@@ -7,6 +7,7 @@ import { Certificate } from 'models/';
 import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { CommonService } from 'app/baiwa/common/services';
+import * as moment from 'moment';
 
 
 @Component({
@@ -34,10 +35,10 @@ export class Adl01000Component implements OnInit {
   }
 
   ngOnInit() {
-
+    let now = moment().format('DD/MM/YYYY');
     this.formadl = new FormGroup({
-      dateForm: new FormControl('', Validators.required),             // วันที่ดำเนินการ
-      dateTo: new FormControl('', Validators.required),               // ถึงวันที่
+      dateForm: new FormControl(now, Validators.required),             // วันที่ดำเนินการ
+      dateTo: new FormControl(now, Validators.required),               // ถึงวันที่
       createdById: new FormControl(''),                                      // User ID
       actionCode: new FormControl(''),                                      // Action
     });

@@ -23,6 +23,7 @@
     "@ngrx/store": "^6.1.0",
     "core-js": "^2.5.4",
     "jquery": "^3.3.1",
+    "moment": "^2.22.2",
     "ngx-summernote": "^0.5.5",
     "rxjs": "^6.0.0",
     "semantic-ui-calendar": "0.0.8",

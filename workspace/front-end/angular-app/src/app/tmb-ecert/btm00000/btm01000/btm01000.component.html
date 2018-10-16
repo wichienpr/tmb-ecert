@@ -17,16 +17,12 @@
                     </div>
                     <div class="six wide field">
                             <ng-calendar [config]="calendarreRunFrom" #calendarRerunFrom="ng-calendar"  style="width:100%"></ng-calendar>
-                        <!-- <ui-calendar [calendar]="calendarreRunFrom" [call]="touchedreRun" (calendarValue)="calendarreRunValue('reRunDateForm',$event)"
-                            style="width:100%"></ui-calendar> -->
                     </div>
                     <div class="two wide field" *ngIf="rerunDateOnly">
                         <label class="custom-label-w-25">ถึงวันที่</label>
                     </div>
                     <div class="six wide field" *ngIf="rerunDateOnly">
                             <ng-calendar [config]="calendarreRunTo" #calendarRerunTo="ng-calendar"  style="width:100%"></ng-calendar>
-                        <!-- <ui-calendar [calendar]="calendarreRunTo" [call]="touchedreRun" (calendarValue)="calendarreRunValue('reRunDateTo',$event)"
-                            style="width:100%"></ui-calendar> -->
                     </div>
                 </div>
             </div>
@@ -68,13 +64,15 @@
                         <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
                     </div>
                     <div class="four wide field" [ngClass]="{'error':(dateFrom.invalid && (dateFrom.dirty || dateFrom.touched)) }">
-                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateFrom',$event)" style="width:100%"></ui-calendar>
+                            <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar"  style="width:100%"></ng-calendar>
+                        <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateFrom',$event)" style="width:100%"></ui-calendar> -->
                     </div>
                     <div class="one wide field">
                         <label class="custom-label-w-25">ถึงวันที่<span style="color: red"> * </span></label>
                     </div>
                     <div class="four wide field" [ngClass]="{'error':(dateTo.invalid && (dateTo.dirty || dateTo.touched)) }">
-                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
+                            <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar"  style="width:100%"></ng-calendar>
+                        <!-- <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar> -->
                     </div>
                 </div>
                 <div class="inline fields">
@@ -138,12 +136,12 @@
                         <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
                     </tr>
                     <tr *ngFor="let item of batchMonitorDT.datas;let i = index">
-                        <td style="text-align: right">{{ batchMonitorDT.rownum + i+1}}</td>
+                        <td style="text-align: center">{{ batchMonitorDT.rownum + i+1}}</td>
                         <td style="text-align: center">{{item.startDate}}</td>
                         <td style="text-align: center">{{item.jobtypeName}}</td>
                         <td style="text-align: center">{{item.statusDesc}}</td>
                         
-                        <td style="text-align: center" [ngSwitch]="item.status== 80002 ">
+                        <td style="text-align: center" [ngSwitch]="item.status== 80002">
                             <div *ngSwitchCase="true" >
 
                                 <button class="ui blue basic button" (click)="showModalDetail(item)"> <i class="exclamation icon"></i>
@@ -167,6 +165,7 @@
                                 -
                             </div>
                         </td>
+                        
                     </tr>
                 </tbody>
             </table>

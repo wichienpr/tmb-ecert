@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Sup02000Service } from 'app/tmb-ecert/sup00000/sup02000/sup02000.service';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Sup02000 } from 'app/tmb-ecert/sup00000/sup02000/sup02000.model';
-import { ModalService } from 'app/baiwa/common/services';
+import { ModalService, CommonService } from 'app/baiwa/common/services';
 import { Modal } from 'app/baiwa/common/models';
+import { UserDetail } from 'app/user.model';
+import { Store } from '@ngrx/store';
+import { PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-sup02000',
@@ -17,8 +20,11 @@ export class Sup02000Component implements OnInit {
     formPropArray: this.fb.array([])
   });
   responseObj: any;
+  user: UserDetail;
 
-  constructor(private service: Sup02000Service, private fb: FormBuilder,private modal: ModalService) {
+  constructor(private store: Store<AppState>,private service: Sup02000Service, private fb: FormBuilder
+    ,private modal: ModalService,private commonService: CommonService) {
+      
     this.paramResult = [{
       parameterconfigId: "",
       propertyName: "",
@@ -30,6 +36,10 @@ export class Sup02000Component implements OnInit {
       data: "",
       message: ""
     }
+    this.store.select('user').subscribe(user => {
+      this.user = user;
+    });
+
   }
 
   ngOnInit() {
@@ -94,11 +104,6 @@ export class Sup02000Component implements OnInit {
         });
       }
     }, modalConf);
-
-
-    // listParameter.forEach(item => {
-    //   console.log("value param change ", item.parameterconfigId);
-    // });
   }
   get formPropArray(): FormArray {
     return this.parameterForm.get('formPropArray') as FormArray;
@@ -108,4 +113,12 @@ export class Sup02000Component implements OnInit {
     return this.parameterForm.get('formPropArray.controls') as FormArray;
   }
 
+  get isCanSave() {
+    return this.commonService.ishasAuth(this.user, PAGE_AUTH.P0001401)
+  }
+  
+
+}
+interface AppState {
+  user: UserDetail
 }

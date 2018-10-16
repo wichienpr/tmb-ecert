@@ -1,4 +1,4 @@
-<ui-modal [modal]="uploadModal">
+<ui-modal [modal]="uploadModal" #modalUpload="ui-modal">
    <ng-template>
       <i class="close icon"></i>
       <div class="header" style="background: #1678C2">
@@ -81,15 +81,15 @@
                <i class="trash alternate outline icon"></i>
                ล้างข้อมูล
             </button>
-            <button class="ui green  basic button" type="button" (click)="showModalUpload()">
+            <button class="ui green  basic button" type="button" (click)="showModalUpload()" *ngIf="isCanImport">
                <i class="download icon"></i>
                Import Role
             </button>
-            <button class="ui green  basic button" type="button" (click)="clickAddRole()">
+            <button class="ui green  basic button" type="button" (click)="clickAddRole()" *ngIf="isCanAdd">
                <i class="plus icon"></i>
                เพิ่ม Role
             </button>
-            <button class="ui green  basic button" type="button" (click)="clickExportTemplate()">
+            <button class="ui green  basic button" type="button" (click)="clickExportTemplate()"  >
                <i class="file excel outline icon"></i>
                Download Template
             </button>
@@ -97,15 +97,15 @@
          </div>
          <br>
       </form>
-   </div>
 
-   <div class="sixteen wide column" *ngIf="isShowResult">
-      <div class="ui top attached header segment">
-         <span>ผลการค้นหา</span>
-      </div>
-      <div class="ui attached segment">
-         <div style="overflow-x: auto;white-space: nowrap;">
-            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+      <div class="ui segment" [hidden]="!roleDT.isSearch">
+         <div class="two wide field " style="margin-bottom: 20px">
+            <b>ผลการค้นหา</b>
+         </div>
+         <div>
+            <ng-datatable-search [ng-datatable]="roleDT"></ng-datatable-search>
+            <table [ngDatatable]="roleDTConfig" #roleDT="ngDatatable" class="ui small celled table nowrap" style="width: 100%"
+               id="table">
                <thead>
                   <tr>
                      <th>No.</th>
@@ -115,24 +115,28 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr *ngIf="nodataResult">
-                     <td style="text-align: center" colspan="4">ไม่พบรายการ</td>
+                  <tr class="text-center" *ngIf="roleDT.isEmpty">
+                     <td colspan="4" style="text-align: center !important;">ไม่พบรายการ</td>
                   </tr>
 
-                  <ng-template ngIf="!nodataResult">
-                     <tr *ngFor="let item of objRoleResult; let i = index">
-                        <td style="text-align: right">{{i+1}}</td>
-                        <td>{{item.roleName}}</td>
-                        <td>
-                           <Span *ngIf="item.status == 1 ">Inactive</Span>
-                           <Span *ngIf="item.status == 0 ">Active</Span>
-                        </td>
-                        <td style="text-align: center">
-                           <button class="ui blue basic button" (click)="clickEditRole(item)">แก้ไข
-                           </button>
-                        </td>
-                     </tr>
-                  </ng-template>
+                  <tr *ngFor="let item of roleDT.datas; let i = index">
+                     <td style="text-align: center">{{i+1}}</td>
+                     <td>{{item.roleName}}</td>
+                     <td style="text-align: center">
+                        <Span *ngIf="item.status == 1 ">Inactive</Span>
+                        <Span *ngIf="item.status == 0 ">Active</Span>
+                     </td>
+                     <td style="text-align: center" [ngSwitch]="isCanEdit">
+                        <div  *ngSwitchCase="true">
+                              <button class="ui blue basic button" (click)="clickEditRole(item)">แก้ไข
+                              </button>
+                        </div>
+                        <div  *ngSwitchCase="false">
+                              -
+                        </div>
+                        
+                     </td>
+                  </tr>
 
 
                </tbody>
@@ -140,19 +144,23 @@
 
          </div>
          <br>
+         <ng-datatable-footer [ng-datatable]="roleDT"></ng-datatable-footer>
          <br>
 
          <div class="ui center aligned grid">
             <div class="sixteen wide column">
                <!-- <button class="ui blue basic button" (click)="clickExportRole()"> -->
-               <button class="ui blue basic button" (click)="clickExportRole()">
+               <button class="ui blue basic button" (click)="clickExportRole()" *ngIf="isCanExport"> 
                   <i class="file excel outline icon"></i>Export to Role</button>
             </div>
          </div>
          <br>
-
       </div>
+
+
    </div>
+
+
 
 
 </div>

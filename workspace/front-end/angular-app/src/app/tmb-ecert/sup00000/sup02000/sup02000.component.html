@@ -46,14 +46,10 @@
   <br>
   <br>
   <div class="ui center aligned grid">
-    <button class="ui blue basic button" (click)="clickSave()">
+    <button class="ui blue basic button" (click)="clickSave()" *ngIf="isCanSave">
       <i class="download circle icon"></i>
       บันทึก
     </button> &nbsp;&nbsp;&nbsp;
-    <!-- <button class="ui grey basic button">
-      <i class="times circle outline icon"></i>
-      ยกเลิก
-    </button> -->
   </div>
   <br>
 
