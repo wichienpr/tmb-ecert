@@ -20,7 +20,7 @@ public class UserProfileDao {
 		sql.append(" join dbo.ECERT_ROLE_PERMISSION p on r.ROLE_ID=p.ROLE_ID    ");
 		sql.append(
 				"  where r.ROLE_NAME in ( " + SQLUtils.whereinTypeStringSQL(roles) + ")                            ");
-		sql.append("  group by p.FUNCTION_CODE                                  ");
+		sql.append(" AND p.status = 0 group by p.FUNCTION_CODE                                  ");
 
 		return jdbcTemplate.queryForList(sql.toString(), String.class);
 	}

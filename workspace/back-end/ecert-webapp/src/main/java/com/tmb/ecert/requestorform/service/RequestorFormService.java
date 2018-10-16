@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class RequestorFormService {
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_REQFORM);
 
-	private static String PATH = "requestor/";
+	private static String PATH = "tmb-requestor/";
 
 	@Autowired
 	private UploadService upload;
@@ -160,15 +161,18 @@ public class RequestorFormService {
 		upload.createFolder(folder); // Create Folder
 		try {
 			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
-				requestFileName = form.getRequestFile().getOriginalFilename();
+				String ext = FilenameUtils.getExtension(form.getRequestFile().getOriginalFilename());
+				requestFileName = "RECEIPT_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
 			}
 			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
-				copyFile = form.getCopyFile().getOriginalFilename();
+				String ext = FilenameUtils.getExtension(form.getCopyFile().getOriginalFilename());
+				copyFile = "IDCARD_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getCopyFile().getBytes(), folder, copyFile);
 			}
 			if (BeanUtils.isNotEmpty(form.getChangeNameFile())) {
-				changeNameFile = form.getChangeNameFile().getOriginalFilename();
+				String ext = FilenameUtils.getExtension(form.getChangeNameFile().getOriginalFilename());
+				changeNameFile = "NCHANGE_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
 			try {
@@ -187,9 +191,7 @@ public class RequestorFormService {
 				req.setCaNumber(form.getAcceptNo());
 				req.setCertificateFile("");
 				req.setCerTypeCode(form.getReqTypeSelect());
-				req.setChangeNameFile(
-						BeanUtils.isNotEmpty(form.getChangeNameFile()) ? form.getChangeNameFile().getOriginalFilename()
-								: null);
+				req.setChangeNameFile(BeanUtils.isNotEmpty(form.getChangeNameFile()) ? changeNameFile : null);
 				req.setTranCode(form.getTranCode());
 				req.setCreatedById(userId);
 				req.setCreatedByName(userName);
@@ -201,16 +203,13 @@ public class RequestorFormService {
 				req.setDebitAccountType(form.getSubAccMethodSelect());
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
-				req.setIdCardFile(
-						BeanUtils.isNotEmpty(form.getCopyFile()) ? form.getCopyFile().getOriginalFilename() : null);
+				req.setIdCardFile(BeanUtils.isNotEmpty(form.getCopyFile()) ? copyFile : null);
 				req.setMakerById(userId);
 				req.setMakerByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestDate(null);
-				req.setRequestFormFile(
-						BeanUtils.isNotEmpty(form.getRequestFile()) ? form.getRequestFile().getOriginalFilename()
-								: null);
+				req.setRequestFormFile(BeanUtils.isNotEmpty(form.getRequestFile()) ? requestFileName : null);
 				req.setStatus("10001");
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());

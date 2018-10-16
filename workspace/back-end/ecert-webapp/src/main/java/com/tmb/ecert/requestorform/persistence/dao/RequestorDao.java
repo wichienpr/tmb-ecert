@@ -167,7 +167,7 @@ public class RequestorDao {
 		sql.append("ACCOUNT_NAME=?,CUSTOMER_NAMERECEIPT=?,TELEPHONE=?,REQUESTFORM_FILE=?,");
 		sql.append("IDCARD_FILE=?,CHANGENAME_FILE=?,CERTIFICATE_FILE=?,ADDRESS=?,");
 		sql.append("REMARK=?,RECEIPT_NO=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,");
-		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=? WHERE REQFORM_ID = ?");
+		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,RECEIPT_FILE=?,ECM_FLAG=? WHERE REQFORM_ID = ?");
 
 		int row = jdbcTemplate.update(sql.toString(),
 				new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(), vo.getCustomerName(), vo.getCompanyName(),
@@ -177,7 +177,7 @@ public class RequestorDao {
 						vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
 						vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
 						vo.getMakerByName(), vo.getMakerById(), vo.getMakerByName(), new java.util.Date(),
-						vo.getStatus(), vo.getReqFormId() });
+						vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(), vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}

@@ -16,15 +16,16 @@ public class RequestGenKeyService {
 	private RequestGenKeyDao requestGenKeyDao;
 	
 	public synchronized String getNextKey() {
-		String keyyear = DateFormatUtils.format(new Date(), "yyyyMM");
+		String keyyear = DateFormatUtils.format(new Date(), "yyyyMMdd");
+		String keyyearDisplay = DateFormatUtils.format(new Date(), "ddMMMyyyy");
 		Integer currentRunningNo = requestGenKeyDao.getNextKey(keyyear);
 		int nextRunning = currentRunningNo + 1;
-//		if(nextRunning == 1) {
+		if(nextRunning == 1) {
 		requestGenKeyDao.insertKeyrunning(nextRunning,keyyear);					
-//		}else {
-//			requestGenKeyDao.updateKeyrunning(nextRunning,keyyear);					
-//		}
-		return keyyear + StringUtils.leftPad(String.valueOf(nextRunning), 5, "0");
+		}else {
+			requestGenKeyDao.updateKeyrunning(nextRunning,keyyear);					
+		}
+		return keyyearDisplay + StringUtils.leftPad(String.valueOf(nextRunning), 5, "0");
 	}
 	
 	public synchronized String getNextKeyByChannelID(String channelid) {

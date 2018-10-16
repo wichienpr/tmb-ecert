@@ -43,15 +43,12 @@ public class Sup01000Controller {
 	@PostMapping("/saveUserRole")
 	@ResponseBody
 	public CommonMessage<String> save(@RequestBody Sup01100FormVo form) {
-//		CommonMessage<String> message = new CommonMessage<>();
-//		return message;
 		return service.saveUserRole(form);
 	}
 	
 	@PostMapping("/getRole")
 	@ResponseBody
 	public List<RoleVo> getRole(@RequestBody Sup01100FormVo form) {
-//		System.out.println("save medthod");
 		return service.getRole(form);
 	}
 	
@@ -64,7 +61,6 @@ public class Sup01000Controller {
 	@GetMapping("/exportRole/{roleName}/{roleStatus}")
 	@ResponseBody
 	public void exportRole(@PathVariable("roleName") String roleName,@PathVariable("roleStatus") int roleStatus ,HttpServletResponse response) {
-//		System.out.println("save medthod");
 		Sup01100FormVo roleVo = new Sup01100FormVo();
 		roleVo.setRoleName(roleName);
 		roleVo.setStatus(roleStatus);
@@ -78,7 +74,6 @@ public class Sup01000Controller {
 	@GetMapping("/exportTemplate")
 	@ResponseBody
 	public void exportRole(HttpServletResponse response) {
-//		System.out.println("save medthod");
 		try {
 			service.ExportRoleTemplate(response);
 		} catch (IOException e) {

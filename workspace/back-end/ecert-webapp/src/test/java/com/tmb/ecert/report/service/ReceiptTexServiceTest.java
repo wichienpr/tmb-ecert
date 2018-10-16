@@ -1,34 +1,39 @@
 package com.tmb.ecert.report.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
+
+
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import th.co.baiwa.buckwaframework.common.constant.ReportConstants.PATH;
-import th.co.baiwa.buckwaframework.common.util.ReportUtils;
+import com.tmb.ecert.report.persistence.dao.RpDao;
 
 public class ReceiptTexServiceTest {
 
+	@Autowired
+	private RpDao rpDao;
+	
 	@Test
-	public void ReceiptTex() throws Exception {
-		System.out.println("ทดสอบรายงาน  ReceiptTex");
-
-		String reportName = "RP_RECEIPT_TAX";
-
-		Map<String, Object> params = new HashMap<>();
-		params.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
-		params.put("sendTo", " ข้อความทดสอบ");
+	public void ReceiptTex()  {
+		//int num1= 1500;
 		
+		//DecimalFormat formatter = new DecimalFormat("#,##0");
+		//DecimalFormat formatTest = new DecimalFormat("#,###.##");
+		//formatter.format(num1);
+		 
+		//System.out.println(formatter.format(num1));
+
 		
-		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params, new JREmptyDataSource());
-
-
+		String name ="RequestForm"+DateFormatUtils.format(new java.util.Date(),"yyyyMMddHHmmss");
+		
+       System.out.println(name);
 	}
 }

@@ -13,4 +13,9 @@ public class MessageConstants {
 		public static final String EN = "EN";
 	}
 	
+	public static final class MESSAGE_STATUS {
+		public static final String SUCCEED = "SUCCEED";
+		public static final String FAILED = "FAILED";
+	}
+	
 }
