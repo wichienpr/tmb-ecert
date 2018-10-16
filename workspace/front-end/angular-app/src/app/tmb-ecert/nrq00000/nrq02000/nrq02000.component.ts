@@ -259,7 +259,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
-    const data = { data: this.form.value, addons: "jingbell" };
+    const { reqFormId, tmbRequestNo } = this.data;
+    const data = {
+      id: reqFormId,
+      typeCertificate: "",
+      seq: 0,
+      tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo
+    };
     this.isdownload = this.service.pdf(data);
   }
 

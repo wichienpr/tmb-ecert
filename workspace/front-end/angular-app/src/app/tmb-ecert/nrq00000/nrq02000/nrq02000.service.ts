@@ -19,7 +19,7 @@ const URL = {
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
     REQUEST_FORM: "/api/nrq/data",
-    CREATE_FORM: "/api/report/pdf/reqForm/",
+    CREATE_FORM: "/api/report/pdf/reqFormOriginal/",
     FORM_PDF: "/api/report/pdf/",
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
     DOWNLOAD: "/api/crs/crs02000/download/",

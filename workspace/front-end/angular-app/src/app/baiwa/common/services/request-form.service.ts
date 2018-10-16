@@ -6,7 +6,7 @@ import { RequestForm } from "../models";
 
 const URL = {
     GEN_KEY: "/api/nrq/generate/key",
-    FORM_PDF: "/api/report/pdf/",
+    FORM_PDF: "/api/report/pdf/view/",
     REQUEST_FORM: "/api/nrq/data",
 }
 
@@ -34,9 +34,8 @@ export class RequestFormService {
      * @param data ข้อมูลที่จะใช้ในการเจนไฟล์
      */
     getPdf(url: string, data: any) {
-        this.ajax.post(url + "test", data, response => {
-            let name = "test"// response.json() || "test";
-            this.ajax.download(URL.FORM_PDF + name + "/file");
+        this.ajax.post(url, data, response => {
+            this.ajax.download(URL.FORM_PDF + response._body + "/download");
         });
     }
 

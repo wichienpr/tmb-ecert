@@ -173,7 +173,15 @@ export class Crs02000Service {
       formData.append(key, data[key]);
     }
     this.ajax.upload(URL.UPLOAD, formData, response => {
-      console.log('response => ', response);
+      const data = response.json();
+      if(data && data.message == "SUCCESS") {
+        this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+      }
+      else if (data && data.message == "PRESS_UPLOAD_RECIEPTTAX") {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาพิมพ์ใบเสร็จ" });
+      } else {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+      }
     });
   }
 

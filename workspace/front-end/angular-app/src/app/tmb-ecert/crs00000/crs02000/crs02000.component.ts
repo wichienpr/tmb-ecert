@@ -65,6 +65,13 @@ export class Crs02000Component implements OnInit {
     });
   }
 
+  get certFile() { return this.formCert.get('certFile') }
+  get btnApprove() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
+  get btnReject() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
+  get btnPrintReciept() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+  get btnPrintCover() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+  get btnUpload() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+
   async init() {
     this.id = this.service.getId();
     if (this.id !== "") {
@@ -84,12 +91,6 @@ export class Crs02000Component implements OnInit {
       }, 500);
     }
   }
-
-  get btnApprove() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
-  get btnReject() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
-  get btnPrintReciept() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
-  get btnPrintCover() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
-  get btnUpload() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
 
   roles(role: ROLES) {
     return this.common.isRole(role) || this.common.isRole(ROLES.ADMIN);
