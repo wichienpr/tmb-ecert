@@ -1,8 +1,5 @@
 package com.tmb.ecert.batchmonitor.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
-import com.tmb.ecert.batchjob.constant.BatchJobConstant;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.service.AuditLogBatchService;
 import com.tmb.ecert.batchjob.service.HROfficeCodeBatchService;
 import com.tmb.ecert.batchjob.service.HouseKeepingBatchService;
@@ -23,8 +19,6 @@ import com.tmb.ecert.batchmonitor.persistence.dao.BatchMonitoringDao;
 import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000FormVo;
 import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000Vo;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
-import com.tmb.ecert.common.constant.ProjectConstant.BACHJOB_LOG_NAME;
-import com.tmb.ecert.common.constant.ProjectConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.domain.CommonMessage;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
