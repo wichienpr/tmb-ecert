@@ -10,10 +10,10 @@
           คำขอใหม่
           <div class="ui  label blue" style="font-size: 13px"> {{(dashboard|async).newReq}} </div>
         </a>
-        <a class=" item" style="font-size: 13px;" (click)="searchStatus('10002')">
+        <!-- <a class=" item" style="font-size: 13px;" (click)="searchStatus('10002')">
           ดำเนินการชำระเงิน
           <div class="ui label "> {{(dashboard|async).paying}} </div>
-        </a>
+        </a> -->
         <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
           ปฏิเสธคำขอ
           <div class="ui label red"> {{(dashboard|async).reject}} </div>
