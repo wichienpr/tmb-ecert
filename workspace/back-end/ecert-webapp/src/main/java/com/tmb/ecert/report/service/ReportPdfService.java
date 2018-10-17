@@ -147,20 +147,20 @@ public class ReportPdfService {
 		Map<String, Object> params01 = new HashMap<>();
 
 		params01.put("logoDbd", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoDbd.png"));
-		params01.put("typeCertificate", vo.getTypeCertificate());
+		params01.put("typeCertificate", "นิติบุคคล");
 		params01.put("tmpReqNo", vo.getTmpReqNo());
 
-		List<RpReqFormOriginalVo> rpReqFormOriginalVoList = new ArrayList<>();
-		RpReqFormOriginalVo rpReqFormOriginalVo = null;
+		List<RpReqFormListVo> rpReqFormListVoList = new ArrayList<>();
+		RpReqFormListVo rpReqFormListVo = null;
 
 		for (int i = 0; i < 5; i++) {
-			rpReqFormOriginalVo = new RpReqFormOriginalVo();
-			rpReqFormOriginalVo.setSeq(String.valueOf(i + 1));
-			rpReqFormOriginalVoList.add(rpReqFormOriginalVo);
+			rpReqFormListVo = new RpReqFormListVo();
+			rpReqFormListVo.setSeq(String.valueOf(i + 1));
+			rpReqFormListVoList.add(rpReqFormListVo);
 		}
 
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01,
-				new JRBeanCollectionDataSource(rpReqFormOriginalVoList));
+				new JRBeanCollectionDataSource(rpReqFormListVoList));
 
 		// RP002
 		String reportName02 = "RP001_REQ_FORM_02";
@@ -213,7 +213,15 @@ public class ReportPdfService {
 		Map<String, Object> params01 = new HashMap<>();
 
 		params01.put("logoDbd", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoDbd.png"));
-		params01.put("typeCertificate", vo.getTypeCertificate());
+		if("50001".equals(vo.getTypeCertificate())) {
+			params01.put("typeCertificate", "นิติบุคคล");
+		}else if("50002".equals(vo.getTypeCertificate())) {
+			params01.put("typeCertificate", "ธุรกิจต่างด้าว");
+		}else if("50003".equals(vo.getTypeCertificate())) {
+			params01.put("typeCertificate", "สมาคมและหอการค้า");
+		}else {
+			params01.put("typeCertificate", "   ");
+		}
 		params01.put("customerName", vo.getCustomerName());
 		params01.put("telephone", vo.getTelephone());
 
@@ -247,7 +255,7 @@ public class ReportPdfService {
 				rpReqFormListVo.setOther(data.getOther());
 			}
 			if (BeanUtils.isNotEmpty(data.getStatementYear())) {
-				rpReqFormListVo.setStatementYear(data.getStatementYear());
+				rpReqFormListVo.setStatementYear( String.valueOf(Integer.parseInt( data.getStatementYear())  + 543));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
 				Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
