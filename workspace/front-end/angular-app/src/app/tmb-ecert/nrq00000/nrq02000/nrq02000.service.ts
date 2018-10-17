@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
 import { AjaxService, ModalService, DropdownService, RequestFormService } from "services/";
-import { Acc, Assigned } from "helpers/";
+import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
 
@@ -214,15 +214,10 @@ export class Nrq02000Service {
      */
     save(form: FormGroup, files: any, _certificates: Certificate[], addons: any, what: string = "save") {
         let certificates = new Assigned().getValue(_certificates);
-        let chkCerts = this.chkCerts(certificates, form);
-        certificates = [...chkCerts.data]; // clear validators checkbox
-        if (!chkCerts.flag) {
-            this.modal.alertWithAct({ msg: ValidatorMessages.selectSomeCerts });
-            return chkCerts.form;
-        }
-        if (!chkCerts.total) {
-            this.modal.alertWithAct({ msg: ValidatorMessages.totalCerts });
-            return chkCerts.form;
+        let chkMsg = this.chkCertsC(_certificates, form);
+        if ("" != chkMsg) {
+            this.modal.alertWithAct({ msg: chkMsg });
+            return;
         }
         let modalAler: Modal = { msg: "", success: false }
         for (let key in form.controls) {
@@ -237,104 +232,170 @@ export class Nrq02000Service {
                 }
             }
         }
-        const modalConf: Modal = {
-            msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
-            title: "ยืนยันการทำรายการ"
-            // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-            //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-            //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-            // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-            // approveMsg: "ดำเนินการต่อ",
-            // color: "notification"
-        }
-        this.modal.confirm((e) => {
-            if (e) {
-                const formData = this.bindingData(certificates, files, form, addons);
-                let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
-                this.ajax.upload(url, formData, response => {
-                    if (response.json().message == "SUCCESS") {
-                        const modal: Modal = {
-                            msg: "บันทึกข้อมูลสำเร็จ",
-                            // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                            success: true
-                        };
-                        this.modal.alert(modal);
-                        this.router.navigate(['/crs/crs01000'], {
-                            queryParams: { codeStatus: "10001" }
-                        });
-                    } else {
-                        const modal: Modal = {
-                            msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
-                            success: false
-                        };
-                        this.modal.alert(modal);
-                    }
-                }, err => {
-                    console.error(err)
-                });
+        if (form.valid) {
+            const modalConf: Modal = {
+                msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
+                title: "ยืนยันการทำรายการ"
+                // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+                //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+                //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+                // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+                // approveMsg: "ดำเนินการต่อ",
+                // color: "notification"
             }
-        }, modalConf);
+            this.modal.confirm((e) => {
+                if (e) {
+                    const formData = this.bindingData(certificates, files, form, addons);
+                    let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
+                    this.ajax.upload(url, formData, response => {
+                        if (response.json().message == "SUCCESS") {
+                            const modal: Modal = {
+                                msg: "บันทึกข้อมูลสำเร็จ",
+                                // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                                success: true
+                            };
+                            this.modal.alert(modal);
+                            this.router.navigate(['/crs/crs01000'], {
+                                queryParams: { codeStatus: "10001" }
+                            });
+                        } else {
+                            const modal: Modal = {
+                                msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
+                                success: false
+                            };
+                            this.modal.alert(modal);
+                        }
+                    }, err => {
+                        console.error(err)
+                    });
+                }
+            }, modalConf);
+        }
     }
 
-    chkCerts(certificates: Certificate[], form: FormGroup): any {
-        let has: boolean = false;
-        let hasTotal: boolean = false;
-        certificates.forEach((obj, index) => {
-            if (index != 0) {
-                if (form.controls['chk' + index].valid) {
+    chkCertsC(certificates: Certificate[], form: FormGroup) {
+        let hasFinished = 0;
+        for (let i = 1; i < certificates.length; i++) {
+            if (form.get('chk' + i).value != true) {
+                hasFinished++;
+            } else {
+                if (form.get('cal' + i) && form.get('cal' + i).invalid) {
+                    return "กรุณากรอกวันที่เอกสารรับรอง";
+                }
+                let hasChildFinished = 0;
+                if (form.get('chk' + i).value == true && certificates[i].children) {
+                    for (let j = 1; j < certificates[i].children.length; j++) {
+                        if (form.get('chk' + i + 'Child' + j).value != true) {
+                            hasChildFinished++;
+                        } else {
+                            if (form.get('cal' + i + 'Child' + j) && form.get('cal' + i + 'Child' + j).invalid) {
+                                return "กรุณากรอกวันที่เอกสารรับรอง";
+                            }
+                            if (form.get('etc' + i + 'Child' + j) && form.get('etc' + i + 'Child' + j).invalid) {
+                                return "กรุณากรอกข้อความอื่นๆ";
+                            }
+                        }
+                    }
+                    if (hasChildFinished == certificates[i].children.length - 1) {
+                        return "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ";
+                    }
+                }
+            }
+        }
+        if (hasFinished == certificates.length - 1) {
+            return "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ";
+        } else {
+            return "";
+        }
+    }
+
+    pdf(form, dt, reqTypeChanged, reqDate): boolean {
+        let chkMsg = this.chkCertsC(reqTypeChanged, form);
+        if ("" != chkMsg) {
+            this.modal.alertWithAct({ msg: chkMsg });
+            return;
+        }
+        let modalAler: Modal = { msg: "", success: false }
+        for (let key in form.controls) {
+            if (form.controls[key].invalid) {
+                for (let enu in ValidatorMessages) {
+                    if (enu == key) {
+                        modalAler.msg = ValidatorMessages[enu];
+                        modalAler.success = false;
+                        this.modal.alert(modalAler);
+                        return;
+                    }
+                }
+            }
+        }
+        if (form.valid) {
+            const { tmbRequestNo } = dt;
+            let rpReqFormList = [];
+            const controls = form.controls;
+            reqTypeChanged.forEach((obj, index) => {
+                if (index != 0 && controls[`chk${index}`].value) {
                     if (obj.children) {
+                        let d = {
+                            "totalNum": null,
+                            "numSetCc": null,
+                            "numEditCc": null,
+                            "numOtherCc": null,
+                            "dateOtherReg": null,
+                            "other": null,
+                            "dateEditReg": null,
+                            "statementYear": null,
+                            "dateAccepted": null
+                        };
                         obj.children.forEach((ob, idx) => {
-                            if (idx != 0) {
-                                if (form.controls['chk' + index + 'Child' + idx].valid) {
-                                    has = true;
-                                    if (form.controls['cer' + index + 'Child' + idx].value > 0) {
-                                        hasTotal = true;
+                            if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
+                                if (controls[`etc${index}Child${idx}`]) {
+                                    d.other = controls[`etc${index}Child${idx}`].value;
+                                    d.numOtherCc = controls[`cer${index}Child${idx}`].value;
+                                    if (idx != 1) {
+                                        d.dateOtherReg = controls[`cal${index}Child${idx}`].value;
                                     }
+                                } else if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value == "") {
+                                    d.numSetCc = controls[`cer${index}Child${idx}`].value;
                                 } else {
-                                    form.get('chk' + index + 'Child' + idx).setValidators([Validators.required]);
-                                    form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
+                                    d.numEditCc = controls[`cer${index}Child${idx}`].value;
+                                    if (idx != 1) {
+                                        d.dateEditReg = controls[`cal${index}Child${idx}`].value;
+                                    }
                                 }
                             }
                         });
+                        rpReqFormList = [...rpReqFormList, d];
                     } else {
-                        has = true;
-                        if (form.controls['cer' + index].value > 0) {
-                            hasTotal = true;
-                        }
-                    }
-                } else {
-                    form.get('chk' + index).setValidators([Validators.required]);
-                    form.get('chk' + index).updateValueAndValidity();
-                }
-            }
-        });
-        if (has) {
-            certificates.forEach((obj, index) => {
-                if (index != 0) {
-                    if (form.controls['chk' + index].invalid) {
-                        form.get('chk' + index).clearValidators();
-                        form.get('chk' + index).updateValueAndValidity();
-                    } else {
-                        if (obj.children) {
-                            obj.children.forEach((ob, idx) => {
-                                if (idx != 0) {
-                                    if (form.controls['chk' + index + 'Child' + idx].invalid) {
-                                        form.get('chk' + index + 'Child' + idx).clearValidators();
-                                        form.get('chk' + index + 'Child' + idx).updateValueAndValidity();
-                                    }
-                                }
-                            });
-                        }
+                        const d = {
+                            "totalNum": controls[`cer${index}`].value,
+                            "numSetCc": null,
+                            "numEditCc": null,
+                            "numOtherCc": null,
+                            "dateOtherReg": null,
+                            "other": null,
+                            "dateEditReg": null,
+                            "statementYear": controls[`cal${index}`] && controls[`cal${index}`].value.length == 4 ? controls[`cal${index}`].value : null,
+                            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null
+                        };
+                        rpReqFormList = [...rpReqFormList, d];
                     }
                 }
             });
+            const data = {
+                typeCertificate: this.form.get("reqTypeSelect").value,
+                customerName: this.form.get("corpName").value,
+                companyName: this.form.get("corpName").value,
+                organizeId: this.form.get("corpNo").value,
+                accountName: this.form.get("accName").value,
+                accountNo: this.form.get("accNo").value,
+                telephone: this.form.get("telReq").value,
+                reqDate: dateLocaleEN(new Date(reqDate)),
+                tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
+                rpReqFormList: rpReqFormList
+            };
+            this.reqService.getPdf(URL.CREATE_FORM, data);
+            return true;
         }
-        return { data: certificates, flag: has, total: hasTotal, form: form };
-    }
-
-    pdf(data: any): boolean {
-        this.reqService.getPdf(URL.CREATE_FORM, data);
-        return true;
     }
 
     cancel(): void {

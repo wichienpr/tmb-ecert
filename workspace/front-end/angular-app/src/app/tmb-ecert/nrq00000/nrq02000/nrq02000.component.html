@@ -87,7 +87,7 @@
               <th rowspan="2">ค่าธรรมเนียมของ DBD</th>
               <th rowspan="2">ค่าบริการของธนาคาร</th>
               <th rowspan="2">วันที่รับจด/วันที่รับ/ปีงบการเงิน</th>
-              <th rowspan="2" style="width: 12%">จำนวน : ชุด</th>
+              <th rowspan="2" style="width: 175px">จำนวน : ชุด</th>
             </tr>
             <tr style="display: none">
               <th>1</th>
@@ -150,9 +150,17 @@
                     </td>
                     <td>
                       <div class="field" [ngClass]="{'error': invalid('cer'+i) }">
-                        <div class="ui input">
-                          <input (keypress)="accNoPress($event)" #cer type="number" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
-                            formControlName="cer{{i}}" min="1" style="width: 100%;">
+                        <div class="ui left right labeled input" style="width: 166px">
+                          <div (click)="minus('cer'+i)" class="ui red icon button label" style="width: 32.5px"
+                            [ngClass]="{'disabled': !form.controls['chk'+i].value||form.controls['cer'+i].value == 1 }">
+                            <i class="minus icon"></i>
+                          </div>
+                          <input (keypress)="accNoPress($event)" #cer type="text" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
+                            formControlName="cer{{i}}" min="1" style="width: 75px;text-align: right !important">
+                          <div (click)="plus('cer'+i)" class="ui green icon button label" style="width: 32.5px"
+                            [ngClass]="{'disabled': !form.controls['chk'+i].value }">
+                            <i class="plus icon"></i>
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -200,10 +208,18 @@
                       </td>
                       <td>
                         <div class="field" [ngClass]="{'error': invalid('cer'+i+'Child'+j) }">
-                          <div class="ui input">
-                            <input (keypress)="accNoPress($event)" #cerChild min="1" type="number" name="cer{{i}}Child{{j}}"
+                          <div class="ui left right labeled input" style="width: 166px">
+                            <div (click)="minus('cer'+i+'Child'+j)" class="ui red icon button label" style="width: 32.5px"
+                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value||form.controls['cer'+i+'Child'+j].value == 1 }">
+                              <i class="minus icon"></i>
+                            </div>
+                            <input (keypress)="accNoPress($event)" #cerChild type="text" name="cer{{i}}Child{{j}}"
                               [disableControl]="!form.controls['chk'+i+'Child'+j].value" formControlName="cer{{i}}Child{{j}}"
-                              style="width: 100%;">
+                              min="1" style="width: 75px; text-align: right !important">
+                            <div (click)="plus('cer'+i+'Child'+j)" class="ui green icon button label" style="width: 32.5px"
+                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value }">
+                              <i class="plus icon"></i>
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -378,8 +394,8 @@
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountDbd') }" *ngIf="btnMaker">
-          <input type="text" name="amountDbd" (blur)="amountBlur('amountDbd')"
-          (focus)="amountFocus('amountDbd')" (keypress)="accNoPress($event, true)" formControlName="amountDbd">
+          <input type="text" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
+            (keypress)="accNoPress($event, true)" formControlName="amountDbd">
         </div>
       </div>
 
@@ -388,8 +404,8 @@
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountTmb') }" *ngIf="btnMaker">
-          <input type="text" name="amountTmb" (blur)="amountBlur('amountTmb')"
-          (focus)="amountFocus('amountTmb')" (keypress)="accNoPress($event, true)" formControlName="amountTmb">
+          <input type="text" name="amountTmb" (blur)="amountBlur('amountTmb')" (focus)="amountFocus('amountTmb')"
+            (keypress)="accNoPress($event, true)" formControlName="amountTmb">
         </div>
       </div>
 

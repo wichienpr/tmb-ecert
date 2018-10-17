@@ -265,67 +265,15 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
-    const { tmbRequestNo } = this.data;
-    let rpReqFormList = [];
-    const controls = this.form.controls;
-    this.reqTypeChanged.forEach((obj, index) => {
-      if (index != 0 && controls[`chk${index}`].value) {
-        if (obj.children) {
-          let d = {
-            "totalNum": null,
-            "numSetCc": null,
-            "numEditCc": null,
-            "numOtherCc": null,
-            "dateOtherReg": null,
-            "other": null,
-            "dateEditReg": null,
-            "statementYear": null,
-            "dateAccepted": null
-          };
-          obj.children.forEach((ob, idx) => {
-            if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
-              if (controls[`etc${index}Child${idx}`]) {
-                d.other = controls[`etc${index}Child${idx}`].value;
-                d.numOtherCc = controls[`cer${index}Child${idx}`].value;
-                d.dateOtherReg = controls[`cal${index}Child${idx}`].value;
-              } else if (controls[`cal${index}Child${idx}`].value == "") {
-                d.numSetCc = controls[`cer${index}Child${idx}`].value;
-              } else {
-                d.numEditCc = controls[`cer${index}Child${idx}`].value;
-                d.dateEditReg = controls[`cal${index}Child${idx}`].value;
-              }
-            }
-          });
-          rpReqFormList = [...rpReqFormList, d];
-        } else {
-          const d = {
-            "totalNum": controls[`cer${index}`].value,
-            "numSetCc": null,
-            "numEditCc": null,
-            "numOtherCc": null,
-            "dateOtherReg": null,
-            "other": null,
-            "dateEditReg": null,
-            "statementYear": controls[`cal${index}`] && controls[`cal${index}`].value.length == 4 ? controls[`cal${index}`].value : null,
-            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null
-          };
-          rpReqFormList = [...rpReqFormList, d];
-        }
-      }
-    });
-    const data = {
-      typeCertificate: this.form.get("reqTypeSelect").value,
-      customerName: this.form.get("corpName").value,
-      companyName: this.form.get("corpName").value,
-      organizeId: this.form.get("corpNo").value,
-      accountName: this.form.get("accName").value,
-      accountNo: this.form.get("accNo").value,
-      telephone: this.form.get("telReq").value,
-      reqDate: dateLocaleEN(new Date(this.reqDate)),
-      tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
-      rpReqFormList: rpReqFormList
-    };
-    this.isdownload = this.service.pdf(data);
+    this.isdownload = this.service.pdf(this.form, this.data, this.reqTypeChanged, this.reqDate);
+  }
+
+  plus(control: string) {
+    this.form.controls[control].setValue(parseInt(this.form.controls[control].value) + 1);
+  }
+
+  minus(control: string) {
+    this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
   }
 
   cancel() {
@@ -384,7 +332,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             obj.children = await this.service.reqTypeChange(obj.code);
             obj.children.forEach((ob, idx) => {
               if (idx != 0) {
-                if (this.calendar.length !== obj.children.length) {
+                if (this.calendar.length !== obj.children.length && idx != 1) {
                   this.calendar[idx] = {
                     calendarId: `cal${index}Child${idx}`,
                     calendarName: `cal${index}Child${idx}`,
@@ -406,11 +354,15 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                 if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
                   this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
                   this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                  this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  if (idx != 1) {
+                    this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
                 } else {
                   this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
                   this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                  this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  if (idx != 1) {
+                    this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
                 }
               }
             });
@@ -498,7 +450,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.reqTypeChanged[index].children) {
       this.showChildren = !this.form.controls[`chk${index}`].value;
       if (this.form.controls[`chk${index}`].value) {
-        for (let i = 0; i < this.reqTypeChanged[index].children.length; i++) {
+        for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
           this.form.controls[`chk${index}Child${i}`].setValue(false);
           this.form.controls[`cer${index}Child${i}`].setValue('');
           if (this.form.controls[`cal${index}Child${i}`]) {
@@ -525,7 +477,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         }
       });
     }
-    this.form.controls[`cal${parent}Child${child}`].setValue('');
+    if (child != 1) {
+      this.form.controls[`cal${parent}Child${child}`].setValue('');
+    }
     this.form.controls[`cer${parent}Child${child}`].setValue('');
     if (this.form.controls[`etc${parent}Child${child}`]) {
       this.form.controls[`etc${parent}Child${child}`].setValue('');
