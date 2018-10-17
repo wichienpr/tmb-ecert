@@ -37,9 +37,27 @@ public class Nrq02000FormVo {
 	private String ref1;
 	private String ref2;
 	private BigDecimal amount; 
+	private BigDecimal amountDbd; 
+	private BigDecimal amountTmb; 
 	private String rejectReasonCode;
 	private String rejectReasonOther;
 	
+	public BigDecimal getAmountDbd() {
+		return amountDbd;
+	}
+
+	public void setAmountDbd(BigDecimal amountDbd) {
+		this.amountDbd = amountDbd;
+	}
+
+	public BigDecimal getAmountTmb() {
+		return amountTmb;
+	}
+
+	public void setAmountTmb(BigDecimal amountTmb) {
+		this.amountTmb = amountTmb;
+	}
+
 	public String getRejectReasonCode() {
 		return rejectReasonCode;
 	}

@@ -88,6 +88,8 @@ public class RequestorFormService {
 				req.setRejectReasonOther(form.getRejectReasonOther());
 				req.setRef1(form.getRef1());
 				req.setRef2(form.getRef2());
+				req.setAmountTmb(form.getAmountTmb());
+				req.setAmountDbd(form.getAmountDbd());
 				req.setAmount(form.getAmount());
 				req.setReqFormId(nextId);
 				req.setAccountName(form.getAccName());

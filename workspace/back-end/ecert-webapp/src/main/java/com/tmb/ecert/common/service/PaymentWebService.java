@@ -13,8 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayRequest;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentResponse;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.StatusConstant;
@@ -35,8 +39,7 @@ public class PaymentWebService {
 		logger.info("PaymentWebService::feePayment");
 		CommonMessage<FeePaymentRequest> commonMsg = new CommonMessage<FeePaymentRequest>();
 		String uuid = UUID.randomUUID().toString();
-		logger.info("UUID => {}", uuid);
-		RestTemplate restTemplate = new RestTemplate();
+		logger.info("PaymentWebService::feePayment UUID => {}", uuid);
 		FeePaymentRequest req = new FeePaymentRequest();
 		req.setRqUid(uuid);
 		req.setClientDt(DateConstant.convertDateToStrDDMMYYYYHHmmss(new Date()));
@@ -52,8 +55,8 @@ public class PaymentWebService {
 				: ApplicationCache.getParamValueByName("feepayment.fromacctref.account.type"));
 		req.setToAccountIdent(ApplicationCache.getParamValueByName("dbd.accountno"));
 		req.setToAccountType(ApplicationCache.getParamValueByName("feepayment.toacctref.account.type"));
-		req.setTransferAmount(reqF.getAmountDbd()); // ECERT_REQUEST_FORM.AMOUNT_DBD
-		req.setFee(new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_TMB
+		req.setCurAmt(reqF.getAmountDbd() != null ? reqF.getAmountDbd(): new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_DBD
+		req.setBillPmtFee(new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_TMB
 		req.setRef1(reqF.getRef1()); // ECERT_REQUEST_FORM.REF1
 		req.setRef2(reqF.getRef2()); // ECERT_REQUEST_FORM.REF2
 		req.setPostedDate(DateConstant.convertDateToStrDDMMYYYY(new Date()));
@@ -62,6 +65,7 @@ public class PaymentWebService {
 		req.setCompCode(ApplicationCache.getParamValueByName("feepayment.compcode"));
 		req.setPostedTime(DateConstant.convertDateToStrHHmmss(new Date()));
 		try {
+			RestTemplate restTemplate = new RestTemplate();
 			HttpEntity<FeePaymentRequest> request = new HttpEntity<>(req);
 			ResponseEntity<FeePaymentResponse> response = restTemplate.exchange(WS_URL + "api-payment/add",
 					HttpMethod.POST, request, FeePaymentResponse.class);
@@ -71,10 +75,79 @@ public class PaymentWebService {
 				commonMsg.setMessage("SUCCESS");
 			} else {
 				commonMsg.setData(req);
-				throw new Exception(res.getDescription());
+				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			commonMsg.setMessage(e.getMessage());
+			return commonMsg;
+		}
+		return commonMsg;
+	}
+	
+	public CommonMessage<ApproveBeforePayRequest> approveBeforePayment(RequestForm reqF) {
+		logger.info("PaymentWebService::approveBeforePayment");
+		CommonMessage<ApproveBeforePayRequest> commonMsg = new CommonMessage<ApproveBeforePayRequest>();
+		ApproveBeforePayRequest req = new ApproveBeforePayRequest();
+		req.setBankCode(ApplicationCache.getParamValueByName("tmb.bankcode"));
+		req.setServiceCode(ApplicationCache.getParamValueByName("tmb.servicecode"));
+		req.setRef1(reqF.getRef1());
+		req.setRef2(reqF.getRef2());
+		req.setAmount(reqF.getAmountDbd());
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			HttpEntity<ApproveBeforePayRequest> request = new HttpEntity<>(req);
+			ResponseEntity<ApproveBeforePayResponse> response = restTemplate.exchange(WS_URL + "api-payment/approveBeforePay",
+					HttpMethod.POST, request, ApproveBeforePayResponse.class);
+			ApproveBeforePayResponse res = response.getBody();
+			if (StatusConstant.PAYMENT_STATUS.SUCCESS.equals(res.getStatusCode())) {
+				commonMsg.setData(req);
+				commonMsg.setMessage("SUCCESS");
+			} else {
+				commonMsg.setData(req);
+				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			commonMsg.setMessage(e.getMessage());
+			return commonMsg;
+		}
+		return commonMsg;
+	}
+	
+	public CommonMessage<RealtimePaymentRequest> realtimePayment(RequestForm reqF) {
+		logger.info("PaymentWebService::realtimePayment");
+		CommonMessage<RealtimePaymentRequest> commonMsg = new CommonMessage<RealtimePaymentRequest>();
+		RealtimePaymentRequest req = new RealtimePaymentRequest();
+		req.setServiceCode(ApplicationCache.getParamValueByName("tmb.servicecode"));
+		req.setTransactionNo(ApplicationCache.getParamValueByName("tmb.transactiono"));
+		req.setRef1(reqF.getRef1());
+		req.setRef2(reqF.getRef2());
+		req.setBankCode(ApplicationCache.getParamValueByName("tmb.bankcode"));
+		req.setBranchCode(reqF.getPaymentBranchCode());
+		req.setPaymentType(ApplicationCache.getParamValueByName("tmb.payment.type"));
+		req.setPayAmount(reqF.getAmountDbd());
+		req.setPaymentDate(DateConstant.convertDateToStrDDMMYYYYHHmmss(reqF.getPaymentDate()));
+		req.setPaymentName(reqF.getCustomerName());
+		req.setTransactionDate(DateConstant.convertDateToStrDDMMYYYY(reqF.getPostDate()));
+		req.setPayloadTS(DateConstant.convertDateToStrDDMMYYYYHHmmss(new Date()));
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			HttpEntity<RealtimePaymentRequest> request = new HttpEntity<>(req);
+			ResponseEntity<RealtimePaymentResponse> response = restTemplate.exchange(WS_URL + "api-payment/realTimePayment",
+					HttpMethod.POST, request, RealtimePaymentResponse.class);
+			RealtimePaymentResponse res = response.getBody();
+			if (StatusConstant.PAYMENT_STATUS.SUCCESS.equals(res.getStatusCode())) {
+				commonMsg.setData(req);
+				commonMsg.setMessage(StatusConstant.PAYMENT_STATUS.SUCCESS_MSG);
+			} else {
+				commonMsg.setData(req);
+				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			commonMsg.setMessage(e.getMessage());
+			return commonMsg;
 		}
 		return commonMsg;
 	}

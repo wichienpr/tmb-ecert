@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -26,7 +29,7 @@ public class CheckRequestDetailService {
 	private static String PATH = "tmb-requestor/";
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
-	
+
 	@Autowired
 	private DownloadService download;
 
@@ -35,7 +38,7 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private RequestorDao reqDao;
-	
+
 	@Autowired
 	private PaymentWebService paymentWs;
 
@@ -85,25 +88,44 @@ public class CheckRequestDetailService {
 		}
 	}
 
-	public CommonMessage<FeePaymentRequest> approve() {
+	public CommonMessage<RealtimePaymentRequest> approve(String reqFormId) {
 		logger.info("CheckRequestDetailService::approve");
-		return paymentWs.feePayment(new RequestForm());
-	}
-
-	public CommonMessage<String> approve(RequestForm req) {
-		CommonMessage<String> commonMsg = new CommonMessage<String>();
-		try {
+		Long id = Long.valueOf(reqFormId);
+		RequestForm newReq = dao.findReqFormById(id, false).size() > 0 ? dao.findReqFormById(id, false).get(0)
+				: new RequestForm();
+		switch (newReq.getPaidTypeCode()) {
+		case "30001":
 			
-//			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false).get(0);
-//			newReq.setStatus("10005");
-//			reqDao.update(newReq);
-//			commonMsg.setMessage("SUCCESS");
-			return commonMsg;
-		} catch (Exception e) {
-			e.printStackTrace();
-			commonMsg.setMessage("ERROR");
-			return commonMsg;
+			CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq);
+			if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
+				
+				CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
+				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
+					
+					CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq);
+					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
+						
+						CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
+						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage())) {
+							
+						} else {
+							
+						}
+						
+					} else {
+						
+					}
+					
+				} else {
+					
+				}
+				
+			} else {
+
+			}
+			break;
 		}
+		return paymentWs.realtimePayment(newReq);
 	}
 
 }
