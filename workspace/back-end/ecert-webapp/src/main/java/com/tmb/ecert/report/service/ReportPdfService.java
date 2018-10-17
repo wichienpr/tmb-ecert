@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +91,7 @@ public class ReportPdfService {
 		Map<String, Object> params01 = new HashMap<>();
 		params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 		params01.put("docType", "ต้นฉบับ");
-		//params01.put("date", DateFormatUtils.format(req.getReceiptDate(), "dd MMMM yyyy", new Locale("th", "TH")));
+		params01.put("date", DateFormatUtils.format(req.getCreatedDateTime(), "dd MMMM yyyy", new Locale("th", "TH")));
 
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
 
@@ -251,6 +250,9 @@ public class ReportPdfService {
 			params01.put("accountName", vo.getAccountName());
 			rpReqFormListVo.setSeq(String.valueOf(i + 1));
 
+			if (BeanUtils.isNotEmpty(data.getBoxIndex())) {
+				rpReqFormListVo.setBoxIndex(data.getBoxIndex());
+			}
 			if (BeanUtils.isNotEmpty(data.getTotalNum())) {
 				rpReqFormListVo.setTotalNum(data.getTotalNum());
 			}
@@ -261,12 +263,7 @@ public class ReportPdfService {
 				rpReqFormListVo.setNumOtherCc(data.getNumOtherCc());
 				rpReqFormListVo.setTotalNumCc(data.getNumSetCc() + data.getNumEditCc() + data.getNumOtherCc());
 			}
-			if (BeanUtils.isNotEmpty(data.getTotalNumFinance())) {
-				rpReqFormListVo.setTotalNumFinance(data.getTotalNumFinance());
-			}
-			if (BeanUtils.isNotEmpty(data.getTotalNumShareholder())) {
-				rpReqFormListVo.setTotalNumShareholder(data.getTotalNumShareholder());
-			}
+
 			if (BeanUtils.isNotEmpty(data.getOther())) {
 				rpReqFormListVo.setOther(data.getOther());
 			}
@@ -275,18 +272,15 @@ public class ReportPdfService {
 			}
 			if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
 				Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
-				rpReqFormListVo
-						.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateOtherReg())) {
 				Date dateOtherReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateOtherReg());
-				rpReqFormListVo
-						.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateAccepted())) {
 				Date dateAccepted = DateConstant.convertStrDDMMYYYYToDate(data.getDateAccepted());
-				rpReqFormListVo
-						.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			rpReqFormListVoList.add(rpReqFormListVo);
 			i++;

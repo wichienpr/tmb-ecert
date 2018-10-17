@@ -2,17 +2,16 @@ package com.tmb.ecert.report.persistence.vo;
 
 public class RpReqFormListVo {
 	private String seq;
+	private String boxIndex;
 	private int totalNum;
 	private int totalNumCc;
-	private int totalNumFinance;
-	private int totalNumShareholder;
 	private int numSetCc;
 	private int numEditCc;
 	private int numOtherCc;
 	private String other;
-	private String dateOtherReg;
-	private String dateEditReg;
 	private String statementYear;
+	private String dateEditReg;
+	private String dateOtherReg;
 	private String dateAccepted;
 
 	public String getSeq() {
@@ -21,6 +20,14 @@ public class RpReqFormListVo {
 
 	public void setSeq(String seq) {
 		this.seq = seq;
+	}
+
+	public String getBoxIndex() {
+		return boxIndex;
+	}
+
+	public void setBoxIndex(String boxIndex) {
+		this.boxIndex = boxIndex;
 	}
 
 	public int getTotalNum() {
@@ -37,22 +44,6 @@ public class RpReqFormListVo {
 
 	public void setTotalNumCc(int totalNumCc) {
 		this.totalNumCc = totalNumCc;
-	}
-
-	public int getTotalNumFinance() {
-		return totalNumFinance;
-	}
-
-	public void setTotalNumFinance(int totalNumFinance) {
-		this.totalNumFinance = totalNumFinance;
-	}
-
-	public int getTotalNumShareholder() {
-		return totalNumShareholder;
-	}
-
-	public void setTotalNumShareholder(int totalNumShareholder) {
-		this.totalNumShareholder = totalNumShareholder;
 	}
 
 	public int getNumSetCc() {
@@ -87,12 +78,12 @@ public class RpReqFormListVo {
 		this.other = other;
 	}
 
-	public String getDateOtherReg() {
-		return dateOtherReg;
+	public String getStatementYear() {
+		return statementYear;
 	}
 
-	public void setDateOtherReg(String dateOtherReg) {
-		this.dateOtherReg = dateOtherReg;
+	public void setStatementYear(String statementYear) {
+		this.statementYear = statementYear;
 	}
 
 	public String getDateEditReg() {
@@ -103,12 +94,12 @@ public class RpReqFormListVo {
 		this.dateEditReg = dateEditReg;
 	}
 
-	public String getStatementYear() {
-		return statementYear;
+	public String getDateOtherReg() {
+		return dateOtherReg;
 	}
 
-	public void setStatementYear(String statementYear) {
-		this.statementYear = statementYear;
+	public void setDateOtherReg(String dateOtherReg) {
+		this.dateOtherReg = dateOtherReg;
 	}
 
 	public String getDateAccepted() {
