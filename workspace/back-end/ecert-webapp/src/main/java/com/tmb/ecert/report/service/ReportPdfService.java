@@ -84,17 +84,43 @@ public class ReportPdfService {
 	public String receiptTaxToPdf(RpReceiptTaxVo vo) throws IOException, JRException {
 		// Folder Exist ??
 		initialService();
-
-		String reportName = "RP_RECEIPT_TAX";
-		Map<String, Object> params = new HashMap<>();
-		params.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
-		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params, new JREmptyDataSource());
-
-		// set_name
+		
 		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
-		String name = "RECEIPT_" + req.getTmbRequestNo() + ".pdf";
+		req.getReceiptDate();
 
-		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint);
+		
+		// RP001
+		String reportName01 = "RP_RECEIPT_TAX";
+		Map<String, Object> params01 = new HashMap<>();
+		params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+		params01.put("docType", "ต้นฉบับ");
+		//params01.put("date", DateFormatUtils.format(req.getReceiptDate(), "dd MMMM yyyy", new Locale("th", "TH")));
+		params01.put("date", "ต้นฉบับ");
+		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
+
+		// RP002
+		String reportName02 = "RP_RECEIPT_TAX";
+		Map<String, Object> params02 = new HashMap<>();
+		params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+		params02.put("docType", "สำเนา");
+		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
+		
+		//merge doc
+		List<ExporterInputItem> itemList = new ArrayList<>();
+		itemList.add(new SimpleExporterInputItem(jasperPrint01));
+		itemList.add(new SimpleExporterInputItem(jasperPrint02));
+			
+		JRPdfExporter exporter = new JRPdfExporter();
+		exporter.setExporterInput(new SimpleExporterInput(itemList));
+
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+		exporter.exportReport();
+
+		byte[] reportFile = os.toByteArray();
+		
+		// set_name
+		String name = "RECEIPT_" + req.getTmbRequestNo() + ".pdf";
 
 		// save to DB
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -108,7 +134,7 @@ public class ReportPdfService {
 		String folder = SUB_PATH_UPLOAD;
 		upload.createFile(reportFile, folder, name);
 
-		ReportUtils.closeResourceFileInputStream(params);
+		ReportUtils.closeResourceFileInputStream(params02);
 		return "RECEIPT_" + req.getTmbRequestNo();
 	}
 
@@ -189,19 +215,7 @@ public class ReportPdfService {
 		return "REQFORM_" + vo.getTmpReqNo();
 	}
 
-	/* viewPdfToData */
-	public void viewPdfToData(String name, HttpServletResponse response) throws Exception {
-		File file = new File(PATH_REPORT + name + ".pdf");
-		byte[] reportFile = IOUtils.toByteArray(new FileInputStream(file));
-		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
-		response.setContentLength(reportFile.length);
 
-		OutputStream responseOutputStream = response.getOutputStream();
-		for (byte bytes : reportFile) {
-			responseOutputStream.write(bytes);
-		}
-	}
 
 	/* reqFormToPdf */
 	public String reqFormToPdf(RpReqFormVo vo) throws IOException, JRException {
@@ -250,6 +264,12 @@ public class ReportPdfService {
 				rpReqFormListVo.setNumEditCc(data.getNumEditCc());
 				rpReqFormListVo.setNumOtherCc(data.getNumOtherCc());
 				rpReqFormListVo.setTotalNumCc(data.getNumSetCc() + data.getNumEditCc() + data.getNumOtherCc());
+			}
+			if (BeanUtils.isNotEmpty(data.getTotalNumFinance())) {
+				rpReqFormListVo.setTotalNumFinance(data.getTotalNumFinance());
+			}
+			if (BeanUtils.isNotEmpty(data.getTotalNumShareholder())) {
+				rpReqFormListVo.setTotalNumShareholder(data.getTotalNumShareholder());
 			}
 			if (BeanUtils.isNotEmpty(data.getOther())) {
 				rpReqFormListVo.setOther(data.getOther());
@@ -311,4 +331,19 @@ public class ReportPdfService {
 		return "REQFORM_" + vo.getTmpReqNo();
 	}
 
+	
+	/* viewPdfToData */
+	public void viewPdfToData(String name, HttpServletResponse response) throws Exception {
+		File file = new File(PATH_REPORT + name + ".pdf");
+		byte[] reportFile = IOUtils.toByteArray(new FileInputStream(file));
+		response.setContentType("application/pdf");
+		response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
+		response.setContentLength(reportFile.length);
+
+		OutputStream responseOutputStream = response.getOutputStream();
+		for (byte bytes : reportFile) {
+			responseOutputStream.write(bytes);
+		}
+	}
+	
 }

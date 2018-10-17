@@ -4,6 +4,8 @@ public class RpReqFormListVo {
 	private String seq;
 	private int totalNum;
 	private int totalNumCc;
+	private int totalNumFinance;
+	private int totalNumShareholder;
 	private int numSetCc;
 	private int numEditCc;
 	private int numOtherCc;
@@ -35,6 +37,22 @@ public class RpReqFormListVo {
 
 	public void setTotalNumCc(int totalNumCc) {
 		this.totalNumCc = totalNumCc;
+	}
+
+	public int getTotalNumFinance() {
+		return totalNumFinance;
+	}
+
+	public void setTotalNumFinance(int totalNumFinance) {
+		this.totalNumFinance = totalNumFinance;
+	}
+
+	public int getTotalNumShareholder() {
+		return totalNumShareholder;
+	}
+
+	public void setTotalNumShareholder(int totalNumShareholder) {
+		this.totalNumShareholder = totalNumShareholder;
 	}
 
 	public int getNumSetCc() {
