@@ -16,15 +16,28 @@
 	<style name="sub_header" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12" isBold="true"/>
 	<style name="sub_detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="12"/>
 	<parameter name="logoDbd" class="java.io.InputStream"/>
+	<parameter name="typeCertificate" class="java.lang.String"/>
 	<parameter name="customerName" class="java.lang.String"/>
 	<parameter name="telephone" class="java.lang.String"/>
-	<parameter name="reqDate" class="java.util.Date"/>
+	<parameter name="reqDate" class="java.lang.String"/>
 	<parameter name="tmpReqNo" class="java.lang.String"/>
-	<parameter name="typeCertificate" class="java.lang.String"/>
+	<parameter name="organizeId" class="java.lang.String"/>
+	<parameter name="companyName" class="java.lang.String"/>
+	<parameter name="accountName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="seq" class="java.lang.String"/>
+	<field name="totalNum" class="java.lang.Integer"/>
+	<field name="totalNumCc" class="java.lang.Integer"/>
+	<field name="numSetCc" class="java.lang.Integer"/>
+	<field name="numEditCc" class="java.lang.Integer"/>
+	<field name="numOtherCc" class="java.lang.Integer"/>
+	<field name="other" class="java.lang.String"/>
+	<field name="dateOtherReg" class="java.lang.String"/>
+	<field name="dateEditReg" class="java.lang.String"/>
+	<field name="statementYear" class="java.lang.String"/>
+	<field name="dateAccepted" class="java.lang.String"/>
 	<title>
 		<band height="60" splitType="Stretch">
 			<textField isBlankWhenNull="true">
@@ -113,6 +126,7 @@
 					<box>
 						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
 					</box>
+					<textFieldExpression><![CDATA[$P{companyName}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -140,6 +154,7 @@
 					<box>
 						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
 					</box>
+					<textFieldExpression><![CDATA[$P{organizeId}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -188,7 +203,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{accountName} != null)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="254" y="0" width="78" height="16" uuid="e8576af9-e45f-4726-a925-9ec2bb0d3840"/>
@@ -208,6 +223,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$P{accountName}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="16" width="30" height="16" uuid="d8bd5cb9-9fca-4665-925f-c50581599bf2"/>
@@ -219,7 +235,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{totalNum} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="16" width="100" height="16" uuid="ce0b1ac2-9b1d-4737-8e21-460a0c462bc5"/>
@@ -230,11 +246,12 @@
 					<box>
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
-					<textElement textAlignment="Left"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($F{totalNum} > 0)? $F{totalNum} : ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="239" y="16" width="28" height="16" uuid="dff33b44-0b15-424b-8745-dc868ae3e4c6"/>
-					<textElement textAlignment="Left"/>
+					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
@@ -247,7 +264,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{totalNumCc} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="32" width="100" height="16" uuid="80ea161b-7291-4822-9a6d-01b14af620bb"/>
@@ -258,11 +275,12 @@
 					<box>
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
-					<textElement textAlignment="Left"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($F{totalNumCc} > 0)? $F{totalNumCc} : ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="239" y="32" width="28" height="16" uuid="8514691e-8e3c-456d-8c59-8d94fc2f48de"/>
-					<textElement textAlignment="Left"/>
+					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
 				</textField>
 				<textField>
@@ -270,7 +288,8 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{numSetCc} > 0)? "\u2611" : "\u2610"
+]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="60" y="48" width="105" height="16" uuid="c69c3edf-1b2b-4779-8bc9-6a576048dfca"/>
@@ -286,6 +305,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{dateEditReg}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="468" y="48" width="36" height="16" uuid="cb923933-f6ed-4e26-bdee-990a7806d723"/>
@@ -302,14 +322,14 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{numEditCc} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="37" y="64" width="20" height="16" uuid="8b0d96cd-2b31-47e0-8d0b-3addcfc66476"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{numOtherCc} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="61" y="64" width="28" height="16" uuid="7efcc863-17ca-40ba-984a-9acd5c5b506a"/>
@@ -322,6 +342,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="372" y="64" width="68" height="16" uuid="19cb02e4-c4bf-41bc-b5e6-3e473cc1bef1"/>
@@ -334,6 +355,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{dateOtherReg}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="80" width="30" height="16" uuid="2805ea49-f8cf-4a8a-8752-2f0f280525c4"/>
@@ -345,7 +367,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{statementYear} != null)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="80" width="68" height="16" uuid="5ccfda8d-be46-474f-8dba-e32b88eb63c7"/>
@@ -357,6 +379,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{statementYear}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="96" width="30" height="16" uuid="6098bcac-aa5b-4e88-892a-2ead96e690c3"/>
@@ -368,7 +391,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{dateAccepted} != null)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="96" width="152" height="16" uuid="6c168adf-cd6c-4228-8085-9918b7b03f9e"/>
@@ -380,6 +403,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{dateAccepted}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="453" y="48" width="12" height="16" uuid="5105c466-566b-4e1b-8701-d445d353a12f"/>
@@ -416,7 +440,7 @@
 				<textFieldExpression><![CDATA["No."]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="sub_detail" x="61" y="1" width="116" height="16" uuid="65bb90bf-16de-4240-9326-e26de6f5ce7a"/>
+				<reportElement style="sub_detail" x="56" y="0" width="116" height="16" uuid="65bb90bf-16de-4240-9326-e26de6f5ce7a"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{tmpReqNo}]]></textFieldExpression>
 			</textField>

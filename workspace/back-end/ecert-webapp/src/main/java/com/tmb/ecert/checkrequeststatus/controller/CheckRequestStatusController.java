@@ -21,7 +21,6 @@ import com.tmb.ecert.checkrequeststatus.service.CheckRequestCertificatService;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
-import com.tmb.ecert.common.domain.RequestForm;
 
 @RequestMapping("api/crs/crs01000")
 @Controller

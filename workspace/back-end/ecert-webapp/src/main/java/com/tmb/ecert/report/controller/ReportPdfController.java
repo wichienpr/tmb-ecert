@@ -47,21 +47,19 @@ public class ReportPdfController {
 	public String pdfCoverSheet(@RequestBody RpCoverSheetVo vo) throws IOException, JRException {
 		return reportPdfService.coverSheetToPdf(vo);
 	}
-	
+
 	/* reqForm original */
 	@PostMapping("/reqFormOriginal")
 	@ResponseBody
-	public String pdfreqFormOriginal(@RequestBody RpReqFormOriginalVo vo) throws IOException, JRException { 
+	public String pdfreqFormOriginal(@RequestBody RpReqFormOriginalVo vo) throws IOException, JRException {
 		return reportPdfService.reqFormOriginalToPdf(vo);
 	}
-	
+
 	/* reqForm */
 	@PostMapping("/reqForm")
 	@ResponseBody
-	public String pdfreqForm(@RequestBody RpReqFormVo vo) throws IOException, JRException { 
-		
-		
-		return null;
+	public String pdfreqForm(@RequestBody RpReqFormVo vo) throws IOException, JRException {
+		return reportPdfService.reqFormToPdf(vo);
 	}
-	
+
 }

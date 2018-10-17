@@ -1,7 +1,5 @@
 package com.tmb.ecert.report.persistence.vo;
 
-import java.util.Date;
-
 public class RpReqFormListVo {
 	private String seq;
 	private int totalNum;
@@ -9,10 +7,11 @@ public class RpReqFormListVo {
 	private int numSetCc;
 	private int numEditCc;
 	private int numOtherCc;
-	private Date dateOtherReg;
-	private Date dateEditReg;
+	private String other;
+	private String dateOtherReg;
+	private String dateEditReg;
 	private String statementYear;
-	private Date dateAccepted;
+	private String dateAccepted;
 
 	public String getSeq() {
 		return seq;
@@ -62,19 +61,27 @@ public class RpReqFormListVo {
 		this.numOtherCc = numOtherCc;
 	}
 
-	public Date getDateOtherReg() {
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
+	}
+
+	public String getDateOtherReg() {
 		return dateOtherReg;
 	}
 
-	public void setDateOtherReg(Date dateOtherReg) {
+	public void setDateOtherReg(String dateOtherReg) {
 		this.dateOtherReg = dateOtherReg;
 	}
 
-	public Date getDateEditReg() {
+	public String getDateEditReg() {
 		return dateEditReg;
 	}
 
-	public void setDateEditReg(Date dateEditReg) {
+	public void setDateEditReg(String dateEditReg) {
 		this.dateEditReg = dateEditReg;
 	}
 
@@ -86,11 +93,11 @@ public class RpReqFormListVo {
 		this.statementYear = statementYear;
 	}
 
-	public Date getDateAccepted() {
+	public String getDateAccepted() {
 		return dateAccepted;
 	}
 
-	public void setDateAccepted(Date dateAccepted) {
+	public void setDateAccepted(String dateAccepted) {
 		this.dateAccepted = dateAccepted;
 	}
 
