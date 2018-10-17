@@ -153,6 +153,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       ref2.setValue(this.data.ref2);
       amountDbd.setValue(this.data.amountDbd);
       amountTmb.setValue(this.data.amountTmb);
+      this.amountBlur('amountDbd');
+      this.amountBlur('amountTmb');
       if (requestFormFile) {
         requestFile.clearValidators();
         requestFile.updateValueAndValidity();
@@ -220,7 +222,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       return "10001";
     }
     if (this.common.isRole(ROLES.MAKER)) {
-      return "10002";
+      return "10005";
     }
   }
 
