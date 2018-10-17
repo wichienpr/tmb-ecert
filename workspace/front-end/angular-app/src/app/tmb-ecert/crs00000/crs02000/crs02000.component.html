@@ -258,6 +258,13 @@
       </div>
       <div class="ui bottom attached tab segment {{ tab.A }}" id="subTap1" data-tab="first">
 
+        <div class="ui centered inline field grid divider-header">
+          <div class="fourteen wide field">
+            <h4 class="header">รายละเอียดแบบฟอร์ม</h4>
+            <div class="ui divider"></div>
+          </div>
+        </div>
+
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
@@ -372,6 +379,14 @@
             {{ data.accountName | emptyString }}
           </div>
         </div>
+
+        <div class="ui centered inline field grid divider-header">
+          <div class="fourteen wide field">
+            <h4 class="header">รายละเอียดใบเสร็จ</h4>
+            <div class="ui divider"></div>
+          </div>
+        </div>
+
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
@@ -394,10 +409,19 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>จำนวนเงิน (บาท)</label>
+            <label>จำนวนเงิน DBD (บาท)</label>
           </div>
           <div class="eleven wide field ">
-            {{ (data.amount||0) | decimalFormat: "###,###.00" }} บาท
+            {{ (data.amountDbd||0) | decimalFormat: "###,###.00" }} บาท
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="one wide field "></div>
+          <div class="three wide field ">
+            <label>จำนวนเงิน TMB (บาท)</label>
+          </div>
+          <div class="eleven wide field ">
+            {{ (data.amountTmb||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
         <div class="inline fields">
@@ -418,6 +442,14 @@
             {{ data.telephone | emptyString }}
           </div>
         </div>
+
+        <div class="ui centered inline field grid divider-header">
+          <div class="fourteen wide field">
+            <h4 class="header">รายละเอียดเอกสาร</h4>
+            <div class="ui divider"></div>
+          </div>
+        </div>
+
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">

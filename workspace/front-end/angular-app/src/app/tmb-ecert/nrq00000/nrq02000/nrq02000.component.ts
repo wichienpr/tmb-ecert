@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
-import { Acc, digit } from 'helpers/';
+import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
@@ -109,7 +109,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       const {
         accNo, accName, corpName, corpName1, corpNo, address,
         acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-        departmentName, ref1, ref2, amount
+        departmentName, ref1, ref2, amountDbd, amountTmb
       } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
@@ -151,7 +151,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       reqFormId.setValue(this.data.reqFormId);
       ref1.setValue(this.data.ref1);
       ref2.setValue(this.data.ref2);
-      amount.setValue(this.data.amount);
+      amountDbd.setValue(this.data.amountDbd);
+      amountTmb.setValue(this.data.amountTmb);
       if (requestFormFile) {
         requestFile.clearValidators();
         requestFile.updateValueAndValidity();
@@ -178,7 +179,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.roles(ROLES.MAKER)) {
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
-      this.form.controls.amount.setValidators([Validators.required]);
+      this.form.controls.amountDbd.setValidators([Validators.required]);
+      this.form.controls.amountTmb.setValidators([Validators.required]);
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
@@ -261,12 +263,65 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
-    const { reqFormId, tmbRequestNo } = this.data;
+    const { tmbRequestNo } = this.data;
+    let rpReqFormList = [];
+    const controls = this.form.controls;
+    this.reqTypeChanged.forEach((obj, index) => {
+      if (index != 0 && controls[`chk${index}`].value) {
+        if (obj.children) {
+          let d = {
+            "totalNum": null,
+            "numSetCc": null,
+            "numEditCc": null,
+            "numOtherCc": null,
+            "dateOtherReg": null,
+            "other": null,
+            "dateEditReg": null,
+            "statementYear": null,
+            "dateAccepted": null
+          };
+          obj.children.forEach( (ob, idx) => {
+            if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
+              if (controls[`etc${index}Child${idx}`]) {
+                d.other = controls[`etc${index}Child${idx}`].value;
+                d.numOtherCc = controls[`cer${index}Child${idx}`].value;
+                d.dateOtherReg = controls[`cal${index}Child${idx}`].value;
+              } else if (controls[`cal${index}Child${idx}`].value == "") {
+                d.numSetCc = controls[`cer${index}Child${idx}`].value;
+              } else {
+                d.numEditCc = controls[`cer${index}Child${idx}`].value;
+                d.dateEditReg = controls[`cal${index}Child${idx}`].value;
+              }
+            }
+          });
+          rpReqFormList = [...rpReqFormList, d];
+        } else {
+          const d = {
+            "totalNum": controls[`cer${index}`].value,
+            "numSetCc": null,
+            "numEditCc": null,
+            "numOtherCc": null,
+            "dateOtherReg": null,
+            "other": null,
+            "dateEditReg": null,
+            "statementYear": controls[`cal${index}`] && controls[`cal${index}`].value.length == 4 ? controls[`cal${index}`].value : null,
+            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null
+          };
+          rpReqFormList = [...rpReqFormList, d];
+        }
+      }
+    });
     const data = {
-      id: reqFormId,
-      typeCertificate: "",
-      seq: 0,
-      tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo
+      typeCertificate: this.form.get("reqTypeSelect").value,
+      customerName: this.form.get("corpName").value,
+      companyName: this.form.get("corpName").value,
+      organizeId: this.form.get("corpNo").value,
+      accountName: this.form.get("accName").value,
+      accountNo: this.form.get("accNo").value,
+      telephone: this.form.get("telReq").value,
+      reqDate: dateLocaleEN(this.reqDate),
+      tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
+      rpReqFormList: rpReqFormList
     };
     this.isdownload = this.service.pdf(data);
   }
@@ -425,12 +480,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }, 1200);
   }
 
-  accNoPress(e) {
-    return e.charCode >= 48 && e.charCode <= 57;
-  }
-
   calendarValue(name, e) {
-    console.log(name, e);
     this.form.controls[name].setValue(e);
   }
 
@@ -513,16 +563,38 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.files[control] = data.target.files[0];
   }
 
+  amountFocus(control: string): void {
+    const controls = this.form.controls;
+    let data: string = controls[control].value;
+    if (data) {
+      data = data.replace(/,/g, '');
+    }
+    controls[control].patchValue(data);
+  }
+
+  amountBlur(control: string): void {
+    const controls = this.form.controls;
+    const df = new DecimalFormat('###,###.00');
+    controls[control].patchValue(df.format(controls[control].value));
+  }
+
+  accNoPress(e, hasDot?: boolean) {
+    if (hasDot) {
+      return e.charCode == 46 || e.charCode >= 48 && e.charCode <= 57;
+    }
+    return e.charCode >= 48 && e.charCode <= 57;
+  }
+
   accNoBlur(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
-    this.form.controls.accNo.setValue(Acc.convertAccNo(accNo.value));
+    this.form.controls.accNo.patchValue(Acc.convertAccNo(accNo.value));
   }
 
   accNoFocus(): void {
     const { accNo } = this.form.controls;
     this.form.controls.accNo.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
-    this.form.controls.accNo.setValue(Acc.revertAccNo(accNo.value));
+    this.form.controls.accNo.patchValue(Acc.revertAccNo(accNo.value));
   }
 
   invalid(control: string): boolean {

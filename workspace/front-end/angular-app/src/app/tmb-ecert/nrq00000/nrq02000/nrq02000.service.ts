@@ -19,7 +19,7 @@ const URL = {
     NRQ_DOWNLOAD: "/api/nrq/download/",
     NRQ_PDF: "/api/nrq/pdf/",
     REQUEST_FORM: "/api/nrq/data",
-    CREATE_FORM: "/api/report/pdf/reqFormOriginal/",
+    CREATE_FORM: "/api/report/pdf/reqForm/",
     FORM_PDF: "/api/report/pdf/",
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
     DOWNLOAD: "/api/crs/crs02000/download/",
@@ -50,7 +50,8 @@ export class Nrq02000Service {
         changeNameFile: new FormControl(),                              // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
         ref1: new FormControl(),
         ref2: new FormControl(),
-        amount: new FormControl(),
+        amountDbd: new FormControl(),
+        amountTmb: new FormControl(),
     });
 
     constructor(
@@ -497,7 +498,9 @@ export class Nrq02000Service {
             requestFileName: addons.requestFormFile,
             ref1: form.controls.ref1.value,
             ref2: form.controls.ref2.value,
-            amount: form.controls.amount.value,
+            amountDbd: form.controls.amountDbd.value,
+            amountTmb: form.controls.amountTmb.value,
+            amount: parseFloat(form.controls.amountDbd.value) + parseFloat(form.controls.amountTmb.value),
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther
         };
@@ -541,5 +544,6 @@ export enum ValidatorMessages {
     changeNameFile = "changeNameFile",
     ref1 = "ref1",
     ref2 = "ref2",
-    amount = "amount",
+    amountDbd = "amountDbd",
+    amountTmb = "amountTmb",
 }

@@ -28,7 +28,8 @@
     <div class="actions">
       <div class="ui center aligned grid">
         <div class="seven btn-group wide column">
-          <button type="button" (click)="reject($event)" class="ui blue basic button" [ngClass]="{ 'positive' : allowedSelect.value }" type="button">
+          <button type="button" (click)="reject($event)" class="ui blue basic button" [ngClass]="{ 'positive' : allowedSelect.value }"
+            type="button">
             <i class="check circle outline icon"></i>
             ตกลง
           </button>
@@ -348,29 +349,67 @@
         </div>
       </div>
 
+      <div class="inline field" *ngIf="btnMaker">
+        <h3 class="header space">&nbsp;</h3>
+        <h3 class="header">การชำระเงิน</h3>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="inline fields" *ngIf="btnMaker">
+        <div class="four wide field required" *ngIf="btnMaker">
+          <label>เลขที่คำขอ (Ref.1)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
+          <input type="text" name="ref1" formControlName="ref1">
+        </div>
+      </div>
+
+      <div class="inline fields" *ngIf="btnMaker">
+        <div class="four wide field required" *ngIf="btnMaker">
+          <label>เลขที่ตรวจสอบ (Ref.2)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
+          <input type="text" name="ref2" formControlName="ref2">
+        </div>
+      </div>
+
+      <div class="inline fields" *ngIf="btnMaker">
+        <div class="four wide field required" *ngIf="btnMaker">
+          <label>จำนวนเงิน DBD (บาท)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('amountDbd') }" *ngIf="btnMaker">
+          <input type="text" name="amountDbd" (blur)="amountBlur('amountDbd')"
+          (focus)="amountFocus('amountDbd')" (keypress)="accNoPress($event, true)" formControlName="amountDbd">
+        </div>
+      </div>
+
+      <div class="inline fields" *ngIf="btnMaker">
+        <div class="four wide field required" *ngIf="btnMaker">
+          <label>จำนวนเงิน TMB (บาท)</label>
+        </div>
+        <div class="five wide field" [ngClass]="{ 'error': invalid('amountTmb') }" *ngIf="btnMaker">
+          <input type="text" name="amountTmb" (blur)="amountBlur('amountTmb')"
+          (focus)="amountFocus('amountTmb')" (keypress)="accNoPress($event, true)" formControlName="amountTmb">
+        </div>
+      </div>
+
       <div class="inline field">
         <h3 class="header space">&nbsp;</h3>
-        <div class="ui divider"></div>
         <h3 class="header">โปรดแนบเอกสาร</h3>
+        <div class="ui divider"></div>
       </div>
 
       <div class="inline fields">
         <div class="required four wide field">
           <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
         </div>
-        <div class="three wide field" [ngClass]="{'error': invalid('requestFile') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('requestFile') }">
           <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
         <div class="two wide field">
           <a class="download-link" *ngIf="data&&data.requestFormFile" (click)="download(data.requestFormFile)">
             <u>Download</u>
           </a>
-        </div>
-        <div class="two wide field required" *ngIf="btnMaker">
-          <label>เลขที่คำขอ (Ref.1)</label>
-        </div>
-        <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" name="ref1" formControlName="ref1">
         </div>
       </div>
 
@@ -379,7 +418,7 @@
         <div class="required four wide field">
           <label>สำเนาบัตรประชาชน</label>
         </div>
-        <div class="three wide field" [ngClass]="{'error': invalid('copyFile') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('copyFile') }">
           <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
         <div class="two wide field">
@@ -387,30 +426,18 @@
             <u>Download</u>
           </a>
         </div>
-        <div class="two wide field required" *ngIf="btnMaker">
-          <label>เลขที่ตรวจสอบ (Ref.2)</label>
-        </div>
-        <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" name="ref2" formControlName="ref2">
-        </div>
       </div>
       <div class="inline fields">
         <div class="four wide field">
           <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
         </div>
-        <div class="three wide field">
+        <div class="five wide field">
           <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
         </div>
         <div class="two wide field">
           <a class="download-link" *ngIf="data&&data.changeNameFile" (click)="download(data.changeNameFile)">
             <u>Download</u>
           </a>
-        </div>
-        <div class="two wide field required" *ngIf="btnMaker">
-          <label>จำนวนเงิน (บาท)</label>
-        </div>
-        <div class="five wide field" [ngClass]="{ 'error': invalid('amount') }" *ngIf="btnMaker">
-          <input type="number" name="amount" formControlName="amount">
         </div>
       </div>
 

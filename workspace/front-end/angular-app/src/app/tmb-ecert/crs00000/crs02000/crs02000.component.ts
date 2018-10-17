@@ -118,7 +118,7 @@ export class Crs02000Component implements OnInit {
   }
 
   approveToggle() {
-    this.service.approveToggle();
+    this.service.approveToggle(this.id);
   }
 
   modalToggle(name: string) {

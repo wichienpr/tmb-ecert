@@ -16,7 +16,8 @@ const URL = {
   REQUEST_HISTORY: "/api/history/list",
   PDF: "/api/report/pdf/view/",
   UPLOAD: "/api/crs/crs01000/upLoadCertificate",
-  CER_REJECT: "/api/crs/crs02000/cert/reject"
+  CER_REJECT: "/api/crs/crs02000/cert/reject",
+  CER_APPROVE: "/api/crs/crs02000/cert/approve"
 }
 
 @Injectable({
@@ -101,7 +102,7 @@ export class Crs02000Service {
     return tab;
   }
 
-  approveToggle(): any {
+  approveToggle(reqFormId: string): any {
     const modal: Modal = {
       approveMsg: "ยืนยัน",
       rejectMsg: "ยกเลิก",
@@ -111,7 +112,13 @@ export class Crs02000Service {
       msg: `<label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>`,
       title: "อนุมัติการชำระเงินค่าธรรมเนียม"
     };
-    this.modal.confirm(e => { }, modal);
+    this.modal.confirm(e => {
+      if (e) {
+        this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
+          console.log(response);
+        });
+      }
+    }, modal);
   }
 
   matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {

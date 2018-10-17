@@ -2,11 +2,25 @@
     color: #000;
     cursor: pointer;
 }
+
 .download-link:hover {
     color: rgb(88, 88, 88);
 }
 
-.ui.checkbox > label{
+.ui.checkbox>label {
     color: black !important;
     opacity: 1;
+}
+
+.divider-header {
+    margin: 2em 0 0 0 !important;
+}
+
+.divider-header .fourteen {
+    text-align: left !important;
+    padding: 0 !important;
+}
+
+.divider-header .fourteen .divider {
+    margin-top: 0 !important;
 }
