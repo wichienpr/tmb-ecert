@@ -282,7 +282,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             "statementYear": null,
             "dateAccepted": null
           };
-          obj.children.forEach( (ob, idx) => {
+          obj.children.forEach((ob, idx) => {
             if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
               if (controls[`etc${index}Child${idx}`]) {
                 d.other = controls[`etc${index}Child${idx}`].value;
@@ -321,7 +321,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       accountName: this.form.get("accName").value,
       accountNo: this.form.get("accNo").value,
       telephone: this.form.get("telReq").value,
-      reqDate: dateLocaleEN(this.reqDate),
+      reqDate: dateLocaleEN(new Date(this.reqDate)),
       tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
       rpReqFormList: rpReqFormList
     };

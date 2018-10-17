@@ -498,9 +498,9 @@ export class Nrq02000Service {
             requestFileName: addons.requestFormFile,
             ref1: form.controls.ref1.value,
             ref2: form.controls.ref2.value,
-            amountDbd: form.controls.amountDbd.value.replace(/,/g, ''),
-            amountTmb: form.controls.amountTmb.value.replace(/,/g, ''),
-            amount: parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, '')),
+            amountDbd: form.controls.amountDbd.value ? form.controls.amountDbd.value.replace(/,/g, '') : "",
+            amountTmb: form.controls.amountTmb.value ? form.controls.amountTmb.value.replace(/,/g, '') : "",
+            amount: form.controls.amountTmb.value && form.controls.amountDbd.value ? parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, '')) : "",
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther
         };

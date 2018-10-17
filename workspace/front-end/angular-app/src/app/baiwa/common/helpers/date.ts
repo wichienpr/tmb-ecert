@@ -11,3 +11,7 @@ export function dateLocale(date) {
 export function dateLocaleEN(date) {
     return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`;
 }
+
+export function strToDate(str) {
+    return new Date(str.split("/")[2], str.split("/")[1], str.split("/")[0]);
+}
