@@ -93,12 +93,37 @@ public class CheckRequestDetailService {
 		Long id = Long.valueOf(reqFormId);
 		RequestForm newReq = dao.findReqFormById(id, false).size() > 0 ? dao.findReqFormById(id, false).get(0)
 				: new RequestForm();
+		logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
 		switch (newReq.getPaidTypeCode()) {
-		case "30001":
-			
-			CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq);
-			if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
-				
+			case "30001":
+				CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq);
+				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
+					
+					CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
+					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
+						
+						CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq);
+						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
+							
+							CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
+							if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage())) {
+								return responseRealtime;
+							} else {
+								return responseRealtime;
+							}
+							
+						} else {
+							return null;
+						}
+						
+					} else {
+						return null;
+					}
+					
+				} else {
+					return null;
+				}
+			case "30002":
 				CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
 				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
 					
@@ -107,25 +132,21 @@ public class CheckRequestDetailService {
 						
 						CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
 						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage())) {
-							
+							return responseRealtime;
 						} else {
-							
+							return responseRealtime;
 						}
 						
 					} else {
-						
+						return null;
 					}
 					
 				} else {
-					
+					return null;
 				}
-				
-			} else {
-
-			}
-			break;
+			default:
+					return null;
 		}
-		return paymentWs.realtimePayment(newReq);
 	}
 
 }
