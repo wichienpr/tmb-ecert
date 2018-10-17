@@ -84,18 +84,16 @@ public class ReportPdfService {
 	public String receiptTaxToPdf(RpReceiptTaxVo vo) throws IOException, JRException {
 		// Folder Exist ??
 		initialService();
-		
-		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
-		req.getReceiptDate();
 
-		
+		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
+
 		// RP001
 		String reportName01 = "RP_RECEIPT_TAX";
 		Map<String, Object> params01 = new HashMap<>();
 		params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 		params01.put("docType", "ต้นฉบับ");
 		//params01.put("date", DateFormatUtils.format(req.getReceiptDate(), "dd MMMM yyyy", new Locale("th", "TH")));
-		params01.put("date", "ต้นฉบับ");
+
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
 
 		// RP002
@@ -104,12 +102,12 @@ public class ReportPdfService {
 		params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 		params02.put("docType", "สำเนา");
 		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
-		
-		//merge doc
+
+		// merge doc
 		List<ExporterInputItem> itemList = new ArrayList<>();
 		itemList.add(new SimpleExporterInputItem(jasperPrint01));
 		itemList.add(new SimpleExporterInputItem(jasperPrint02));
-			
+
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(itemList));
 
@@ -118,7 +116,7 @@ public class ReportPdfService {
 		exporter.exportReport();
 
 		byte[] reportFile = os.toByteArray();
-		
+
 		// set_name
 		String name = "RECEIPT_" + req.getTmbRequestNo() + ".pdf";
 
@@ -215,8 +213,6 @@ public class ReportPdfService {
 		return "REQFORM_" + vo.getTmpReqNo();
 	}
 
-
-
 	/* reqFormToPdf */
 	public String reqFormToPdf(RpReqFormVo vo) throws IOException, JRException {
 
@@ -227,13 +223,13 @@ public class ReportPdfService {
 		Map<String, Object> params01 = new HashMap<>();
 
 		params01.put("logoDbd", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoDbd.png"));
-		if("50001".equals(vo.getTypeCertificate())) {
+		if ("50001".equals(vo.getTypeCertificate())) {
 			params01.put("typeCertificate", "นิติบุคคล");
-		}else if("50002".equals(vo.getTypeCertificate())) {
+		} else if ("50002".equals(vo.getTypeCertificate())) {
 			params01.put("typeCertificate", "ธุรกิจต่างด้าว");
-		}else if("50003".equals(vo.getTypeCertificate())) {
+		} else if ("50003".equals(vo.getTypeCertificate())) {
 			params01.put("typeCertificate", "สมาคมและหอการค้า");
-		}else {
+		} else {
 			params01.put("typeCertificate", "   ");
 		}
 		params01.put("customerName", vo.getCustomerName());
@@ -275,19 +271,22 @@ public class ReportPdfService {
 				rpReqFormListVo.setOther(data.getOther());
 			}
 			if (BeanUtils.isNotEmpty(data.getStatementYear())) {
-				rpReqFormListVo.setStatementYear( String.valueOf(Integer.parseInt( data.getStatementYear())  + 543));
+				rpReqFormListVo.setStatementYear(String.valueOf(Integer.parseInt(data.getStatementYear()) + 543));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
 				Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
-				rpReqFormListVo.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateOtherReg())) {
 				Date dateOtherReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateOtherReg());
-				rpReqFormListVo.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateAccepted())) {
 				Date dateAccepted = DateConstant.convertStrDDMMYYYYToDate(data.getDateAccepted());
-				rpReqFormListVo.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			rpReqFormListVoList.add(rpReqFormListVo);
 			i++;
@@ -331,19 +330,23 @@ public class ReportPdfService {
 		return "REQFORM_" + vo.getTmpReqNo();
 	}
 
-	
 	/* viewPdfToData */
 	public void viewPdfToData(String name, HttpServletResponse response) throws Exception {
-		File file = new File(PATH_REPORT + name + ".pdf");
-		byte[] reportFile = IOUtils.toByteArray(new FileInputStream(file));
-		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "inline;filename=" + name + ".pdf");
-		response.setContentLength(reportFile.length);
-
-		OutputStream responseOutputStream = response.getOutputStream();
-		for (byte bytes : reportFile) {
-			responseOutputStream.write(bytes);
+		FileInputStream reportFile = null;
+		try {
+			File file = new File(PATH_REPORT + name + ".pdf");
+			reportFile = new FileInputStream(file);
+			response.setContentType("application/pdf");
+			response.addHeader("Content-Disposition", "attachment;filename=" + name + ".pdf");
+			IOUtils.copy(reportFile, response.getOutputStream());
+			response.flushBuffer();
+		} catch (Exception e) {
+			this.logger.error("viewPdfToData", e);
+		} finally {
+			if (reportFile != null) {
+				reportFile.close();
+			}
 		}
 	}
-	
+
 }
