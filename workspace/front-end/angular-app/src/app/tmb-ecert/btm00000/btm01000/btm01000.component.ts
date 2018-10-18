@@ -178,9 +178,7 @@ export class Btm01000Component implements OnInit {
       this.batchMonitorDT.search()
     }
   }
-  actionChange() {
 
-  }
   showModalDetail(item) {
     let modal: Modal = {
       msg: item.errorDesc
