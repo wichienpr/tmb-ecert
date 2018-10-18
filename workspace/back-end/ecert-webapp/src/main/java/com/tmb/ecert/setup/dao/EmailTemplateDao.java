@@ -39,7 +39,7 @@ public class EmailTemplateDao {
 
 		if (StringUtils.isNotBlank(form.getName())) {
 			sql.append(" AND  NAME LIKE ? ");
-			params.add("%"+form.getName()+"%");
+			params.add("%"+StringUtils.trim(form.getName())+"%");
 			
 		}
 		if (!(form.getStatus() == 2)) {

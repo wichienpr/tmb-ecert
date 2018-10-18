@@ -128,7 +128,7 @@ public class Sup01000Service {
 			int countDup = userRoleDao.validateDuplicateRoleName(form);
 			if (form.getRoleId() == null || form.getRoleId() == 0) {
 				if (countDup == 0) {
-					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
+//					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
 				} else {
 					message.setData(MESSAGE_STATUS.FAILED);
 					message.setMessage(MESSAGE_STATUS.FAILED);
