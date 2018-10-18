@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit } from '@angular/core';
+import { Directive, Input, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AjaxService, CommonService } from '../../services';
 
@@ -6,7 +6,7 @@ import { AjaxService, CommonService } from '../../services';
   selector: '[ngDatatable]',
   exportAs: "ngDatatable"
 })
-export class DatatableDirective implements OnInit {
+export class DatatableDirective implements OnInit , OnDestroy {
 
   @Input("ngDatatable") config: DatatableCofnig;
 
@@ -274,6 +274,10 @@ export class DatatableDirective implements OnInit {
       currentPageData: [],
       recordsTotal: 0
     }
+  }
+
+  ngOnDestroy(): void {
+    this.clear();
   }
 
   get isEmpty() {

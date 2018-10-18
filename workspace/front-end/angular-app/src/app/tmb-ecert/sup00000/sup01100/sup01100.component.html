@@ -10,7 +10,7 @@
 					<label>Role Name </label>
 				</div>
 				<div class="five wide field" [ngClass]="{'error':(roleName.invalid && (roleName.dirty || roleName.touched)) || (roleName.invalid && submited),
-                'disabled' :(roleId) }">
+                'disabled' :(roleStatus) }">
 					<input type="text" formControlName="roleName" required>
 
 				</div>
@@ -22,13 +22,13 @@
 				</div>
 				<div class=" one wide  field">
 					<div class="ui radio checkbox">
-						<input type="radio" value="0" formControlName="status">
+						<input type="radio" [value]="0" formControlName="status">
 						<label>Active</label>
 					</div>
 				</div>
 				<div class="field">
 					<div class="ui radio checkbox">
-						<input type="radio" value="1" formControlName="status">
+						<input type="radio" [value]="1" formControlName="status">
 						<label>InActive</label>
 					</div>
 				</div>

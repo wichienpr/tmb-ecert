@@ -88,8 +88,11 @@ export class Sup03000Component implements OnInit {
     if (this.sup03000.stateSearch == true) {
       this.isShowResult = true;
       this.form.setValue({ name: this.sup03000.name, status: this.sup03000.status });
+
+      setTimeout(()=>{   
       this.clickSearch();
-      console.log("status comback")
+      }, 500);
+
     }
   }
 

@@ -117,4 +117,9 @@ export class AjaxService {
     window.open(full_url);
   }
 
+  downloadfileInajax(url:string){
+    window.location.href=AjaxService.CONTEXT_PATH+url;
+  }
+
+
 }

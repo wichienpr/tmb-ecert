@@ -27,6 +27,7 @@ export class sup01100Component implements OnInit {
   storeRole: Observable<Sup01000>
   sup01000: Sup01000;
   listRoleForm:FormGroup;
+  roleStatus:boolean;
 
   constructor(private store: Store<AppState>,private router: Router, private route: ActivatedRoute,
      private service: sup01100Service, private modal: ModalService, private fb: FormBuilder ) {
@@ -250,12 +251,12 @@ export class sup01100Component implements OnInit {
       message: ""
     }
     this.submited = false;
-
-    this.storeRole = this.store.select(state => state.sup00000.sup01000);
-    this.storeRole.subscribe(data => {
-      this.sup01000 = data;
-
-    });
+    this.roleStatus = false;
+    // this.storeRole = this.store.select(state => state.sup00000.sup01000);
+    // this.storeRole.subscribe(data => {
+    //   this.sup01000 = data;
+    // });
+    // this.roleStatus = this.sup01000.status.toString();
 
     this.listRoleForm = this.fb.group({
       formArray: this.fb.array([])
@@ -267,11 +268,23 @@ export class sup01100Component implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       roleName: new FormControl('', Validators.required),
-      status: new FormControl('0', Validators.required)
+      status: new FormControl(0, Validators.required)
+    });
+
+    this.storeRole = this.store.select(state => state.sup00000.sup01000);
+    this.storeRole.subscribe(data => {
+      this.sup01000 = data;
+      if (this.sup01000.status != null ){
+        this.roleStatus = true;
+        this.form.setValue({ roleName: this.sup01000.roleName, status: this.sup01000.status });
+      }
+      // else{
+      //   this.form.setValue({ roleName: this.sup01000.roleName, status: "0" });
+      // }
     });
 
     if (this.sup01000.roldId != null || this.sup01000.roldId != undefined) {
-      this.form.setValue({ roleName: this.sup01000.roleName, status: this.sup01000.status })
+
       this.service.serviceSearchPermissionByRole(this.sup01000.roldId).subscribe(res => {
         this.setRolePermission(res);
       }, error => {

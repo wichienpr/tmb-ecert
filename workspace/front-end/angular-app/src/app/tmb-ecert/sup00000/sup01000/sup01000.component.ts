@@ -130,7 +130,9 @@ export class Sup01000Component implements OnInit {
     if (this.sup01000.isSearch) {
       this.isShowResult = true;
       this.userRoleForm.setValue({ roleName: this.sup01000.searchRoleName, status: this.sup01000.searchRoleStatus });
-      this.clickSerch();
+      setTimeout(()=>{   
+        this.clickSerch();
+      }, 500);
     }
 
   }
