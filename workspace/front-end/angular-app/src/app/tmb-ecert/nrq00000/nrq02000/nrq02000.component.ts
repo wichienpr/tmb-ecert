@@ -170,7 +170,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   checkRoles() {
-    if (this.roles(ROLES.REQUESTOR)) {
+    if (this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN)) {
       this.form.controls.customSegSelect.clearValidators();
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -178,7 +178,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.payMethodSelect.setValue('30001');
     }
 
-    if (this.roles(ROLES.MAKER)) {
+    if (this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN)) {
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);

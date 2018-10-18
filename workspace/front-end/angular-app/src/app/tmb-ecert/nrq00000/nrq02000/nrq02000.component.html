@@ -191,7 +191,7 @@
                             <label>{{ item.certificate }}</label>
                           </div>
                           <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
-                            <input #etcChild type="text" formControlName="etc{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value">
+                            <input #etcChild maxlength="255" type="text" formControlName="etc{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value">
                           </div>
                         </div>
                       </td>
@@ -237,14 +237,16 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpNo') }">
-          <input type="text" (keypress)="accNoPress($event)" #corpNo formControlName="corpNo" placeholder="เลขที่นิติบุคคล">
+          <input type="text" maxlength="20" (keypress)="accNoPress($event)" #corpNo formControlName="corpNo"
+            placeholder="เลขที่นิติบุคคล">
         </div>
         <div class="required two wide field">
           <label>ชื่อนิติบุคคล
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName') }">
-          <input type="text" #corpName formControlName="corpName" (input)="handleCorpName($event)" placeholder="ชื่อนิติบุคคล">
+          <input type="text" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
+            placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
       <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
@@ -260,7 +262,8 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('acceptNo') }">
-          <input type="text" (keypress)="accNoPress($event)" #acceptNo formControlName="acceptNo" placeholder="เลขที่ CA/มติอนุมัติ">
+          <input type="text" maxlength="150" (keypress)="accNoPress($event)" #acceptNo formControlName="acceptNo"
+            placeholder="เลขที่ CA/มติอนุมัติ">
         </div>
       </div>
 
@@ -270,7 +273,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
+          <input type="text" maxlength="255" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
       <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
@@ -285,7 +288,7 @@
           <label>ที่อยู่</label>
         </div>
         <div class="five wide field">
-          <textarea #address formControlName="address" rows="2"></textarea>
+          <textarea maxlength="4000" #address formControlName="address" rows="2"></textarea>
         </div>
       </div>
 
@@ -341,7 +344,7 @@
           <label>ชื่อเจ้าของบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accName') }">
-          <input type="text" #accName formControlName="accName" placeholder="ชื่อบัญชี">
+          <input type="text" maxlength="255" #accName formControlName="accName" placeholder="ชื่อบัญชี">
         </div>
       </div>
       <div class="inline fields">
@@ -361,7 +364,8 @@
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('telReq') }">
-          <input type="text" (keypress)="accNoPress($event)" #telReq formControlName="telReq" placeholder="เบอร์โทรผู้ขอ/ลูกค้า">
+          <input type="text" maxlength="50" (keypress)="accNoPress($event)" #telReq formControlName="telReq"
+            placeholder="เบอร์โทรผู้ขอ/ลูกค้า">
         </div>
       </div>
 
@@ -376,7 +380,7 @@
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" name="ref1" formControlName="ref1">
+          <input type="text" maxlength="50" name="ref1" formControlName="ref1">
         </div>
       </div>
 
@@ -385,7 +389,7 @@
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" name="ref2" formControlName="ref2">
+          <input type="text" maxlength="50" name="ref2" formControlName="ref2">
         </div>
       </div>
 
@@ -394,7 +398,7 @@
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountDbd') }" *ngIf="btnMaker">
-          <input type="text" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
+          <input type="text" maxlength="18" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
             (keypress)="accNoPress($event, true)" formControlName="amountDbd">
         </div>
       </div>
@@ -404,7 +408,7 @@
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountTmb') }" *ngIf="btnMaker">
-          <input type="text" name="amountTmb" (blur)="amountBlur('amountTmb')" (focus)="amountFocus('amountTmb')"
+          <input type="text" maxlength="18" name="amountTmb" (blur)="amountBlur('amountTmb')" (focus)="amountFocus('amountTmb')"
             (keypress)="accNoPress($event, true)" formControlName="amountTmb">
         </div>
       </div>
@@ -462,7 +466,7 @@
           <label>หมายเหตุ</label>
         </div>
         <div class="five wide field">
-          <textarea rows="2" formControlName="note"></textarea>
+          <textarea rows="2" maxlength="4000" formControlName="note"></textarea>
         </div>
       </div>
       <div class="inline field">

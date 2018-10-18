@@ -4,16 +4,19 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Modal } from 'models/';
+import * as UserActions from 'app/user.action';
 import { UserDetail } from 'app/user.model';
 import { AuthService, ModalService, CommonService } from 'services/';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+
+declare var $: any;
 
 @Component({
   selector: 'app-semantic-menu',
   templateUrl: './semantic-menu.component.html',
   styleUrls: ['./semantic-menu.component.css']
 })
-export class SemanticMenuComponent implements OnInit, OnDestroy {
+export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   routes: Routing[];
   user: Observable<UserDetail>;
@@ -44,10 +47,14 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
          */
         role: true,
         child: [ // Sub Menu 1.1 
-          { label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)", url: "/nrq/nrq01000", role: true },
+          {
+            label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
+            url: "/nrq/nrq01000",
+            role: this.checkA(PAGE_AUTH.P0000500)
+          },
           {
             label: "Request Form (บันทึกคำขอก่อน และพิมพ์ใบคำขอให้ลูกค้าลงนาม)", url: "/nrq/nrq02000",
-            role: this.checkR(ROLES.ADMIN) || this.checkR(ROLES.REQUESTOR)
+            role: this.checkA(PAGE_AUTH.P0000600)
           },
         ]
       },
@@ -96,9 +103,18 @@ export class SemanticMenuComponent implements OnInit, OnDestroy {
     this.timeticker = setInterval(() => { this.clock() }, 1000);
   }
 
+  ngAfterViewInit() {
+    // $('#status').dropdown();
+  }
+
   ngOnDestroy(): void {
     clearInterval(this.timeticker);
   }
+
+  // changeStatus(e) {
+  //   const value = e.target.value;
+  //   this.store.dispatch(new UserActions.UpdateStatus(value));
+  // }
 
   checkA(_auths: PAGE_AUTH) {
     return this.commonsv.isAuth(_auths);

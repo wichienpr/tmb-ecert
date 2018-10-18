@@ -195,8 +195,7 @@ export class Nrq02000Service {
     }
 
     getReqDate(): Date {
-        let date = new Date();
-        return date;
+        return new Date();
     }
 
     getDropdownObj(): any {

@@ -4,7 +4,7 @@
 }
 
 img:focus {
-    outline:0;
+    outline: 0;
     cursor: pointer;
 }
 
@@ -15,3 +15,10 @@ img:focus {
 .item {
     color: white !important;
 }
+
+/* .ui.three.wide.form {
+    position: fixed;
+    z-index: 1000;
+    top: 12px;
+    right: 12px;
+} */

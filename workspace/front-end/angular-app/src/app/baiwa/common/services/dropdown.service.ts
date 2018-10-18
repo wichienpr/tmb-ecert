@@ -17,6 +17,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
     private operationTypeLOV: Lov[]; // สถานะการทำงาน
     private batchJobSchLOV: Lov[]; // BatchJobSchedu
     private jobMonitoringStus: Lov[];  //Monitoring Status
+    private rejectReason: Lov[];  //RejectReason
     
     constructor(private ajax: AjaxService) {
         /**
@@ -36,6 +37,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.reqType = data;
                 }
                 obs.next([...this.reqType]);
+                obs.complete();
             });
         });
     }
@@ -48,6 +50,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.customSeg = data;
                 }
                 obs.next([...this.customSeg]);
+                obs.complete();
             });
         });
     }
@@ -60,6 +63,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.payMethod = data;
                 }
                 obs.next([...this.payMethod]);
+                obs.complete();
             });
         });
     }
@@ -72,6 +76,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.subAccMethod = data;
                 }
                 obs.next([...this.subAccMethod]);
+                obs.complete();
             });
         });
     }
@@ -84,6 +89,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.action = data;
                 }
                 obs.next([...this.action]);
+                obs.complete();
             });
         });
     }
@@ -96,6 +102,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.operationTypeLOV = data;
                 }
                 obs.next([...this.operationTypeLOV]);
+                obs.complete();
             });
         });
     }
@@ -108,6 +115,7 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.batchJobSchLOV = data;
                 }
                 obs.next([...this.batchJobSchLOV]);
+                obs.complete();
             });
         });
     }
@@ -120,21 +128,30 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
                     this.jobMonitoringStus = data;
                 }
                 obs.next([...this.jobMonitoringStus]);
+                obs.complete();
             });
         });
     }
 
     getRejectReason(): Observable<Lov[]> {
-        return new Observable<Lov[]>( obs => {
-            const lov: Lov[] = [
-                { code: "1", name: "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย", type: 0, typeDesc: "", sequence: 0, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
-                { code: "2", name: "ลูกค้าแนบเอกสารไม่ครบถ้วน", type: 0, typeDesc: "", sequence: 1, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
-                { code: "3", name: "ลูกค้าขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 2, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
-                { code: "4", name: "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 3, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
-                { code: "5", name: "อื่นๆ", type: 0, typeDesc: "", sequence: 4, glType: null, tranCode: null, accountType: null, status: null, accountNo: null }
-            ];
-            obs.next(lov);
-            obs.complete();
+        return new Observable( obs => {
+            this.ajax.post(URL.LOV_BY_TYPE, { type: 11 }, result => {
+                const data = result.json();
+                if (data && data.length > 0) {
+                    this.rejectReason = data;
+                }
+                obs.next([...this.rejectReason]);
+                obs.complete();
+            });
+            // const lov: Lov[] = [
+            //     { code: "1", name: "ลูกค้ามียอดเงินในบัญชีไม่พอจ่าย", type: 0, typeDesc: "", sequence: 0, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+            //     { code: "2", name: "ลูกค้าแนบเอกสารไม่ครบถ้วน", type: 0, typeDesc: "", sequence: 1, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+            //     { code: "3", name: "ลูกค้าขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 2, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+            //     { code: "4", name: "เจ้าหน้าที่ธนาคารขอยกเลิกคำขอ", type: 0, typeDesc: "", sequence: 3, glType: null, tranCode: null, accountType: null, status: null, accountNo: null },
+            //     { code: "5", name: "อื่นๆ", type: 0, typeDesc: "", sequence: 4, glType: null, tranCode: null, accountType: null, status: null, accountNo: null }
+            // ];
+            // obs.next(lov);
+            // obs.complete();
         });
     }
 
