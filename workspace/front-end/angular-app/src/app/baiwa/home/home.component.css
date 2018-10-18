@@ -1,9 +1,9 @@
 .bg {
     z-index: -999;
-    top: 0;
-    left: 16vw;
+    top: -25px;
+    left: 0vw;
     position: fixed;
-    width: 84vw;
+    width: 100vw;
     height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
