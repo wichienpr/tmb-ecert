@@ -46,7 +46,7 @@
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">บันทึกคำขอ</h2>
-    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form, $event)">
+    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form">
       <input type="hidden" name="reqFormId" formControlName="reqFormId">
       <div class="inline fields">
         <div class="two wide field">
@@ -381,7 +381,7 @@
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" maxlength="50" name="ref1" formControlName="ref1">
+          <input type="text" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
       </div>
 
@@ -390,7 +390,7 @@
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" maxlength="50" name="ref2" formControlName="ref2">
+          <input type="text" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
         </div>
       </div>
 
@@ -399,7 +399,7 @@
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountDbd') }" *ngIf="btnMaker">
-          <input type="text" maxlength="18" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
+          <input type="text" (keyup.enter)="keytab('dbd','tmb')" #dbd maxlength="18" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
             (keypress)="accNoPress($event, true)" formControlName="amountDbd">
         </div>
       </div>
@@ -410,7 +410,7 @@
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountTmb') }" *ngIf="btnMaker">
           <input type="text" maxlength="18" name="amountTmb" (blur)="amountBlur('amountTmb')" (focus)="amountFocus('amountTmb')"
-            (keypress)="accNoPress($event, true)" formControlName="amountTmb">
+            (keypress)="accNoPress($event, true)" #tmb formControlName="amountTmb">
         </div>
       </div>
 
@@ -477,7 +477,7 @@
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="submit">
+            <button (click)="formSubmit(form)" class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="button">
               <i class="check circle outline icon" *ngIf="btnMaker"></i>
               <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
               {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}

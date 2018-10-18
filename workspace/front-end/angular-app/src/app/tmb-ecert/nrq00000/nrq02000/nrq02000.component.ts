@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
@@ -18,6 +18,10 @@ import { ROLES } from 'app/baiwa/common/constants';
 export class Nrq02000Component implements OnInit, AfterViewInit {
 
   @ViewChild("ngForm") ngForm: NgForm;
+  @ViewChild("ref1") ref1: ElementRef;
+  @ViewChild("ref2") ref2: ElementRef;
+  @ViewChild("dbd") dbd: ElementRef;
+  @ViewChild("tmb") tmb: ElementRef;
 
   _roles = ROLES;
 
@@ -50,6 +54,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   user: UserDetail;
   allowed: Dropdown;
   allowedModal: Modal;
+  firstEnter: boolean = true;
 
   constructor(
     private service: Nrq02000Service,
@@ -232,7 +237,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  formSubmit(form: FormGroup, event, _data?) {
+  formSubmit(form: FormGroup, _data?) {
     event.preventDefault();
     this.submitted = true;
     const data = _data ? _data : {
@@ -269,7 +274,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.formReject.valid) {
-      this.formSubmit(this.form, event, data);
+      this.formSubmit(this.form, data);
     }
   }
 
@@ -284,6 +289,25 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   minus(control: string) {
     this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
+  }
+
+  keytab(one, two) {
+    let element1 = this[one].nativeElement; // get the sibling element
+    let element2 = this[two].nativeElement; // get the sibling element
+    if (this.firstEnter) {
+      element1.value = "";
+      this.firstEnter = false;
+      return ;
+    } else {
+      if (two=='tmb') {
+        this.firstEnter = true; // reset FirstEnter
+        const df = new DecimalFormat('###,###.00');
+        let value = element1.value.replace(/,/g,'');
+        value = parseFloat(value)/100;
+        this.form.get('amountDbd').patchValue(df.format(value));
+      }
+      element2.focus();   // focus if not null
+    }
   }
 
   cancel() {
