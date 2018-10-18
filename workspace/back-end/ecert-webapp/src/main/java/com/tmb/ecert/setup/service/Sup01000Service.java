@@ -97,7 +97,7 @@ public class Sup01000Service {
 			"รายงานสรุปการให้บริการ ขอหนังสือรับรองนิติบุคคล \n  ( e-Certificate ) : Monthly(UI-00008)", "",
 			"รายงาน Output VAT(UI-00009)", "", "Batch Monitoring(UI-00011)", "", "Audit Log(UI-00012)", "",
 			" Role Manament(UI-00013)", "", "", "", "", " Parameter Configuration \n (UI-00014)", "",
-			" Email Configuration \n (UI-00015)", "", };
+			" Email Configuration \n (UI-00015)", ""," บันทึกข้อมูลจากเลขที่คำขอ (TMB Req No.) \n (UI-00016)" };
 
 	private static String[] headerTableSub = { "", "", "", "เมนู", "แสดงรายละเอียด", "เมนู", "ดำเนินการชำระเงิน",
 			"อนุมัติการชำระเงิน", "ปฏิเสธ", "พิมพ์ใบเสร็จ", "พิมพ์ Cover Sheet", "Upload Certificate",
@@ -105,7 +105,7 @@ public class Sup01000Service {
 			"ดาวน์โหลดสำเนาบัตรประชาชน", "ดาวน์โหลดสำเนาใบเปลี่ยนชื่อหรือนามสกุล", "	ดาวน์โหลดเอกสาร Certificate",
 			"", "", "เมนู", "	Export to Excel", "เมนู", "Export to Excel", "เมนู", "	Export to Excel", "เมนู",
 			"Rerun", "เมนู", "Export to Excel", "เมนู", "เพิ่ม Role", "แก้ไข	", "Import Role", "Export Role", "เมนู",
-			"บันทึก", "เมนู", "แก้ไข" };
+			"บันทึก", "เมนู", "แก้ไข" , ""};
 	
 	private static String[] arrRolePermission = { 
 			"0000200", "0000300", "0000301", "0000400", "0000401", 
@@ -114,7 +114,7 @@ public class Sup01000Service {
 			 "0000600", "0000700", "0000701", "0000800", "0000801", 
 			 "0000900", "0000901", "0001100", "0001101", "0001200", 
 			 "0001201", "0001300", "0001301", "0001302", "0001303", 
-			 "0001304", "0001400", "0001401", "0001500", "0001501"  };
+			 "0001304", "0001400", "0001401", "0001500", "0001501", "0001600"  };
 
 	
 	public CommonMessage<String> saveUserRole(Sup01100FormVo form) {
@@ -232,7 +232,7 @@ public class Sup01000Service {
 			cellNumtbTH2++;
 		}
 		;
-
+//		Merge header 
 		sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 		sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
 		sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
@@ -248,6 +248,7 @@ public class Sup01000Service {
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 28, 32));
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 33, 34));
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 35, 36));
+		sheet.addMergedRegion(new CellRangeAddress(0, 1, 37, 37));
 
 		List<Sup01100Vo> permissionRole;
 		rowNum = 2;
@@ -271,17 +272,30 @@ public class Sup01000Service {
 					dvHelper);
 			sheet.addValidationData(validation);
 
-			for (Sup01100Vo permissionVo : permissionRole) {
-
+//			for (Sup01100Vo permissionVo : permissionRole) {
+//
+//				cell = row.createCell(cellNum++);
+//				cell.setCellStyle(excalService.cellCenter);
+//				cell.setCellValue(permissionVo.getStatus() == 0 ? "Yes" : "No");
+//
+//				String[] arrDropdownPerm = new String[] { "Yes", "No" };
+//				DataValidation validationPerm = createDroupDown(rowNum, rowNum, cellNum - 1, cellNum - 1,
+//						arrDropdownPerm, dvHelper);
+//				sheet.addValidationData(validationPerm);
+//
+//			}
+			for (int i = 0; i <arrRolePermission.length; i++) {
 				cell = row.createCell(cellNum++);
 				cell.setCellStyle(excalService.cellCenter);
-				cell.setCellValue(permissionVo.getStatus() == 0 ? "Yes" : "No");
-
+				if (permissionRole.size() > i) {
+					cell.setCellValue(permissionRole.get(i).getStatus() == 0 ? "Yes" : "No");
+				}else {
+					cell.setCellValue("Yes");
+				}
 				String[] arrDropdownPerm = new String[] { "Yes", "No" };
 				DataValidation validationPerm = createDroupDown(rowNum, rowNum, cellNum - 1, cellNum - 1,
 						arrDropdownPerm, dvHelper);
 				sheet.addValidationData(validationPerm);
-
 			}
 
 			rowNum++;
@@ -303,14 +317,6 @@ public class Sup01000Service {
 		outStream.write(outArray);
 		outStream.flush();
 		outStream.close();
-
-//		FileOutputStream fileOut = new FileOutputStream(fileName + ".xlsx");
-//		workbook.write(fileOut);
-//
-//		fileOut.close();
-//
-//		// Closing the workbook
-//		workbook.close();
 
 		logger.info("create excel success file name :"+fileName);
 	}

@@ -13,6 +13,10 @@ import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+
+
 @Service
 public class CheckRequestCertificatService {
 
@@ -29,6 +33,9 @@ public class CheckRequestCertificatService {
 	@Autowired
 	private RequestHistoryDao historyDao;
 	
+	@Autowired
+	private UploadCertificateService uploadCerService;
+	
 	public CommonMessage<String> upLoadCertificateByCk(CertificateVo certificateVo) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 
@@ -37,6 +44,7 @@ public class CheckRequestCertificatService {
 		upload.createFolder(folder); // Create Folder
 
 		RequestForm req = checkReqDetailDao.findReqFormById(certificateVo.getId(), false).get(0);
+		UserDetails user = UserLoginUtils.getCurrentUserLogin();
 		
 		try {
 			if (BeanUtils.isNotEmpty(certificateVo.getCertificatesFile())) {
@@ -50,6 +58,8 @@ public class CheckRequestCertificatService {
 				req.setStatus(StatusConstant.SUCCEED);
 				if (certificateDao.upDateCertificateByCk(req) == true) {
 					historyDao.save(req);
+//					call webservice
+					uploadCerService.uploadEcertificate(certificateVo.getId(),user.getUserId());
 					msg.setMessage("SUCCESS");
 				} else {
 					msg.setMessage("PRESS_UPLOAD_RECIEPTTAX");

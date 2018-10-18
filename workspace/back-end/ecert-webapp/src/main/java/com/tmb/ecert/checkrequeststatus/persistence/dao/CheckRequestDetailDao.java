@@ -178,5 +178,49 @@ public class CheckRequestDetailDao {
 			return row;
 		}
 	};
+	
+	public RequestForm findCertificateFileByReqID(Long reqID) {
+		StringBuilder sql = new StringBuilder(" ");
+//		sql.append(" SELECT REQUESTFORM_FILE,CERTIFICATE_FILE,RECEIPT_FILE FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ? ");
+		sql.append("   SELECT * FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ?   ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+
+		logger.info(sql.toString());
+
+		RequestForm result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), findFileNameMapping);
+
+		return result;
+	}
+	
+	public int updateECMFlag(Long reqID) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  UPDATE ECERT_REQUEST_FORM SET ECM_FLAG = 1  WHERE REQFORM_ID = ?   ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+
+		logger.info(sql.toString());
+
+		int result = jdbcTemplate.update(sql.toString(), params.toArray());
+
+		return result;
+	}
+
+	private RowMapper<RequestForm> findFileNameMapping = new RowMapper<RequestForm>() {
+		@Override
+		public RequestForm mapRow(ResultSet rs, int args1) throws SQLException {
+			RequestForm row = new RequestForm();
+			row.setCaNumber(rs.getString("CA_NUMBER"));
+			row.setCustomerName(rs.getString("CUSTSEGMENT_CODE"));
+			row.setRef2(rs.getString("REF2"));
+			row.setRequestFormFile(rs.getString("REQUESTFORM_FILE"));
+			row.setCertificateFile(rs.getString("CERTIFICATE_FILE"));
+			row.setReceiptFile(rs.getString("RECEIPT_FILE"));
+			row.setOrganizeId(rs.getString("ORGANIZE_ID"));
+			row.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
+			row.setCompanyName(rs.getString("COMPANY_NAME"));
+			return row;
+		}
+	};
 
 }
