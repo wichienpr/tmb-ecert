@@ -6,6 +6,8 @@ import { EcerDashBoard } from 'app/dash-board.reducer';
 import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import * as DashboardAction from 'app/dash-board.action';
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { CommonService } from '../common/services';
+import { ROLES } from '../common/constants';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,7 +18,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   userdetail: Observable<UserDetail>;
   dashboard: Observable<EcerDashBoard>;
 
-  constructor(private store: Store<AppState>, private dashboardService: DashboardService, private router: Router) {
+  constructor(private store: Store<AppState>, private dashboardService: DashboardService, 
+    private router: Router, private commonserv:CommonService) {
     this.userdetail = this.store.select("user");
     this.dashboard = this.store.select("ecerdashboard");
   }
@@ -66,6 +69,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
+  get isShowDashBrod (){
+      return !this.commonserv.isRole(ROLES.ADMIN);
+  }
 
 
 }

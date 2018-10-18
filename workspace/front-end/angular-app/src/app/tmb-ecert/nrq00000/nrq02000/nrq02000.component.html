@@ -191,7 +191,8 @@
                             <label>{{ item.certificate }}</label>
                           </div>
                           <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
-                            <input #etcChild maxlength="255" type="text" formControlName="etc{{i}}Child{{j}}" [disableControl]="!form.controls['chk'+i+'Child'+j].value">
+                            <input #etcChild maxlength="255" type="text" formControlName="etc{{i}}Child{{j}}"
+                              [disableControl]="!form.controls['chk'+i+'Child'+j].value">
                           </div>
                         </div>
                       </td>
@@ -337,7 +338,7 @@
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accNo') }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{acctno}}" autocomplete="off"
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{accNo}}" autocomplete="off"
             placeholder="">
         </div>
         <div class="required two wide field">
@@ -369,13 +370,13 @@
         </div>
       </div>
 
-      <div class="inline field" *ngIf="btnMaker">
+      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <h3 class="header space">&nbsp;</h3>
         <h3 class="header">การชำระเงิน</h3>
         <div class="ui divider"></div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
@@ -384,7 +385,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
@@ -393,7 +394,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
@@ -403,7 +404,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>
@@ -423,7 +424,7 @@
         <div class="required four wide field">
           <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('requestFile') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('requestFile') && isdownload }">
           <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
         </div>
         <div class="two wide field">
@@ -438,7 +439,7 @@
         <div class="required four wide field">
           <label>สำเนาบัตรประชาชน</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('copyFile') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('copyFile') && isdownload }">
           <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
         </div>
         <div class="two wide field">
@@ -472,7 +473,7 @@
       <div class="inline field">
         <div class="ui one grid">
           <div class="center aligned one column btn-group">
-            <button class="ui blue basic button" (click)="pdf()" *ngIf="btnRequestor" type="button">
+            <button class="ui blue basic button" (click)="pdf();" *ngIf="btnRequestor" type="button">
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>

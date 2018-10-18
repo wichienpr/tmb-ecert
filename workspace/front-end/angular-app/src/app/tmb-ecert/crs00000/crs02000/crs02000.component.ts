@@ -79,11 +79,11 @@ export class Crs02000Component implements OnInit {
   }
 
   get certFile() { return this.formCert.get('certFile') }
-  get btnApprove() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
-  get btnReject() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.CHECKER) }
-  get btnPrintReciept() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
-  get btnPrintCover() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
-  get btnUpload() { return this.roles(ROLES.ADMIN) || this.roles(ROLES.MAKER) }
+  get btnApprove() { return this.roles(ROLES.CHECKER)&&this.data.status=="10005" }
+  get btnReject() { return this.roles(ROLES.CHECKER)&&this.data.status=="10005" }
+  get btnPrintReciept() { return this.roles(ROLES.MAKER) }
+  get btnPrintCover() { return this.roles(ROLES.MAKER) }
+  get btnUpload() { return this.roles(ROLES.MAKER) }
 
   async getAllowed() {
     this.allowed.values = await this.dropdown.getRejectReason().toPromise();

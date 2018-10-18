@@ -28,11 +28,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   files: any;
   reqDate: Date;
   dropdownObj: any;
+  submitted: boolean = false;
   loading: boolean = false;
   saving: boolean = false;
   isdownload: boolean = false;
   showChildren: boolean = false;
   rejectSubmitted: boolean = false;
+  hiddenReceipt: boolean = false;
 
   glType: string = "";
   tranCode: string = "";
@@ -170,7 +172,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   checkRoles() {
-    if (this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN)) {
+    if (this.roles(ROLES.REQUESTOR)) {
       this.form.controls.customSegSelect.clearValidators();
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -178,11 +180,15 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.payMethodSelect.setValue('30001');
     }
 
-    if (this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN)) {
-      this.form.controls.ref1.setValidators([Validators.required]);
-      this.form.controls.ref2.setValidators([Validators.required]);
-      this.form.controls.amountDbd.setValidators([Validators.required]);
-      this.form.controls.amountTmb.setValidators([Validators.required]);
+    if (this.roles(ROLES.MAKER)) {
+      if (this.data.paidTypeCode != "30004") {
+        this.form.controls.ref1.setValidators([Validators.required]);
+        this.form.controls.ref2.setValidators([Validators.required]);
+        this.form.controls.amountDbd.setValidators([Validators.required]);
+        this.form.controls.amountTmb.setValidators([Validators.required]);
+      } else {
+        this.hiddenReceipt = true;
+      }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
@@ -199,9 +205,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
-  get btnRequestor() { return this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN) }
-  get btnChecker() { return this.roles(ROLES.CHECKER) || this.roles(ROLES.ADMIN) }
-  get btnMaker() { return this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN) }
+  get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get btnChecker() { return this.roles(ROLES.CHECKER) }
+  get btnMaker() { return this.roles(ROLES.MAKER) }
 
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
@@ -228,6 +234,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, event, _data?) {
     event.preventDefault();
+    this.submitted = true;
     const data = _data ? _data : {
       glType: this.glType,
       tranCode: this.tranCode,
@@ -237,6 +244,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
       requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
       status: this.getStatus(),
+      tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.data && this.data.reqFormId != 0) {
       this.service.save(form, this.files, this.reqTypeChanged, data, "update");
@@ -258,6 +266,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       status: "10003", // ปฏิเสธ
       rejectReasonCode: this.allowedSelect.value,
       rejectReasonOther: this.otherReason.value,
+      tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.formReject.valid) {
       this.formSubmit(this.form, event, data);
@@ -265,6 +274,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
+    this.submitted = true;
     this.isdownload = this.service.pdf(this.form, this.data, this.reqTypeChanged, this.reqDate);
   }
 
@@ -428,10 +438,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           }
         });
       }
-    }, 1000);
+    }, 1500);
     setTimeout(() => {
       this.loading = false;
-    }, 1200);
+    }, 1700);
   }
 
   calendarValue(name, e) {
@@ -495,6 +505,20 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   payMethodChange(e) {
     console.log('payMethodChange => ', e);
+    if (e != "30004") {
+      this.hiddenReceipt = false;
+      this.form.controls.ref1.setValidators([Validators.required]);
+      this.form.controls.ref2.setValidators([Validators.required]);
+      this.form.controls.amountDbd.setValidators([Validators.required]);
+      this.form.controls.amountTmb.setValidators([Validators.required]);
+    } else {
+      this.hiddenReceipt = true;
+      this.form.controls.ref1.clearValidators();
+      this.form.controls.ref2.clearValidators();
+      this.form.controls.amountDbd.clearValidators();
+      this.form.controls.amountTmb.clearValidators();
+    }
+    this.form.updateValueAndValidity();
   }
 
   subAccMethodChange(e) {
@@ -555,7 +579,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   invalid(control: string): boolean {
     const controls = this.form.controls;
-    return controls[control] && (controls[control].dirty || controls[control].touched || this.ngForm.submitted) && controls[control].invalid;
+    return controls[control] && (controls[control].dirty || controls[control].touched || this.submitted) && controls[control].invalid;
   }
 
   download(fileName: string) {

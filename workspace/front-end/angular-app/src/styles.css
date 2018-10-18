@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "semantic-ui-css/semantic.min.css";
 @import "assets/font/fonts.css";
 @import "semantic-ui-calendar/dist/calendar.css";
-
 .ui.basic.blue.button:hover, .ui.basic.blue.buttons .button:hover {
     background: 0 0!important;
     box-shadow: 0 0 0 1px #1678c2 inset!important;
@@ -31,10 +31,15 @@ th {
     color: white !important;
     text-align: center !important;
     border: 2px solid white;
-  }
+}
 
-tr:nth-child(odd) {background-color: white;}
-tr:nth-child(even) {background-color: #F8F8FF;}
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #F8F8FF;
+}
 
 .modal {
     position: absolute !important;
@@ -47,7 +52,7 @@ tr:nth-child(even) {background-color: #F8F8FF;}
 }
 
 .half.blue {
-    color: rgb(0,121,192) !important;
+    color: rgb(0, 121, 192) !important;
     opacity: 0.5;
 }
 
@@ -72,7 +77,7 @@ tr:nth-child(even) {background-color: #F8F8FF;}
     text-align: center!important;
 }
 
-.btn-group > button {
+.btn-group>button {
     margin: 0 0.5em !important;
 }
 
@@ -83,4 +88,8 @@ tr:nth-child(even) {background-color: #F8F8FF;}
 
 .hidden {
     display: none !important;
+}
+
+.ui.active.dimmer:not(.modals) {
+    z-index: 800 !important;
 }

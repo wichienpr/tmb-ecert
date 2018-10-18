@@ -244,6 +244,13 @@ export class sup01100Component implements OnInit {
           fuctioncode: PAGE_AUTH.P0001501
         }]
       }
+      ,
+      {
+        rolename: "UI-00016 - บันทึกข้อมูลจากเลขที่คำขอ (TMB Req No.)",
+        status: 0,
+        fuctioncode: PAGE_AUTH.P0001600,
+        chliddata: []
+      }
     ];
 
     this.responseObj = {

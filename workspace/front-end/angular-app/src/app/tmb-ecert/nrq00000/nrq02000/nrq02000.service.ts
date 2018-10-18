@@ -318,16 +318,18 @@ export class Nrq02000Service {
         for (let key in form.controls) {
             if (form.controls[key].invalid) {
                 for (let enu in ValidatorMessages) {
-                    if (enu == key) {
-                        modalAler.msg = ValidatorMessages[enu];
-                        modalAler.success = false;
-                        this.modal.alert(modalAler);
-                        return;
+                    if (key != "requestFile" && key != "copyFile") {
+                        if (enu == key) {
+                            modalAler.msg = ValidatorMessages[enu];
+                            modalAler.success = false;
+                            this.modal.alert(modalAler);
+                            return;
+                        }
                     }
                 }
             }
         }
-        if (form.valid) {
+        if (form.valid || (form.controls.requestFile.invalid&&form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
             let rpReqFormList = [];
             let boxIndex = 0;
@@ -540,7 +542,7 @@ export class Nrq02000Service {
             accountType: addons.accType,
             status: addons.status,
             reqFormId: form.controls.reqFormId.value,
-            tmbReqFormNo: this.tmbReqFormId,
+            tmbReqFormNo: this.tmbReqFormId ? this.tmbReqFormId : addons.tmbRequestNo,
             acceptNo: form.controls.acceptNo.value,
             accName: form.controls.accName.value,
             accNo: Acc.revertAccNo(form.controls.accNo.value),
@@ -591,25 +593,25 @@ export class Nrq02000Service {
 export enum ValidatorMessages {
     totalCerts = "กรุณาระบุจำนวนเอกสารรับรอง ที่ทำการยื่นคำขอ",
     selectSomeCerts = "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ",
-    reqTypeSelect = "reqTypeSelect",
-    customSegSelect = "customSegSelect",
-    payMethodSelect = "payMethodSelect",
-    subAccMethodSelect = "subAccMethodSelect",
-    accNo = "accNo",
-    accName = "accName",
-    corpNo = "corpNo",
-    corpName = "corpName",
-    corpName1 = "corpName1",
-    acceptNo = "acceptNo",
-    departmentName = "departmentName",
-    telReq = "telReq",
-    address = "address",
-    note = "note",
-    requestFile = "requestFile",
-    copyFile = "copyFile",
-    changeNameFile = "changeNameFile",
-    ref1 = "ref1",
-    ref2 = "ref2",
-    amountDbd = "amountDbd",
-    amountTmb = "amountTmb",
+    reqTypeSelect = "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ",
+    // customSegSelect = "customSegSelect",
+    // payMethodSelect = "payMethodSelect",
+    // subAccMethodSelect = "subAccMethodSelect",
+    // accNo = "accNo",
+    // accName = "accName",
+    // corpNo = "corpNo",
+    // corpName = "corpName",
+    // corpName1 = "corpName1",
+    // acceptNo = "acceptNo",
+    // departmentName = "departmentName",
+    // telReq = "telReq",
+    // address = "address",
+    // note = "note",
+    requestFile = "กรุณาอัพโหลดใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝากเข้าสู่ระบบ",
+    copyFile = "กรุณาอัพโหลดสำเนาบัตรประชาชน",
+    // changeNameFile = "changeNameFile",
+    // ref1 = "ref1",
+    // ref2 = "ref2",
+    // amountDbd = "amountDbd",
+    // amountTmb = "amountTmb",
 }

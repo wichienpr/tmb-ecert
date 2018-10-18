@@ -17,7 +17,7 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
     constructor(private cdRef: ChangeDetectorRef) {
     }
 
-    private configObj: any;
+    public configObj: any;
 
     ngOnInit() {
 
