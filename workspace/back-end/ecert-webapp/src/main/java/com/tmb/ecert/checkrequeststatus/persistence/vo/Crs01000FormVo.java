@@ -1,6 +1,12 @@
 package com.tmb.ecert.checkrequeststatus.persistence.vo;
 
-public class Crs01000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Crs01000FormVo extends DatatableRequest {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2424139912314074646L;
 	private String reqDate;
 	private String toReqDate;
 	private String companyName;
