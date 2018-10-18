@@ -531,12 +531,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   payMethodChange(e) {
     console.log('payMethodChange => ', e);
-    if (e != "30003" && e != "30004") {
+    if (e != "30004") {
       this.hiddenReceipt4 = false;
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);
-      if (e != "30002") {
+      if (e != "30002" && e != "30003") {
         this.hiddenReceipt3 = false;
         this.form.controls.amountTmb.setValidators([Validators.required]);
       } else {

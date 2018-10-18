@@ -547,7 +547,7 @@ export class Nrq02000Service {
                 _data = [..._data, obj];
             }
         });
-        let notUseReceipt = form.get('payMethodSelect').value && (form.get('payMethodSelect').value == '30003' || form.get('payMethodSelect').value == '30004');
+        let notUseReceipt = form.get('payMethodSelect').value && (/*form.get('payMethodSelect').value == '30003' || */form.get('payMethodSelect').value == '30004');
         let data: Nrq02000 = {
             glType: addons.glType,
             tranCode: addons.tranCode,
