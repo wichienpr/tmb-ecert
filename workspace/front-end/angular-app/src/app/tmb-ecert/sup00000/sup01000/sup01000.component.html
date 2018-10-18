@@ -4,7 +4,7 @@
       <div class="header" style="background: #1678C2">
          <div style="color: white">Import Role </div>
       </div>
-      <form class="ui form segment" [formGroup]="uploadForm">
+      <form class="ui form segment"  [ngClass]="loadingUpload ? 'loading' : ''" [formGroup]="uploadForm">
          <div class="content">
             <div class="ui form">
                <div class="inline fields">
