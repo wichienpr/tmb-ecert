@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,11 +30,13 @@ import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.common.utils.ThaiBaht;
+import com.tmb.ecert.report.persistence.dao.ReportPdfDao;
 import com.tmb.ecert.report.persistence.vo.RpCoverSheetVo;
 import com.tmb.ecert.report.persistence.vo.RpReceiptTaxVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormListVo;
-import com.tmb.ecert.report.persistence.vo.RpReqFormOriginalVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
+import com.tmb.ecert.report.persistence.vo.RpVatVo;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -65,6 +69,10 @@ public class ReportPdfService {
 	@Autowired
 	private RequestorDao upDateReqDetailDao;
 
+	
+	@Autowired
+	private ReportPdfDao reportPdfDao;
+	
 	private Logger logger = LoggerFactory.getLogger(ReportPdfService.class);
 
 	// create folder for PATH_REPORT
@@ -83,23 +91,51 @@ public class ReportPdfService {
 	public String receiptTaxToPdf(RpReceiptTaxVo vo) throws IOException, JRException {
 		// Folder Exist ??
 		initialService();
-
+		DecimalFormat formatNumber = new DecimalFormat("#,###.00");
 		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
-
+		RpVatVo vat = reportPdfDao.vat().get(0);
 		// RP001
 		String reportName01 = "RP_RECEIPT_TAX";
 		Map<String, Object> params01 = new HashMap<>();
 		params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 		params01.put("docType", "ต้นฉบับ");
+		params01.put("receiptNo", req.getReceiptNo());
 		params01.put("date", DateFormatUtils.format(req.getCreatedDateTime(), "dd MMMM yyyy", new Locale("th", "TH")));
-
+		params01.put("time", DateFormatUtils.format(req.getCreatedDateTime(), "HH.mm", new Locale("th", "TH")));
+		params01.put("customerNameReceipt", req.getCustomerNameReceipt());
+		params01.put("organizeId", req.getOrganizeId());
+		params01.put("address", req.getAddress());
+		params01.put("amountTmb", req.getAmountTmb());
+		params01.put("vat",formatNumber.format(new BigDecimal(vat.getVat())));
+		/*feeAmount = Amount_tmb  * (100/ (100+ vat) )*/
+		params01.put("feeAmount", formatNumber.format(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue()))));
+		/*vatAmount = (vat*feeAmount)*/
+		params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue()/100)*(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue())))));
+		params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+		params01.put("tmbRequestNo", req.getTmbRequestNo());
+		
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
-
+		
 		// RP002
 		String reportName02 = "RP_RECEIPT_TAX";
 		Map<String, Object> params02 = new HashMap<>();
 		params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 		params02.put("docType", "สำเนา");
+		params02.put("receiptNo", req.getReceiptNo());
+		params02.put("date", DateFormatUtils.format(req.getCreatedDateTime(), "dd MMMM yyyy", new Locale("th", "TH")));
+		params02.put("time", DateFormatUtils.format(req.getCreatedDateTime(), "HH.mm", new Locale("th", "TH")));
+		params02.put("customerNameReceipt", req.getCustomerNameReceipt());
+		params02.put("organizeId", req.getOrganizeId());
+		params02.put("address", req.getAddress());
+		params02.put("amountTmb", req.getAmountTmb());
+		params02.put("vat",formatNumber.format(new BigDecimal(vat.getVat())));
+		
+		/*feeAmount = Amount_tmb  * (100/ (100+ vat) )*/
+		params01.put("feeAmount", formatNumber.format(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue()))));
+		/*vatAmount = (vat*feeAmount)*/
+		params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue()/100)*(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue())))));
+		params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+		params02.put("tmbRequestNo", req.getTmbRequestNo());
 		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
 
 		// merge doc
@@ -161,7 +197,7 @@ public class ReportPdfService {
 	}
 
 	/* reqFormOriginalToPdf */
-	public String reqFormOriginalToPdf(RpReqFormOriginalVo vo) throws IOException, JRException {
+	public String reqFormOriginalToPdf(RpReqFormVo vo) throws IOException, JRException {
 
 		initialService();
 		// RP001
