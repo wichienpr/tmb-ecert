@@ -45,7 +45,7 @@ public class SaveRequestNoDao {
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" +formVo.getTmbReqNo()+ "%");
+			valueList.add("%" +StringUtils.trim(formVo.getTmbReqNo())+ "%");
 		}
 
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");

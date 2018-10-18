@@ -72,17 +72,17 @@ public class CheckRequestStatusDao {
 
 		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
 			sql.append(" AND H.COMPANY_NAME LIKE ? ");
-			valueList.add("%" + formVo.getCompanyName() + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getCompanyName()) + "%");
 		}
 
 		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
 			sql.append(" AND H.ORGANIZE_ID LIKE ? ");
-			valueList.add("%" + formVo.getOrganizeId() + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getOrganizeId()) + "%");
 		}
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + formVo.getTmbReqNo() + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
 		}
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 		crs01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
