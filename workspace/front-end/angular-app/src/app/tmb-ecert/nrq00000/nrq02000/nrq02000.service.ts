@@ -8,6 +8,7 @@ import { AjaxService, ModalService, DropdownService, RequestFormService, CommonS
 import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
+import { ROLES } from "app/baiwa/common/constants";
 
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
@@ -109,7 +110,7 @@ export class Nrq02000Service {
         // Dropdowns
         this.dropdown.getReqType().subscribe((obj: Lov[]) => this.dropdownObj.reqType.values = obj);
         this.dropdown.getCustomSeg().subscribe((obj: Lov[]) => this.dropdownObj.customSeg.values = obj);
-        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.payMethod.values = obj);
+        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => { this.dropdownObj.payMethod.values = obj });
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
     }
 
@@ -261,8 +262,14 @@ export class Nrq02000Service {
                                 queryParams: { codeStatus: "10001" }
                             });
                         } else {
+                            let msg = "";
+                            if (response.json().data && response.json().data == "HASMAKER") {
+                                msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                            } else {
+                                msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                            }
                             const modal: Modal = {
-                                msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
+                                msg: msg,
                                 success: false
                             };
                             this.modal.alert(modal);
@@ -333,7 +340,7 @@ export class Nrq02000Service {
                 }
             }
         }
-        if (form.valid || (form.controls.requestFile.invalid&&form.controls.copyFile.invalid)) {
+        if (form.valid || (form.controls.requestFile.invalid && form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
             let rpReqFormList = [];
             let boxIndex = 0;
@@ -540,7 +547,7 @@ export class Nrq02000Service {
                 _data = [..._data, obj];
             }
         });
-        let notUseReceipt = form.get('payMethodSelect').value && form.get('payMethodSelect').value == '30004';
+        let notUseReceipt = form.get('payMethodSelect').value && (form.get('payMethodSelect').value == '30003' || form.get('payMethodSelect').value == '30004');
         let data: Nrq02000 = {
             glType: addons.glType,
             tranCode: addons.tranCode,

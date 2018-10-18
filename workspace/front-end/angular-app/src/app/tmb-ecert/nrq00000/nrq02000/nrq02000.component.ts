@@ -38,7 +38,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   isdownload: boolean = false;
   showChildren: boolean = false;
   rejectSubmitted: boolean = false;
-  hiddenReceipt: boolean = false;
+  hiddenReceipt3: boolean = false;
+  hiddenReceipt4: boolean = false;
 
   glType: string = "";
   tranCode: string = "";
@@ -192,7 +193,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.form.controls.amountDbd.setValidators([Validators.required]);
         this.form.controls.amountTmb.setValidators([Validators.required]);
       } else {
-        this.hiddenReceipt = true;
+        this.hiddenReceipt4 = true;
       }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -207,6 +208,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  get btnForPay() { return this.form.get('payMethodSelect').value == "30004" }
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
@@ -529,14 +531,25 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   payMethodChange(e) {
     console.log('payMethodChange => ', e);
-    if (e != "30004") {
-      this.hiddenReceipt = false;
+    if (e != "30003" && e != "30004") {
+      this.hiddenReceipt4 = false;
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);
-      this.form.controls.amountTmb.setValidators([Validators.required]);
+      if (e != "30002") {
+        this.hiddenReceipt3 = false;
+        this.form.controls.amountTmb.setValidators([Validators.required]);
+      } else {
+        this.hiddenReceipt3 = true;
+        this.form.controls.amountTmb.patchValue('');
+        this.form.controls.amountTmb.clearValidators();
+      }
     } else {
-      this.hiddenReceipt = true;
+      this.hiddenReceipt4 = true;
+      this.form.controls.ref1.patchValue('');
+      this.form.controls.ref2.patchValue('');
+      this.form.controls.amountDbd.patchValue('');
+      this.form.controls.amountTmb.patchValue('');
       this.form.controls.ref1.clearValidators();
       this.form.controls.ref2.clearValidators();
       this.form.controls.amountDbd.clearValidators();

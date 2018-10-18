@@ -370,13 +370,13 @@
         </div>
       </div>
 
-      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <h3 class="header space">&nbsp;</h3>
         <h3 class="header">การชำระเงิน</h3>
         <div class="ui divider"></div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
@@ -385,7 +385,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
@@ -394,7 +394,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
@@ -404,7 +404,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4 || hiddenReceipt3}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>
@@ -477,10 +477,14 @@
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button (click)="formSubmit(form)" class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="button">
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="!btnForPay" [ngClass]="{ 'disabled': !isdownload }" type="button">
               <i class="check circle outline icon" *ngIf="btnMaker"></i>
               <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
               {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}
+            </button>
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnForPay" [ngClass]="{ 'disabled': !isdownload }" type="button">
+              <i class="check circle outline icon" *ngIf="btnMaker"></i>
+              ไม่ชำระผ่าน e-Payment
             </button>
             <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMaker">
               <i class="undo icon"></i>
