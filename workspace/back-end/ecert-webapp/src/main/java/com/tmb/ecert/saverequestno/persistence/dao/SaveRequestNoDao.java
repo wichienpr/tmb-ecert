@@ -1,5 +1,6 @@
 package com.tmb.ecert.saverequestno.persistence.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000FormVo;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;
 
+import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
+
 @Repository
 public class SaveRequestNoDao {
 
@@ -28,12 +31,12 @@ public class SaveRequestNoDao {
 
 	public List<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
 		logger.info("findReq_Dao");
-		logger.info(formVo.toString());
 		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -41,17 +44,19 @@ public class SaveRequestNoDao {
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
 		sql.append(" AND H.STATUS = 10011");
-		
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" +StringUtils.trim(formVo.getTmbReqNo())+ "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
 		}
 
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 
-		srn01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
-
+		// srn01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(),
+		// reqFormByStatusMapping);
+		srn01000VoList = jdbcTemplate.query(
+				DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()),
+				valueList.toArray(), reqFormByStatusMapping);
 		return srn01000VoList;
 	}
 
@@ -62,7 +67,8 @@ public class SaveRequestNoDao {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -78,6 +84,31 @@ public class SaveRequestNoDao {
 		srn01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
 
 		return srn01000VoList;
+	}
+
+	public int countDataTable(Srn01000FormVo formVo) {
+		List<Object> valueList = new ArrayList<Object>();
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(" FROM ECERT_REQUEST_FORM H ");
+		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
+		sql.append(" ON H.STATUS = L.CODE ");
+		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
+		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
+		sql.append(" WHERE 1 = 1 ");
+		sql.append(" AND H.STATUS = 10011");
+
+		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
+			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+		}
+
+		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
+				valueList.toArray());
+
+		return rs.intValue();
 	}
 
 	private RowMapper<Srn01000Vo> reqFormByStatusMapping = new RowMapper<Srn01000Vo>() {

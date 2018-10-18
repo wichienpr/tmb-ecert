@@ -1,8 +1,5 @@
 package com.tmb.ecert.saverequestno.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,8 @@ import com.tmb.ecert.saverequestno.persistence.vo.Srn01000FormVo;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;
 import com.tmb.ecert.saverequestno.service.SaveRequestNoService;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+
 @RequestMapping("api/srn/srn01000")
 @Controller
 public class SaveRequestNoController {
@@ -26,26 +25,16 @@ public class SaveRequestNoController {
 	@Autowired
 	private SaveRequestNoService srn01000Service;
 
-	@PostMapping("/findReqByTmbReqNo")
+
+	@PostMapping("/list")
 	@ResponseBody
-	public List<Srn01000Vo> findReqByTmbReqNo(@RequestBody Srn01000FormVo formVo) {
+	public DataTableResponse<Srn01000Vo> findReqByTmbReqNo(@RequestBody Srn01000FormVo formVo) {
 		log.info("findReq_C");
-		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-		srn01000VoList = srn01000Service.findReqByTmbReqNo(formVo);
-		return srn01000VoList;
+		System.out.println("tmb :"+formVo.getTmbReqNo()+" /  Status"+ formVo.getStatus());
+		
+		DataTableResponse<Srn01000Vo> dt = srn01000Service.findReqByTmbReqNo(formVo);
+		return dt;
 	}
 
-	@PostMapping("/findReqByStatus")
-	@ResponseBody
-	public List<Srn01000Vo> findReqByStatus(@RequestBody Srn01000FormVo formVo) {
-		log.info("findReqByStatus_C");
-		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-		try {
-			srn01000VoList = srn01000Service.findReqByStatus(formVo);
-		} catch (Exception e) {
-			log.error("Error ! ==> CheckRequestStatusController method findReqByStatus", e);
-		}
-		return srn01000VoList;
-	}
-
+	
 }

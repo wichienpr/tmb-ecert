@@ -1,7 +1,13 @@
 package com.tmb.ecert.saverequestno.persistence.vo;
 
-public class Srn01000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
 
+public class Srn01000FormVo extends DatatableRequest{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6998117903775735072L;
 	private String tmbReqNo;
 	private String status;
 
