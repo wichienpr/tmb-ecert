@@ -42,10 +42,10 @@ public class SaveRequestNoDao {
 		sql.append(" WHERE 1 = 1 ");
 		sql.append(" AND H.STATUS = 10011");
 		
-		
+
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
-			sql.append(" AND H.TMB_REQUESTNO = ? ");
-			valueList.add(formVo.getTmbReqNo());
+			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
+			valueList.add("%" +StringUtils.trim(formVo.getTmbReqNo())+ "%");
 		}
 
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
