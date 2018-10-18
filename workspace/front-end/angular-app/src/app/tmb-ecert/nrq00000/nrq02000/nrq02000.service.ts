@@ -330,10 +330,14 @@ export class Nrq02000Service {
         if (form.valid) {
             const { tmbRequestNo } = dt;
             let rpReqFormList = [];
+            let boxIndex = 0;
             const controls = form.controls;
             reqTypeChanged.forEach((obj, index) => {
                 if (index != 0 && controls[`chk${index}`].value) {
                     if (obj.children) {
+                        if (index == 1) {
+                            boxIndex = 2;
+                        }
                         let d = {
                             "totalNum": null,
                             "numSetCc": null,
@@ -343,7 +347,8 @@ export class Nrq02000Service {
                             "other": null,
                             "dateEditReg": null,
                             "statementYear": null,
-                            "dateAccepted": null
+                            "dateAccepted": null,
+                            "boxIndex": index == 1 ? boxIndex : index
                         };
                         obj.children.forEach((ob, idx) => {
                             if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
@@ -353,7 +358,7 @@ export class Nrq02000Service {
                                     if (idx != 1) {
                                         d.dateOtherReg = controls[`cal${index}Child${idx}`].value;
                                     }
-                                } else if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value == "") {
+                                } else if (!controls[`cal${index}Child${idx}`]) {
                                     d.numSetCc = controls[`cer${index}Child${idx}`].value;
                                 } else {
                                     d.numEditCc = controls[`cer${index}Child${idx}`].value;
@@ -374,7 +379,8 @@ export class Nrq02000Service {
                             "other": null,
                             "dateEditReg": null,
                             "statementYear": controls[`cal${index}`] && controls[`cal${index}`].value.length == 4 ? controls[`cal${index}`].value : null,
-                            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null
+                            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null,
+                            "boxIndex": boxIndex == 0 ? index : boxIndex + 1
                         };
                         rpReqFormList = [...rpReqFormList, d];
                     }
