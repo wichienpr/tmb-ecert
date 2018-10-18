@@ -60,6 +60,31 @@ public class SaveRequestNoDao {
 		return srn01000VoList;
 	}
 
+	public int countFindReqByTmbReqNoDataTable(Srn01000FormVo formVo) {
+		List<Object> valueList = new ArrayList<Object>();
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME ");
+		sql.append(" FROM ECERT_REQUEST_FORM H ");
+		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
+		sql.append(" ON H.STATUS = L.CODE ");
+		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
+		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
+		sql.append(" WHERE 1 = 1 ");
+		sql.append(" AND H.STATUS = 10011");
+
+		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
+			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+		}
+
+		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
+				valueList.toArray());
+
+		return rs.intValue();
+	}
+	
 	public List<Srn01000Vo> findReqByStatus(Srn01000FormVo formVo) {
 		logger.info("findReqByStatus_Dao");
 		logger.info(formVo.toString());
@@ -86,7 +111,7 @@ public class SaveRequestNoDao {
 		return srn01000VoList;
 	}
 
-	public int countDataTable(Srn01000FormVo formVo) {
+	public int countFindReqByStatusDataTable(Srn01000FormVo formVo) {
 		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 
@@ -98,11 +123,10 @@ public class SaveRequestNoDao {
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
-		sql.append(" AND H.STATUS = 10011");
 
-		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
-			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+		if (StringUtils.isNotBlank(formVo.getStatus())) {
+			sql.append(" AND H.STATUS = ? ");
+			valueList.add(formVo.getStatus());
 		}
 
 		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,

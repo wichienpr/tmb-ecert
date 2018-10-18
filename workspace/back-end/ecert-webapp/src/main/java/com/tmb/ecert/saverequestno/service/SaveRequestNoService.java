@@ -24,24 +24,25 @@ public class SaveRequestNoService {
 	@Autowired
 	private SaveRequestNoDao srn01000Dao;
 
-
 	public DataTableResponse<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
 		logger.info("findReqByTmbReqNo_Service");
-		
+
 		DataTableResponse<Srn01000Vo> dt = new DataTableResponse<>();
 		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-		
-		if(StringUtils.isNotBlank(formVo.getTmbReqNo())) {
+
+		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			srn01000VoList = srn01000Dao.findReqByTmbReqNo(formVo);
-		}else if(StringUtils.isNotBlank(formVo.getStatus())) {
+			dt.setData(srn01000VoList);
+			int count = srn01000Dao.countFindReqByTmbReqNoDataTable(formVo);
+			dt.setRecordsTotal(count);
+		} else if (StringUtils.isNotBlank(formVo.getStatus())) {
 			srn01000VoList = srn01000Dao.findReqByStatus(formVo);
+			dt.setData(srn01000VoList);
+			int count = srn01000Dao.countFindReqByStatusDataTable(formVo);
+			dt.setRecordsTotal(count);
 		}
-		 
-		dt.setData(srn01000VoList);
-		int count = srn01000Dao.countDataTable(formVo);
-		dt.setRecordsTotal(count);
+
 		return dt;
 	}
-
 
 }
