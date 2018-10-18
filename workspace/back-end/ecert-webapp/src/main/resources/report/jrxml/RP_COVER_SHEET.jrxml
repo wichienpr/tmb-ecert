@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RP_COVER_SHEET" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="009e85bd-c726-4380-be6b-6190d9bb83db">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="title" hTextAlign="Left" hImageAlign="Center" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="22" isBold="true"/>
+	<style name="detail" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="14" isBold="false"/>
+	<style name="label" vTextAlign="Middle" vImageAlign="Middle" pattern="" fontName="Cordia New" fontSize="14" isBold="true"/>
+	<parameter name="logoTmbCover01" class="java.io.InputStream"/>
+	<parameter name="logoTmbCover02" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="351" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="-27" width="150" height="100" uuid="cadb90a5-6b4a-4865-ab88-b2ebeccb50be"/>
+				<imageExpression><![CDATA[$P{logoTmbCover01}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement key="" style="title" x="180" y="0" width="200" height="30" uuid="7719f08e-f048-4c8e-9a80-d337599fdaba"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["ใบนำส่งเอกสาร "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" style="title" x="180" y="30" width="200" height="30" uuid="9a647d2f-4300-438e-82a4-efa4d9d523ce"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Cover Sheet "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="360" y="60" width="60" height="17" forecolor="#000000" uuid="2bd9a0c3-7195-44a7-b174-9e910d78672b"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เลขที่เอกสาร"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="420" y="60" width="101" height="17" forecolor="#000000" uuid="5f3def61-b548-4b05-8179-e1a9b482f993"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TMB 06092018001"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="79" width="80" height="17" forecolor="#000000" uuid="23793109-d1e8-4308-b432-8aa9960a2765"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["จาก"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="96" width="80" height="17" forecolor="#000000" uuid="77f44ce1-3667-4141-a888-77002c499b28"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["หน่วยงาน :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="113" width="80" height="17" forecolor="#000000" uuid="74b09412-9a0c-4726-b511-999f1bf1c452"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ฝ่าย :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="130" width="80" height="17" forecolor="#000000" uuid="093a928f-7e4f-4ed8-9cc3-5d04b0759ee7"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เบอร์โทรศัพท์ :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="147" width="80" height="17" forecolor="#000000" uuid="a9e51295-3d38-4204-b807-bac2d88831be"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["E-Mail :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="96" width="372" height="17" uuid="e782204f-3fe0-4c88-9625-9065f2acd55d"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["3594 / นิติกรรมสัญญา ปรับโครงสร้างหนี้ (TMB e-Certificate Center)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="113" width="372" height="17" uuid="bb2a76be-d55b-432a-b743-43ddb4918040"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["ปฏิบัติการสินเชื่อธุรกิจ สำนักงานใหญ่ ชั้น 4B"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="detail" x="149" y="140" width="372" height="7" uuid="8784172f-9e0d-47a8-b864-7703dd8a38ac"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="147" width="372" height="17" uuid="f4676bb6-7d76-49af-9a71-ec89fbd6bf45"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["TMB_Certificate@tmbbank.com"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="164" width="151" height="17" forecolor="#FF0000" uuid="ae94f23c-9960-4ab8-9fdd-b2e3bb3b9ae8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["(กำลังอยู่ระหว่างดำเนินการขอ ITIA)"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="detail" x="150" y="130" width="180" height="17" uuid="e7dcceb9-11b5-4193-b64d-38fd1830eded"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" 02-299-1111 ext. xxxx"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="detail" x="330" y="130" width="191" height="17" forecolor="#FF0000" uuid="83f4bb2f-2a6c-4b04-b9d1-b79705f8d766"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["(กำลังอยู่ระหว่างดำเนินการขอ 1740Service Desk)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="198" width="80" height="17" forecolor="#000000" uuid="f700676a-1c97-4f83-bf72-662e2200fda4"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["กรุณาส่ง"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="266" width="80" height="17" forecolor="#000000" uuid="58e2343e-55f6-4da5-957f-a4ccb0f486d2"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ฝ่าย :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="249" width="80" height="17" forecolor="#000000" uuid="7f69d8c2-d25a-4705-82b1-ffb0d3839625"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["หน่วยงาน :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="232" width="80" height="17" forecolor="#000000" uuid="773ae595-a7b8-4537-b705-fee0a21abfdf"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["รหัสพนักงาน :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="215" width="80" height="17" forecolor="#000000" uuid="fbffccaa-4615-499c-89c5-c34233854f63"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ชื่อผู้รับ :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="283" width="80" height="17" forecolor="#000000" uuid="ccee182c-73ff-41fa-93e5-924ee492186f"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["สังกัด :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="300" width="80" height="17" forecolor="#000000" uuid="bc306b76-a296-4361-883a-39057848f3a0"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เบอร์โทรศัพท์ :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="60" y="317" width="80" height="17" forecolor="#000000" uuid="98538c2b-1029-440a-819e-b95972b38024"/>
+				<textElement textAlignment="Right">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["E-Mail :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="215" width="372" height="17" uuid="a50bdb7a-3320-4c0a-8022-0747d11303dd"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["นายทหารไทย ใจดี"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="232" width="372" height="17" uuid="67555ef9-538b-4b1e-8a96-d814d9f69c9e"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="249" width="372" height="17" uuid="54d20ba7-17e5-489b-9c4d-d4902f517119"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="266" width="372" height="17" uuid="76127fcc-f5cd-4eb5-ae36-09216d47a387"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="283" width="372" height="17" uuid="23074f6f-bd9e-4f7a-b48b-6ad7b8ba1ce0"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="300" width="372" height="17" uuid="763d5141-3105-4718-9ce2-abc8e6296bbf"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="149" y="317" width="372" height="17" uuid="a92df706-eeb9-4e39-b074-782c9673e8d3"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["XXXXXXX"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement style="label" x="60" y="0" width="80" height="17" forecolor="#000000" uuid="83026307-dfaf-4f5b-a553-432d8de07cb5"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Documents No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="140" y="0" width="260" height="17" forecolor="#000000" uuid="92126ab0-4c03-4392-87c0-f48598acdc6a"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Documents Type"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="440" y="0" width="81" height="17" forecolor="#000000" uuid="b9af7d6d-6396-46c1-8775-849c050b551b"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TMB Req No."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="label" x="400" y="0" width="40" height="17" forecolor="#000000" uuid="f838377b-2d6d-4f77-b830-00b18e7a206a"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Qty."]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="detail" x="440" y="0" width="81" height="20" uuid="c112aa3e-8011-44c4-bf62-9afd1d92a187"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["20180900001"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="400" y="0" width="40" height="20" uuid="e58861c7-60cc-4b8a-a71f-8322afb9e080"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["1"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="140" y="0" width="260" height="20" uuid="846a6857-feb3-4495-acfe-8e723867d047"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["  หนังสือรับรองนิติบุคคล"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="60" y="0" width="80" height="20" uuid="582b4dd6-5cb3-4460-9793-8c08a662cdc1"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["1"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="156">
+			<image>
+				<reportElement x="280" y="16" width="100" height="90" uuid="b4402128-d2d8-469a-a43a-1d4191c0f8b3"/>
+				<imageExpression><![CDATA[$P{logoTmbCover02}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement style="detail" x="430" y="87" width="92" height="17" uuid="538b5966-42e6-4af6-bdf7-21fd83257030"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["7.10 น."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="380" y="87" width="50" height="17" uuid="63ecfdc1-0361-4b40-99c9-878486399c90"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["วันเวลา"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="380" y="70" width="50" height="17" uuid="34b04673-44d0-4452-96f8-e62edb70085d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["ส่งวันที่"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="430" y="70" width="92" height="17" uuid="611c9795-c67a-4af3-a494-89152de99163"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["10/9/2018"]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

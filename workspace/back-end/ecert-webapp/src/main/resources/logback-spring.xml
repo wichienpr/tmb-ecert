@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
+	
+	<springProperty scope="context" name="HOME" source="app.logging.path" defaultValue="/"/>
+    <springProperty scope="context" name="FILE_SIZE" source="app.logging.rolling-file-appender.max-file-size" defaultValue="5MB"/>
+    <springProperty scope="context" name="MIN_INDEX" source="app.logging.rolling-file-appender.min-index" defaultValue="1"/>
+	<springProperty scope="context" name="MAX_INDEX" source="app.logging.rolling-file-appender.max-index" defaultValue="10"/>
+	  
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-app.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-app.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_REQFORM" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-requestform.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-requestform.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_SEARCH_REQFORM" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-search-requesform.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-search-requesform.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>	
+	<appender name="ECERT_PAYMENT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-payment.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-payment.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_REPORT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-report.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-report.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_BATCHMONITORING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-batchmonitoring.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-batchmonitoring.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_AUDITLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-auditlog.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-auditlog.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_ROLEMANAGEMENT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-rolemangement.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-rolemangement.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_PARAMETERCONFIG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-parameterconfig.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-parameterconfig.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_EMAILCONFIG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-emailconfig.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-emailconfig.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_AUTOPAYMENT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-autoretrypayment.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-autoretrypayment.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_PAYMENTSUMMARYDBD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobpaymentdbd.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobpaymentdbd.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_ONDEMAND" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobondemand.log.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobondemand.log.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_GL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobGL.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobGL.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_AUDITLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobauditlog.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobauditlog.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_HOUSEKEEPING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobhousekeeping.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobhousekeeping.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_HROFFICECODE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobhrofficecode.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobhrofficecode.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ECERT_IMPORTECM" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HOME}/e-certificate-jobimportecm.log</file>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${HOME}/e-certificate-jobimportecm.log.%i</fileNamePattern>
+			<minIndex>${MIN_INDEX}</minIndex>
+			<maxIndex>${MAX_INDEX}</maxIndex>
+		</rollingPolicy>
+	
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${FILE_SIZE}</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 	for DEV not remove -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+	  	</layout>
+ 	</appender>
+ 	
+	<logger name="e-certificate-requestform.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_REQFORM" />
+	</logger>
+	<logger name="e-certificate-search-requesform.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_SEARCH_REQFORM" />
+	</logger>
+	<logger name="e-certificate-payment.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_PAYMENT" />
+	</logger>
+	<logger name="e-certificate-report.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_REPORT" />
+	</logger>
+	<logger name="e-certificate-batchmonitoring.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_BATCHMONITORING" />
+	</logger>
+	<logger name="e-certificate-auditlog.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_AUDITLOG" />
+	</logger>
+	<logger name="e-certificate-rolemangement.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_ROLEMANAGEMENT" />
+	</logger>
+	<logger name="e-certificate-parameterconfig.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_PARAMETERCONFIG" />
+	</logger>
+	<logger name="e-certificate-emailconfig.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_EMAILCONFIG" />
+	</logger>
+	<logger name="e-certificate-autoretrypayment.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_AUTOPAYMENT" />
+	</logger>
+	<logger name="e-certificate-jobpaymentdbd.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_PAYMENTSUMMARYDBD" />
+	</logger>
+	<logger name="e-certificate-jobondemand.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_ONDEMAND" />
+	</logger>
+	<logger name="e-certificate-jobGL.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_GL" />
+	</logger>
+	<logger name="e-certificate-jobauditlog.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_AUDITLOG" />
+	</logger>
+	<logger name="e-certificate-jobhousekeeping.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_HOUSEKEEPING" />
+	</logger>
+	<logger name="e-certificate-jobhrofficecode.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_HROFFICECODE" />
+	</logger>
+	<logger name="e-certificate-jobimportecm.log" level="debug" additivity="false">
+		<appender-ref ref="ECERT_IMPORTECM" />
+	</logger>
+    <root level="INFO">
+		<appender-ref ref="FILE" />
+  	</root>
+	
+</configuration>
