@@ -338,7 +338,7 @@
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accNo') }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{acctno}}" autocomplete="off"
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{accNo}}" autocomplete="off"
             placeholder="">
         </div>
         <div class="required two wide field">
@@ -370,13 +370,13 @@
         </div>
       </div>
 
-      <div class="inline field" *ngIf="btnMaker">
+      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <h3 class="header space">&nbsp;</h3>
         <h3 class="header">การชำระเงิน</h3>
         <div class="ui divider"></div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
@@ -385,7 +385,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
@@ -394,7 +394,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
@@ -404,7 +404,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>

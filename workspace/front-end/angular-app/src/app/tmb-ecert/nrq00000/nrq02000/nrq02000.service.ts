@@ -542,7 +542,7 @@ export class Nrq02000Service {
             accountType: addons.accType,
             status: addons.status,
             reqFormId: form.controls.reqFormId.value,
-            tmbReqFormNo: this.tmbReqFormId,
+            tmbReqFormNo: this.tmbReqFormId ? this.tmbReqFormId : addons.tmbRequestNo,
             acceptNo: form.controls.acceptNo.value,
             accName: form.controls.accName.value,
             accNo: Acc.revertAccNo(form.controls.accNo.value),

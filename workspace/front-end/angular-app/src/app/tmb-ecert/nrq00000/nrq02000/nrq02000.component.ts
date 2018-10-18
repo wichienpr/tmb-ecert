@@ -34,6 +34,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   isdownload: boolean = false;
   showChildren: boolean = false;
   rejectSubmitted: boolean = false;
+  hiddenReceipt: boolean = false;
 
   glType: string = "";
   tranCode: string = "";
@@ -180,10 +181,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
 
     if (this.roles(ROLES.MAKER)) {
-      this.form.controls.ref1.setValidators([Validators.required]);
-      this.form.controls.ref2.setValidators([Validators.required]);
-      this.form.controls.amountDbd.setValidators([Validators.required]);
-      this.form.controls.amountTmb.setValidators([Validators.required]);
+      if (this.data.paidTypeCode != "30004") {
+        this.form.controls.ref1.setValidators([Validators.required]);
+        this.form.controls.ref2.setValidators([Validators.required]);
+        this.form.controls.amountDbd.setValidators([Validators.required]);
+        this.form.controls.amountTmb.setValidators([Validators.required]);
+      } else {
+        this.hiddenReceipt = true;
+      }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
@@ -239,6 +244,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
       requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
       status: this.getStatus(),
+      tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.data && this.data.reqFormId != 0) {
       this.service.save(form, this.files, this.reqTypeChanged, data, "update");
@@ -260,6 +266,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       status: "10003", // ปฏิเสธ
       rejectReasonCode: this.allowedSelect.value,
       rejectReasonOther: this.otherReason.value,
+      tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.formReject.valid) {
       this.formSubmit(this.form, event, data);
@@ -431,10 +438,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           }
         });
       }
-    }, 1000);
+    }, 1500);
     setTimeout(() => {
       this.loading = false;
-    }, 1200);
+    }, 1700);
   }
 
   calendarValue(name, e) {
@@ -498,6 +505,20 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   payMethodChange(e) {
     console.log('payMethodChange => ', e);
+    if (e != "30004") {
+      this.hiddenReceipt = false;
+      this.form.controls.ref1.setValidators([Validators.required]);
+      this.form.controls.ref2.setValidators([Validators.required]);
+      this.form.controls.amountDbd.setValidators([Validators.required]);
+      this.form.controls.amountTmb.setValidators([Validators.required]);
+    } else {
+      this.hiddenReceipt = true;
+      this.form.controls.ref1.clearValidators();
+      this.form.controls.ref2.clearValidators();
+      this.form.controls.amountDbd.clearValidators();
+      this.form.controls.amountTmb.clearValidators();
+    }
+    this.form.updateValueAndValidity();
   }
 
   subAccMethodChange(e) {
