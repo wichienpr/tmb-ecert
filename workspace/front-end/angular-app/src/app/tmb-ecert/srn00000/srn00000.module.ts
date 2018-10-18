@@ -6,7 +6,7 @@ import { Srn00000RoutingModule } from './srn00000-routing.module';
 import { Srn01000Component } from './srn01000/srn01000.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { DisableControlModule } from 'directives/';
+import { DisableControlModule, DatatableModule } from 'directives/';
 
 import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
@@ -21,6 +21,7 @@ import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
     Srn00000RoutingModule,
 
     DisableControlModule,
+    DatatableModule,
     PipesModule,
   ],
   declarations: [Srn01000Component]

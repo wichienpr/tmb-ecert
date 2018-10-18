@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Srn01000Service } from 'app/tmb-ecert/srn00000/srn01000/srn01000.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AjaxService } from 'app/baiwa/common/services';
 import { isValid } from 'app/baiwa/common/helpers';
-
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 
 @Component({
   selector: 'app-srn01000',
@@ -12,97 +12,75 @@ import { isValid } from 'app/baiwa/common/helpers';
   styleUrls: ['./srn01000.component.css'],
   providers: [Srn01000Service]
 })
-export class Srn01000Component implements OnInit {
-  form: FormGroup;
+export class Srn01000Component implements OnInit, AfterViewInit {
+  form: FormGroup = new FormGroup({
+    tmbReqNo: new FormControl('', Validators.required),
+    status: new FormControl('',)
+  });
+  
   statusHomePage: string;
-  status: string;
-  dataT: any[] = [];
-  showData: boolean = false;
-  loading: boolean = false;
+ 
+
+
+  dataConfig: DatatableCofnig;
+  @ViewChild("dataDt")
+  dataDt: DatatableDirective
 
   constructor(private srn01000Service: Srn01000Service,
     private ajax: AjaxService,
     private router: Router,
-    private route: ActivatedRoute) {
-
-    this.srn01000Service.getForm().subscribe(form => {
-      this.form = form
-    });
-
-  }
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.dataT = [];
+    this.dataConfig = {
+      url: "/api/srn/srn01000/list",
+      serverSide: true,
+      useBlockUi: true
+    };
+  }
+
+  ngAfterViewInit() {
     this.statusHomePage = this.route.snapshot.queryParams["codeStatus"];
-
+    console.log(this.statusHomePage)
     if (this.statusHomePage) {
-      this.searchStatusByHomePage(this.statusHomePage)
-    } 
-
-  }
-
-
-  getDataByTmbReqNo = () => {
-    console.log(this.form);
-    this.loading = true;
-    const URL = "/api/srn/srn01000/findReqByTmbReqNo";
-    this.ajax.post(URL, {
-      tmbReqNo: this.form.controls.tmbReqNo.value,
-    }, async res => {
-      const data = await res.json();
       setTimeout(() => {
-        this.loading = false;
-      }, 50);
-      data.forEach(element => {
-        this.dataT.push(element);
-      });
-      
-    });
-  }
-
-  getDataByStatus(code) {
-    this.status = code;
-    this.loading = true;
-    const URL = "/api/srn/srn01000/findReqByStatus";
-    this.ajax.post(URL, { status: this.status }, res => {
-      //console.log(res.json());
-      setTimeout(() => {
-        this.loading = false;
-      }, 1);
-      res.json().forEach(element => {
-        this.dataT.push(element);
-      });
-    });
-
-  }
-
-  searchData(): void {
-    console.log(this.form.controls['tmbReqNo'].value);
-    console.log("searchData");
-    if(this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null){
-      this.dataT = [];
-    }else{
-      this.showData = true;
-      this.getDataByTmbReqNo();
-      this.dataT = [];
+        this.searchStatusByHomePage(this.statusHomePage);
+      }, 500);
     }
-    
   }
 
-  searchStatusByHomePage(code): void {
-    this.showData = true;
-    this.getDataByStatus(code);
-    this.dataT = [];
+  searchData() {
+    console.log(this.form.value)
+
+    if (!this.form.touched) {
+      Object.keys(this.form.value).forEach(element => {
+        let fc = this.form.get(element);
+        fc.markAsTouched({ onlySelf: true });
+      });
+    }
+
+    if (this.form.invalid) {
+      console.log("form invalid");
+      return false;
+    }
+
+    this.dataDt.searchParams(this.form.value);
+    this.dataDt.search();
+
   }
 
   clearData(): void {
-    console.log("clearData");
     this.form.reset();
-    this.showData = false;
-    this.dataT = [];
+    this.dataDt.clear();
   }
 
-
+  searchStatusByHomePage(code): void {
+    console.log(code);
+    this.form.setValue({ status: code, tmbReqNo: "" })
+    console.log(this.form);
+    this.dataDt.searchParams(this.form.value);
+    this.dataDt.search();
+  }
 
   detail(idReq, status): void {
     console.log(idReq + "," + status)
@@ -112,9 +90,6 @@ export class Srn01000Component implements OnInit {
       });
     }
   }
-
-
-
 
   getFontStyeColor(status) {
     if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
@@ -127,7 +102,6 @@ export class Srn01000Component implements OnInit {
 
   }
 
-
   getButtonStyeColor(status) {
     if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
       return 'ui blue basic button center';
@@ -139,8 +113,8 @@ export class Srn01000Component implements OnInit {
 
   }
 
-  validate(input: string, submitted: boolean) {
-    return isValid(this.form, input, submitted);
+  get tmbReqNo() {
+    return this.form.get("tmbReqNo");
   }
 
 }
