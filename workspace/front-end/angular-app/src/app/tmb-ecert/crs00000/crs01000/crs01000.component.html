@@ -70,20 +70,20 @@
           </div>
 
           <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
+            <form class="ui form"  #ngForm="ngForm" [formGroup]="form">
               
                 <div class="inline fields">
-                  <div class="two wide field">
+                  <div class="two wide field" >
                     <label class="custom-label-w-22">วันที่ขอ<span style="color: red"> * </span></label>
                   </div>
-                  <div class="five wide field {{ validate('reqDate', ngForm.submitted) ? '' : 'error' }}" >
-                      <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('reqDate',$event)" style="width:100%" ></ui-calendar>
+                  <div class="five wide field" [ngClass]="{'error':(reqDate.invalid && (reqDate.dirty || reqDate.touched))}">
+                    <ng-calendar [config]="calendar1"  style="width:100%"></ng-calendar>
                   </div>
                   <div class="two wide field ">
                     <label>ถึงวันที่<span style="color: red"> * </span></label>
                   </div>
-                  <div class="five wide field {{ validate('toReqDate', ngForm.submitted) ? '' : 'error' }}">
-                    <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('toReqDate',$event)" style="width:100%"></ui-calendar>
+                  <div class="five wide field" [ngClass]="{'error':(toReqDate.invalid && (toReqDate.dirty || toReqDate.touched))}"> 
+                    <ng-calendar [config]="calendar2" style="width:100%"></ng-calendar>
                   </div>
                 </div>
 
@@ -116,7 +116,7 @@
                 <div class="inline field">
                   <div class="ui centered grid">
                     <div class="six wide column center aligned">
-                      <button class="ui blue basic button" type="submit">
+                      <button class="ui blue basic button" type="button" (click)="searchData()">
                         <i class="search icon"></i>
                         ค้นหา
                       </button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -131,13 +131,15 @@
             </form>
           </div>
           <br>
-          <div class="sixteen wide column" *ngIf="showData">
+          <div class="sixteen wide column" [hidden]="!dataDt.isSearch">
             <div class="ui top attached header segment">
               <span>ผลการค้นหา </span>
             </div>
-              <div class="ui attached segment  {{ loading? 'loading' : '' }}">
+              <div class="ui attached segment">
+                 <ng-datatable-search [ng-datatable]="dataDt"></ng-datatable-search>
+                 <br>
                 <div style="overflow-x: auto;white-space: nowrap;">
-                  <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                  <table [ngDatatable]="dataConfig" #dataDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%" id="table">
                     <thead>
                       <tr>
                         <th class="collapsing">ลำดับ</th>
@@ -154,8 +156,10 @@
                       </tr>
                     </thead>
                     <tbody>
-
-                      <tr class="text-center" *ngFor="let data of dataT; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
+                      <tr class="text-center" *ngIf="dataDt.isEmpty">
+                        <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+                      </tr>
+                      <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
                           <td style="text-align: center !important;">{{i+1}}</td>
                           <td style="text-align: center !important;">{{data.reqDateStr}}</td>
                           <td style="text-align: center !important;">{{data.tmbReqNo | tmbReqNo}}</td>
@@ -172,14 +176,14 @@
                             </button>
                           </td>
                       </tr>
-                      <ng-container *ngIf="!dataT || dataT.length == 0">
-                          <tr class="center aligned">
-                            <td colspan="12"><h5> ไม่พบรายการ </h5></td>
-                          </tr>
-                      </ng-container>
                     </tbody>
                   </table>
                 </div>
+                <br>
+                <ng-datatable-footer [ng-datatable]="dataDt"></ng-datatable-footer>
+    
+                <br>
+                <br>
               </div>
           </div>
         </div>
