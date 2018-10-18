@@ -5,35 +5,34 @@ package com.tmb.ecert.report.service;
 
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.Calendar;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.tmb.ecert.report.persistence.dao.RpDao;
 
 public class ReceiptTexServiceTest {
 
-	@Autowired
-	private RpDao rpDao;
+
 	
 	@Test
 	public void ReceiptTex()  {
-		//int num1= 1500;
+		/*int num1= 1500;*/
 		
 		//DecimalFormat formatter = new DecimalFormat("#,##0");
-		//DecimalFormat formatTest = new DecimalFormat("#,###.##");
+		DecimalFormat format = new DecimalFormat("#,###.00");
 		//formatter.format(num1);
 		 
-		//System.out.println(formatter.format(num1));
+		//System.out.println(format.format(new BigDecimal("7.11")));
 
+		//String tmbReqNo = "10Nov20180000";
+		//String name ="RequestForm_"+tmbReqNo;
+		//String name ="RequestForm_"+DateFormatUtils.format(new java.util.Date(),"yyyyMMddHHmmss");
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+
+	
+		System.out.println(format.format(new BigDecimal("7.115")));
 		
-		String name ="RequestForm"+DateFormatUtils.format(new java.util.Date(),"yyyyMMddHHmmss");
 		
-       System.out.println(name);
 	}
 }
