@@ -45,7 +45,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
          * this.checkA(PAGE_AUTH.P0001501) 
          * this.checkRA(ROLES.ADMIN, PAGE_AUTH.P0001501)
          */
-        role: true,
+        role: this.checkA(PAGE_AUTH.P0000600||PAGE_AUTH.P0000500),
         child: [ // Sub Menu 1.1 
           {
             label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
@@ -61,41 +61,47 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       { // Main Menu New
         label: "บันทึกข้อมูลจากเลขที่คำขอ (TMB Req No.)",
         url: "/srn/srn01000",
-        role: true,
+        role:  true,
       },
       { // Main Menu 2
         label: "ตรวจสอบสถานะคำขอ",
         url: "/crs/crs01000",
-        role: true,
+        role: this.checkA(PAGE_AUTH.P0000300),
       },
       { // Main Menu 3
         label: "รายงาน",
         url: null,
-        role: true,
+        role: this.checkA(PAGE_AUTH.P0000700 || PAGE_AUTH.P0000800 || PAGE_AUTH.P0000900),
         child: [ // Sub Menu 3.1
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day", url: "/rep/rep01000", role: true },
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly", url: "/rep/rep02000", role: true },
-          { label: "รายงาน Output VAT", url: "/rep/rep03000", role: true },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day",
+           url: "/rep/rep01000",
+            role:  this.checkA(PAGE_AUTH.P0000700) },
+          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly",
+           url: "/rep/rep02000",
+            role:  this.checkA(PAGE_AUTH.P0000800) },
+          { label: "รายงาน Output VAT",
+           url: "/rep/rep03000", 
+           role: this.checkA(PAGE_AUTH.P0000900)  },
         ]
       },
       { // Main Menu 4
         label: "Batch Monitoring",
         url: "/btm/btm01000",
-        role: true,
+        role:  this.checkA(PAGE_AUTH.P0001100)
       },
       { // Main Menu 5
         label: "Audit Log",
         url: "/adl/adl01000",
-        role: true,
+        role: this.checkA(PAGE_AUTH.P0001200),
       },
       { // Main Menu 6
         label: "Setup",
         url: null,
-        role: true,
+        role: this.checkA(PAGE_AUTH.P0001300 || PAGE_AUTH.P0001400 || PAGE_AUTH.P0001500 ),
         child: [ // Sub Menu 6.1
-          { label: "Role Management", url: "/sup/sup01000", role: true },
-          { label: "Parameter Configuration", url: "/sup/sup02000", role: true },
-          { label: "Email Configuration", url: "/sup/sup03000", role: true }
+          { label: "Role Management", url: "/sup/sup01000", role: this.checkA(PAGE_AUTH.P0001300) },
+          { label: "Parameter Configuration", url: "/sup/sup02000", role: this.checkA(PAGE_AUTH.P0001400) },
+          { label: "Email Configuration", url: "/sup/sup03000", role: this.checkA(PAGE_AUTH.P0001500) }
         ]
       },
     ];
