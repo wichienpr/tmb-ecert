@@ -6,6 +6,8 @@ import { AjaxService } from 'app/baiwa/common/services/ajax.service';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { isValid } from 'app/baiwa/common/helpers';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'app/baiwa/common/services';
+import { ROLES } from 'app/baiwa/common/constants';
 
 declare var $: any;
 @Component({
@@ -37,13 +39,14 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   countSucceed: Number = 0;
   countWaitSaveRequest: Number = 0;
 
-
+  tmpReqNo: String;
 
   constructor(private crs01000Service: Crs01000Service,
     private ajax: AjaxService,
     private router: Router,
     private route: ActivatedRoute,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+    private common: CommonService) {
 
     this.crs01000Service.getForm().subscribe(form => {
       this.form = form
@@ -75,6 +78,9 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    //this.getTest();
+
     this.dataT = [];
     this.getCountStatus();
 
@@ -245,7 +251,11 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   detail(idReq, status): void {
     console.log(idReq + "," + status)
-    if (status == "10011") {
+    if (status == "10011" && this.roles(ROLES.MAKER)) {
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq }
+      });
+    } else if (status == "10011" && this.roles(ROLES.MAKER)) {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });
@@ -254,10 +264,11 @@ export class Crs01000Component implements OnInit, AfterViewInit {
         queryParams: { id: idReq }
       });
     }
-
-
   }
 
+  roles(role: ROLES) {
+    return this.common.isRole(role) || this.common.isRole(ROLES.ADMIN);
+  }
 
 
   getFontStyeColor(status) {
@@ -286,6 +297,78 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   validate(input: string, submitted: boolean) {
     return isValid(this.form, input, submitted);
   }
+
+
+  // getTest() {
+  //   const URL = "/api/crs/crs01000/saveReceiptById";
+  //   this.ajax.post(URL, { }, res => {
+  //     console.log(res.json());
+  //   });
+
+  // }
+
+
+  //receiptTaxTest
+  getTest() {
+    const URL = "/api/report/pdf/createAndUpload/receiptTax";
+    this.ajax.post(URL, {
+      id: "275"
+    }, res => {
+      console.log(res)
+      this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
+    });
+  }
+
+
+
+  // getTest() {
+  //   const URL = "/api/report/pdf/reqForm";
+  //   this.ajax.post(URL, {
+  //     typeCertificate:"50002",
+  //     customerName:"ศักดิ์นรินทร์  อรัญมาลา",
+  //     companyName:"Toffee Solotion Lt",
+  //     organizeId:"342342344234",
+  //     accountName:"GG_EZ",
+  //     accountNo: "12341455",
+  //     telephone:"0821211699",
+  //     reqDate:"16/10/2018",
+  //     tmpReqNo:"TopTest003",
+
+  //     rpReqFormList : [
+  //             {
+  //         "boxIndex":"4",
+  //         "totalNum": 1,
+  //         "numSetCc": null,
+  //         "numEditCc":null,
+  //         "numOtherCc": null,
+  //         "dateOtherReg":null,
+  //         "other":null,
+  //         "dateEditReg": null,
+  //         "statementYear": null,
+  //         "dateAccepted": "11/10/2018"
+  //             },
+  //           {
+  //         "boxIndex":"1",
+  //         "totalNum": 1,
+  //         "numSetCc": null,
+  //         "numEditCc":null,
+  //         "numOtherCc": null,
+  //         "dateOtherReg":null,
+  //         "other":null,
+  //         "dateEditReg": null,
+  //         "statementYear": null,
+  //         "dateAccepted": null
+  //             }
+  //           ]   
+
+  //   }, res => {
+  //     console.log(res)
+  //     this.ajax.download("/api/report/pdf/view/"+res._body+"/download"); 
+  //   });
+  // }
+
+
+
 }
 
 
