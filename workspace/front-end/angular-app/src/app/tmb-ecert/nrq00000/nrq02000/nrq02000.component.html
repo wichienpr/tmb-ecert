@@ -338,7 +338,7 @@
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accNo') }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{accNo}}" autocomplete="off"
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off"
             placeholder="">
         </div>
         <div class="required two wide field">

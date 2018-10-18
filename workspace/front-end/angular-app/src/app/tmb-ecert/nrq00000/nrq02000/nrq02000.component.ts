@@ -518,7 +518,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.amountDbd.clearValidators();
       this.form.controls.amountTmb.clearValidators();
     }
-    this.form.updateValueAndValidity();
+    this.form.controls.ref1.updateValueAndValidity();
+    this.form.controls.ref2.updateValueAndValidity();
+    this.form.controls.amountDbd.updateValueAndValidity();
+    this.form.controls.amountTmb.updateValueAndValidity();
   }
 
   subAccMethodChange(e) {

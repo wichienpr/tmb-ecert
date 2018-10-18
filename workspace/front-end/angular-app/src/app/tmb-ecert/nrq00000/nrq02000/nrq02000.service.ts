@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
-import { AjaxService, ModalService, DropdownService, RequestFormService } from "services/";
+import { AjaxService, ModalService, DropdownService, RequestFormService, CommonService } from "services/";
 import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
@@ -60,7 +60,8 @@ export class Nrq02000Service {
         private dropdown: DropdownService,
         private router: Router,
         private route: ActivatedRoute,
-        private reqService: RequestFormService
+        private reqService: RequestFormService,
+        private common: CommonService
     ) {
 
         this.dropdownObj = {
@@ -244,6 +245,7 @@ export class Nrq02000Service {
             }
             this.modal.confirm((e) => {
                 if (e) {
+                    this.common.blockui(); // Loading page
                     const formData = this.bindingData(certificates, files, form, addons);
                     let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                     this.ajax.upload(url, formData, response => {
@@ -254,6 +256,7 @@ export class Nrq02000Service {
                                 success: true
                             };
                             this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
                             this.router.navigate(['/crs/crs01000'], {
                                 queryParams: { codeStatus: "10001" }
                             });
@@ -263,6 +266,7 @@ export class Nrq02000Service {
                                 success: false
                             };
                             this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
                         }
                     }, err => {
                         console.error(err)
@@ -536,6 +540,7 @@ export class Nrq02000Service {
                 _data = [..._data, obj];
             }
         });
+        let notUseReceipt = form.get('payMethodSelect').value && form.get('payMethodSelect').value == '30004';
         let data: Nrq02000 = {
             glType: addons.glType,
             tranCode: addons.tranCode,
@@ -564,10 +569,10 @@ export class Nrq02000Service {
             changeNameFileName: addons.changeNameFile,
             copyFileName: addons.idCardFile,
             requestFileName: addons.requestFormFile,
-            ref1: form.controls.ref1.value,
-            ref2: form.controls.ref2.value,
-            amountDbd: form.controls.amountDbd.value ? form.controls.amountDbd.value.replace(/,/g, '') : "",
-            amountTmb: form.controls.amountTmb.value ? form.controls.amountTmb.value.replace(/,/g, '') : "",
+            ref1: notUseReceipt ? '' : form.get('ref1').value,
+            ref2: notUseReceipt ? '' : form.get('ref2').value,
+            amountDbd: !notUseReceipt && form.get('amountDbd').value ? form.get('amountDbd').value.replace(/,/g, '') : "",
+            amountTmb: !notUseReceipt && form.get('amountTmb').value ? form.get('amountTmb').value.replace(/,/g, '') : "",
             amount: form.controls.amountTmb.value && form.controls.amountDbd.value ? parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, '')) : "",
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther
