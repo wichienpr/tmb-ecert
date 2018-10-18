@@ -250,24 +250,27 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   detail(idReq, status): void {
-    console.log(idReq + "," + status)
+    console.log(idReq + "," + status, "ROLES IS MAKER: " + this.roles(ROLES.MAKER))
+    if (status == "10001" && this.roles(ROLES.MAKER)) {
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq }
+      });
+      return;
+    }
     if (status == "10011" && this.roles(ROLES.MAKER)) {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });
-    } else if (status == "10011" && this.roles(ROLES.MAKER)) {
-      this.router.navigate(["/nrq/nrq02000"], {
-        queryParams: { id: idReq }
-      });
-    } else {
-      this.router.navigate(["/crs/crs02000"], {
-        queryParams: { id: idReq }
-      });
+      return;
     }
+    this.router.navigate(["/crs/crs02000"], {
+      queryParams: { id: idReq }
+    });
+    return;
   }
 
   roles(role: ROLES) {
-    return this.common.isRole(role) || this.common.isRole(ROLES.ADMIN);
+    return this.common.isRole(role);
   }
 
 

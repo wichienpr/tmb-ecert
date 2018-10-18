@@ -28,6 +28,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   files: any;
   reqDate: Date;
   dropdownObj: any;
+  submitted: boolean = false;
   loading: boolean = false;
   saving: boolean = false;
   isdownload: boolean = false;
@@ -170,7 +171,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   checkRoles() {
-    if (this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN)) {
+    if (this.roles(ROLES.REQUESTOR)) {
       this.form.controls.customSegSelect.clearValidators();
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -178,7 +179,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.payMethodSelect.setValue('30001');
     }
 
-    if (this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN)) {
+    if (this.roles(ROLES.MAKER)) {
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);
@@ -199,9 +200,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
-  get btnRequestor() { return this.roles(ROLES.REQUESTOR) || this.roles(ROLES.ADMIN) }
-  get btnChecker() { return this.roles(ROLES.CHECKER) || this.roles(ROLES.ADMIN) }
-  get btnMaker() { return this.roles(ROLES.MAKER) || this.roles(ROLES.ADMIN) }
+  get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get btnChecker() { return this.roles(ROLES.CHECKER) }
+  get btnMaker() { return this.roles(ROLES.MAKER) }
 
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
@@ -228,6 +229,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, event, _data?) {
     event.preventDefault();
+    this.submitted = true;
     const data = _data ? _data : {
       glType: this.glType,
       tranCode: this.tranCode,
@@ -265,6 +267,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   pdf() {
+    this.submitted = true;
     this.isdownload = this.service.pdf(this.form, this.data, this.reqTypeChanged, this.reqDate);
   }
 
@@ -555,7 +558,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   invalid(control: string): boolean {
     const controls = this.form.controls;
-    return controls[control] && (controls[control].dirty || controls[control].touched || this.ngForm.submitted) && controls[control].invalid;
+    return controls[control] && (controls[control].dirty || controls[control].touched || this.submitted) && controls[control].invalid;
   }
 
   download(fileName: string) {
