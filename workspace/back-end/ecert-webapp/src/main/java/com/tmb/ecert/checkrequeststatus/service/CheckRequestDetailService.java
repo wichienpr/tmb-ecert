@@ -96,13 +96,13 @@ public class CheckRequestDetailService {
 		logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
 		switch (newReq.getPaidTypeCode()) {
 			case "30001":
-				CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq);
+				CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq,"TMB");
 				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
 					
 					CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
 					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
 						
-						CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq);
+						CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq,"DBD");
 						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
 							
 							CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
@@ -127,7 +127,7 @@ public class CheckRequestDetailService {
 				CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
 				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
 					
-					CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq);
+					CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq,"DBD");
 					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
 						
 						CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);

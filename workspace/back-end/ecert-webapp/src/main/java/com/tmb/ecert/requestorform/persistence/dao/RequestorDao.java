@@ -145,8 +145,8 @@ public class RequestorDao {
 				ps.setString(26, vo.getCreatedById());
 				ps.setString(27, vo.getCreatedByName());
 				ps.setTimestamp(28, vo.getCreatedDateTime()); // timestamp
-				ps.setString(29, vo.getMakerById());
-				ps.setString(30, vo.getMakerByName());
+				ps.setString(29, null);
+				ps.setString(30, null);
 				ps.setString(31, vo.getTmbRequestNo());
 				ps.setTimestamp(32, vo.getRequestDate()); // timestamp
 				return ps;
