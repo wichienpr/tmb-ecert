@@ -41,7 +41,25 @@ public class Nrq02000FormVo {
 	private BigDecimal amountTmb; 
 	private String rejectReasonCode;
 	private String rejectReasonOther;
+	private String hasAuthed;
+	private String userStatus;
 	
+	public String getHasAuthed() {
+		return hasAuthed;
+	}
+
+	public void setHasAuthed(String hasAuthed) {
+		this.hasAuthed = hasAuthed;
+	}
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+
 	public BigDecimal getAmountDbd() {
 		return amountDbd;
 	}

@@ -91,7 +91,7 @@ public class CheckRequestDetailService {
 	}
 
 	public CommonMessage<RealtimePaymentRequest> approve(String reqFormId) {
-		logger.info("CheckRequestDetailService::approve");
+		logger.info("CheckRequestDetailService::approve REQFORM_ID => {}", reqFormId);
 		Long id = Long.valueOf(reqFormId);
 		RequestForm newReq = dao.findReqFormById(id, false).size() > 0 ? dao.findReqFormById(id, false).get(0)
 				: new RequestForm();
