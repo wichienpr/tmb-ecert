@@ -14,7 +14,8 @@ declare var $: any;
     ],
     host: {
         "[style.width.%]": "100"
-    }
+    },
+    exportAs : "ui-dropdown"
 })
 export class DropdownComponent implements AfterViewInit, OnChanges {
 
@@ -38,4 +39,9 @@ export class DropdownComponent implements AfterViewInit, OnChanges {
         this.valueChange.emit(e.target.value);
     }
 
+    clear(){
+      let  f = this.dropdown.formGroup.get(this.dropdown.formControlName);
+      f.patchValue("");
+      $(`#${this.dropdown.dropdownId}`).dropdown('clear');
+    }
 }
