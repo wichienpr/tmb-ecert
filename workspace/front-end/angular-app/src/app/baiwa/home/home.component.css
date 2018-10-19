@@ -30,7 +30,7 @@
     bottom: 0;
     width: 100%;
     padding-top: 0.5em;
-    z-index: 999;
+    z-index: 1000;
     height: 154px;
   }
   

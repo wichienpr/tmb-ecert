@@ -1,11 +1,11 @@
 <div class="bg" style="background-image: url(assets/image/Background.png);">
 
 </div>
-<div class="ui one column grid" *ngIf="isShowDashBrod">
+<div class="ui one column grid">
 
   <div class="ui two wide column">
     <div class="ig">
-      <div class="ui vertical menu">
+      <div class="ui vertical menu"  *ngIf="isShowDashBrod" >
         <a class="   item " style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
           คำขอใหม่
           <div class="ui  label blue" style="font-size: 13px"> {{(dashboard|async).newReq}} </div>
@@ -110,5 +110,11 @@
         </p>
       </div>
     </div>
+
+      <div class="ui center aligned container">
+        <p style="color: #ffffff" >© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
+      </div>
+
+
   </div>
 </div>
