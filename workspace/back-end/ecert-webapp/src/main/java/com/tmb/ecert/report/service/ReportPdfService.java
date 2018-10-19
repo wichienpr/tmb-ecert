@@ -105,27 +105,25 @@ public class ReportPdfService {
 		params01.put("customerNameReceipt", req.getCustomerNameReceipt());
 		params01.put("organizeId", req.getOrganizeId());
 		params01.put("address", req.getAddress());
-		
-		
-		
-		if(BeanUtils.isNotEmpty(req.getAmountTmb())) {
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 			params01.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
 			params01.put("amountTmb", req.getAmountTmb());
 			/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
-			params01.put("feeAmount", formatNumber
-					.format(req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
+			params01.put("feeAmount", formatNumber.format(
+					req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
 			/* vatAmount = (vat*feeAmount) */
 			params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
 					* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
 			params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
-		}else {
+		} else {
 			params01.put("vat", "0.00");
 			params01.put("amountTmb", new BigDecimal("0.00"));
 			params01.put("feeAmount", "0.00");
 			params01.put("vatAmount", "0.00");
 			params01.put("thaiBath", "ศูนย์บาทถ้วน");
 		}
-		
+
 		params01.put("tmbRequestNo", req.getTmbRequestNo());
 
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
@@ -141,27 +139,25 @@ public class ReportPdfService {
 		params02.put("customerNameReceipt", req.getCustomerNameReceipt());
 		params02.put("organizeId", req.getOrganizeId());
 		params02.put("address", req.getAddress());
-		
-		
-		
-		if(BeanUtils.isNotEmpty(req.getAmountTmb())) {
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 			params02.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
 			params02.put("amountTmb", req.getAmountTmb());
 			/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
-			params02.put("feeAmount", formatNumber
-					.format(req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
+			params02.put("feeAmount", formatNumber.format(
+					req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
 			/* vatAmount = (vat*feeAmount) */
 			params02.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
 					* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
 			params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
-		}else {
+		} else {
 			params02.put("vat", "0.00");
 			params02.put("amountTmb", new BigDecimal("0.00"));
 			params02.put("feeAmount", "0.00");
 			params02.put("vatAmount", "0.00");
 			params02.put("thaiBath", "ศูนย์บาทถ้วน");
 		}
-		
+
 		params02.put("tmbRequestNo", req.getTmbRequestNo());
 		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
 
@@ -203,43 +199,45 @@ public class ReportPdfService {
 		// Folder Exist ??
 		initialService();
 		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
-		
+
 		String reportName = "RP_COVER_SHEET";
 
-		Map<String, Object> params = new HashMap<>();
-		params.put("logoTmbCover01", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover01.png"));
-		params.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
-
-		List<RpCertificateVo> cer = reportPdfDao.certificate(vo.getId());
-		List<RpCertificateVo> rpCertificateVoList = new ArrayList<>();
-		RpCertificateVo rpCertificateVo = null;
-		int i = 0;
-		for (RpCertificateVo data : cer) {
-			rpCertificateVo = new RpCertificateVo();
-			rpCertificateVo.setSeq(String.valueOf(i + 1));
-			if ("10005".equals(data.getCertificateCode())) {
-				rpCertificateVo.setCertificate(data.getOther());
-			} else {
-				rpCertificateVo.setCertificate(data.getCertificate());
+		Map<String, Object> params01 = new HashMap<>();
+		params01.put("logoTmbCover01", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover01.png"));
+		params01.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
+		params01.put("tmbReqNo", req.getTmbRequestNo());
+		
+		params01.put("telephone", req.getTelephone());
+		params01.put("customerName", req.getCustomerName());
+		params01.put("date", DateFormatUtils.format(new java.util.Date(),"dd/MM/yyyy"));
+		params01.put("time", DateFormatUtils.format(new java.util.Date(),"HH.mm",new Locale("th", "TH")));
+		
+		List<RpCertificateVo> rpCertificateList = new ArrayList<>();
+		RpCertificateVo rpCertificate = null;
+		int i =0;
+		for(RpCertificateVo data: reportPdfDao.certificate(vo.getId())) {
+			rpCertificate = new RpCertificateVo();
+			rpCertificate.setSeq(String.valueOf(i + 1));
+			if("10005".equals(data.getCertificateCode())) {
+				rpCertificate.setCertificate(data.getOther());
+			}else {
+				rpCertificate.setCertificate(data.getCertificate());
 			}
-			rpCertificateVo.setTotalNumber(data.getTotalNumber());
-			rpCertificateVo.setTotalNumber(data.getTotalNumber());
-			params.put("tmbReqNo",req.getTmbRequestNo());
-			
-			rpCertificateVoList.add(rpCertificateVo);
-			i++;
+			rpCertificate.setTotalNumber(data.getTotalNumber());
+			rpCertificateList.add(rpCertificate);
+			i++;	
 		}
-
-		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params,
-				new JREmptyDataSource());
+	
+		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName, params01,
+				new JRBeanCollectionDataSource(rpCertificateList));
 
 		// set_name
 		String name = "COVERSHEET_" + req.getTmbRequestNo() + ".pdf";
 
-		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint);
+		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint01);
 
 		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
-		ReportUtils.closeResourceFileInputStream(params);
+		ReportUtils.closeResourceFileInputStream(params01);
 
 		return "COVERSHEET_" + req.getTmbRequestNo();
 	}

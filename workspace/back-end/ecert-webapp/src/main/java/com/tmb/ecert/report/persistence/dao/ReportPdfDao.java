@@ -41,34 +41,35 @@ public class ReportPdfDao {
 	};
 
 	public List<RpCertificateVo> certificate(Long id) {
+
 		List<RpCertificateVo> rpCertificateVoList = new ArrayList<RpCertificateVo>();
 		List<Object> valueList = new ArrayList<Object>();
-
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT R.REQFORM_ID,R.CERTIFICATE_CODE,C.CERTIFICATE,R.OTHER,R.TOTALNUMBER  ");
-		sql.append(" FROM ECERT_REQUEST_CERTIFICATE R ");
-		sql.append(" INNER JOIN ECERT_CERTIFICATE C ");
-		sql.append(" ON R.CERTIFICATE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
 
+		sql.append(" SELECT C.CERTIFICATE_CODE,C.OTHER ,C.TOTALNUMBER,E.CERTIFICATE AS CER ");
+		sql.append(" FROM ECERT_REQUEST_CERTIFICATE c ");
+		sql.append(" RIGHT JOIN ECERT_REQUEST_FORM R ");
+		sql.append(" ON C.REQFORM_ID = R.REQFORM_ID ");
+		sql.append(" LEFT JOIN ECERT_CERTIFICATE E ");
+		sql.append(" ON C.CERTIFICATE_CODE = E.CODE ");
 		if (BeanUtils.isNotEmpty(id)) {
-			sql.append(" AND R.REQFORM_ID = ? ");
+			sql.append(" WHERE R.REQFORM_ID = ? ");
 			valueList.add(id);
 		}
+		sql.append(" ORDER BY C.CERTIFICATE_CODE ASC ");
 
-		sql.append(" ORDER BY R.CERTIFICATE_CODE ASC ");
+		rpCertificateVoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), certificateMapping);
 
-		rpCertificateVoList = jdbcTemplate.query(sql.toString(), certificateMapping);
 		return rpCertificateVoList;
 	}
 
 	private RowMapper<RpCertificateVo> certificateMapping = new RowMapper<RpCertificateVo>() {
+
 		@Override
 		public RpCertificateVo mapRow(ResultSet rs, int arg1) throws SQLException {
 			RpCertificateVo vo = new RpCertificateVo();
-			vo.setReqId(rs.getLong("REQFORM_ID"));
 			vo.setCertificateCode(rs.getString("CERTIFICATE_CODE"));
-			vo.setCertificate(rs.getString("CERTIFICATE"));
+			vo.setCertificate(rs.getString("CER"));
 			vo.setOther(rs.getString("OTHER"));
 			vo.setTotalNumber(rs.getInt("TOTALNUMBER"));
 			return vo;
