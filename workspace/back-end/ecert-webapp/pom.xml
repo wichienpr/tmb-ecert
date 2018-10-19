@@ -157,10 +157,10 @@
 		</dependency>
 
 		<!-- DataSource -->
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.zaxxer</groupId> -->
+<!-- 			<artifactId>HikariCP</artifactId> -->
+<!-- 		</dependency> -->
 
 		<!-- Gson: A Java serialization/deserialization library to convert Java 
 			Objects into JSON and back -->
@@ -363,7 +363,7 @@
 	<build>
 
 		<!-- This is the name of the bundled project when it is finally built. -->
-		<finalName>${project.name}</finalName>
+		<finalName>ecert-webapp</finalName>
 
 		<!-- List of resource elements that each describe what and where to include 
 			files associated with this project. -->
