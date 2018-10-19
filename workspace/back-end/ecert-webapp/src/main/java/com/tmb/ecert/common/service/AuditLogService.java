@@ -61,4 +61,25 @@ public class AuditLogService {
 		
 		return result;
 	}
+	
+	public boolean insertAuditLog(String actionCode,String actionDesc,String tmbReqNo,UserDetails user,Date actionDate) {
+		boolean result = false;
+		try{
+			AuditLog auditLog = new AuditLog(); 
+			auditLog.setActionCode(actionCode);
+			String description = String.format(ApplicationCache.getParamValueByName(actionDesc),
+					StringUtils.defaultString(user.getUserId()),tmbReqNo,EcerDateUtils.formatLogDate(actionDate));
+			auditLog.setDescription(description);
+			auditLog.setCreateById(user.getUserId());
+			auditLog.setCreatedByName(user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName()));
+			Long id = auditLogsDao.insertAuditLog(auditLog);
+			if(id!=null)
+				result =  true;
+		}catch(Exception ex) {
+			log.error("AuditLogService Error = "+ ex.getMessage());
+			result = false;
+		}
+		
+		return result;
+	}
 }
