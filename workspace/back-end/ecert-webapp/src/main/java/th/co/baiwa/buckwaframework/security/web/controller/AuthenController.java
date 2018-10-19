@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tmb.ecert.auditlog.persistence.dao.AuditLogsDao;
-import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
+import com.tmb.ecert.common.constant.ProjectConstant.SERVICE_TIMMING;
 import com.tmb.ecert.common.service.AuditLogService;
 
-import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.security.constant.SecurityConstants.LOGIN_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.AjaxLoginVo;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
@@ -46,7 +45,7 @@ public class AuthenController {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenController.class);
 	
 	@PostMapping("/onloginseccess")
-	public AjaxLoginVo onLoginSeccess(HttpServletRequest request) {
+	public AjaxLoginVo onLoginSeccess(HttpServletRequest request, HttpServletResponse response) {
 		
 		AjaxLoginVo vo = new AjaxLoginVo();
 		UserDetails user = null;
@@ -80,13 +79,30 @@ public class AuthenController {
 				vo.setStatus(LOGIN_STATUS.DUP_LOGIN);
 			}
 			
+			//check out off service
+			String timefrom = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_FROM);
+			String timeto = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_TO);
+			String currentTime = DateFormatUtils.format(new Date(), "HHmm").trim();
+			
+			String strFrom = timefrom.replace(":", "").trim();
+			String strTo = timeto.replace(":", "").trim();
+			if(NumberUtils.toInt(strFrom) <= NumberUtils.toInt(currentTime) &&
+					NumberUtils.toInt(strTo) >= NumberUtils.toInt(currentTime) 	) {
+				logger.info("ON SERVICE");
+				auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE,
+						ACTION_AUDITLOG_DESC.LOGIN,
+						(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+						currentDate);
+			}else {
+				logger.info("OUTOFF SERVICE");
+				vo.setStatus(LOGIN_STATUS.OUTOFF_SERVICE);
+				vo.setDiscription(timefrom + "  ถึงเวลา " + timeto);
+				this.forceLogOut(request, response);
+			}
+			
+			
 		}catch(Exception e) {
 			logger.error("AuthenController.onLoginSeccess Error: {} ", e.getMessage());
-		}finally {
-			auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE,
-					ACTION_AUDITLOG_DESC.LOGIN,
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-					currentDate);
 		}
 		return vo;	
 	}
@@ -131,6 +147,18 @@ public class AuthenController {
 		}
 		
 		return vo;
+	}
+	
+	
+	//this for login out off service only not call
+	private void forceLogOut(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){
+	    	HttpSession session = request.getSession();
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	        sessionRegistry.removeSessionInformation(session.getId());
+			logger.info("forceLogOut : {}" ,session.getId());
+	    }
 	}
 	
 }

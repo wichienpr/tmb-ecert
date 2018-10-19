@@ -71,7 +71,7 @@ public class CheckRequestStatusDao {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
 			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
 		}
-		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
+		sql.append(" ORDER BY H.TMB_REQUESTNO,H.UPDATED_DATETIME DESC");
 		crs01000VoList = jdbcTemplate.query(
 				DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()),
 				valueList.toArray(), reqFormByStatusMapping);

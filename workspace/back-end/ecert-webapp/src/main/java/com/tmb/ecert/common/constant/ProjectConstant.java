@@ -77,4 +77,9 @@ public class ProjectConstant {
 		
 	}
 	
+	public static class SERVICE_TIMMING{
+		public static final String SHUTDOWN_TIME_TO = "shutdown.time.to";
+		public static final String SHUTDOWN_TIME_FROM = "shutdown.time.from";
+	}
+	
 }
