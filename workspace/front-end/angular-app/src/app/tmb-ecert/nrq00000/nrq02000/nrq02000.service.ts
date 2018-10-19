@@ -338,6 +338,9 @@ export class Nrq02000Service {
                         }
                     }
                 }
+                if (key != "requestFile" && key != "copyFile") {
+                    return;
+                }
             }
         }
         if (form.valid || (form.controls.requestFile.invalid && form.controls.copyFile.invalid)) {
