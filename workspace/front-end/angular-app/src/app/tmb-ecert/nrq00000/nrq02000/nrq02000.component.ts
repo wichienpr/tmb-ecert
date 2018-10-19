@@ -331,11 +331,19 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.firstEnter = true; // reset FirstEnter
         const df = new DecimalFormat('###,###.00');
         let value = element1.value.replace(/,/g,'');
-        value = parseFloat(value)/100;
-        this.form.get('amountDbd').patchValue(df.format(value));
+        if (value) {
+          value = df.format(parseFloat(value) / 100);
+        } else {
+          value = "";
+        }
+        this.form.get('amountDbd').patchValue(value);
       }
       element2.focus();   // focus if not null
     }
+  }
+
+  focusOn(viewChild: string) {
+    this[viewChild].nativeElement.focus();
   }
 
   cancel() {
