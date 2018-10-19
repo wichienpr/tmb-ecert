@@ -2,6 +2,7 @@ package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class RequestorFormService {
@@ -63,6 +65,13 @@ public class RequestorFormService {
 				msg.setData("HASMAKER");
 				msg.setMessage("ERROR");
 				return msg;
+			}
+			if ("false".equals(form.getHasAuthed())) {
+				if (form.getAmount().doubleValue() > Double.parseDouble("3000"/*ApplicationCache.getParamValueByName("")*/)) {
+					msg.setData("NEEDLOGIN");
+					msg.setMessage("ERROR");
+					return msg;
+				}
 			}
 		}
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
@@ -122,8 +131,10 @@ public class RequestorFormService {
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
 				req.setIdCardFile(copyFile);
-				req.setMakerById(userId);
-				req.setMakerByName(userName);
+				if ("MAKER".equals(form.getUserStatus())) {
+					req.setMakerById(userId);
+					req.setMakerByName(userName);
+				}
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestFormFile(requestFileName);
@@ -321,8 +332,8 @@ public class RequestorFormService {
 			req.setDepartment(null);
 			req.setGlType(null);
 			req.setIdCardFile(null);
-			req.setMakerById(userId);
-			req.setMakerByName(userName);
+			req.setMakerById(null);
+			req.setMakerByName(null);
 			req.setOrganizeId(null);
 			req.setPaidTypeCode(null);
 			req.setRequestDate(timestamp);

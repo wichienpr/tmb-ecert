@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.report.persistence.vo.RpCertificateVo;
+import com.tmb.ecert.report.persistence.vo.RpReceiverVo;
 import com.tmb.ecert.report.persistence.vo.RpVatVo;
 
 @Repository
@@ -76,5 +77,47 @@ public class ReportPdfDao {
 		}
 
 	};
+	
+	
+	public List<RpReceiverVo> receiver(Long id) {
 
+		List<RpReceiverVo> rpReceiverVoList = new ArrayList<RpReceiverVo>();
+		List<Object> valueList = new ArrayList<Object>();
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" SELECT  F.CREATED_BY_ID ,F.CREATED_BY_NAME,F.CREATED_BY_DEPARTMENT ,F.CREATED_BY_GROUP,F.CREATED_BY_BELONGTO,F.CREATED_BY_TEL,CREATED_BY_EMAIL ");
+		sql.append(" FROM ECERT_REQUEST_FORM F ");
+
+		if (BeanUtils.isNotEmpty(id)) {
+			sql.append(" WHERE F.REQFORM_ID = ? ");
+			valueList.add(id);
+		}
+
+		rpReceiverVoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), receiverMapping);
+
+		return rpReceiverVoList;
+	}
+
+	
+	
+	private RowMapper<RpReceiverVo> receiverMapping = new RowMapper<RpReceiverVo>() {
+
+		@Override
+		public RpReceiverVo mapRow(ResultSet rs, int arg1) throws SQLException {
+			RpReceiverVo vo = new RpReceiverVo();
+			
+			vo.setCreatedById(rs.getString("CREATED_BY_ID"));
+			vo.setCreatedByName(rs.getString("CREATED_BY_NAME"));
+			vo.setCreatedByDepartment(rs.getString("CREATED_BY_DEPARTMENT"));
+			vo.setCreatedByGroup(rs.getString("CREATED_BY_GROUP"));
+			vo.setCreatedByBelongto(rs.getString("CREATED_BY_BELONGTO"));
+			vo.setCreatedByTel(rs.getString("CREATED_BY_TEL"));
+			vo.setCreatedByEmail(rs.getString("CREATED_BY_EMAIL"));
+			return vo;
+		}
+
+	};
+	
+	
+	
 }
