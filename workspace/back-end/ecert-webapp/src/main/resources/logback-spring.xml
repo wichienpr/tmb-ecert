@@ -305,59 +305,59 @@
 	  	</layout>
  	</appender>
  	
-	<logger name="e-certificate-requestform.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_REQFORM" />
-	</logger>
-	<logger name="e-certificate-search-requesform.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_SEARCH_REQFORM" />
-	</logger>
-	<logger name="e-certificate-payment.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_PAYMENT" />
-	</logger>
-	<logger name="e-certificate-report.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_REPORT" />
-	</logger>
-	<logger name="e-certificate-batchmonitoring.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_BATCHMONITORING" />
-	</logger>
-	<logger name="e-certificate-auditlog.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_AUDITLOG" />
-	</logger>
-	<logger name="e-certificate-rolemangement.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_ROLEMANAGEMENT" />
-	</logger>
-	<logger name="e-certificate-parameterconfig.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_PARAMETERCONFIG" />
-	</logger>
-	<logger name="e-certificate-emailconfig.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_EMAILCONFIG" />
-	</logger>
-	<logger name="e-certificate-autoretrypayment.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_AUTOPAYMENT" />
-	</logger>
-	<logger name="e-certificate-jobpaymentdbd.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_PAYMENTSUMMARYDBD" />
-	</logger>
-	<logger name="e-certificate-jobondemand.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_ONDEMAND" />
-	</logger>
-	<logger name="e-certificate-jobGL.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_GL" />
-	</logger>
-	<logger name="e-certificate-jobauditlog.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_AUDITLOG" />
-	</logger>
-	<logger name="e-certificate-jobhousekeeping.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_HOUSEKEEPING" />
-	</logger>
-	<logger name="e-certificate-jobhrofficecode.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_HROFFICECODE" />
-	</logger>
-	<logger name="e-certificate-jobimportecm.log" level="debug" additivity="false">
-		<appender-ref ref="ECERT_IMPORTECM" />
-	</logger>
+<!-- 	<logger name="e-certificate-requestform.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_REQFORM" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-search-requesform.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_SEARCH_REQFORM" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-payment.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_PAYMENT" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-report.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_REPORT" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-batchmonitoring.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_BATCHMONITORING" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-auditlog.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_AUDITLOG" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-rolemangement.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_ROLEMANAGEMENT" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-parameterconfig.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_PARAMETERCONFIG" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-emailconfig.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_EMAILCONFIG" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-autoretrypayment.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_AUTOPAYMENT" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobpaymentdbd.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_PAYMENTSUMMARYDBD" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobondemand.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_ONDEMAND" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobGL.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_GL" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobauditlog.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_AUDITLOG" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobhousekeeping.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_HOUSEKEEPING" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobhrofficecode.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_HROFFICECODE" /> -->
+<!-- 	</logger> -->
+<!-- 	<logger name="e-certificate-jobimportecm.log" level="debug" additivity="false"> -->
+<!-- 		<appender-ref ref="ECERT_IMPORTECM" /> -->
+<!-- 	</logger> -->
     <root level="INFO">
-		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
   	</root>
 	
 </configuration>
