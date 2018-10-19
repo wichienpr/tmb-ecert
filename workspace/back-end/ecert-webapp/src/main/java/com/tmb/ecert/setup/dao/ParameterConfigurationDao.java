@@ -69,7 +69,7 @@ public class ParameterConfigurationDao {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ParameterConfig vo = listParameter.get(i);
-				ps.setString(1, vo.getPropertyValue());
+				ps.setString(1, StringUtils.trim(vo.getPropertyValue()));
 				ps.setString(2, userID);
 				ps.setString(3, username);
 				ps.setLong(4, vo.getParameterconfigId());

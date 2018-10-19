@@ -71,7 +71,7 @@ public class UserRoleDao {
 		
 		if (StringUtils.isNotBlank(form.getRoleName())) {
 			sql.append(" AND  ROLE_NAME LIKE ? ");
-			params.add("%"+form.getRoleName()+"%");
+			params.add("%"+StringUtils.trim(form.getRoleName())+"%");
 		}
 		if(!(form.getStatus() == 2)) {
 			sql.append(" AND  STATUS =  ? ");
@@ -178,7 +178,7 @@ public class UserRoleDao {
 		}
 		if (!form.getRoleName().isEmpty()) {
 			sql.append(" AND ROLE_NAME = ?  ");
-			params.add(form.getRoleName());
+			params.add(StringUtils.trim(form.getRoleName()));
 		} 
 		
 		jdbcTemplate.update(sql.toString(), params.toArray());
@@ -191,7 +191,7 @@ public class UserRoleDao {
 		List<Object> params = new ArrayList<>();
 		
 		sql.append(" SELECT count(1) FROM ECERT_ROLE WHERE ROLE_NAME = ? ");
-		params.add(form.getRoleName());
+		params.add(StringUtils.trim(form.getRoleName()));
 		
 		return jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
 		
@@ -206,7 +206,7 @@ public class UserRoleDao {
 		
 		if (StringUtils.isNotBlank(form.getRoleName())) {
 			sql.append(" AND  ROLE_NAME = ? ");
-			params.add(form.getRoleName());
+			params.add(StringUtils.trim(form.getRoleName()));
 		}
 
 

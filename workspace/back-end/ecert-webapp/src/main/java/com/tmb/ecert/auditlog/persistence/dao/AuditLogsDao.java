@@ -1,8 +1,12 @@
 package com.tmb.ecert.auditlog.persistence.dao;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,11 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.auditlog.persistence.vo.Adl01000FormVo;
 import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
+import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.DateConstant;
 
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
@@ -27,6 +35,34 @@ public class AuditLogsDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	private final String QUERY_INSERT_AUDITLOG = " INSERT INTO ECERT_AUDIT_LOG ( " +
+			" ACTION_CODE," + 
+			" DESCRIPTION," + 
+			" CREATED_BY_ID," + 
+			" CREATED_BY_NAME," + 
+			" CREATED_DATETIME)" + 
+			" VALUES (?, ?, ?, ?, ?) ";
+	
+	public Long insertAuditLog(AuditLog auditLog) {
+		KeyHolder holder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(QUERY_INSERT_AUDITLOG, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, auditLog.getActionCode());
+				ps.setString(2, auditLog.getDescription());
+				ps.setString(3, auditLog.getCreateById());
+				ps.setString(4, auditLog.getCreatedByName());
+				ps.setTimestamp(5,new Timestamp(new Date().getTime()));
+				return ps;
+			}
+		}, holder);
+		Long id = holder.getKey().longValue();
+		return id;
+	}
+ 
 	
 	
 	public List<Adl01000Vo> getDataAdl01000(Adl01000FormVo formVo) {

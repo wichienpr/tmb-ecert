@@ -1,27 +1,27 @@
 package com.tmb.ecert.report.persistence.vo;
 
-public class RpCoverSheetVo {
-	private Long id;
-	private String tmpReqNo;
+public class RpCertificateVo {
+	private Long reqId;
+	private String seq;
 	private String certificateCode;
 	private String certificate;
 	private String other;
 	private int totalNumber;
 
-	public Long getId() {
-		return id;
+	public Long getReqId() {
+		return reqId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setReqId(Long reqId) {
+		this.reqId = reqId;
 	}
 
-	public String getTmpReqNo() {
-		return tmpReqNo;
+	public String getSeq() {
+		return seq;
 	}
 
-	public void setTmpReqNo(String tmpReqNo) {
-		this.tmpReqNo = tmpReqNo;
+	public void setSeq(String seq) {
+		this.seq = seq;
 	}
 
 	public String getCertificateCode() {

@@ -3,6 +3,7 @@ package com.tmb.ecert.saverequestno.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.saverequestno.persistence.dao.SaveRequestNoDao;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000FormVo;
-import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;;
+import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;
+
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;;
 
 @Service
 public class SaveRequestNoService {
@@ -21,20 +24,25 @@ public class SaveRequestNoService {
 	@Autowired
 	private SaveRequestNoDao srn01000Dao;
 
-	public List<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
+	public DataTableResponse<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
 		logger.info("findReqByTmbReqNo_Service");
-		logger.info("TmbReqNo :: " + formVo.getTmbReqNo());
-		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-		srn01000VoList = srn01000Dao.findReqByTmbReqNo(formVo);
-		return srn01000VoList;
-	}
 
-	public List<Srn01000Vo> findReqByStatus(Srn01000FormVo formVo) {
-		logger.info("findReqByStatus_Service");
-		logger.info("status :: " + formVo.getStatus());
+		DataTableResponse<Srn01000Vo> dt = new DataTableResponse<>();
 		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-		srn01000VoList = srn01000Dao.findReqByStatus(formVo);
-		return srn01000VoList;
+
+		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
+			srn01000VoList = srn01000Dao.findReqByTmbReqNo(formVo);
+			dt.setData(srn01000VoList);
+			int count = srn01000Dao.countFindReqByTmbReqNoDataTable(formVo);
+			dt.setRecordsTotal(count);
+		} else if (StringUtils.isNotBlank(formVo.getStatus())) {
+			srn01000VoList = srn01000Dao.findReqByStatus(formVo);
+			dt.setData(srn01000VoList);
+			int count = srn01000Dao.countFindReqByStatusDataTable(formVo);
+			dt.setRecordsTotal(count);
+		}
+
+		return dt;
 	}
 
 }

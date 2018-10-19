@@ -23,12 +23,12 @@ import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
-import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class RequestorFormService {
@@ -48,12 +48,23 @@ public class RequestorFormService {
 
 	@Autowired
 	private CheckRequestDetailDao daoCrs;
+	
+	@Autowired
+	private RequestHistoryDao daoHst;
 
 	@Autowired
 	private RequestGenKeyService gen;
 
 	public CommonMessage<String> update(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
+		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false).get(0);
+		if ("10005".equals(form.getStatus())) {
+			if (req.getMakerById() != null) {
+				msg.setData("HASMAKER");
+				msg.setMessage("ERROR");
+				return msg;
+			}
+		}
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
 		String folder = PATH;
@@ -83,7 +94,6 @@ public class RequestorFormService {
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
-				RequestForm req = new RequestForm();
 				req.setRejectReasonCode(form.getRejectReasonCode());
 				req.setRejectReasonOther(form.getRejectReasonOther());
 				req.setRef1(form.getRef1());
@@ -116,11 +126,23 @@ public class RequestorFormService {
 				req.setMakerByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
-				req.setRequestDate(null);
 				req.setRequestFormFile(requestFileName);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
-				dao.update(req); // SAVE REQUEST FORM
+				try {
+					dao.update(req); // SAVE REQUEST FORM
+				} catch (Exception e) {
+					logger.info("REQUESTFORM UPDATE => ", e);
+					msg.setMessage("ERROR");
+					return msg;
+				}
+				try {
+					daoHst.save(req); // ADD HISTORY
+				} catch (Exception e) {
+					logger.info("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
+					msg.setMessage("ERROR");
+					return msg;
+				}
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
@@ -143,11 +165,11 @@ public class RequestorFormService {
 				}
 				msg.setMessage("SUCCESS");
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.info("REQUESTFORM UPDATE => ", e);
 			}
 			return msg;
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.info("REQUESTFORM UPDATE => ", e);
 			msg.setMessage("ERROR");
 			return msg;
 		}
@@ -185,6 +207,7 @@ public class RequestorFormService {
 				}.getType();
 				List<Nrq02000CerVo> cers = new Gson().fromJson(form.getCertificates(), listType);
 				RequestForm req = new RequestForm();
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				req.setReqFormId(form.getReqFormId());
 				req.setAccountName(form.getAccName());
 				req.setAccountNo(form.getAccNo());
@@ -199,7 +222,7 @@ public class RequestorFormService {
 				req.setTranCode(form.getTranCode());
 				req.setCreatedById(userId);
 				req.setCreatedByName(userName);
-				req.setCreatedDateTime(null);
+				req.setCreatedDateTime(timestamp);
 				req.setCustomerName(form.getCorpName());
 				req.setCustomerNameReceipt(form.getCorpName1());
 				req.setCompanyName(form.getCorpName());
@@ -212,12 +235,26 @@ public class RequestorFormService {
 				req.setMakerByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
-				req.setRequestDate(null);
+				req.setRequestDate(timestamp);
 				req.setRequestFormFile(BeanUtils.isNotEmpty(form.getRequestFile()) ? requestFileName : null);
 				req.setStatus("10001");
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
-				nextId = dao.save(req); // SAVE REQUEST FORM
+				try {
+					nextId = dao.save(req); // SAVE REQUEST FORM
+				} catch (Exception e) {
+					logger.info("REQUESTFORM SAVE => ", e);
+					msg.setMessage("ERROR");
+					return msg;
+				}
+				try {
+					req.setReqFormId(nextId);
+					daoHst.save(req); // ADD HISTORY
+				} catch (Exception e) {
+					logger.info("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
+					msg.setMessage("ERROR");
+					return msg;
+				}
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
@@ -262,6 +299,7 @@ public class RequestorFormService {
 		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
 		try {
 			RequestForm req = new RequestForm();
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			req.setAccountName(null);
 			req.setAccountNo(null);
 			req.setTmbRequestNo(reqTmbNo);
@@ -275,7 +313,7 @@ public class RequestorFormService {
 			req.setCompanyName(null);
 			req.setCreatedById(userId);
 			req.setCreatedByName(userName);
-			req.setCreatedDateTime(null);
+			req.setCreatedDateTime(timestamp);
 			req.setCustomerName(null);
 			req.setCustomerNameReceipt(null);
 			req.setCustsegmentCode(null);
@@ -287,7 +325,7 @@ public class RequestorFormService {
 			req.setMakerByName(userName);
 			req.setOrganizeId(null);
 			req.setPaidTypeCode(null);
-			req.setRequestDate(null);
+			req.setRequestDate(timestamp);
 			req.setRequestFormFile(null);
 			req.setStatus("10011");
 			req.setRemark(null);

@@ -3,6 +3,7 @@ package com.tmb.ecert.checkrequeststatus.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.CountStatusVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.StatusVo;
-
+import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.StatusConstant;
-import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;;
+
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;;
 
 @Service
 public class CheckRequestStatusService {
@@ -25,19 +27,25 @@ public class CheckRequestStatusService {
 	@Autowired
 	private CheckRequestStatusDao crs01000Dao;
 
-	public List<Crs01000Vo> findReq(Crs01000FormVo formVo) {
-		logger.info("findReq_Service");
-		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-		crs01000VoList = crs01000Dao.findReq(formVo);
-		return crs01000VoList;
-	}
+	public DataTableResponse<Crs01000Vo> findReqForm(Crs01000FormVo formVo) {
+		logger.info("findReqByTmbReqNo_Service");
 
-	public List<Crs01000Vo> findReqByStatus(Crs01000FormVo formVo) {
-		logger.info("findReqByStatus_Service");
-		logger.info("status :: " + formVo.getStatus());
+		DataTableResponse<Crs01000Vo> dt = new DataTableResponse<>();
 		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-		crs01000VoList = crs01000Dao.findReqByStatus(formVo);
-		return crs01000VoList;
+
+		if (StringUtils.isNotBlank(formVo.getStatus())) {
+			crs01000VoList = crs01000Dao.findReqByStatus(formVo);
+			dt.setData(crs01000VoList);
+			int count = crs01000Dao.countFindReqByStatusDataTable(formVo);
+			dt.setRecordsTotal(count);
+		} else if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
+			crs01000VoList = crs01000Dao.findReq(formVo);
+			dt.setData(crs01000VoList);
+			int count = crs01000Dao.countFindReqDataTable(formVo);
+			dt.setRecordsTotal(count);
+		}
+
+		return dt;
 	}
 
 	public CountStatusVo countStatus(CountStatusVo countStatusVo) {

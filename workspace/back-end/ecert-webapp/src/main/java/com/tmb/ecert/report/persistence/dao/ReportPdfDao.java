@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.report.persistence.vo.RpCertificateVo;
 import com.tmb.ecert.report.persistence.vo.RpVatVo;
 
 @Repository
@@ -27,13 +29,49 @@ public class ReportPdfDao {
 		rpVatVoList = jdbcTemplate.query(sql.toString(), vatMapping);
 		return rpVatVoList;
 	}
-	
-	
+
 	private RowMapper<RpVatVo> vatMapping = new RowMapper<RpVatVo>() {
 		@Override
 		public RpVatVo mapRow(ResultSet rs, int arg1) throws SQLException {
 			RpVatVo vo = new RpVatVo();
 			vo.setVat(rs.getString("PROPERTY_VALUE"));
+			return vo;
+		}
+
+	};
+
+	public List<RpCertificateVo> certificate(Long id) {
+
+		List<RpCertificateVo> rpCertificateVoList = new ArrayList<RpCertificateVo>();
+		List<Object> valueList = new ArrayList<Object>();
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" SELECT C.CERTIFICATE_CODE,C.OTHER ,C.TOTALNUMBER,E.CERTIFICATE AS CER ");
+		sql.append(" FROM ECERT_REQUEST_CERTIFICATE c ");
+		sql.append(" RIGHT JOIN ECERT_REQUEST_FORM R ");
+		sql.append(" ON C.REQFORM_ID = R.REQFORM_ID ");
+		sql.append(" LEFT JOIN ECERT_CERTIFICATE E ");
+		sql.append(" ON C.CERTIFICATE_CODE = E.CODE ");
+		if (BeanUtils.isNotEmpty(id)) {
+			sql.append(" WHERE R.REQFORM_ID = ? ");
+			valueList.add(id);
+		}
+		sql.append(" ORDER BY C.CERTIFICATE_CODE ASC ");
+
+		rpCertificateVoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), certificateMapping);
+
+		return rpCertificateVoList;
+	}
+
+	private RowMapper<RpCertificateVo> certificateMapping = new RowMapper<RpCertificateVo>() {
+
+		@Override
+		public RpCertificateVo mapRow(ResultSet rs, int arg1) throws SQLException {
+			RpCertificateVo vo = new RpCertificateVo();
+			vo.setCertificateCode(rs.getString("CERTIFICATE_CODE"));
+			vo.setCertificate(rs.getString("CER"));
+			vo.setOther(rs.getString("OTHER"));
+			vo.setTotalNumber(rs.getInt("TOTALNUMBER"));
 			return vo;
 		}
 

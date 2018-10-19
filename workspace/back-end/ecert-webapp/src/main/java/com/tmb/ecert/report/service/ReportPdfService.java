@@ -32,6 +32,7 @@ import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.common.utils.ThaiBaht;
 import com.tmb.ecert.report.persistence.dao.ReportPdfDao;
+import com.tmb.ecert.report.persistence.vo.RpCertificateVo;
 import com.tmb.ecert.report.persistence.vo.RpCoverSheetVo;
 import com.tmb.ecert.report.persistence.vo.RpReceiptTaxVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormListVo;
@@ -69,10 +70,9 @@ public class ReportPdfService {
 	@Autowired
 	private RequestorDao upDateReqDetailDao;
 
-	
 	@Autowired
 	private ReportPdfDao reportPdfDao;
-	
+
 	private Logger logger = LoggerFactory.getLogger(ReportPdfService.class);
 
 	// create folder for PATH_REPORT
@@ -105,17 +105,29 @@ public class ReportPdfService {
 		params01.put("customerNameReceipt", req.getCustomerNameReceipt());
 		params01.put("organizeId", req.getOrganizeId());
 		params01.put("address", req.getAddress());
-		params01.put("amountTmb", req.getAmountTmb());
-		params01.put("vat",formatNumber.format(new BigDecimal(vat.getVat())));
-		/*feeAmount = Amount_tmb  * (100/ (100+ vat) )*/
-		params01.put("feeAmount", formatNumber.format(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue()))));
-		/*vatAmount = (vat*feeAmount)*/
-		params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue()/100)*(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue())))));
-		params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
+			params01.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
+			params01.put("amountTmb", req.getAmountTmb());
+			/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
+			params01.put("feeAmount", formatNumber.format(
+					req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
+			/* vatAmount = (vat*feeAmount) */
+			params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
+					* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
+			params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+		} else {
+			params01.put("vat", "0.00");
+			params01.put("amountTmb", new BigDecimal("0.00"));
+			params01.put("feeAmount", "0.00");
+			params01.put("vatAmount", "0.00");
+			params01.put("thaiBath", "ศูนย์บาทถ้วน");
+		}
+
 		params01.put("tmbRequestNo", req.getTmbRequestNo());
-		
+
 		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
-		
+
 		// RP002
 		String reportName02 = "RP_RECEIPT_TAX";
 		Map<String, Object> params02 = new HashMap<>();
@@ -127,14 +139,25 @@ public class ReportPdfService {
 		params02.put("customerNameReceipt", req.getCustomerNameReceipt());
 		params02.put("organizeId", req.getOrganizeId());
 		params02.put("address", req.getAddress());
-		params02.put("amountTmb", req.getAmountTmb());
-		params02.put("vat",formatNumber.format(new BigDecimal(vat.getVat())));
-		
-		/*feeAmount = Amount_tmb  * (100/ (100+ vat) )*/
-		params01.put("feeAmount", formatNumber.format(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue()))));
-		/*vatAmount = (vat*feeAmount)*/
-		params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue()/100)*(req.getAmountTmb().doubleValue()*(100/(100+new BigDecimal(vat.getVat()).doubleValue())))));
-		params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
+			params02.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
+			params02.put("amountTmb", req.getAmountTmb());
+			/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
+			params02.put("feeAmount", formatNumber.format(
+					req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
+			/* vatAmount = (vat*feeAmount) */
+			params02.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
+					* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
+			params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+		} else {
+			params02.put("vat", "0.00");
+			params02.put("amountTmb", new BigDecimal("0.00"));
+			params02.put("feeAmount", "0.00");
+			params02.put("vatAmount", "0.00");
+			params02.put("thaiBath", "ศูนย์บาทถ้วน");
+		}
+
 		params02.put("tmbRequestNo", req.getTmbRequestNo());
 		JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
 
@@ -175,23 +198,46 @@ public class ReportPdfService {
 	public String coverSheetToPdf(RpCoverSheetVo vo) throws IOException, JRException {
 		// Folder Exist ??
 		initialService();
+		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
 
 		String reportName = "RP_COVER_SHEET";
 
-		Map<String, Object> params = new HashMap<>();
-		params.put("logoTmbCover01", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover01.png"));
-		params.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
-
-		JasperPrint jasperPrint = ReportUtils.exportReport(reportName, params, new JREmptyDataSource());
+		Map<String, Object> params01 = new HashMap<>();
+		params01.put("logoTmbCover01", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover01.png"));
+		params01.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
+		params01.put("tmbReqNo", req.getTmbRequestNo());
+		
+		params01.put("telephone", req.getTelephone());
+		params01.put("customerName", req.getCustomerName());
+		params01.put("date", DateFormatUtils.format(new java.util.Date(),"dd/MM/yyyy"));
+		params01.put("time", DateFormatUtils.format(new java.util.Date(),"HH.mm",new Locale("th", "TH")));
+		
+		List<RpCertificateVo> rpCertificateList = new ArrayList<>();
+		RpCertificateVo rpCertificate = null;
+		int i =0;
+		for(RpCertificateVo data: reportPdfDao.certificate(vo.getId())) {
+			rpCertificate = new RpCertificateVo();
+			rpCertificate.setSeq(String.valueOf(i + 1));
+			if("10005".equals(data.getCertificateCode())) {
+				rpCertificate.setCertificate(data.getOther());
+			}else {
+				rpCertificate.setCertificate(data.getCertificate());
+			}
+			rpCertificate.setTotalNumber(data.getTotalNumber());
+			rpCertificateList.add(rpCertificate);
+			i++;	
+		}
+	
+		JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName, params01,
+				new JRBeanCollectionDataSource(rpCertificateList));
 
 		// set_name
-		RequestForm req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
 		String name = "COVERSHEET_" + req.getTmbRequestNo() + ".pdf";
 
-		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint);
+		byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint01);
 
 		IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
-		ReportUtils.closeResourceFileInputStream(params);
+		ReportUtils.closeResourceFileInputStream(params01);
 
 		return "COVERSHEET_" + req.getTmbRequestNo();
 	}
@@ -308,15 +354,18 @@ public class ReportPdfService {
 			}
 			if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
 				Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
-				rpReqFormListVo.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateEditReg(DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateOtherReg())) {
 				Date dateOtherReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateOtherReg());
-				rpReqFormListVo.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			if (BeanUtils.isNotEmpty(data.getDateAccepted())) {
 				Date dateAccepted = DateConstant.convertStrDDMMYYYYToDate(data.getDateAccepted());
-				rpReqFormListVo.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
+				rpReqFormListVo
+						.setDateAccepted(DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
 			}
 			rpReqFormListVoList.add(rpReqFormListVo);
 			i++;

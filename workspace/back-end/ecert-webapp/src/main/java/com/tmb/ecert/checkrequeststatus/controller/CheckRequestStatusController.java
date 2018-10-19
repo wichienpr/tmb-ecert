@@ -1,8 +1,5 @@
 package com.tmb.ecert.checkrequeststatus.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,8 @@ import com.tmb.ecert.checkrequeststatus.service.CheckRequestStatusService;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+
 @RequestMapping("api/crs/crs01000")
 @Controller
 public class CheckRequestStatusController {
@@ -31,41 +30,20 @@ public class CheckRequestStatusController {
 	@Autowired
 	private CheckRequestStatusService crs01000Service;
 
-
 	@Autowired
 	private CheckRequestCertificatService checkRequestCerService;
-	
-	
 
 	@PostMapping("/upLoadCertificate")
 	@ResponseBody
 	public CommonMessage<String> upLoadCertificate(@ModelAttribute CertificateVo certificateVo) {
 		return checkRequestCerService.upLoadCertificateByCk(certificateVo);
 	}
-	
-	
-	
-	@PostMapping("/findReq")
-	@ResponseBody
-	public List<Crs01000Vo> findReq(@RequestBody Crs01000FormVo formVo) {
-		log.info("findReq_C");
-		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-		crs01000VoList = crs01000Service.findReq(formVo);
-		return crs01000VoList;
-	}
 
-	@PostMapping("/findReqByStatus")
+	@PostMapping("/list")
 	@ResponseBody
-	public List<Crs01000Vo> findReqByStatus(@RequestBody Crs01000FormVo formVo) {
-		log.info("findReqByStatus_C");
-		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-		try {
-			crs01000VoList = crs01000Service.findReqByStatus(formVo);
-		} catch (Exception e) {
-			log.error("Error ! ==> CheckRequestStatusController method findReqByStatus", e);
-		}
-
-		return crs01000VoList;
+	public DataTableResponse<Crs01000Vo> list(@RequestBody Crs01000FormVo formVo) {
+		DataTableResponse<Crs01000Vo> dt = crs01000Service.findReqForm(formVo);
+		return dt;
 	}
 
 	@PostMapping("/countStatus")

@@ -35,8 +35,8 @@ public class PaymentWebService {
 	@Value("${web.service.url}")
 	String WS_URL;
 
-	public CommonMessage<FeePaymentRequest> feePayment(RequestForm reqF) {
-		logger.info("PaymentWebService::feePayment");
+	public CommonMessage<FeePaymentRequest> feePayment(RequestForm reqF, String beHalf) {
+		logger.info("PaymentWebService::feePayment for=> {}", beHalf);
 		CommonMessage<FeePaymentRequest> commonMsg = new CommonMessage<FeePaymentRequest>();
 		String uuid = UUID.randomUUID().toString();
 		logger.info("PaymentWebService::feePayment UUID => {}", uuid);

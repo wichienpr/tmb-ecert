@@ -8,14 +8,13 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
-
 public class EcerDateUtils {
 	
 	private static final Logger logger = LoggerFactory.getLogger(EcerDateUtils.class);
 	
 	public static String DDMMYYYY_EN_FORMAT = "dd/MM/yyyy";
-	public static String DDMMYYYYHHMMSS_EN_FORMAT = "dd/MM/yyyy HH:mm:SS" ;
+	public static String DDMMYYYYHHMMSS_EN_FORMAT = "dd/MM/yyyy HH:mm:ss" ;
+	public static String yyMMdd_EN_FORMAT = "yyMMdd";
 	
 	public static Date parseDateEN(String date) {
 		if(StringUtils.isBlank(date)) {
@@ -36,4 +35,34 @@ public class EcerDateUtils {
 		
 		return DateFormatUtils.format(date, DDMMYYYYHHMMSS_EN_FORMAT);
 	}
+	
+	public static String formatDDMMYYYYDate(Date date) {
+		if (date == null) {
+			return null;
+		}
+		
+		return DateFormatUtils.format(date, DDMMYYYY_EN_FORMAT);
+	}
+	
+	public static Date parseDDMMYYYYEN(String date) {
+		if(StringUtils.isBlank(date)) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDate(date, DDMMYYYY_EN_FORMAT);
+		} catch (Exception e) {
+			logger.error(" Invalid date format {} ",date);
+			return null;
+		}
+	}
+	
+	public static String formatYYMMDDDate(Date date) {
+		if (date == null) {
+			return null;
+		}
+		
+		return DateFormatUtils.format(date, yyMMdd_EN_FORMAT);
+	}
+	
+	
 }
