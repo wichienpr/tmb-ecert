@@ -123,7 +123,6 @@ public class CheckRequestDetailService {
 		} catch (Exception e) {
 			response.setMessage("ERROR");
 		} finally {
-			/* ฝากใส่ audit log ตรง finally ให้ด้วยนะ */
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
 					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY),
 					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
