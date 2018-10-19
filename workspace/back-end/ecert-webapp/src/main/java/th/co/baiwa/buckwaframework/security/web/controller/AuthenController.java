@@ -114,19 +114,22 @@ public class AuthenController {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    if (auth != null){
+		    	
 		    	user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		    	auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGOUT_CODE,
+							ACTION_AUDITLOG_DESC.LOGOUT,
+							user,
+							currentDate);
+		    	  
 		        new SecurityContextLogoutHandler().logout(request, response, auth);
 		        sessionRegistry.removeSessionInformation(session.getId());
 		    }
 			vo.setStatus(LOGIN_STATUS.SUCCESS);
 		}catch(Exception e) {
 			logger.error("AuthenController.logoutPage Error: {} ", e.getMessage());
-		}finally {
-			auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGOUT_CODE,
-					ACTION_AUDITLOG_DESC.LOGOUT,
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-					currentDate);
 		}
+		
 		return vo;
 	}
 	
