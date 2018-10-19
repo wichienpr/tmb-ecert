@@ -46,7 +46,7 @@
 <div class="ui grid">
   <div class="sixteen wide column">
     <h2 class="ui header">บันทึกคำขอ</h2>
-    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form" (submit)="formSubmit(form, $event)">
+    <form class="ui form segment" #ngForm="ngForm" [formGroup]="form">
       <input type="hidden" name="reqFormId" formControlName="reqFormId">
       <div class="inline fields">
         <div class="two wide field">
@@ -338,7 +338,7 @@
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accNo') }">
           <input type="text" formControlName="accNo" minlength="10" maxlength="10" name="accNo" (blur)="accNoBlur()"
-            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" value="{{accNo}}" autocomplete="off"
+            (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off"
             placeholder="">
         </div>
         <div class="required two wide field">
@@ -370,47 +370,47 @@
         </div>
       </div>
 
-      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline field" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <h3 class="header space">&nbsp;</h3>
         <h3 class="header">การชำระเงิน</h3>
         <div class="ui divider"></div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" maxlength="50" name="ref1" formControlName="ref1">
+          <input type="text" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" maxlength="50" name="ref2" formControlName="ref2">
+          <input type="text" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountDbd') }" *ngIf="btnMaker">
-          <input type="text" maxlength="18" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
+          <input type="text" (keyup.enter)="keytab('dbd','tmb')" #dbd maxlength="18" name="amountDbd" (blur)="amountBlur('amountDbd')" (focus)="amountFocus('amountDbd')"
             (keypress)="accNoPress($event, true)" formControlName="amountDbd">
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt}">
+      <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4 || hiddenReceipt3}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน TMB (บาท)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('amountTmb') }" *ngIf="btnMaker">
           <input type="text" maxlength="18" name="amountTmb" (blur)="amountBlur('amountTmb')" (focus)="amountFocus('amountTmb')"
-            (keypress)="accNoPress($event, true)" formControlName="amountTmb">
+            (keypress)="accNoPress($event, true)" #tmb formControlName="amountTmb">
         </div>
       </div>
 
@@ -477,12 +477,20 @@
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button class="ui blue basic button" [ngClass]="{ 'disabled': !isdownload }" type="submit">
-              <i class="check circle outline icon" *ngIf="btnMaker"></i>
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnRequestor" [ngClass]="{ 'disabled': !isdownload }"
+              type="button">
               <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
-              {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}
+              ยื่นใบคำขอ
             </button>
-            <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMaker">
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="!btnForPay&&btnMakerApprove" [ngClass]="{ 'disabled': !isdownload }" type="button">
+              <i class="check circle outline icon" *ngIf="btnMaker"></i>
+             ดำเนินการชำระเงิน
+            </button>
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnForPay&&btnMakerApprove" [ngClass]="{ 'disabled': !isdownload }" type="button">
+              <i class="check circle outline icon" *ngIf="btnMaker"></i>
+              ไม่ชำระผ่าน e-Payment
+            </button>
+            <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMakerReject">
               <i class="undo icon"></i>
               ปฏิเสธ
             </button>

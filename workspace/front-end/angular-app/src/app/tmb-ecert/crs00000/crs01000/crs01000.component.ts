@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Crs01000Service } from 'app/tmb-ecert/crs00000/crs01000/crs01000.service';
-import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
+import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Dropdown, DropdownMode,Lov } from 'models/';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
 import { Router, ActivatedRoute, Params } from "@angular/router";
-import { isValid } from 'app/baiwa/common/helpers';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
+import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
+import * as moment from 'moment';
 
 declare var $: any;
 @Component({
@@ -17,13 +19,16 @@ declare var $: any;
   providers: [Crs01000Service, DatePipe]
 })
 export class Crs01000Component implements OnInit, AfterViewInit {
-  calendar1: Calendar;
-  calendar2: Calendar;
+  actionDropdown: Dropdown;
+  calendar1: NgCalendarConfig;
+  calendar2: NgCalendarConfig;
   form: FormGroup;
-  idReq: any;
-  dataT: any[] = [];
-  showData: boolean = false;
-  loading: boolean = false;
+  dataConfig: DatatableCofnig;
+  @ViewChild("dataDt")
+  dataDt: DatatableDirective
+
+
+
   status: string;
   statusHome: string;
 
@@ -39,69 +44,78 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   countSucceed: Number = 0;
   countWaitSaveRequest: Number = 0;
 
-  tmpReqNo: String;
-
-  constructor(private crs01000Service: Crs01000Service,
+  
+  constructor(
+    private crs01000Service: Crs01000Service,
     private ajax: AjaxService,
     private router: Router,
     private route: ActivatedRoute,
-    private datePipe: DatePipe,
     private common: CommonService) {
-
-    this.crs01000Service.getForm().subscribe(form => {
-      this.form = form
-    });
-
-    this.calendar1 = {
-      calendarId: "cal1",
-      calendarName: "cal1",
-      formGroup: this.form,
-      formControlName: "reqDate",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      initial: new Date(),
-      icon: "time icon"
-    };
-    this.calendar2 = {
-      calendarId: "cal2",
-      calendarName: "cal2",
-      formGroup: this.form,
-      formControlName: "toReqDate",
-      type: CalendarType.DATE,
-      formatter: CalendarFormatter.DEFAULT,
-      local: CalendarLocal.EN,
-      initial: new Date(),
-      icon: "time icon"
-    };
-
   }
 
   ngOnInit() {
+    let now = moment().format('DD/MM/YYYY');
+    this.form  = new FormGroup({
+      reqDate: new FormControl(now, Validators.required),     //วันที่ขอ
+      toReqDate: new FormControl(now, Validators.required),   //ถึงวันที่
+      organizeId: new FormControl(''),  //เลขที่นิติบุคคล
+      companyName: new FormControl(''),  //ชื่อนิติบุคคล
+      tmbReqNo: new FormControl(''),     //TMB Req. No.
+      status: new FormControl(''),
+    });
 
-    //this.getTest();
+    this.actionDropdown = {
+      dropdownId: "actionCode",
+      dropdownName: "actionCode",
+      type: DropdownMode.SEARCH,
+      formGroup: this.form,
+      formControlName: "actionCode",
+      values: [],
+      valueName: "code",
+      labelName: "name",
+      placehold: "กรุณาเลือก"
+    };
+    this.crs01000Service.getActionDropdown().subscribe((obj: Lov[]) => this.actionDropdown.values = obj)
+    
+    this.calendar1 = {
+      id: "calendar1",
+      formControl: this.form.get("reqDate"),
+      endCalendar: "calendar2"
+    };
+    
+    this.calendar2 = {
+      id: "calendar2",
+      formControl: this.form.get("toReqDate"),
+      startCalendar: "calendar1"
+    };
 
-    this.dataT = [];
+    this.dataConfig = {
+      url: "/api/crs/crs01000/list",
+      serverSide: true,
+      useBlockUi: true
+    };
+
     this.getCountStatus();
 
-    this.statusHome = this.route.snapshot.queryParams["codeStatus"];
-
-
-    if (this.statusHome) {
-      this.searchStatusByHomePage(this.statusHome)
-    } else {
-      $('.ui.sidebar')
-        .sidebar({
-          context: '.ui.grid.pushable'
-        })
-        .sidebar('setting', 'transition', 'push')
-        .sidebar('toggle');
-    }
-
+    //this.getTest();
   }
 
   ngAfterViewInit() {
-
+    this.statusHome = this.route.snapshot.queryParams["codeStatus"];
+    console.log(this.statusHome)
+    if (this.statusHome) {
+      setTimeout(() => {
+        this.searchStatusByHomePage(this.statusHome);
+      }, 500);
+      
+    }else{
+      $('.ui.sidebar')
+      .sidebar({
+        context: '.ui.grid.pushable'
+      })
+      .sidebar('setting', 'transition', 'push')
+      .sidebar('toggle');
+    }
   }
 
   onToggle() {
@@ -115,58 +129,68 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
 
-  calendarValue(name, e) {
-    this.form.controls[name].setValue(e);
-    //console.log(this.form);
-    //console.log(this.form.controls[name].value);
+  searchData() {
+    this.form.setValue({ status: "", 
+    reqDate: this.form.value.reqDate ,
+    toReqDate:this.form.value.toReqDate,
+    organizeId:this.form.value.organizeId,
+    companyName:this.form.value.companyName,
+    tmbReqNo:this.form.value.tmbReqNo});
+    console.log(this.form.value)
 
-  }
-
-
-
-
-
-
-  getData = () => {
-    console.log(this.form);
-    this.loading = true;
-    const URL = "/api/crs/crs01000/findReq";
-    this.ajax.post(URL, {
-      reqDate: this.form.controls.reqDate.value,
-      toReqDate: this.form.controls.toReqDate.value,
-      organizeId: this.form.controls.organizeId.value,
-      companyName: this.form.controls.companyName.value,
-      tmbReqNo: this.form.controls.tmbReqNo.value,
-
-    }, async res => {
-      const data = await res.json();
-
-      setTimeout(() => {
-        this.loading = false;
-      }, 200);
-      data.forEach(element => {
-        this.dataT.push(element);
+    if (!this.form.touched) {
+      Object.keys(this.form.value).forEach(element => {
+        let fc = this.form.get(element);
+        fc.markAsTouched({ onlySelf: true });
       });
-      //console.log("getData True : Data s", this.dataT);
-    });
+    }
+
+    if (this.form.invalid) {
+      console.log("form invalid");
+      return false;
+    }
+
+    this.dataDt.searchParams(this.form.value);
+    this.dataDt.search();
+
+  }
+
+  searchStatusByHomePage(code): void {
+    this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
+    console.log(this.form.value);
+    this.dataDt.searchParams(this.form.value);
+    this.dataDt.search();
   }
 
 
-  getDataByStatus(code) {
-    this.status = code;
-    this.loading = true;
-    const URL = "/api/crs/crs01000/findReqByStatus";
-    this.ajax.post(URL, { status: this.status }, res => {
-      //console.log(res.json());
-      setTimeout(() => {
-        this.loading = false;
-      }, 200);
-      res.json().forEach(element => {
-        this.dataT.push(element);
+  searchStatus(code): void {
+
+    if (code == 10011) {
+      this.router.navigate(["/srn/srn01000"], {
+        queryParams: { codeStatus: code }
       });
-    });
-
+    } else {
+      $('.ui.sidebar')
+        .sidebar({
+          context: '.ui.grid.pushable'
+        })
+        .sidebar('setting', 'transition', 'push')
+        .sidebar('toggle');
+      
+      console.log("searchStatus");
+      
+      this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
+      console.log(this.form.value);
+      this.dataDt.searchParams(this.form.value);
+      this.dataDt.search();  
+    }
   }
+
+  clearData(): void {
+    this.form.reset();
+    this.dataDt.clear();
+  }
+
 
   getCountStatus() {
     const URL = "/api/crs/crs01000/countStatus";
@@ -186,68 +210,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   }
 
-  searchData(): void {
-    console.log(this.form.controls['reqDate'].value);
-    console.log("searchData");
-    if ((this.form.controls['reqDate'].value == "" || this.form.controls['reqDate'].value == null) &&
-      (this.form.controls['toReqDate'].value == "" || this.form.controls['toReqDate'].value == null) &&
-      (this.form.controls['organizeId'].value == "" || this.form.controls['organizeId'].value == null) &&
-      (this.form.controls['companyName'].value == "" || this.form.controls['companyName'].value == null) &&
-      (this.form.controls['tmbReqNo'].value == "" || this.form.controls['tmbReqNo'].value == null)
-    ) {
-      this.dataT = [];
-      //this.showData = true;
-    } else {
-      this.showData = true;
-      this.getData();
-      this.dataT = [];
-    }
-
-
-
-  }
-
-
-
-  searchStatus(code): void {
-
-    if (code == 10011) {
-      this.router.navigate(["/srn/srn01000"], {
-        queryParams: { codeStatus: code }
-      });
-    } else {
-      $('.ui.sidebar')
-        .sidebar({
-          context: '.ui.grid.pushable'
-        })
-        .sidebar('setting', 'transition', 'push')
-        .sidebar('toggle');
-
-
-      console.log("searchStatus");
-      this.showData = true;
-      this.getDataByStatus(code);
-      this.dataT = [];
-    }
-
-
-  }
-
-
-  searchStatusByHomePage(code): void {
-    //console.log("STATUS FOR HOME::"+code);
-    this.showData = true;
-    this.getDataByStatus(code);
-    this.dataT = [];
-  }
-
-
-  clearData(): void {
-    console.log("clearData");
-    this.form.reset();
-    this.showData = false;
-    this.dataT = [];
-  }
 
   detail(idReq, status): void {
     console.log(idReq + "," + status, "ROLES IS MAKER: " + this.roles(ROLES.MAKER))
@@ -297,23 +259,21 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   }
 
-  validate(input: string, submitted: boolean) {
-    return isValid(this.form, input, submitted);
-  }
 
 
+  // receiptTaxTest
   // getTest() {
-  //   const URL = "/api/crs/crs01000/saveReceiptById";
-  //   this.ajax.post(URL, { }, res => {
-  //     console.log(res.json());
+  //   const URL = "/api/report/pdf/createAndUpload/receiptTax";
+  //   this.ajax.post(URL, {
+  //     id: "297"
+  //   }, res => {
+  //     console.log(res)
+  //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
   //   });
-
   // }
 
-
-  //receiptTaxTest
   getTest() {
-    const URL = "/api/report/pdf/createAndUpload/receiptTax";
+    const URL = "/api/report/pdf/coverSheet";
     this.ajax.post(URL, {
       id: "275"
     }, res => {
@@ -324,53 +284,13 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
 
-  // getTest() {
-  //   const URL = "/api/report/pdf/reqForm";
-  //   this.ajax.post(URL, {
-  //     typeCertificate:"50002",
-  //     customerName:"ศักดิ์นรินทร์  อรัญมาลา",
-  //     companyName:"Toffee Solotion Lt",
-  //     organizeId:"342342344234",
-  //     accountName:"GG_EZ",
-  //     accountNo: "12341455",
-  //     telephone:"0821211699",
-  //     reqDate:"16/10/2018",
-  //     tmpReqNo:"TopTest003",
+  get reqDate() {
+    return this.form.get("reqDate");
+  }
 
-  //     rpReqFormList : [
-  //             {
-  //         "boxIndex":"4",
-  //         "totalNum": 1,
-  //         "numSetCc": null,
-  //         "numEditCc":null,
-  //         "numOtherCc": null,
-  //         "dateOtherReg":null,
-  //         "other":null,
-  //         "dateEditReg": null,
-  //         "statementYear": null,
-  //         "dateAccepted": "11/10/2018"
-  //             },
-  //           {
-  //         "boxIndex":"1",
-  //         "totalNum": 1,
-  //         "numSetCc": null,
-  //         "numEditCc":null,
-  //         "numOtherCc": null,
-  //         "dateOtherReg":null,
-  //         "other":null,
-  //         "dateEditReg": null,
-  //         "statementYear": null,
-  //         "dateAccepted": null
-  //             }
-  //           ]   
-
-  //   }, res => {
-  //     console.log(res)
-  //     this.ajax.download("/api/report/pdf/view/"+res._body+"/download"); 
-  //   });
-  // }
-
-
+  get toReqDate() {
+    return this.form.get("toReqDate");
+  }
 
 }
 

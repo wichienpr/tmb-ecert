@@ -570,10 +570,10 @@
                 <td>{{ h.createdDateTime | datetimeString }}</td>
                 <td>{{ h.makerById + ' - ' + h.makerByName }}</td>
                 <td>{{ h.requestDate | datetimeString }}</td>
-                <td>{{ h.tmbRequestNo | emptyString }}</td>
+                <td>{{ h.tmbRequestNo | tmbReqNo }}</td>
                 <td>{{ h.ref1 | emptyString }}</td>
                 <td>{{ h.ref2 | emptyString }}</td>
-                <td>{{ h.amount | emptyString }}</td>
+                <td>{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString) : (h.amount| decimalFormat: "###,###.00") }}</td>
                 <td>{{ h.cerTypeCode | emptyString }}</td>
                 <td>{{ h.organizeId | emptyString }}</td>
                 <td>{{ h.companyName | emptyString }}</td>

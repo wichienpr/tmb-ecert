@@ -4,10 +4,11 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
-import { AjaxService, ModalService, DropdownService, RequestFormService } from "services/";
+import { AjaxService, ModalService, DropdownService, RequestFormService, CommonService } from "services/";
 import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
+import { ROLES } from "app/baiwa/common/constants";
 
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
@@ -60,7 +61,8 @@ export class Nrq02000Service {
         private dropdown: DropdownService,
         private router: Router,
         private route: ActivatedRoute,
-        private reqService: RequestFormService
+        private reqService: RequestFormService,
+        private common: CommonService
     ) {
 
         this.dropdownObj = {
@@ -108,7 +110,7 @@ export class Nrq02000Service {
         // Dropdowns
         this.dropdown.getReqType().subscribe((obj: Lov[]) => this.dropdownObj.reqType.values = obj);
         this.dropdown.getCustomSeg().subscribe((obj: Lov[]) => this.dropdownObj.customSeg.values = obj);
-        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => this.dropdownObj.payMethod.values = obj);
+        this.dropdown.getpayMethod().subscribe((obj: Lov[]) => { this.dropdownObj.payMethod.values = obj });
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
     }
 
@@ -244,6 +246,7 @@ export class Nrq02000Service {
             }
             this.modal.confirm((e) => {
                 if (e) {
+                    this.common.blockui(); // Loading page
                     const formData = this.bindingData(certificates, files, form, addons);
                     let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                     this.ajax.upload(url, formData, response => {
@@ -254,15 +257,23 @@ export class Nrq02000Service {
                                 success: true
                             };
                             this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
                             this.router.navigate(['/crs/crs01000'], {
-                                queryParams: { codeStatus: "10001" }
+                                queryParams: { codeStatus: addons.status }
                             });
                         } else {
+                            let msg = "";
+                            if (response.json().data && response.json().data == "HASMAKER") {
+                                msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                            } else {
+                                msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                            }
                             const modal: Modal = {
-                                msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ",
+                                msg: msg,
                                 success: false
                             };
                             this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
                         }
                     }, err => {
                         console.error(err)
@@ -327,9 +338,12 @@ export class Nrq02000Service {
                         }
                     }
                 }
+                if (key != "requestFile" && key != "copyFile") {
+                    return;
+                }
             }
         }
-        if (form.valid || (form.controls.requestFile.invalid&&form.controls.copyFile.invalid)) {
+        if (form.valid || (form.controls.requestFile.invalid && form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
             let rpReqFormList = [];
             let boxIndex = 0;
@@ -536,6 +550,7 @@ export class Nrq02000Service {
                 _data = [..._data, obj];
             }
         });
+        let notUseReceipt = form.get('payMethodSelect').value && (/*form.get('payMethodSelect').value == '30003' || */form.get('payMethodSelect').value == '30004');
         let data: Nrq02000 = {
             glType: addons.glType,
             tranCode: addons.tranCode,
@@ -564,10 +579,10 @@ export class Nrq02000Service {
             changeNameFileName: addons.changeNameFile,
             copyFileName: addons.idCardFile,
             requestFileName: addons.requestFormFile,
-            ref1: form.controls.ref1.value,
-            ref2: form.controls.ref2.value,
-            amountDbd: form.controls.amountDbd.value ? form.controls.amountDbd.value.replace(/,/g, '') : "",
-            amountTmb: form.controls.amountTmb.value ? form.controls.amountTmb.value.replace(/,/g, '') : "",
+            ref1: notUseReceipt ? '' : form.get('ref1').value,
+            ref2: notUseReceipt ? '' : form.get('ref2').value,
+            amountDbd: !notUseReceipt && form.get('amountDbd').value ? form.get('amountDbd').value.replace(/,/g, '') : "",
+            amountTmb: !notUseReceipt && form.get('amountTmb').value ? form.get('amountTmb').value.replace(/,/g, '') : "",
             amount: form.controls.amountTmb.value && form.controls.amountDbd.value ? parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, '')) : "",
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther

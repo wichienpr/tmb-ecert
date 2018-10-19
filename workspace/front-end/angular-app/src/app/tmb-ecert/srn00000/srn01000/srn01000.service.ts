@@ -8,7 +8,8 @@ import { Observable } from "rxjs";
 export class Srn01000Service {
 
   form: FormGroup = new FormGroup({
-    tmbReqNo: new FormControl('', Validators.required),     //TMB Req. No.
+    tmbReqNo: new FormControl('', Validators.required),
+    status: new FormControl('',)
   });
 
 

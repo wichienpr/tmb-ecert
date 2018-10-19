@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, AfterViewInit, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
@@ -7,7 +7,7 @@ import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',
@@ -18,6 +18,10 @@ import { ROLES } from 'app/baiwa/common/constants';
 export class Nrq02000Component implements OnInit, AfterViewInit {
 
   @ViewChild("ngForm") ngForm: NgForm;
+  @ViewChild("ref1") ref1: ElementRef;
+  @ViewChild("ref2") ref2: ElementRef;
+  @ViewChild("dbd") dbd: ElementRef;
+  @ViewChild("tmb") tmb: ElementRef;
 
   _roles = ROLES;
 
@@ -34,7 +38,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   isdownload: boolean = false;
   showChildren: boolean = false;
   rejectSubmitted: boolean = false;
-  hiddenReceipt: boolean = false;
+  hiddenReceipt3: boolean = false;
+  hiddenReceipt4: boolean = false;
 
   glType: string = "";
   tranCode: string = "";
@@ -50,6 +55,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   user: UserDetail;
   allowed: Dropdown;
   allowedModal: Modal;
+  firstEnter: boolean = true;
 
   constructor(
     private service: Nrq02000Service,
@@ -187,7 +193,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.form.controls.amountDbd.setValidators([Validators.required]);
         this.form.controls.amountTmb.setValidators([Validators.required]);
       } else {
-        this.hiddenReceipt = true;
+        this.hiddenReceipt4 = true;
       }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -202,12 +208,15 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  get btnForPay() { return this.form.get('payMethodSelect').value == "30004" }
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
   get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
   get btnChecker() { return this.roles(ROLES.CHECKER) }
   get btnMaker() { return this.roles(ROLES.MAKER) }
+  get btnMakerApprove() { return this.roles(ROLES.MAKER)&&this.common.isAuth(PAGE_AUTH.P0000401) }
+  get btnMakerReject() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000403) }
 
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
@@ -228,11 +237,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       return "10001";
     }
     if (this.common.isRole(ROLES.MAKER)) {
-      return "10005";
+      return "10005"; // "10005"
     }
   }
 
-  formSubmit(form: FormGroup, event, _data?) {
+  formSubmit(form: FormGroup, _data?) {
     event.preventDefault();
     this.submitted = true;
     const data = _data ? _data : {
@@ -269,7 +278,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       tmbRequestNo: this.data.tmbRequestNo
     }
     if (this.formReject.valid) {
-      this.formSubmit(this.form, event, data);
+      this.formSubmit(this.form, data);
     }
   }
 
@@ -284,6 +293,25 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   minus(control: string) {
     this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
+  }
+
+  keytab(one, two) {
+    let element1 = this[one].nativeElement; // get the sibling element
+    let element2 = this[two].nativeElement; // get the sibling element
+    if (this.firstEnter) {
+      element1.value = "";
+      this.firstEnter = false;
+      return ;
+    } else {
+      if (two=='tmb') {
+        this.firstEnter = true; // reset FirstEnter
+        const df = new DecimalFormat('###,###.00');
+        let value = element1.value.replace(/,/g,'');
+        value = parseFloat(value)/100;
+        this.form.get('amountDbd').patchValue(df.format(value));
+      }
+      element2.focus();   // focus if not null
+    }
   }
 
   cancel() {
@@ -506,19 +534,33 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   payMethodChange(e) {
     console.log('payMethodChange => ', e);
     if (e != "30004") {
-      this.hiddenReceipt = false;
+      this.hiddenReceipt4 = false;
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);
-      this.form.controls.amountTmb.setValidators([Validators.required]);
+      if (e != "30002" && e != "30003") {
+        this.hiddenReceipt3 = false;
+        this.form.controls.amountTmb.setValidators([Validators.required]);
+      } else {
+        this.hiddenReceipt3 = true;
+        this.form.controls.amountTmb.patchValue('');
+        this.form.controls.amountTmb.clearValidators();
+      }
     } else {
-      this.hiddenReceipt = true;
+      this.hiddenReceipt4 = true;
+      this.form.controls.ref1.patchValue('');
+      this.form.controls.ref2.patchValue('');
+      this.form.controls.amountDbd.patchValue('');
+      this.form.controls.amountTmb.patchValue('');
       this.form.controls.ref1.clearValidators();
       this.form.controls.ref2.clearValidators();
       this.form.controls.amountDbd.clearValidators();
       this.form.controls.amountTmb.clearValidators();
     }
-    this.form.updateValueAndValidity();
+    this.form.controls.ref1.updateValueAndValidity();
+    this.form.controls.ref2.updateValueAndValidity();
+    this.form.controls.amountDbd.updateValueAndValidity();
+    this.form.controls.amountTmb.updateValueAndValidity();
   }
 
   subAccMethodChange(e) {

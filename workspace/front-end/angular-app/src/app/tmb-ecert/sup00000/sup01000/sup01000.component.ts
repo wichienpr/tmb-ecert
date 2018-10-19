@@ -32,6 +32,7 @@ export class Sup01000Component implements OnInit {
   isShowResult: Boolean = false;
   isShowImport: Boolean = false;
 
+  loadingUpload:boolean = false;
   objDropdownType: any;
   objRoleResult: any;
   roleResult: any;
@@ -223,6 +224,7 @@ export class Sup01000Component implements OnInit {
       this.service.callExportTemplateAPI();
     }
     uploadRole() {
+      this.loadingUpload = true;
       this.onSubmitUpload = true;
       console.log(this.uploadForm.valid);
       if (this.uploadForm.valid) {
@@ -236,6 +238,8 @@ export class Sup01000Component implements OnInit {
         }, error => {
           this.modal.alert({ msg: "ทำรายการล้มเหลว" });
           // console.log("call get error");
+        },() =>{
+          this.loadingUpload = false;
         });
       }
     }

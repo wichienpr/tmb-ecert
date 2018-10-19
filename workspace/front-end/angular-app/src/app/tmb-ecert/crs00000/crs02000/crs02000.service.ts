@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile } from './crs02000.models';
 
 const URL = {
@@ -27,6 +27,7 @@ export class Crs02000Service {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private modal: ModalService,
     private ajax: AjaxService,
     private location: Location
@@ -85,6 +86,10 @@ export class Crs02000Service {
       const data = response.json();
       if (data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+        this.router.navigate(['/crs/crs01000'], {
+          queryParams: { codeStatus: "10003" }
+        });
+        this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
       } else {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ", success: true });
       }
@@ -115,7 +120,13 @@ export class Crs02000Service {
     this.modal.confirm(e => {
       if (e) {
         this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
-          console.log(response);
+          if (response.json().message == "SUCCESS") {
+            this.router.navigate(['/crs/crs01000'], {
+              queryParams: { codeStatus: "10009" }
+            });
+          } else {
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+          }
         });
       }
     }, modal);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Sup02000Service } from 'app/tmb-ecert/sup00000/sup02000/sup02000.service';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Sup02000 } from 'app/tmb-ecert/sup00000/sup02000/sup02000.model';
@@ -6,14 +6,14 @@ import { ModalService, CommonService } from 'app/baiwa/common/services';
 import { Modal } from 'app/baiwa/common/models';
 import { UserDetail } from 'app/user.model';
 import { Store } from '@ngrx/store';
-import { PAGE_AUTH } from 'app/baiwa/common/constants';
+import { PAGE_AUTH, MESSAGE_STATUS } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-sup02000',
   templateUrl: './sup02000.component.html',
   styleUrls: ['./sup02000.component.css']
 })
-export class Sup02000Component implements OnInit {
+export class Sup02000Component implements OnInit, AfterViewInit {
 
   paramResult: any;
   parameterForm = this.fb.group({
@@ -22,16 +22,16 @@ export class Sup02000Component implements OnInit {
   responseObj: any;
   user: UserDetail;
 
-  constructor(private store: Store<AppState>,private service: Sup02000Service, private fb: FormBuilder
-    ,private modal: ModalService,private commonService: CommonService) {
-      
+  constructor(private store: Store<AppState>, private service: Sup02000Service, private fb: FormBuilder
+    , private modal: ModalService, private commonService: CommonService) {
+
     this.paramResult = [{
       parameterconfigId: "",
       propertyName: "",
       propertyValue: ""
 
     }];
-    
+
     this.responseObj = {
       data: "",
       message: ""
@@ -43,6 +43,14 @@ export class Sup02000Component implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+    this.callSearchAPI();
+  }
+
+  callSearchAPI() {
     this.service.callGetParamAPI().subscribe(src => {
       this.paramResult = src;
       // console.log("getparam sucess ", src);
@@ -60,14 +68,11 @@ export class Sup02000Component implements OnInit {
             propertyValue: new FormControl(value)
           }
         );
-
-
         this.formPropArray.push(newFormGroup);
         i++;
       });
     })
     console.log("getparam sucess ", this.parameterForm);
-
   }
 
   clickSave() {
@@ -92,14 +97,15 @@ export class Sup02000Component implements OnInit {
     }
     this.modal.confirm((e) => {
       if (e) {
-        this.service.callSaveParameterAPI(listParameter).subscribe(res =>{
+        this.service.callSaveParameterAPI(listParameter).subscribe(res => {
           this.responseObj = res;
-          if (this.responseObj.message == null) {
+          if (this.responseObj.message == MESSAGE_STATUS.FAILED) {
             this.modal.alert({ msg: "ทำรายการล้มเหลว" })
           } else {
-            this.modal.alert({ msg: this.responseObj.message });
+            this.modal.alert({ msg: "ทำรายการสำเร็จ" });
+            this.callSearchAPI();
           }
-        },err =>{
+        }, err => {
           this.modal.alert({ msg: "ทำรายการล้มเหลว" })
         });
       }
@@ -116,7 +122,7 @@ export class Sup02000Component implements OnInit {
   get isCanSave() {
     return this.commonService.ishasAuth(this.user, PAGE_AUTH.P0001401)
   }
-  
+
 
 }
 interface AppState {
