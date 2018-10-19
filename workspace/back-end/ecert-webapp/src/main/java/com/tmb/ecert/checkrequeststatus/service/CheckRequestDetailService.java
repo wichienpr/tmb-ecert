@@ -80,6 +80,7 @@ public class CheckRequestDetailService {
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
 			newReq.setStatus("10003");
 			reqDao.update(newReq);
+			hstDao.save(newReq);
 			commonMsg.setMessage("SUCCESS");
 			return commonMsg;
 		} catch (Exception e) {
