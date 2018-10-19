@@ -50,7 +50,8 @@ export class Srn01000Component implements OnInit, AfterViewInit {
   }
 
   searchData() {
-    console.log(this.form.value)
+    this.form.setValue({ status: "", tmbReqNo: this.form.value.tmbReqNo });
+    console.log(this.form.value);
 
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
@@ -76,8 +77,8 @@ export class Srn01000Component implements OnInit, AfterViewInit {
 
   searchStatusByHomePage(code): void {
     console.log(code);
-    this.form.setValue({ status: code, tmbReqNo: "" })
-    console.log(this.form);
+    this.form.setValue({ status: code, tmbReqNo: "" });
+    console.log(this.form.value);
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }

@@ -97,6 +97,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
     this.getCountStatus();
 
+    //this.getTest();
   }
 
   ngAfterViewInit() {
@@ -129,6 +130,12 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
   searchData() {
+    this.form.setValue({ status: "", 
+    reqDate: this.form.value.reqDate ,
+    toReqDate:this.form.value.toReqDate,
+    organizeId:this.form.value.organizeId,
+    companyName:this.form.value.companyName,
+    tmbReqNo:this.form.value.tmbReqNo});
     console.log(this.form.value)
 
     if (!this.form.touched) {
@@ -150,6 +157,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   searchStatusByHomePage(code): void {
     this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
+    console.log(this.form.value);
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }
@@ -172,6 +180,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       console.log("searchStatus");
       
       this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
+      console.log(this.form.value);
       this.dataDt.searchParams(this.form.value);
       this.dataDt.search();  
     }
@@ -252,26 +261,26 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
 
-  //receiptTaxTest
+  // receiptTaxTest
   // getTest() {
   //   const URL = "/api/report/pdf/createAndUpload/receiptTax";
   //   this.ajax.post(URL, {
-  //     id: "275"
+  //     id: "297"
   //   }, res => {
   //     console.log(res)
   //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
   //   });
   // }
 
-  // getTest() {
-  //   const URL = "/api/report/pdf/coverSheet";
-  //   this.ajax.post(URL, {
-  //     id: "275"
-  //   }, res => {
-  //     console.log(res)
-  //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
-  //   });
-  // }
+  getTest() {
+    const URL = "/api/report/pdf/coverSheet";
+    this.ajax.post(URL, {
+      id: "275"
+    }, res => {
+      console.log(res)
+      this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
+    });
+  }
 
 
 
