@@ -1,25 +1,33 @@
 package com.tmb.ecert.checkrequeststatus.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.PaymentWebService;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
+
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
 @Service
 public class CheckRequestDetailService {
@@ -42,6 +50,9 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private PaymentWebService paymentWs;
+	
+	@Autowired
+	private AuditLogService auditLogService;
 
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
@@ -74,6 +85,7 @@ public class CheckRequestDetailService {
 
 	public CommonMessage<String> reject(RequestForm req) {
 		CommonMessage<String> commonMsg = new CommonMessage<String>();
+		Date currentDate = new Date();
 		try {
 			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false).get(0);
 			newReq.setRejectReasonCode(req.getRejectReasonCode());
@@ -87,6 +99,11 @@ public class CheckRequestDetailService {
 			e.printStackTrace();
 			commonMsg.setMessage("ERROR");
 			return commonMsg;
+		} finally{
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.REJECT_REQ_CODE, ACTION_AUDITLOG_DESC.REJECT_REQ,
+					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
+					currentDate);
 		}
 	}
 
@@ -101,6 +118,17 @@ public class CheckRequestDetailService {
 		reqDao.update(newReq);
 		hstDao.save(newReq);
 		response.setMessage("SUCCESS");
+		
+		
+		/* ฝากใส่ audit log ตรง finally ให้ด้วยนะ
+		 * 
+		  auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
+					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
+					currentDate);
+					
+		 */
+		
 		return response;
 		/*switch (newReq.getPaidTypeCode()) {
 			case "30001":
