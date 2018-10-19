@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
 import { Crs02000Service } from './crs02000.service';
-import { ROLES } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { CommonService, DropdownService } from 'app/baiwa/common/services';
 import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CertFile, Rejected } from './crs02000.models';
@@ -77,13 +77,6 @@ export class Crs02000Component implements OnInit {
     };
     this.getAllowed();
   }
-
-  get certFile() { return this.formCert.get('certFile') }
-  get btnApprove() { return this.roles(ROLES.CHECKER)&&this.data.status=="10005" }
-  get btnReject() { return this.roles(ROLES.CHECKER)&&this.data.status=="10005" }
-  get btnPrintReciept() { return this.roles(ROLES.MAKER) }
-  get btnPrintCover() { return this.roles(ROLES.MAKER) }
-  get btnUpload() { return this.roles(ROLES.MAKER) }
 
   async getAllowed() {
     this.allowed.values = await this.dropdown.getRejectReason().toPromise();
@@ -175,5 +168,12 @@ export class Crs02000Component implements OnInit {
 
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
+
+  get certFile() { return this.formCert.get('certFile') }
+  get btnApprove() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000402) }
+  get btnReject() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000403) }
+  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000404)}
+  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000405)}
+  get btnUpload() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000406)}
 
 }

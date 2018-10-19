@@ -7,7 +7,7 @@ import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',
@@ -215,6 +215,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
   get btnChecker() { return this.roles(ROLES.CHECKER) }
   get btnMaker() { return this.roles(ROLES.MAKER) }
+  get btnMakerApprove() { return this.roles(ROLES.MAKER)&&this.common.isAuth(PAGE_AUTH.P0000401) }
+  get btnMakerReject() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000403) }
 
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
@@ -235,7 +237,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       return "10001";
     }
     if (this.common.isRole(ROLES.MAKER)) {
-      return "10005";
+      return "10005"; // "10005"
     }
   }
 

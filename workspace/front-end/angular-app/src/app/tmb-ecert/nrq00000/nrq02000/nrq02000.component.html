@@ -477,16 +477,16 @@
               <i class="print icon"></i>
               พิมพ์ใบคำขอ
             </button>
-            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="!btnForPay" [ngClass]="{ 'disabled': !isdownload }" type="button">
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="!btnForPay&&btnMakerApprove" [ngClass]="{ 'disabled': !isdownload }" type="button">
               <i class="check circle outline icon" *ngIf="btnMaker"></i>
               <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
               {{ roles(_roles.MAKER) ? 'ดำเนินการชำระเงิน' : 'ยื่นใบคำขอ' }}
             </button>
-            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnForPay" [ngClass]="{ 'disabled': !isdownload }" type="button">
+            <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnForPay&&btnMakerApprove" [ngClass]="{ 'disabled': !isdownload }" type="button">
               <i class="check circle outline icon" *ngIf="btnMaker"></i>
               ไม่ชำระผ่าน e-Payment
             </button>
-            <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMaker">
+            <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMakerReject">
               <i class="undo icon"></i>
               ปฏิเสธ
             </button>

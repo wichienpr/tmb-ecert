@@ -259,7 +259,7 @@ export class Nrq02000Service {
                             this.modal.alert(modal);
                             this.common.unblockui(); // Loading page
                             this.router.navigate(['/crs/crs01000'], {
-                                queryParams: { codeStatus: "10001" }
+                                queryParams: { codeStatus: addons.status }
                             });
                         } else {
                             let msg = "";
