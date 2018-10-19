@@ -83,18 +83,10 @@ public class AuthenController {
 		}catch(Exception e) {
 			logger.error("AuthenController.onLoginSeccess Error: {} ", e.getMessage());
 		}finally {
-			//############################## INSERT AUDIT LOG BEGIN #############################################
-			if(user!=null) {
-				AuditLog auditLog = new AuditLog(); 
-				auditLog.setActionCode(ACTION_AUDITLOG.LOGIN_CODE);
-				String description = String.format(ApplicationCache.getParamValueByName(ACTION_AUDITLOG_DESC.LOGIN),
-						StringUtils.defaultString(user.getUserId()),EcerDateUtils.formatLogDate(currentDate));
-				auditLog.setDescription(description);
-				auditLog.setCreateById(user.getUserId());
-				auditLog.setCreatedByName(user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName()));
-				auditLogService.insertAuditLog(auditLog);
-			}
-			//############################## INSERT AUDIT LOG END #############################################
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE,
+					ACTION_AUDITLOG_DESC.LOGIN,
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+					currentDate);
 		}
 		return vo;	
 	}
@@ -130,18 +122,10 @@ public class AuthenController {
 		}catch(Exception e) {
 			logger.error("AuthenController.logoutPage Error: {} ", e.getMessage());
 		}finally {
-			//############################## INSERT AUDIT LOG BEGIN #############################################
-			if(user!=null) {
-				AuditLog auditLog = new AuditLog(); 
-				auditLog.setActionCode(ACTION_AUDITLOG.LOGOUT_CODE);
-				String description = String.format(ApplicationCache.getParamValueByName(ACTION_AUDITLOG_DESC.LOGOUT),
-						StringUtils.defaultString(user.getUserId()),EcerDateUtils.formatLogDate(currentDate));
-				auditLog.setDescription(description);
-				auditLog.setCreateById(user.getUserId());
-				auditLog.setCreatedByName(user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName()));
-				auditLogService.insertAuditLog(auditLog);
-			}
-			//############################## INSERT AUDIT LOG END #############################################
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGOUT_CODE,
+					ACTION_AUDITLOG_DESC.LOGOUT,
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+					currentDate);
 		}
 		return vo;
 	}
