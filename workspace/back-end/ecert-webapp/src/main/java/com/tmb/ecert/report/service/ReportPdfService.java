@@ -40,6 +40,7 @@ import com.tmb.ecert.report.persistence.dao.ReportPdfDao;
 import com.tmb.ecert.report.persistence.vo.RpCertificateVo;
 import com.tmb.ecert.report.persistence.vo.RpCoverSheetVo;
 import com.tmb.ecert.report.persistence.vo.RpReceiptTaxVo;
+import com.tmb.ecert.report.persistence.vo.RpReceiverVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormListVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 import com.tmb.ecert.report.persistence.vo.RpVatVo;
@@ -223,7 +224,8 @@ public class ReportPdfService {
 			// Folder Exist ??
 			initialService();
 			req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
-
+			RpReceiverVo receiver = reportPdfDao.receiver(vo.getId()).get(0);
+			
 			String reportName = "RP_COVER_SHEET";
 
 			Map<String, Object> params01 = new HashMap<>();
@@ -231,8 +233,14 @@ public class ReportPdfService {
 			params01.put("logoTmbCover02", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmbCover02.png"));
 			params01.put("tmbReqNo", req.getTmbRequestNo());
 			
-			params01.put("telephone", req.getTelephone());
-			params01.put("customerName", req.getCustomerName());
+			params01.put("createdById", receiver.getCreatedById());
+			params01.put("createdByName", receiver.getCreatedByName());
+			params01.put("createdByDepartment", receiver.getCreatedByDepartment());
+			params01.put("createdByGroup", receiver.getCreatedByGroup());
+			params01.put("createdByBelongto", receiver.getCreatedByBelongto());
+			params01.put("createdByTel", receiver.getCreatedByTel());
+			params01.put("createdByEmail", receiver.getCreatedByEmail());
+						
 			params01.put("date", DateFormatUtils.format(new java.util.Date(),"dd/MM/yyyy"));
 			params01.put("time", DateFormatUtils.format(new java.util.Date(),"HH.mm",new Locale("th", "TH")));
 			
