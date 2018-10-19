@@ -10,17 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayRequest;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
-import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.PaymentWebService;
+import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
 @Service
@@ -38,6 +36,9 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private RequestorDao reqDao;
+	
+	@Autowired
+	private RequestHistoryDao hstDao;
 
 	@Autowired
 	private PaymentWebService paymentWs;
@@ -94,7 +95,13 @@ public class CheckRequestDetailService {
 		RequestForm newReq = dao.findReqFormById(id, false).size() > 0 ? dao.findReqFormById(id, false).get(0)
 				: new RequestForm();
 		logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
-		switch (newReq.getPaidTypeCode()) {
+		CommonMessage<RealtimePaymentRequest> response = new CommonMessage<RealtimePaymentRequest>();
+		newReq.setStatus("10009");
+		reqDao.update(newReq);
+		hstDao.save(newReq);
+		response.setMessage("SUCCESS");
+		return response;
+		/*switch (newReq.getPaidTypeCode()) {
 			case "30001":
 				CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq,"TMB");
 				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
@@ -146,7 +153,7 @@ public class CheckRequestDetailService {
 				}
 			default:
 					return null;
-		}
+		}*/
 	}
 
 }
