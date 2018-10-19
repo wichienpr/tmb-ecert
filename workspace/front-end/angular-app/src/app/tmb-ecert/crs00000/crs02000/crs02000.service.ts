@@ -69,8 +69,8 @@ export class Crs02000Service {
 
   getData(id: string) {
     return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
-      let data: RequestForm[] = response.json() as RequestForm[];
-      return data.length > 0 ? data[0] : initRequestForm;
+      let data: RequestForm = response.json() as RequestForm;
+      return data ? data : initRequestForm;
     })
   }
 

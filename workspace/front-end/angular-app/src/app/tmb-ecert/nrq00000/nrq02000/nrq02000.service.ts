@@ -130,7 +130,7 @@ export class Nrq02000Service {
         if (id !== "") {
             return new Promise(async resolve => {
                 const data = await this.reqService.getReqFormByFormId(id).toPromise();
-                resolve(data && data.length > 0 ? data[0] : initRequestForm);
+                resolve(data ? data : initRequestForm);
             });
         } else {
             return new Promise(resolve => {

@@ -428,6 +428,12 @@
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
           <input type="text" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
+        <div class="three wide field" *ngIf="btnMaker">
+          <button class="ui icon button">
+            <i class="barcode icon"></i>
+          </button>
+          <span>แสกนบาร์โค้ด</span>
+        </div>
       </div>
 
       <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">

@@ -320,7 +320,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     let element1 = this[one].nativeElement; // get the sibling element
     let element2 = this[two].nativeElement; // get the sibling element
     if (this.firstEnter) {
-      element1.value = "";
+      this.form.get('ref1').patchValue('');
+      this.form.get('ref2').patchValue('');
+      this.form.get('amountDbd').patchValue('');
+      // this.form.get('amountTmb').patchValue('');
       this.firstEnter = false;
       return ;
     } else {
