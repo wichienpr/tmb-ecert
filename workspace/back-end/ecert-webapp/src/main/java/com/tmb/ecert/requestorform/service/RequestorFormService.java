@@ -2,7 +2,6 @@ package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class RequestorFormService {
 
 	public CommonMessage<String> update(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
-		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false).get(0);
+		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
 		if ("10005".equals(form.getStatus())) {
 			if (req.getMakerById() != null) {
 				msg.setData("HASMAKER");
@@ -67,7 +66,7 @@ public class RequestorFormService {
 				return msg;
 			}
 			if ("false".equals(form.getHasAuthed())) {
-				if (form.getAmount().doubleValue() > Double.parseDouble("3000"/*ApplicationCache.getParamValueByName("")*/)) {
+				if (form.getAmount().doubleValue() > Double.parseDouble(ApplicationCache.getParamValueByName("payment.amount.limit"))) {
 					msg.setData("NEEDLOGIN");
 					msg.setMessage("ERROR");
 					return msg;
@@ -143,14 +142,14 @@ public class RequestorFormService {
 				try {
 					dao.update(req); // SAVE REQUEST FORM
 				} catch (Exception e) {
-					logger.info("REQUESTFORM UPDATE => ", e);
+					logger.error("REQUESTFORM UPDATE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
 				}
 				try {
 					daoHst.save(req); // ADD HISTORY
 				} catch (Exception e) {
-					logger.info("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
+					logger.error("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
 					msg.setMessage("ERROR");
 					return msg;
 				}
@@ -176,11 +175,11 @@ public class RequestorFormService {
 				}
 				msg.setMessage("SUCCESS");
 			} catch (Exception e) {
-				logger.info("REQUESTFORM UPDATE => ", e);
+				logger.error("REQUESTFORM UPDATE => ", e);
 			}
 			return msg;
 		} catch (IOException e) {
-			logger.info("REQUESTFORM UPDATE => ", e);
+			logger.error("REQUESTFORM UPDATE => ", e);
 			msg.setMessage("ERROR");
 			return msg;
 		}
@@ -353,9 +352,9 @@ public class RequestorFormService {
 		}
 	}
 
-	public List<RequestForm> findReqFormById(String id) {
+	public RequestForm findReqFormById(String id) {
 		Long reqFormId = Long.valueOf(id);
-		List<RequestForm> reqForm = daoCrs.findReqFormById(reqFormId);
+		RequestForm reqForm = daoCrs.findReqFormById(reqFormId);
 		return reqForm;
 	}
 

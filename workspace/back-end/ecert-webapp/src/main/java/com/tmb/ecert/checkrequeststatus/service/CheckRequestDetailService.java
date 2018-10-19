@@ -44,20 +44,19 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private RequestorDao reqDao;
-	
+
 	@Autowired
 	private RequestHistoryDao hstDao;
 
 	@Autowired
 	private PaymentWebService paymentWs;
-	
+
 	@Autowired
 	private AuditLogService auditLogService;
 
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
-		String cerTypeCode = dao.findReqFormById(reqFormId, false).get(0).getCerTypeCode();
-		logger.info(cerTypeCode);
+		String cerTypeCode = dao.findReqFormById(reqFormId, false).getCerTypeCode();
 		return dao.findCerByCerTypeCode(cerTypeCode);
 	}
 
@@ -67,9 +66,9 @@ public class CheckRequestDetailService {
 		return reqForm;
 	}
 
-	public List<RequestForm> findReqFormById(String id) {
+	public RequestForm findReqFormById(String id) {
 		Long reqFormId = Long.valueOf(id);
-		List<RequestForm> reqForm = dao.findReqFormById(reqFormId);
+		RequestForm reqForm = dao.findReqFormById(reqFormId);
 		return reqForm;
 	}
 
@@ -87,102 +86,94 @@ public class CheckRequestDetailService {
 		CommonMessage<String> commonMsg = new CommonMessage<String>();
 		Date currentDate = new Date();
 		try {
-			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false).get(0);
+			logger.info("CheckRequestDetailService::reject REQFORM_ID => {}", req.getReqFormId());
+			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false);
 			newReq.setRejectReasonCode(req.getRejectReasonCode());
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
 			newReq.setStatus("10003");
 			reqDao.update(newReq);
 			hstDao.save(newReq);
 			commonMsg.setMessage("SUCCESS");
-			return commonMsg;
+			logger.info("CheckRequestDetailService::reject finished...");
 		} catch (Exception e) {
-			e.printStackTrace();
 			commonMsg.setMessage("ERROR");
-			return commonMsg;
-		} finally{
+			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
+		} finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.REJECT_REQ_CODE, ACTION_AUDITLOG_DESC.REJECT_REQ,
-					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
-					currentDate);
+					(req != null ? req.getTmbRequestNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
 		}
+		return commonMsg;
 	}
 
 	public CommonMessage<RealtimePaymentRequest> approve(String reqFormId) {
 		logger.info("CheckRequestDetailService::approve REQFORM_ID => {}", reqFormId);
+		Date currentDate = new Date();
 		Long id = Long.valueOf(reqFormId);
-		RequestForm newReq = dao.findReqFormById(id, false).size() > 0 ? dao.findReqFormById(id, false).get(0)
-				: new RequestForm();
-		logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
 		CommonMessage<RealtimePaymentRequest> response = new CommonMessage<RealtimePaymentRequest>();
-		newReq.setStatus("10009");
-		reqDao.update(newReq);
-		hstDao.save(newReq);
-		response.setMessage("SUCCESS");
-		
-		
-		/* ฝากใส่ audit log ตรง finally ให้ด้วยนะ
-		 * 
-		  auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
-					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
-					currentDate);
-					
-		 */
-		
+		RequestForm newReq = new RequestForm();
+		try {
+			newReq = dao.findReqFormById(id, false);
+			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
+			newReq.setStatus("10009");
+			reqDao.update(newReq);
+			hstDao.save(newReq);
+			response.setMessage("SUCCESS");
+			logger.error("CheckRequestDetailService::approve finished...");
+		} catch (Exception e) {
+			response.setMessage("ERROR");
+		} finally {
+			/* ฝากใส่ audit log ตรง finally ให้ด้วยนะ */
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
+					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
+		}
 		return response;
-		/*switch (newReq.getPaidTypeCode()) {
-			case "30001":
-				CommonMessage<FeePaymentRequest> responseFeeTmb = paymentWs.feePayment(newReq,"TMB");
-				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage())) {
-					
-					CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
-					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
-						
-						CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq,"DBD");
-						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
-							
-							CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
-							if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage())) {
-								return responseRealtime;
-							} else {
-								return responseRealtime;
-							}
-							
-						} else {
-							return null;
-						}
-						
-					} else {
-						return null;
-					}
-					
-				} else {
-					return null;
-				}
-			case "30002":
-				CommonMessage<ApproveBeforePayRequest> responseApproveBefore = paymentWs.approveBeforePayment(newReq);
-				if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.getMessage())) {
-					
-					CommonMessage<FeePaymentRequest> responseFeeDbd = paymentWs.feePayment(newReq,"DBD");
-					if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage())) {
-						
-						CommonMessage<RealtimePaymentRequest> responseRealtime = paymentWs.realtimePayment(newReq);
-						if (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage())) {
-							return responseRealtime;
-						} else {
-							return responseRealtime;
-						}
-						
-					} else {
-						return null;
-					}
-					
-				} else {
-					return null;
-				}
-			default:
-					return null;
-		}*/
+		/*
+		 * switch (newReq.getPaidTypeCode()) { case "30001":
+		 * CommonMessage<FeePaymentRequest> responseFeeTmb =
+		 * paymentWs.feePayment(newReq,"TMB"); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeTmb.getMessage()
+		 * )) {
+		 * 
+		 * CommonMessage<ApproveBeforePayRequest> responseApproveBefore =
+		 * paymentWs.approveBeforePayment(newReq); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.
+		 * getMessage())) {
+		 * 
+		 * CommonMessage<FeePaymentRequest> responseFeeDbd =
+		 * paymentWs.feePayment(newReq,"DBD"); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage()
+		 * )) {
+		 * 
+		 * CommonMessage<RealtimePaymentRequest> responseRealtime =
+		 * paymentWs.realtimePayment(newReq); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage
+		 * ())) { return responseRealtime; } else { return responseRealtime; }
+		 * 
+		 * } else { return null; }
+		 * 
+		 * } else { return null; }
+		 * 
+		 * } else { return null; } case "30002": CommonMessage<ApproveBeforePayRequest>
+		 * responseApproveBefore = paymentWs.approveBeforePayment(newReq); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseApproveBefore.
+		 * getMessage())) {
+		 * 
+		 * CommonMessage<FeePaymentRequest> responseFeeDbd =
+		 * paymentWs.feePayment(newReq,"DBD"); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseFeeDbd.getMessage()
+		 * )) {
+		 * 
+		 * CommonMessage<RealtimePaymentRequest> responseRealtime =
+		 * paymentWs.realtimePayment(newReq); if
+		 * (StatusConstant.PAYMENT_STATUS.SUCCESS_MSG.equals(responseRealtime.getMessage
+		 * ())) { return responseRealtime; } else { return responseRealtime; }
+		 * 
+		 * } else { return null; }
+		 * 
+		 * } else { return null; } default: return null; }
+		 */
 	}
 
 }

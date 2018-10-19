@@ -1,7 +1,5 @@
 package com.tmb.ecert.requestorform.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,7 @@ public class RequestorFormController {
 	
 	@GetMapping("/data/{id}")
 	@ResponseBody
-	public List<RequestForm> formFromId(@PathVariable("id") String id) {
+	public RequestForm formFromId(@PathVariable("id") String id) {
 		return reqService.findReqFormById(id);
 	}
 	

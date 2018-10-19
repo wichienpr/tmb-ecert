@@ -22,18 +22,20 @@ public class CheckRequestDetailDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
+	private static Logger Log = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
 	private final String SQL_ECERT_REQUEST_FORM = " SELECT F.* FROM ECERT_REQUEST_FORM F ";
 	private final String SQL_ECERT_REQUEST_CERTIFICATE = " SELECT C.* FROM ECERT_REQUEST_CERTIFICATE C ";
 
-	public List<RequestForm> findReqFormById(Long reqFormId) {
-		logger.info("RequestorDao::findReqFormById => {}", reqFormId);
-		return findReqFormById(reqFormId, true);
+	public RequestForm findReqFormById(Long reqFormId) {
+		Log.info("RequestorDao::findReqFormById finding by... id:{}", reqFormId);
+		RequestForm reqForm = findReqFormById(reqFormId, true);
+		Log.info("RequestorDao::findReqFormById finished with... tmbReqNo:{}", reqForm.getTmbRequestNo());
+		return reqForm;
 	}
 
-	public List<RequestForm> findReqFormById(Long reqFormId, boolean code) {
-		logger.info("RequestorDao::findReqFormById => {} {}", reqFormId, code);
+	public RequestForm findReqFormById(Long reqFormId, boolean code) {
+		Log.info("RequestorDao::findReqFormById finding by... id:{}, usedCode:{}", reqFormId, !code);
 		List<Object> params = new ArrayList<>();
 		StringBuilder sql = new StringBuilder("SELECT");
 		sql.append(" F.REQFORM_ID,F.REQUEST_DATE,F.TMB_REQUESTNO,F.ORGANIZE_ID,F.CUSTOMER_NAME,F.COMPANY_NAME,F.BRANCH,F.CA_NUMBER,F.DEPARTMENT,F.TRANCODE,F.GLTYPE,F.ACCOUNTTYPE,F.ACCOUNT_NO,F.ACCOUNT_NAME,F.CUSTOMER_NAMERECEIPT,F.TELEPHONE,F.REQUESTFORM_FILE,F.IDCARD_FILE,F.CHANGENAME_FILE,F.CERTIFICATE_FILE,F.ADDRESS,F.REMARK,F.PAYMENT_DATE,F.PAYLOADTS,F.PAYMENT_BRANCHCODE,F.POSTDATE,F.REF1,F.REF2,F.AMOUNT,F.AMOUNT_TMB,F.AMOUNT_DBD,F.RECEIPT_NO,F.STATUS,F.ERROR_DESCRIPTION,F.PAYMENT_STATUS,F.COUNT_PAYMENT,F.REJECTREASON_CODE,F.REJECTREASON_OTHER,F.CREATED_BY_ID,F.CREATED_BY_NAME,F.CREATED_DATETIME,F.UPDATED_BY_ID,F.UPDATED_BY_NAME,F.UPDATED_DATETIME,F.MAKER_BY_ID,F.MAKER_BY_NAME,F.CHECKER_BY_ID,F.CHECKER_BY_NAME,F.OFFICE_CODE,F.RECEIPT_DATE,F.RECEIPT_FILE");
@@ -57,32 +59,81 @@ public class CheckRequestDetailDao {
 		}
 		sql.append(" WHERE F.REQFORM_ID = ? ");
 		params.add(reqFormId);
-		return jdbcTemplate.query(sql.toString(), params.toArray(), formMapping);
+		RequestForm reqForm = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), formMapping);
+		Log.info("RequestorDao::findReqFormById finished with... tmbReqNo:{}", reqForm.getTmbRequestNo());
+		return reqForm;
 	}
 
 	public List<RequestCertificate> findCertByReqFormId(Long reqFormId) {
-		logger.info("RequestorDao::findCertByReqFormId => {}", reqFormId);
+		Log.info("RequestorDao::findCertByReqFormId finding by id:{}", reqFormId);
 		List<Object> params = new ArrayList<>();
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_CERTIFICATE);
 		sql.append(" WHERE C.REQFORM_ID = ? ");
 		params.add(reqFormId);
-		return jdbcTemplate.query(sql.toString(), params.toArray(), certMapping);
+		List<RequestCertificate> certs = jdbcTemplate.query(sql.toString(), params.toArray(), certMapping);
+		Log.info("RequestorDao::findCertByReqFormId finished with... {} item", certs.size());
+		return certs;
 	}
 
 	public List<Certificate> findCerByCerTypeCode(String cerTypeCode) {
+		Log.info("RequestorDao::findCerByCerTypeCode finding by cerTypeCode:{}", cerTypeCode);
 		StringBuilder sql = new StringBuilder(" SELECT * FROM ECERT_CERTIFICATE ");
 		sql.append(" WHERE TYPE_CODE = ? ORDER BY CODE ASC ");
 
 		List<Object> params = new ArrayList<>();
 		params.add(cerTypeCode);
 
-		logger.info(sql.toString());
-
 		List<Certificate> result = jdbcTemplate.query(sql.toString(), params.toArray(), cerMapper);
+
+		Log.info("RequestorDao::findCerByCerTypeCode finished with... {} item", result.size());
+		return result;
+	}
+	
+	public RequestForm findCertificateFileByReqID(Long reqID) {
+		Log.info("RequestorDao::findCertificateFileByReqID finding by id:{}", reqID);
+		StringBuilder sql = new StringBuilder(" ");
+//		sql.append(" SELECT REQUESTFORM_FILE,CERTIFICATE_FILE,RECEIPT_FILE FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ? ");
+		sql.append("   SELECT * FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ?   ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+
+		RequestForm result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), findFileNameMapping);
+
+		Log.info("RequestorDao::findCertificateFileByReqID finished with... tmbReqNo:{}", result.getTmbRequestNo());
+		
+		return result;
+	}
+	
+	public int updateECMFlag(Long reqID) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  UPDATE ECERT_REQUEST_FORM SET ECM_FLAG = 1  WHERE REQFORM_ID = ?   ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+
+		Log.info(sql.toString());
+
+		int result = jdbcTemplate.update(sql.toString(), params.toArray());
 
 		return result;
 	}
 
+	private RowMapper<RequestForm> findFileNameMapping = new RowMapper<RequestForm>() {
+		@Override
+		public RequestForm mapRow(ResultSet rs, int args1) throws SQLException {
+			RequestForm row = new RequestForm();
+			row.setCaNumber(rs.getString("CA_NUMBER"));
+			row.setCustomerName(rs.getString("CUSTSEGMENT_CODE"));
+			row.setRef2(rs.getString("REF2"));
+			row.setRequestFormFile(rs.getString("REQUESTFORM_FILE"));
+			row.setCertificateFile(rs.getString("CERTIFICATE_FILE"));
+			row.setReceiptFile(rs.getString("RECEIPT_FILE"));
+			row.setOrganizeId(rs.getString("ORGANIZE_ID"));
+			row.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
+			row.setCompanyName(rs.getString("COMPANY_NAME"));
+			return row;
+		}
+	};
+	
 	private RowMapper<Certificate> cerMapper = new RowMapper<Certificate>() {
 		@Override
 		public Certificate mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -175,50 +226,6 @@ public class CheckRequestDetailDao {
 			row.setUpdatedById(rs.getString("UPDATED_BY_ID"));
 			row.setUpdatedByName(rs.getString("UPDATED_BY_NAME"));
 			row.setUpdatedDateTime(rs.getTimestamp("UPDATED_DATETIME"));
-			return row;
-		}
-	};
-	
-	public RequestForm findCertificateFileByReqID(Long reqID) {
-		StringBuilder sql = new StringBuilder(" ");
-//		sql.append(" SELECT REQUESTFORM_FILE,CERTIFICATE_FILE,RECEIPT_FILE FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ? ");
-		sql.append("   SELECT * FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ?   ");
-		List<Object> params = new ArrayList<>();
-		params.add(reqID);
-
-		logger.info(sql.toString());
-
-		RequestForm result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), findFileNameMapping);
-
-		return result;
-	}
-	
-	public int updateECMFlag(Long reqID) {
-		StringBuilder sql = new StringBuilder(" ");
-		sql.append("  UPDATE ECERT_REQUEST_FORM SET ECM_FLAG = 1  WHERE REQFORM_ID = ?   ");
-		List<Object> params = new ArrayList<>();
-		params.add(reqID);
-
-		logger.info(sql.toString());
-
-		int result = jdbcTemplate.update(sql.toString(), params.toArray());
-
-		return result;
-	}
-
-	private RowMapper<RequestForm> findFileNameMapping = new RowMapper<RequestForm>() {
-		@Override
-		public RequestForm mapRow(ResultSet rs, int args1) throws SQLException {
-			RequestForm row = new RequestForm();
-			row.setCaNumber(rs.getString("CA_NUMBER"));
-			row.setCustomerName(rs.getString("CUSTSEGMENT_CODE"));
-			row.setRef2(rs.getString("REF2"));
-			row.setRequestFormFile(rs.getString("REQUESTFORM_FILE"));
-			row.setCertificateFile(rs.getString("CERTIFICATE_FILE"));
-			row.setReceiptFile(rs.getString("RECEIPT_FILE"));
-			row.setOrganizeId(rs.getString("ORGANIZE_ID"));
-			row.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
-			row.setCompanyName(rs.getString("COMPANY_NAME"));
 			return row;
 		}
 	};

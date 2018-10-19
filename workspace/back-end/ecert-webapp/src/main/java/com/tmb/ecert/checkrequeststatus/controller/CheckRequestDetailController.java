@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayRequest;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
 import com.tmb.ecert.common.domain.Certificate;
@@ -31,7 +29,7 @@ public class CheckRequestDetailController {
 
 	@GetMapping("/data/{id}")
 	@ResponseBody
-	public List<RequestForm> formFromId(@PathVariable("id") String id) {
+	public RequestForm formFromId(@PathVariable("id") String id) {
 		return crsService.findReqFormById(id);
 	}
 	

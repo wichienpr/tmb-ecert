@@ -105,7 +105,7 @@ public class ReportPdfService {
 			// Folder Exist ??
 			initialService();
 			DecimalFormat formatNumber = new DecimalFormat("#,###.00");
-			req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
+			req = checkReqDetailDao.findReqFormById(vo.getId(), false);
 			RpVatVo vat = reportPdfDao.vat().get(0);
 			// RP001
 			String reportName01 = "RP_RECEIPT_TAX";
@@ -223,7 +223,7 @@ public class ReportPdfService {
 		try {
 			// Folder Exist ??
 			initialService();
-			req = checkReqDetailDao.findReqFormById(vo.getId(), false).get(0);
+			req = checkReqDetailDao.findReqFormById(vo.getId(), false);
 			RpReceiverVo receiver = reportPdfDao.receiver(vo.getId()).get(0);
 			
 			String reportName = "RP_COVER_SHEET";
