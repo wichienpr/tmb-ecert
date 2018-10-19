@@ -10,6 +10,8 @@ import { Acc, Assigned, dateLocaleEN } from "helpers/";
 import { Nrq02000 } from "./nrq02000.model";
 import { ROLES } from "app/baiwa/common/constants";
 
+declare var $:any;
+
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
     CER_BY_TYPE: "/api/cer/typeCode",
@@ -30,6 +32,7 @@ const URL = {
 export class Nrq02000Service {
     private tmbReqFormId: string = "";
     private dropdownObj: any;
+    private hasAuthed: string = "false";
     private form: FormGroup = new FormGroup({
         reqFormId: new FormControl(''),
         reqTypeSelect: new FormControl('', Validators.required),        // ประเภทคำขอ
@@ -244,6 +247,47 @@ export class Nrq02000Service {
                 // approveMsg: "ดำเนินการต่อ",
                 // color: "notification"
             }
+            if (this.hasAuthed == "true") {
+                this.common.blockui(); // Loading page
+                const formData = this.bindingData(certificates, files, form, addons);
+                let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
+                this.ajax.upload(url, formData, response => {
+                    if (response.json().message == "SUCCESS") {
+                        const modal: Modal = {
+                            msg: "บันทึกข้อมูลสำเร็จ",
+                            // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                            success: true
+                        };
+                        this.modal.alert(modal);
+                        this.common.unblockui(); // Loading page
+                        this.router.navigate(['/crs/crs01000'], {
+                            queryParams: { codeStatus: addons.status }
+                        });
+                    } else {
+                        if (response.json().data && response.json().data == "NEEDLOGIN") {
+                            this.authForSubmit();
+                            this.common.unblockui(); // Loading page
+                            return;
+                        }
+                        let msg = "";
+                        if (response.json().data && response.json().data == "HASMAKER") {
+                            msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                        } else {
+                            msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                        }
+                        const modal: Modal = {
+                            msg: msg,
+                            success: false
+                        };
+                        this.modal.alert(modal);
+                        this.common.unblockui(); // Loading page
+                    }
+                }, err => {
+                    console.error(err)
+                });
+                this.hasAuthed = "false";
+                return ;
+            }
             this.modal.confirm((e) => {
                 if (e) {
                     this.common.blockui(); // Loading page
@@ -262,6 +306,11 @@ export class Nrq02000Service {
                                 queryParams: { codeStatus: addons.status }
                             });
                         } else {
+                            if (response.json().data && response.json().data == "NEEDLOGIN") {
+                                this.authForSubmit();
+                                this.common.unblockui(); // Loading page
+                                return;
+                            }
                             let msg = "";
                             if (response.json().data && response.json().data == "HASMAKER") {
                                 msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
@@ -281,6 +330,15 @@ export class Nrq02000Service {
                 }
             }, modalConf);
         }
+    }
+
+    toAuthed() {
+        this.hasAuthed = "true";
+        return true;
+    }
+
+    authForSubmit() {
+        $("#auth").modal("show");
     }
 
     chkCertsC(certificates: Certificate[], form: FormGroup) {
@@ -551,6 +609,14 @@ export class Nrq02000Service {
             }
         });
         let notUseReceipt = form.get('payMethodSelect').value && (/*form.get('payMethodSelect').value == '30003' || */form.get('payMethodSelect').value == '30004');
+        let amount;
+        if (form.controls.amountTmb.value && form.controls.amountDbd.value) {
+            amount = parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, ''));
+        } else if (form.controls.amountDbd.value) {
+            amount = parseFloat(form.controls.amountDbd.value.replace(/,/g, ''));
+        } else {
+            amount = 0;
+        }
         let data: Nrq02000 = {
             glType: addons.glType,
             tranCode: addons.tranCode,
@@ -581,11 +647,13 @@ export class Nrq02000Service {
             requestFileName: addons.requestFormFile,
             ref1: notUseReceipt ? '' : form.get('ref1').value,
             ref2: notUseReceipt ? '' : form.get('ref2').value,
-            amountDbd: !notUseReceipt && form.get('amountDbd').value ? form.get('amountDbd').value.replace(/,/g, '') : "",
-            amountTmb: !notUseReceipt && form.get('amountTmb').value ? form.get('amountTmb').value.replace(/,/g, '') : "",
-            amount: form.controls.amountTmb.value && form.controls.amountDbd.value ? parseFloat(form.controls.amountDbd.value.replace(/,/g, '')) + parseFloat(form.controls.amountTmb.value.replace(/,/g, '')) : "",
+            amountDbd: !notUseReceipt && form.get('amountDbd').value ? form.get('amountDbd').value.replace(/,/g, '') : 0,
+            amountTmb: !notUseReceipt && form.get('amountTmb').value ? form.get('amountTmb').value.replace(/,/g, '') : 0,
+            amount: amount,
             rejectReasonCode: addons.rejectReasonCode,
-            rejectReasonOther: addons.rejectReasonOther
+            rejectReasonOther: addons.rejectReasonOther,
+            hasAuthed: this.hasAuthed,
+            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : ""
         };
         for (let key in data) {
             if (data[key]) {
