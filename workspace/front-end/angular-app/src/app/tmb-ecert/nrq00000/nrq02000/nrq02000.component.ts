@@ -29,6 +29,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   tmbReqFormId: String = "";
   form: FormGroup;
   formReject: FormGroup;
+  formAuth: FormGroup;
   files: any;
   reqDate: Date;
   dropdownObj: any;
@@ -38,6 +39,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   isdownload: boolean = false;
   showChildren: boolean = false;
   rejectSubmitted: boolean = false;
+  authSubmitted: boolean = false;
   hiddenReceipt3: boolean = false;
   hiddenReceipt4: boolean = false;
 
@@ -55,6 +57,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   user: UserDetail;
   allowed: Dropdown;
   allowedModal: Modal;
+  authForSubmit: Modal;
   firstEnter: boolean = true;
 
   constructor(
@@ -73,6 +76,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       allowedSelect: new FormControl('', Validators.required),
       otherReason: new FormControl(),
     });
+    this.formAuth = new FormGroup({
+      authUsername: new FormControl('', Validators.required), 
+      authPassword: new FormControl('', Validators.required), 
+    });
     this.allowed = {
       type: "selection",
       dropdownId: "allowedSelect",
@@ -85,6 +92,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       placehold: "กรุณาเลือก"
     };
     this.allowedModal = { modalId: "allowed", type: "custom" };
+    this.authForSubmit = { modalId: "auth", type: "custom" };
     this.store.select("user").subscribe(user => this.user = user);
     this.init();
   }
@@ -218,6 +226,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get btnMakerApprove() { return this.roles(ROLES.MAKER)&&this.common.isAuth(PAGE_AUTH.P0000401) }
   get btnMakerReject() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000403) }
 
+  get authUsername() { return this.formAuth.get("authUsername") }
+  get authPassword() { return this.formAuth.get("authPassword") }
+
   getStatus() {
     // 10001	1	สถานะคำขอ	คำขอใหม่
     // 10002	1	สถานะคำขอ	ดำเนินการชำระเงิน
@@ -293,6 +304,16 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   minus(control: string) {
     this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
+  }
+
+  auth(e) {
+    e.preventDefault();
+    this.authSubmitted = true;
+    if (this.formAuth.valid) {
+      if(this.service.toAuthed()) {
+        this.formSubmit(this.form);
+      }
+    }
   }
 
   keytab(one, two) {
