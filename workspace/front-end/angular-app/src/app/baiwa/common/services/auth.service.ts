@@ -3,13 +3,15 @@ import { UserDetail } from 'app/user.model';
 import { Http } from '@angular/http';
 import { longStackSupport } from 'q';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
+import { HttpClient } from '@angular/common/http';
+import { timeout } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
 
   public login(username: string, password: string) {
@@ -19,7 +21,7 @@ export class AuthService {
     f.append("password", password);
 
     let url: string = AjaxService.CONTEXT_PATH + "/login";
-    return this.http.post(url, f);
+    return this.http.post(url, f).pipe(timeout(10000));
   }
 
   public logout() {
