@@ -343,12 +343,14 @@ export class sup01100Component implements OnInit {
   }
   // swich check
   chanageStatus(fuctioncode, index, index2) {
-    // console.log("swift toggle ", fuctioncode, " index", index, " j ", index2);
+    console.log("swift toggle ", fuctioncode, " index", index, " j ", index2);
     if (index2 == -1) {
       if (this.rolepermisson[index].status == 0) {
         this.rolepermisson[index].status = 1
+        this.changeStatusChlid(index,1);
       } else {
         this.rolepermisson[index].status = 0
+        this.changeStatusChlid(index,0);
       }
     } else {
       if (this.rolepermisson[index].chliddata[index2].status == 0) {
@@ -357,6 +359,23 @@ export class sup01100Component implements OnInit {
         this.rolepermisson[index].chliddata[index2].status = 0
       }
     }
+  }
+
+  changeStatusChlid(index,status){
+    // this.rolepermisson[index].chliddata.forEach(element => {
+    //   element.state = status;
+    //   console.log("permission ",element.fuctioncode);
+    // });
+    for (let i = 0; i < this.rolepermisson[index].chliddata.length; i++) {
+      if (status ==0 ){
+        this.rolepermisson[index].chliddata[i].status = 0;
+      }else{
+        this.rolepermisson[index].chliddata[i].status = 1;
+      }
+
+      console.log("permission ",this.rolepermisson[index].chliddata[i].fuctioncode , " status ",this.rolepermisson[index].chliddata[i].status);
+    }
+
   }
 
   clickCancle() {

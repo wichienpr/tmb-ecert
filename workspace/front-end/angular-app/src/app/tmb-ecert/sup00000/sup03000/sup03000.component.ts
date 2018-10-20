@@ -12,6 +12,7 @@ import { CommonService } from 'app/baiwa/common/services';
 import { PAGE_AUTH } from 'app/baiwa/common/constants';
 import { UserDetail } from 'app/user.model';
 import { DatatableDirective, DatatableCofnig } from 'app/baiwa/common/directives/datatable/datatable.directive';
+import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-sup03000',
@@ -22,6 +23,9 @@ export class Sup03000Component implements OnInit {
 
   @ViewChild("emailConfigDT")
   emailConfigDT: DatatableDirective;
+
+  @ViewChild("statusDropDown")
+  statusDropDown: DropdownComponent;
 
   isShowResult: Boolean = false;
   dropDownStatus: any;
@@ -132,7 +136,8 @@ export class Sup03000Component implements OnInit {
   clickClear() {
     this.store.dispatch(new SUP03000ACTION.ClearEmail());
     this.form.reset({ name: '', status: '' });
-    console.log()
+    this.statusDropDown.clear();
+    // console.log("clear")
 
   }
 

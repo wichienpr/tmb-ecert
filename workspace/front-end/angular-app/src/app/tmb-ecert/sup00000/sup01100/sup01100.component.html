@@ -1,106 +1,108 @@
 <h2 class="ui header"> เพิ่ม Role
 </h2>
 <div class="ui segment ">
-	<div class="ui form">
-		<br>
-		<form [formGroup]="form">
-			<div class="inline fields">
-				<div class="four wide field "></div>
-				<div class="two wide field ">
-					<label>Role Name </label>
-				</div>
-				<div class="five wide field" [ngClass]="{'error':(roleName.invalid && (roleName.dirty || roleName.touched)) || (roleName.invalid && submited),
+   <div class="ui form">
+      <br>
+      <form [formGroup]="form">
+         <div class="inline fields">
+            <div class="four wide field "></div>
+            <div class="two wide field ">
+               <label>Role Name </label>
+            </div>
+            <div class="five wide field" [ngClass]="{'error':(roleName.invalid && (roleName.dirty || roleName.touched)) || (roleName.invalid && submited),
                 'disabled' :(roleStatus) }">
-					<input type="text" formControlName="roleName" required>
+               <input type="text" formControlName="roleName" required>
 
-				</div>
-			</div>
-			<div class="inline fields">
-				<div class="four wide field "></div>
-				<div class="two wide field ">
-					<label>สถานะ</label>
-				</div>
-				<div class=" one wide  field">
-					<div class="ui radio checkbox">
-						<input type="radio" [value]="0" formControlName="status">
-						<label>Active</label>
-					</div>
-				</div>
-				<div class="field">
-					<div class="ui radio checkbox">
-						<input type="radio" [value]="1" formControlName="status">
-						<label>InActive</label>
-					</div>
-				</div>
+            </div>
+         </div>
+         <div class="inline fields">
+            <div class="four wide field "></div>
+            <div class="two wide field ">
+               <label>สถานะ</label>
+            </div>
+            <div class=" one wide  field">
+               <div class="ui radio checkbox">
+                  <input type="radio" [value]="0" formControlName="status">
+                  <label>Active</label>
+               </div>
+            </div>
+            <div class="field">
+               <div class="ui radio checkbox">
+                  <input type="radio" [value]="1" formControlName="status">
+                  <label>InActive</label>
+               </div>
+            </div>
 
-			</div>
-		</form>
+         </div>
+      </form>
 
-		<br>
-		<div class="ui grid ">
-			<div class="row">
-				<div class="three wide column">&nbsp;</div>
-				<div class="ten wide column">
-					<table class="ui small celled table nowrap" id="table" style="width: 100%">
-						<thead>
-							<tr style="text-align: center;">
-								<th>Screen</th>
-								<th>Active/InActive</th>
-							</tr>
-						</thead>
+      <br>
+      <div class="ui grid ">
+         <div class="row">
+            <div class="three wide column">&nbsp;</div>
+            <div class="ten wide column">
+               <table class="ui small celled table nowrap" id="table" style="width: 100%">
+                  <thead>
+                     <tr style="text-align: center;">
+                        <th>Screen</th>
+                        <th>Active/InActive</th>
+                     </tr>
+                  </thead>
 
-						<tbody>
+                  <tbody>
 
-							<!-- <div *ngFor="let item of rolepermisson;  let i = index"> -->
-							<ng-template ngFor let-item [ngForOf]="rolepermisson" let-i="index">
-								<tr>
-									<td>&nbsp; &nbsp;{{item.rolename}}</td>
-									<td style="text-align: center">
-										<div class="ui toggle  checkbox ">
-											<input type="checkbox" name="{{item.fuctioncode}}" #roleNameView (click)="chanageStatus(item.fuctioncode,i,-1)"
-											 [attr.checked]="item.status == 0?'checked':null">
-											<label></label>
-										</div>
-									</td>
-								</tr>
+                     <!-- <div *ngFor="let item of rolepermisson;  let i = index"> -->
+                     <ng-template ngFor let-item [ngForOf]="rolepermisson" let-i="index">
+                        <tr>
+                           <td>&nbsp; &nbsp;{{item.rolename}}</td>
+                           <td style="text-align: center">
+                              <div class="ui toggle  checkbox ">
+                                 <!-- <input type="checkbox" name="{{item.fuctioncode}}" (click)="chanageStatus(item.fuctioncode,i,-1)"
+                                    [attr.checked]="item.status == 0?'checked':null"> -->
+                                <input type="checkbox" name="{{item.fuctioncode}}" (click)="chanageStatus(item.fuctioncode,i,-1)"
+                                    [checked]="item.status == 0">
+                                 <label></label>
+                              </div>
+                           </td>
+                        </tr>
 
-								<tr *ngFor="let child of item.chliddata; let j = index">
-									<td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;{{child.rolename}}</td>
-									<td style="text-align: center">
-										<div class="ui toggle  checkbox">
-											<input type="checkbox" name="{{child.fuctioncode}}" (click)="chanageStatus(child.fuctioncode,i,j)"
-											 [attr.checked]="child.status == 0 ?'checked':null">
-											<label></label>
-										</div>
-									</td>
-								</tr>
+                        <tr *ngFor="let child of item.chliddata; let j = index">
+                           <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;{{child.rolename}}</td>
+                           <td style="text-align: center">
+                              <div class="ui toggle  checkbox">
+                                 <input type="checkbox" name="{{child.fuctioncode}}" (click)="chanageStatus(child.fuctioncode,i,j)"
+                                    [checked]="child.status == 0">
+                                 <label></label>
+                              </div>
+                           </td>
+                        </tr>
 
-								<!-- </div> -->
-							</ng-template>
+                        <!-- </div> -->
+                     </ng-template>
 
-						</tbody>
-					</table>
-				</div>
-				<div class="three wide column">&nbsp;</div>
-			</div>
-		</div>
+                  </tbody>
+               </table>
+            </div>
+            <div class="three wide column">&nbsp;</div>
+         </div>
+      </div>
 
 
 
-		<br>
-		<br>
-		<div class="ui center aligned grid" (click)="clickSave()">
-			<button class="ui blue basic button">
-				<i class="download circle icon"></i>
-				บันทึก
-			</button> &nbsp;&nbsp;&nbsp;
-			<button class="ui grey basic button" (click)="clickCancle()">
-				<i class="times circle outline icon"></i>
-				ยกเลิก
-			</button>
-		</div>
-		<br>
+      <br>
+      <br>
+      <div class="ui center aligned grid" (click)="clickSave()">
+         <button class="ui blue basic button">
+            <i class="download circle icon"></i>
+            บันทึก
+         </button> &nbsp;&nbsp;&nbsp;
+         <button class="ui grey basic button" (click)="clickCancle()">
+            <i class="times circle outline icon"></i>
+            ยกเลิก
+         </button>
+      </div>
+      <br>
 
-	</div>
+   </div>
 </div>

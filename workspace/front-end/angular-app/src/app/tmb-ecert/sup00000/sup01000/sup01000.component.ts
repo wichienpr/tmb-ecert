@@ -13,6 +13,7 @@ import { DatatableDirective, DatatableCofnig } from 'app/baiwa/common/directives
 import { ModalComponent } from 'app/baiwa/common/components/modal/modal.component';
 import { PAGE_AUTH, MESSAGE_STATUS } from 'app/baiwa/common/constants';
 import { UserDetail } from 'app/user.model';
+import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-sup01000',
@@ -28,6 +29,8 @@ export class Sup01000Component implements OnInit {
   @ViewChild("modalUpload")
   modalUpload: ModalComponent;
 
+  @ViewChild("statusDropDown")
+  statusDropDown: DropdownComponent;
 
   isShowResult: Boolean = false;
   isShowImport: Boolean = false;
@@ -172,6 +175,7 @@ export class Sup01000Component implements OnInit {
     clickClear() {
       this.userRoleForm.reset({ roleName: "", status: "90001" });
       this.store.dispatch(new SUP01000ACTION.ClearRole());
+      this.statusDropDown.clear();
     }
 
     clickImportRole() {
