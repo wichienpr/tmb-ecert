@@ -69,7 +69,10 @@ public class CheckRequestCertificatService {
 			if (certificateDao.upDateCertificateByCk(req) == true) {
 				historyDao.save(req);
 //				call webservice
-				uploadCerService.uploadEcertificate(certificateVo.getId(),user.getUserId());
+				if (StringUtils.isNotBlank(req.getCaNumber())) {
+					uploadCerService.uploadEcertificate(certificateVo.getId(),user.getUserId());
+				}
+
 				msg.setMessage("SUCCESS");
 			} else {
 				msg.setMessage("PRESS_UPLOAD_RECIEPTTAX");

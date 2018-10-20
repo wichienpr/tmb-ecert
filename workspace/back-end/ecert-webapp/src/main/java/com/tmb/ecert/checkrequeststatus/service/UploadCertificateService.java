@@ -2,31 +2,30 @@ package com.tmb.ecert.checkrequeststatus.service;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
-import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentResponse;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FileImportRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentResponse;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
@@ -54,49 +53,40 @@ public class UploadCertificateService {
 
 	@Value("${app.datasource.ftp.password}")
 	private String ftpPassword;
-	
-	
-	@Value("${app.datasource.ws.url}")
-	private String WSROOT;
-	
-	@Value("${app.datasource.ws.importdoc}")
-	private String WSIMPORTURL;
-
-	@Value("${app.datasource.ws.checkstatus}")
-	private String WSCHECKURL;
-
 
 	private static String PATH_UPLOAD = "tmb-requestor/";
 	private static String CODE_SUCCESS = "0000";
 	private static String CODE_PARTIAL_SUCCESS = "0001";
 	private static String CODE_CHECK_SUCCESS = "0";
-	
+
 	private static String SEGMENTCODE_1 = "20005";
 	private static String SEGMENTCODE_2 = "20004";
 	private static String SEGMENTCODE_3 = "20003";
 	private static String SEGMENTCODE_4 = "20002";
-	
-//	private static String WSIMPORTURL = "http://150.95.24.42:8080/tmp-ws/api-payment/importDocument";
-//	private static String WSCHECKURL = "http://150.95.24.42:8080/tmp-ws/api-payment/checkStatusDocument";
 
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
 
 	@Async
 	public void uploadEcertificate(Long certificateID, String userid) {
-		String channelid = ApplicationCache.getParamValueByName("ecm.channelid");
-		String docTyep = ApplicationCache.getParamValueByName("ecm.doctype");
-
-
+		String channelid = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHANNELID);
+		String docTyep = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_DOCTYPE);
 		int countftp = 0;
-		boolean statusUpload[] = new boolean[3];
-		boolean statusftp = false;
+//		boolean statusUpload[] = new boolean[3];
+		boolean statusUpload = false;
+		boolean statusCheck = false;
 		try {
 			log.info(" START PROCESS UPLOAD CERTIFIACTE... ");
-			int timesleep = Integer.parseInt(ApplicationCache.getParamValueByName("ecer.upload.certificate.sleep"));
-			int timeLoop = Integer.parseInt(ApplicationCache.getParamValueByName("ecer.upload.certificate.time"));
-			uploadEcerLoop: 
-			while (countftp < timeLoop) {
+			int timesleep = Integer.parseInt(
+					ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_SLEEP));
+			int timeLoop = Integer.parseInt(
+					ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_TIME));
+
+			Assert.isTrue(timesleep > 0,
+					ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_SLEEP + " is greater than 0");
+			Assert.isTrue(timeLoop > 0,
+					ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_TIME + " is greater than 0");
+			uploadEcerLoop: while (countftp < timeLoop) {
 
 				// STEP 1 : read 3 file from db
 				RequestForm reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
@@ -112,65 +102,67 @@ public class UploadCertificateService {
 				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
 				boolean isSuccess = SftpUtils.putFile(sftpVo);
 				if (isSuccess) {
-					for (int i = 0; i < files.size(); i++) {
-						
-						Thread.sleep(10000);
-						int countImport = 0;
+					Thread.sleep(3000);
+					int countImport = 0;
+					int countCheckStatus = 0;
+					String reqID = ramdomKey(channelid);
+					log.info(" IMPORT DOCUMENT BY REQID {} ", reqID);
 //						call ws import document
-						wsimportLoop: while ( countImport < timeLoop ) {
-							
-							int countCheckStatus = 0;
-							Thread.sleep(timesleep);
-							log.info("FTP FILE UPLOAD CERTIFICATE SUCCESS....");
-							String reqID = ramdomKey(channelid);
-							String fileName = reqID + "/" + files.get(i).getFileName();
-							log.info(" IMPORT DOCUMENT REQID IS {} ", reqID, "filename {}", fileName);
-							
-							ImportDocumentResponse impResp = callImportWS(reqVo,reqID,channelid,userid,fileName,docTyep);
+					while (countImport < timeLoop) {
+						Thread.sleep(timesleep);
 
-							if (CODE_SUCCESS.equals(impResp.getResCode())) {
-								log.info("CALL WS IMPORT SUCCESS ");
-								while (countCheckStatus < timeLoop) {
-//									call ws checkstatus document
-									Thread.sleep(timesleep);
-									CheckStatusDocumentResponse checkStatusVo  = CheckStatusWS(reqVo,reqID,channelid,userid,fileName,docTyep);
-									log.info("CALL WS CHECK STATUS {}", checkStatusVo.getDescription());
-									
-									if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
-										statusUpload[i] = true;
-//										break loop ws_import and then select file for call ws_import  
-										break wsimportLoop;
-
-									}else {
-										statusUpload[i] = false;
-										countCheckStatus++;
-									}
-								}
-							} else {
-								countImport++;
-								log.info("CALL WS IMPORT FIAL {} ", impResp.getDescription());
+						ImportDocumentResponse impResp = callImportWS(reqVo, reqID, channelid, userid, files, docTyep);
+						if (CODE_SUCCESS.equals(impResp.getResCode())) {
+							statusUpload = true;
+							log.info("CALL WS IMPORT DOCUMENT SUCCESS ");
+							break ;
+						} else {
+							statusUpload = false;
+							countImport++;
+							log.info("CALL WS IMPORT DOCUMENT FIAL {} ", impResp.getDescription());
+							
+							if(countImport >=3) {
+								break uploadEcerLoop;
 							}
 						}
 					}
-					boolean checkFail = true;
-					for (boolean  arr : statusUpload) {
-						checkFail = checkFail && arr;
-					}
-					if (checkFail == true) {
-						statusftp = true;
-						break uploadEcerLoop;
-					}else {
-						statusftp = false;
-					}
 					
+					if(statusUpload == true) {
+						while (countCheckStatus < timeLoop) {
+//							call ws checkstatus document
+							Thread.sleep(timesleep);
+							CheckStatusDocumentResponse checkStatusVo = CheckStatusWS(reqVo, reqID, channelid, userid,
+									docTyep);
+							log.info("CALL WS CHECK STATUS {}", checkStatusVo.getDescription());
+
+							if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
+//									statusUpload[i] = true;
+								statusUpload = true;
+								break uploadEcerLoop;
+
+							} else if (CODE_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
+								statusUpload = false;
+//								statusUpload[i] = false;
+								countCheckStatus++;
+							}else {
+								statusUpload = false;
+//									statusUpload[i] = false;
+								countCheckStatus++;
+							}
+						}
+					}
+
+				} else {
+					statusUpload = false;
+					break;
 				}
 				countftp++;
 			}
-		
-			if (statusftp) {
+
+			if (statusUpload) {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
-			}else {
+			} else {
 				log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
 			}
 
@@ -183,13 +175,13 @@ public class UploadCertificateService {
 	private String convertCostomerSegment(String segmentcode) {
 		if (SEGMENTCODE_1.equals(segmentcode)) {
 			return "1";
-		}else if (SEGMENTCODE_2.equals(segmentcode)) {
+		} else if (SEGMENTCODE_2.equals(segmentcode)) {
 			return "2";
-		}else if (SEGMENTCODE_3.equals(segmentcode)) {
+		} else if (SEGMENTCODE_3.equals(segmentcode)) {
 			return "3";
-		}else if (SEGMENTCODE_4.equals(segmentcode)) {
+		} else if (SEGMENTCODE_4.equals(segmentcode)) {
 			return "4";
-		}else {
+		} else {
 			return "0";
 		}
 	}
@@ -201,43 +193,59 @@ public class UploadCertificateService {
 		return str;
 
 	}
-	
-	private ImportDocumentResponse  callImportWS(RequestForm reqVo,String reqID, String channelid, String userid, String  fileName ,String docTyep) {
+
+	private ImportDocumentResponse callImportWS(RequestForm reqVo, String reqID, String channelid, String userid,
+			List<SftpFileVo> files, String docTyep) {
+
+		String endPoint = ApplicationCache
+				.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_IMPORT_DOCUMENT);
 		RestTemplate restTemplate = new RestTemplate();
 		ImportDocumentRequest req = new ImportDocumentRequest();
-		req.setReqId(null);
+		List<FileImportRequest> fileslist = new ArrayList<>();
+		FileImportRequest fileImport;
+		for (int j = 0; j < files.size(); j++) {
+			fileImport = new FileImportRequest();
+			String fileName = reqID + "/" + files.get(j).getFileName();
+
+			fileImport.setFileName(fileName);
+			fileImport.setCusName(reqVo.getCompanyName());
+			fileImport.setDocTypeCode(docTyep);
+			fileImport.setImportDate(EcerDateUtils.formatDDMMYYYYDate(new Date()));
+			fileImport.setRegistrationId(reqVo.getOrganizeId());
+
+			fileslist.add(fileImport);
+		}
+		req.setFiles(fileslist);
+		req.setReqId(reqID);
 		req.setCaNumber(reqVo.getCaNumber());
 		req.setChannelId(channelid);
 		req.setReqUserId(userid);
-		req.setFileName(fileName);
 		req.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));
-		req.setDocTypeCode(docTyep);
-		req.setImportDate(EcerDateUtils.formatDDMMYYYYDate(new Date()));
-		req.setRegistrationId(reqVo.getOrganizeId());
-		req.setRefAppNo(reqVo.getTmbRequestNo());
-		req.setCusName(reqVo.getCompanyName());
+
+//		req.setCusName(reqVo.getCompanyName());
 
 		HttpEntity<ImportDocumentRequest> request = new HttpEntity<>(req);
-		ResponseEntity<ImportDocumentResponse> response = restTemplate.exchange(WSROOT+WSIMPORTURL,
+		ResponseEntity<ImportDocumentResponse> response = restTemplate.exchange(StringUtils.trim(endPoint),
 				HttpMethod.POST, request, ImportDocumentResponse.class);
 
 		ImportDocumentResponse resVo = response.getBody();
 		return resVo;
 	}
-	
-	private CheckStatusDocumentResponse CheckStatusWS(RequestForm reqVo,String reqID, String channelid, String userid, String  fileName ,String docTyep) {
+
+	private CheckStatusDocumentResponse CheckStatusWS(RequestForm reqVo, String reqID, String channelid, String userid,
+			String docTyep) {
+		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHECK_STATUS);
 		RestTemplate restTemplate = new RestTemplate();
 		CheckStatusDocumentRequest checkReq = new CheckStatusDocumentRequest();
-		checkReq.setReqId(reqID);
+		checkReq.setReqId(null);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
 		checkReq.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));
 		checkReq.setCaNumber(reqVo.getCaNumber());
 
 		HttpEntity<CheckStatusDocumentRequest> chekcRequest = new HttpEntity<>(checkReq);
-		ResponseEntity<CheckStatusDocumentResponse> checkResponse = restTemplate.exchange(
-				WSROOT+WSCHECKURL, HttpMethod.POST, chekcRequest,
-				CheckStatusDocumentResponse.class);
+		ResponseEntity<CheckStatusDocumentResponse> checkResponse = restTemplate.exchange(StringUtils.trim(endPoint),
+				HttpMethod.POST, chekcRequest, CheckStatusDocumentResponse.class);
 		CheckStatusDocumentResponse checkStatusVo = checkResponse.getBody();
 		return checkStatusVo;
 	}

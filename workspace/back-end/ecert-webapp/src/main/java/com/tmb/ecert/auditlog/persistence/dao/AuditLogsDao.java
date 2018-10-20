@@ -105,7 +105,7 @@ public class AuditLogsDao {
 	    	public Adl01000Vo mapRow(ResultSet rs, int arg1) throws SQLException {
 	    		Adl01000Vo vo = new Adl01000Vo();
 	    		vo.setId(rs.getLong("AUDITLOG_ID"));
-	    		vo.setCreatedDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("CREATED_DATETIME")));
+	    		vo.setCreatedDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getTimestamp("CREATED_DATETIME")));
 	    		vo.setCreatedById(rs.getString("CREATED_BY_ID"));
 	    		vo.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 	    		vo.setActionCode(rs.getString("ACTION_CODE"));

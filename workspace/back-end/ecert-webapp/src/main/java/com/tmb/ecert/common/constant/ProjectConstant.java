@@ -82,4 +82,12 @@ public class ProjectConstant {
 		public static final String SHUTDOWN_TIME_FROM = "shutdown.time.from";
 	}
 	
+	public static class WEB_SERVICE_ENDPOINT{
+		public static final String  UPLOADCERTIFICARE_SLEEP= "ecer.upload.certificate.sleep";
+		public static final String  UPLOADCERTIFICARE_TIME= "ecer.upload.certificate.time";
+		public static final String  ECM_IMPORT_DOCUMENT= "ecert.ecm.importdocument.endpoint";
+		public static final String  ECM_CHECK_STATUS = "ecert.ecm.checkstatus.endpoint";
+		public static final String  ECM_CHANNELID = "ecm.channelid";
+		public static final String  ECM_DOCTYPE = "ecm.doctype";
+	}
 }
