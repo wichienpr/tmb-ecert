@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
     this.loginsv.login(this.username, this.password).subscribe(resp => {
       let result: AjaxLoginVo = resp as AjaxLoginVo;
-      console.log(result);
+      console.log("ACTION : LOGIN", result);
       this.loading = false;
       if (result.status == "SUCCESS") {
         const INIT_USER_DETAIL: UserDetail = {

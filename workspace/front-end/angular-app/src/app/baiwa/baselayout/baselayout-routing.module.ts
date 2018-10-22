@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SemanticBodyComponent } from './semantic-body/semantic-body.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: SemanticBodyComponent,
+    canActivateChild : [AuthGuard],
     children: [
       // For Examples
       { path: 'examples', loadChildren: 'app/tmb-ecert/example/example.module#ExampleModule' },
