@@ -3,7 +3,8 @@ import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CertFile } from './crs02000.models';
+import { CertFile, Rejected } from './crs02000.models';
+import { REQ_STATUS } from 'app/baiwa/common/constants';
 
 const URL = {
   REQUEST_FORM: "/api/crs/crs02000/data",
@@ -81,13 +82,14 @@ export class Crs02000Service {
     });
   }
 
-  rejected(data: any) {
+  rejected(data: Rejected) {
+    const code = data.for == "checker" ? REQ_STATUS.ST10007 : REQ_STATUS.ST10004;
     this.ajax.post(URL.CER_REJECT, data, response => {
       const data = response.json();
       if (data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
         this.router.navigate(['/crs/crs01000'], {
-          queryParams: { codeStatus: "10003" }
+          queryParams: { codeStatus: code }
         });
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
       } else {
@@ -141,8 +143,6 @@ export class Crs02000Service {
           if (obj.code == ob.certificateCode) {
             obj.check = true;
             obj.value = ob.totalNumber;
-            obj.acceptedDate = ob.acceptedDate;
-            obj.statementYear = ob.statementYear;
           }
         });
         if (obj.children) {
@@ -153,6 +153,7 @@ export class Crs02000Service {
               if (ob.code == o.certificateCode) {
                 ob.registeredDate = o.registeredDate;
                 ob.acceptedDate = o.acceptedDate;
+                ob.statementYear = o.statementYear;
                 ob.other = o.other;
                 ob.check = true;
                 ob.value = o.totalNumber;

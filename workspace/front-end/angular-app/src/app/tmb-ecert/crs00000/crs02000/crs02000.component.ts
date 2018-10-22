@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
 import { Crs02000Service } from './crs02000.service';
-import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
 import { CommonService, DropdownService } from 'app/baiwa/common/services';
 import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CertFile, Rejected } from './crs02000.models';
@@ -155,15 +155,21 @@ export class Crs02000Component implements OnInit {
   }
 
   reject() {
+    const what = this.roles(ROLES.CHECKER) ? 'checker' : 'requestor';
     this.rejectSubmitted = true;
     if (this.formReject.valid) {
       const data: Rejected = {
         reqFormId: this.data.reqFormId,
         rejectReasonCode: this.allowedSelect.value,
-        rejectReasonOther: this.otherReason.value
+        rejectReasonOther: this.otherReason.value,
+        for: what
       };
       this.service.rejected(data);
     }
+  }
+
+  chkStatus = status => {
+    return this.data.status == status;
   }
 
   get onlyMaker() { return this.roles(ROLES.MAKER) }
@@ -174,10 +180,20 @@ export class Crs02000Component implements OnInit {
   get otherReason() { return this.formReject.controls.otherReason }
 
   get certFile() { return this.formCert.get('certFile') }
-  get btnApprove() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000402) }
-  get btnReject() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000403) }
-  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000404)}
-  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000405)}
-  get btnUpload() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000406)}
+  get btnApprove() { return this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005) && this.common.isAuth(PAGE_AUTH.P0000402) }
+  get btnReject() {
+    if (this.common.isAuth(PAGE_AUTH.P0000403)) {
+      if (this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005)) {
+        return true;
+      } else if (this.roles(ROLES.REQUESTOR) && this.chkStatus(REQ_STATUS.ST10001)) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) }
+  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
+  get btnUpload() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000406) }
 
 }

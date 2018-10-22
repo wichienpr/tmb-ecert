@@ -196,7 +196,7 @@
                   <td style="display: none">&nbsp;</td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="chk.code && chk.feeTmb">
+              <ng-container *ngIf="chk.code && chk.feeTmb&& chk.value !== 0">
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
@@ -215,7 +215,7 @@
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="chk.code && !chk.feeTmb">
+              <ng-container *ngIf="chk.code && !chk.feeTmb && chk.value !== 0">
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
@@ -226,8 +226,8 @@
                   <td colspan="4">{{ chk.certificate }}</td>
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
-                <ng-container>
-                  <tr *ngFor="let db of chk.children; let j = index">
+                <ng-container *ngFor="let db of chk.children; let j = index">
+                  <tr *ngIf="db.value !== 0">
                     <td>
                     </td>
                     <td>
@@ -241,7 +241,10 @@
                     </td>
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
-                    <td class="center aligned">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
+                    <td class="center aligned" *ngIf="db.registeredDate">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="db.acceptedDate">{{ db.acceptedDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="db.statementYear">{{ db.statementYear | dateString }}</td>
                     <td class="right aligned">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
@@ -265,122 +268,122 @@
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.organizeId">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>เลขที่นิติบุคคล</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.organizeId | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.companyName">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>ชื่อนิติบุคคล</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.companyName | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.custsegmentCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Customer Segment</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.custsegmentCode | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.department">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>ชื่อหน่วยงาน</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.department | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.caNumber">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>เลขที่ CA/มติอนุมัติ</label>
           </div>
 
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.caNumber | emptyString }}
           </div>
         </div>
 
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.paidTypeCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>วิธีการรับชำระ</label>
           </div>
           <div class="eleven wide field ">
             {{ data.paidTypeCode | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.debitAccountType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>วิธีหักบัญชีจาก</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.debitAccountType | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.tranCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Tran Code</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.tranCode | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.glType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>GL Type</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.glType | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.accountType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Account Type
             </label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.accountType | emptyString }}
           </div>
         </div>
 
         <div class="inline fields">
           <div class="one wide field"></div>
-          <div class="three wide field">
+          <div class="three wide field" *ngIf="data.accountNo">
             <label>เลขที่บัญชี
             </label>
           </div>
-          <div class="three wide field">
+          <div class="three wide field" *ngIf="data.accountNo">
             {{ data.accountNo | accountNo }}
           </div>
-          <div class="one wide field">
+          <div class="one wide field" *ngIf="data.accountName">
             <label>ชื่อบัญชี</label>
           </div>
-          <div class="seven wide field">
+          <div class="seven wide field" *ngIf="data.accountName">
             {{ data.accountName | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="data.customerNameReceipt">
           <div class="one wide field"></div>
           <div class="three wide field">
             <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
@@ -389,7 +392,7 @@
             {{ data.customerNameReceipt | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="data.telephone">
           <div class="one wide field"></div>
           <div class="three wide field">
             <label>เบอร์โทรลูกค้า</label>
@@ -399,15 +402,14 @@
           </div>
         </div>
 
-        <div class="ui centered inline field grid divider-header" 
-        *ngIf="onlyMaker||onlyChecker">
+        <div class="ui centered inline field grid divider-header" *ngIf="onlyMaker||onlyChecker">
           <div class="fourteen wide field">
             <h4 class="header">ข้อมูลการชำระเงิน</h4>
             <div class="ui divider"></div>
           </div>
         </div>
 
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.ref1">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่อ้างอิง (Ref.1)</label>
@@ -417,7 +419,7 @@
           </div>
         </div>
 
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.ref2">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่ตรวจสอบ (Ref.2)</label>
@@ -426,7 +428,7 @@
             {{ data.ref2 | emptyString }}
           </div>
         </div>
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountDbd">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน DBD (บาท)</label>
@@ -435,7 +437,7 @@
             {{ (data.amountDbd||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountTmb">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน TMB (บาท)</label>
@@ -575,7 +577,8 @@
                 <td>{{ h.tmbRequestNo | tmbReqNo }}</td>
                 <td>{{ h.ref1 | emptyString }}</td>
                 <td>{{ h.ref2 | emptyString }}</td>
-                <td>{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString) : (h.amount| decimalFormat: "###,###.00") }}</td>
+                <td>{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString) : (h.amount| decimalFormat:
+                  "###,###.00") }}</td>
                 <td>{{ h.cerTypeCode | emptyString }}</td>
                 <td>{{ h.organizeId | emptyString }}</td>
                 <td>{{ h.companyName | emptyString }}</td>
