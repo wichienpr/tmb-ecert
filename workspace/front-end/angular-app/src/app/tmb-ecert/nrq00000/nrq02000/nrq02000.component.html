@@ -477,7 +477,7 @@
             <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('requestFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
+            <input type="file" accept="application/pdf" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.requestFormFile" (click)="download(data.requestFormFile)">
@@ -491,7 +491,7 @@
             <label>สำเนาบัตรประชาชน</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('copyFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
+            <input type="file" accept="application/pdf, image/png, image/jpeg" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.idCardFile" (click)="download(data.idCardFile)">
@@ -504,7 +504,7 @@
             <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
           </div>
           <div class="five wide field" [ngClass]="{ 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
+            <input type="file" accept="application/pdf, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.changeNameFile" (click)="download(data.changeNameFile)">

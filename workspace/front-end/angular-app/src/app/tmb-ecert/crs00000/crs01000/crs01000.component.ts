@@ -219,7 +219,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       });
       return;
     }
-    if (status == "10011" && this.roles(ROLES.MAKER)) {
+    if (status == "10011") {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });
