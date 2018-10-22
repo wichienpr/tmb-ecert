@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile, Rejected } from './crs02000.models';
 import { REQ_STATUS } from 'app/baiwa/common/constants';
 
-const URL = {
+export const URL = {
   REQUEST_FORM: "/api/crs/crs02000/data",
   REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
   DOWNLOAD: "/api/crs/crs02000/download/",

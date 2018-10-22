@@ -483,34 +483,36 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
               this.showChildren = obj.check;
               obj.children.forEach((ob, idx) => {
                 if (idx != 0) {
-                  ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
-                  ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
-                  ob.value = this.chkList[index - 1].children[idx - 1].value;
-                  ob.check = this.chkList[index - 1].children[idx - 1].check;
-                  ob.other = this.chkList[index - 1].children[idx - 1].other;
-                  ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
-                  ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
-                  controls[`chk${index}Child${idx}`].setValue(ob.check);
-                  controls[`cer${index}Child${idx}`].setValue(ob.value);
-                  if (controls[`etc${index}Child${idx}`]) {
-                    controls[`etc${index}Child${idx}`].setValue(ob.other);
-                  }
-                  if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
-                    controls[`cal${index}Child${idx}`].setValue(ob.statementYear);
-                  }
-                  if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
-                    var d = new Date(ob.acceptedDate),
-                      month = '' + (d.getMonth() + 1),
-                      day = '' + d.getDate(),
-                      year = d.getFullYear();
-                    controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
-                  }
-                  if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                    var d = new Date(ob.registeredDate),
-                      month = '' + (d.getMonth() + 1),
-                      day = '' + d.getDate(),
-                      year = d.getFullYear();
-                    controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                  if (this.chkList[index - 1].children) {
+                    ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
+                    ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
+                    ob.value = this.chkList[index - 1].children[idx - 1].value;
+                    ob.check = this.chkList[index - 1].children[idx - 1].check;
+                    ob.other = this.chkList[index - 1].children[idx - 1].other;
+                    ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
+                    ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
+                    controls[`chk${index}Child${idx}`].setValue(ob.check);
+                    controls[`cer${index}Child${idx}`].setValue(ob.value);
+                    if (controls[`etc${index}Child${idx}`]) {
+                      controls[`etc${index}Child${idx}`].setValue(ob.other);
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
+                      controls[`cal${index}Child${idx}`].setValue(ob.statementYear);
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
+                      var d = new Date(ob.acceptedDate),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+                      controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
+                      var d = new Date(ob.registeredDate),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+                      controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                    }
                   }
                 }
               });

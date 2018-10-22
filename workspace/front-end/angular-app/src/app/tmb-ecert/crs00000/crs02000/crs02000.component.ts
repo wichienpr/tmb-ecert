@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
-import { Crs02000Service } from './crs02000.service';
+import { Crs02000Service, URL } from './crs02000.service';
 import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
 import { CommonService, DropdownService } from 'app/baiwa/common/services';
 import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CertFile, Rejected } from './crs02000.models';
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 
 declare var $: any;
 @Component({
@@ -34,6 +35,10 @@ export class Crs02000Component implements OnInit {
   allowed: Dropdown;
   tab: any;
 
+  @ViewChild("historyDt")
+  historyDt: DatatableDirective;
+  historyConfig: DatatableCofnig;
+
   files: any;
 
   constructor(
@@ -53,6 +58,12 @@ export class Crs02000Component implements OnInit {
     this.tab = {
       A: "active",
       B: ""
+    };
+
+    this.historyConfig = {
+      url: URL.REQUEST_HISTORY,
+      serverSide: true,
+      useBlockUi: true
     };
   }
 
@@ -107,6 +118,10 @@ export class Crs02000Component implements OnInit {
   }
 
   tabs(name: string) {
+    if ("" == this.tab.B) {
+      this.historyDt.searchParams({ reqFormId: parseInt(this.id) });
+      this.historyDt.search()
+    }
     this.tab = this.service.tabsToggle(name, this.tab);
   }
 

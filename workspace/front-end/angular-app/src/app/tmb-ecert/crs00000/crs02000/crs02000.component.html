@@ -549,8 +549,10 @@
         </div>
       </div>
       <div class="ui bottom attached tab segment {{ tab.B }}">
+        <ng-datatable-search [ng-datatable]="historyDt"></ng-datatable-search>
+        <br>
         <div class="scrollable">
-          <table class="ui small celled table" cellpadding="0" cellspacing="0" id="table">
+          <table [ngDatatable]="historyConfig" #historyDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%">
             <thead>
               <tr style="text-align: center;">
                 <th>ลำดับ</th>
@@ -569,25 +571,29 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let h of history; let i = index">
-                <td class="text-center">{{ i+1 }}</td>
-                <td>{{ h.createdDateTime | datetimeString }}</td>
-                <td>{{ h.makerById + ' - ' + h.makerByName }}</td>
-                <td>{{ h.requestDate | datetimeString }}</td>
-                <td>{{ h.tmbRequestNo | tmbReqNo }}</td>
-                <td>{{ h.ref1 | emptyString }}</td>
-                <td>{{ h.ref2 | emptyString }}</td>
-                <td>{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString) : (h.amount| decimalFormat:
-                  "###,###.00") }}</td>
-                <td>{{ h.cerTypeCode | emptyString }}</td>
-                <td>{{ h.organizeId | emptyString }}</td>
-                <td>{{ h.companyName | emptyString }}</td>
-                <td>{{ h.status | emptyString }}</td>
-                <td>{{ h.rejectReasonCode | emptyString }}</td>
+              <tr class="text-center" *ngIf="historyDt.isEmpty">
+                <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+              </tr>
+              <tr class="text-center" *ngFor="let h of historyDt.datas; let i=index">
+                <td style="text-align: left   !important;">{{ h.createdDateTime | datetimeString }}</td>
+                <td style="text-align: left   !important;">{{ h.makerById + ' - ' + h.makerByName }}</td>
+                <td style="text-align: left   !important;">{{ h.requestDate | datetimeString }}</td>
+                <td style="text-align: left   !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
+                <td style="text-align: left   !important;">{{ h.ref1 | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.ref2 | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString)
+                  : (h.amount| decimalFormat:"###,###.00") }}</td>
+                <td style="text-align: left   !important;">{{ h.cerTypeCode | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.organizeId | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.companyName | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.status | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.rejectReasonCode | emptyString }}</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <br>
+        <ng-datatable-footer [ng-datatable]="historyDt"></ng-datatable-footer>
       </div>
     </div>
   </div>
