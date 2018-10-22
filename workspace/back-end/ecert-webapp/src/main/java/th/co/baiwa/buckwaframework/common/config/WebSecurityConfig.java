@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/api/**","/app/**").permitAll().antMatchers("/", "/api-setup/**").permitAll()
+		http.authorizeRequests().antMatchers("/","/onlogout").permitAll()
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll()
 				.successForwardUrl("/onloginseccess")
 				.failureHandler(customfailHandler()).and().logout().permitAll().and().csrf().disable();
