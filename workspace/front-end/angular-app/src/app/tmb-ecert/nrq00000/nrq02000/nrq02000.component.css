@@ -32,3 +32,8 @@ h3.header.space {
 .download-link:hover {
     color: rgb(88, 88, 88);
 }
+
+.header-title {
+    width: 62.5%;
+    cursor: pointer;
+}

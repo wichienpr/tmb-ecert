@@ -166,6 +166,10 @@ export class Crs02000Component implements OnInit {
     }
   }
 
+  get onlyMaker() { return this.roles(ROLES.MAKER) }
+  get onRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get onlyChecker() { return this.roles(ROLES.CHECKER) }
+
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
 

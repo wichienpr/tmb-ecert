@@ -380,14 +380,34 @@
           </div>
         </div>
 
-        <div class="ui centered inline field grid divider-header">
+        <div class="inline fields">
+          <div class="one wide field"></div>
+          <div class="three wide field">
+            <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
+          </div>
+          <div class="eleven wide field">
+            {{ data.customerNameReceipt | emptyString }}
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="one wide field"></div>
+          <div class="three wide field">
+            <label>เบอร์โทรลูกค้า</label>
+          </div>
+          <div class="eleven wide field">
+            {{ data.telephone | emptyString }}
+          </div>
+        </div>
+
+        <div class="ui centered inline field grid divider-header" 
+        *ngIf="onlyMaker||onlyChecker">
           <div class="fourteen wide field">
             <h4 class="header">ข้อมูลการชำระเงิน</h4>
             <div class="ui divider"></div>
           </div>
         </div>
 
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่อ้างอิง (Ref.1)</label>
@@ -397,7 +417,7 @@
           </div>
         </div>
 
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่ตรวจสอบ (Ref.2)</label>
@@ -406,7 +426,7 @@
             {{ data.ref2 | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน DBD (บาท)</label>
@@ -415,31 +435,13 @@
             {{ (data.amountDbd||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน TMB (บาท)</label>
           </div>
           <div class="eleven wide field ">
             {{ (data.amountTmb||0) | decimalFormat: "###,###.00" }} บาท
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
-          </div>
-          <div class="eleven wide field ">
-            {{ data.customerNameReceipt | emptyString }}
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>เบอร์โทรลูกค้า</label>
-          </div>
-          <div class="eleven wide field ">
-            {{ data.telephone | emptyString }}
           </div>
         </div>
 
@@ -451,8 +453,8 @@
         </div>
 
         <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>
               ใบคำขอหนังสือรับรองนิติบุคคลและ
               <br>

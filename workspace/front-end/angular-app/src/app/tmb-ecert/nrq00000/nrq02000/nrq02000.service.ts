@@ -337,6 +337,10 @@ export class Nrq02000Service {
         return true;
     }
 
+    getAccordion() {
+        $('.ui.accordion').accordion();
+    }
+
     authForSubmit() {
         $("#auth").modal("show");
     }

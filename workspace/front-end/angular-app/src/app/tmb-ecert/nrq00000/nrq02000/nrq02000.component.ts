@@ -42,7 +42,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   authSubmitted: boolean = false;
   hiddenReceipt3: boolean = false;
   hiddenReceipt4: boolean = false;
-
+  toggleDoc: string = "content";
+  toggleTitle: string = "title";
   glType: string = "";
   tranCode: string = "";
   accType: string = "";
@@ -187,6 +188,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   checkRoles() {
     if (this.roles(ROLES.REQUESTOR)) {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
       this.form.controls.customSegSelect.clearValidators();
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -195,6 +198,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
 
     if (this.roles(ROLES.MAKER)) {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
       if (this.data.paidTypeCode != "30004") {
         this.form.controls.ref1.setValidators([Validators.required]);
         this.form.controls.ref2.setValidators([Validators.required]);
@@ -215,6 +220,17 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   roles(role: ROLES) {
     return this.common.isRole(role);
   }
+
+  get documentMsg() {
+    if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
+      return 'รายละเอียดเอกสาร';
+    }
+    return 'โปรดแนบเอกสาร';
+  }
+
+  get onlyMaker() { return this.roles(ROLES.MAKER) }
+  get onRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get onlyChecker() { return this.roles(ROLES.CHECKER) }
 
   get btnForPay() { return this.form.get('payMethodSelect').value == "30004" }
   get allowedSelect() { return this.formReject.controls.allowedSelect }
@@ -316,6 +332,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
+  ref1Focus() {
+    this.firstEnter = true; // reset FirstEnter
+  }
+
   keytab(one, two) {
     let element1 = this[one].nativeElement; // get the sibling element
     let element2 = this[two].nativeElement; // get the sibling element
@@ -357,6 +377,16 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   toggleDataCorp(e) {
     let data = e.target.checked ? this.form.controls.corpName.value : '';
     this.form.controls.corpName1.setValue(data);
+  }
+
+  toggleDocument() {
+    if (this.toggleDoc === "content") {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
+    } else {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
+    }
   }
 
   async reqTypeChange(e) {
