@@ -32,7 +32,7 @@ public class CertificateDao {
 	public List<Certificate> findByTypeCode(String typeCode) {
 		StringBuilder sql = new StringBuilder(template);
 		sql.append(" AND TYPE_CODE = ? ");
-		sql.append(" ORDER BY CODE ASC ");
+		sql.append(" ORDER BY SEQUENCE ASC ");
 		
 		List<Object> params = new ArrayList<>();
 		params.add(typeCode);

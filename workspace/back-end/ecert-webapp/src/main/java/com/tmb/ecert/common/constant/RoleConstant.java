@@ -11,4 +11,13 @@ public class RoleConstant {
 		public final static String CHECKER ="CHECKER";
 	}
 	
+	public static enum ROLES {
+		ADMIN,
+		IT,
+		ISA,
+		REQUESTOR,
+		MAKER,
+		CHECKER
+	}
+	
 }

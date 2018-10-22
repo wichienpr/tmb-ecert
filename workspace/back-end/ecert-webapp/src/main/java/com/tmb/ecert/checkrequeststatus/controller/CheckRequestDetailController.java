@@ -20,6 +20,8 @@ import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+
 @RequestMapping("api/crs/crs02000")
 @Controller
 public class CheckRequestDetailController {
@@ -59,8 +61,8 @@ public class CheckRequestDetailController {
 	
 	@PostMapping("cert/reject")
 	@ResponseBody
-	public CommonMessage<String> reject(@RequestBody RequestForm req) {
-		return this.crsService.reject(req);
+	public CommonMessage<String> rejectMak(@RequestBody RequestForm req) {
+		return this.crsService.reject(req, UserLoginUtils.getCurrentUserLogin());
 	}
 	
 	@GetMapping("cert/approve/{reqFormId}")

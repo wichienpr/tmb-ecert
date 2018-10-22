@@ -20,6 +20,7 @@ import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.RoleConstant;
+import com.tmb.ecert.common.constant.RoleConstant.ROLES;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -31,6 +32,7 @@ import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @Service
 public class CheckRequestDetailService {
@@ -85,40 +87,37 @@ public class CheckRequestDetailService {
 		download.pdf(pathName, response);
 	}
 
-	public CommonMessage<String> reject(RequestForm req) {
+	public CommonMessage<String> reject(RequestForm req, UserDetails user) {
 		CommonMessage<String> commonMsg = new CommonMessage<String>();
 		Date currentDate = new Date();
 		RequestForm newReq = null;
 		String rejectStatusAction = null;
-		String rejectDesAction =null;
-		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String rejectDesAction = null;
 		try {
 			logger.info("CheckRequestDetailService::reject REQFORM_ID => {}", req.getReqFormId());
 			newReq = dao.findReqFormById(req.getReqFormId(), false);
 			newReq.setRejectReasonCode(req.getRejectReasonCode());
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
-			
-			//Get Role of user login
+
+			// Get Role of user login
 			StringBuilder roleName = new StringBuilder();
-			if(user!=null) {
-				for ( GrantedAuthority item : user.getAuthorities()) {
-					roleName.append(item.getAuthority());
-				} 
-			}
-			
-			if(StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
+			newReq.setUpdatedById(user.getUserId());
+			newReq.setUpdatedByName(user.getUsername());
+
+			if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
 				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
-			}else if(StatusConstant.NEW_REQUEST.equals(newReq.getStatus()) && roleName.indexOf(RoleConstant.ROLE.REQUESTOR.toLowerCase())>-1) {
+			} else if (StatusConstant.NEW_REQUEST.equals(newReq.getStatus())
+					&& UserLoginUtils.ishasRole(user, ROLES.REQUESTOR)) {
 				rejectStatusAction = ACTION_AUDITLOG.CANCEL_REQ_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.CANCEL_REQ;
 				newReq.setStatus(StatusConstant.CANCEL_REQUEST);
-			}else {
+			} else {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_REQ_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_REQ;
 				newReq.setStatus(StatusConstant.REFUSE_REQUEST);
-				
+
 			}
 			reqDao.update(newReq);
 			hstDao.save(newReq);
@@ -129,8 +128,7 @@ public class CheckRequestDetailService {
 			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
 		} finally {
 			auditLogService.insertAuditLog(rejectStatusAction, rejectDesAction,
-					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY),
-					user, currentDate);
+					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY), user, currentDate);
 		}
 		return commonMsg;
 	}
