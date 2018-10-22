@@ -122,18 +122,25 @@ public class ImportECMBatchService {
 				log.info(" BATCH REQUEST FROM SIZE  "+reqFormList.size());
 				
 				for (RequestForm requestForm : reqFormList) {
-					String[] arrFile = new String[3];
-					arrFile[0] =   pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile();
-					arrFile[1]  =  pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile();
-					arrFile[2]  =  pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile();
+//					String[] arrFile = new String[3];
+//					arrFile[0] =   pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile();
+//					arrFile[1]  =  pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile();
+//					arrFile[2]  =  pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile();
 					countftp = 0;
 					
 					while (countftp < timeLoop) {
 						
 						List<SftpFileVo> files = new ArrayList<>();
-						files.add(new SftpFileVo(new File(arrFile[0] ), ftpPath, requestForm.getCertificateFile()));
-						files.add(new SftpFileVo(new File(arrFile[1] ), ftpPath, requestForm.getRequestFormFile()));
-						files.add(new SftpFileVo(new File(arrFile[2] ), ftpPath, requestForm.getReceiptFile()));
+						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getCertificateFile()));
+						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getRequestFormFile()));
+						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+						
+						if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
+						}
+						if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+						}
 
 						SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
 						boolean ftpSuccess = SftpUtils.putFile(sftpVo);
@@ -146,7 +153,7 @@ public class ImportECMBatchService {
 								
 								Thread.sleep(timesleep);
 								reqID = ramdomKey(channelid);
-								ImportDocumentResponse impResp = callImportWS(requestForm,reqID,channelid,"",arrFile,docTyep);
+								ImportDocumentResponse impResp = callImportWS(requestForm,reqID,channelid,"BATCH",files,docTyep);
 								
 								if (CODE_SUCCESS.equals(impResp.getResCode())) {
 									log.info(" WS IMPORT SUCCESS ");
@@ -163,7 +170,7 @@ public class ImportECMBatchService {
 								while (countCheckstatus < timeLoop) {
 									
 									Thread.sleep(timesleep);
-									CheckStatusDocumentResponse checkStatusVo  = CheckStatusWS(requestForm,reqID,channelid,"",docTyep);
+									CheckStatusDocumentResponse checkStatusVo  = CheckStatusWS(requestForm,reqID,channelid,"BATCH",docTyep);
 									
 									if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
 										log.info(" WS CHECK STATUS SUCCESS ");
@@ -179,6 +186,9 @@ public class ImportECMBatchService {
 									}
 									log.info(" WS CHECK STATUS FAIL "+checkStatusVo.getStatusCode() +" Des" + checkStatusVo.getDescription() );
 								}		
+							}
+							if(statusUpload) {
+								break;
 							}
 							
 				
@@ -223,7 +233,7 @@ public class ImportECMBatchService {
 	}
 	
 
-	private ImportDocumentResponse  callImportWS(RequestForm reqVo,String reqID, String channelid, String userid, String[] arrFile ,String docTyep) {
+	private ImportDocumentResponse  callImportWS(RequestForm reqVo,String reqID, String channelid, String userid, List<SftpFileVo> arrFile ,String docTyep) {
 		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_IMPORT_DOCUMENT);
 		RestTemplate restTemplate = new RestTemplate();
 		ImportDocumentRequest req = new ImportDocumentRequest();
@@ -236,9 +246,9 @@ public class ImportECMBatchService {
 		
 		List<FileImportRequest> fileslist = new ArrayList<>();
 		FileImportRequest fileImport ;
-		for (int j = 0; j < arrFile.length; j++) {
+		for (int j = 0; j < arrFile.size(); j++) {
 			fileImport = new FileImportRequest();
-			String fileName = reqID + "/" + arrFile[j];
+			String fileName = reqID + "/" + arrFile.get(j).getFileName();
 			
 			fileImport.setFileName(fileName);
 			fileImport.setCusName(reqVo.getCompanyName());
@@ -260,7 +270,7 @@ public class ImportECMBatchService {
 	
 	private CheckStatusDocumentResponse CheckStatusWS(RequestForm reqVo,String reqID, String channelid, String userid,String docTyep) {
 		
-		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_IMPORT_DOCUMENT);
+		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHECK_STATUS);
 		RestTemplate restTemplate = new RestTemplate();
 		CheckStatusDocumentRequest checkReq = new CheckStatusDocumentRequest();
 		checkReq.setReqId(reqID);

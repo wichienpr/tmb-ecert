@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.ParameterConfig;
 import com.tmb.ecert.setup.dao.EmailTemplateDao;
@@ -21,13 +22,6 @@ public class Sup03000Service {
 
 	@Autowired
 	private EmailTemplateDao emailDao;
-
-	private static String STATUS_ALL = "90001";
-	private static String STATUS_ACTIVE = "90002";
-	private static String STATUS_INACTIVE = "90003";
-	
-	private static String MSG_SUCS = "ทำรายการสำเร็จ";
-	private static String MSG_ERR = "ทำรายการล้มเหลว  ";
 
 	public DataTableResponse<Sup03000Vo> getEmailTemplate(Sup03000Vo form) {
 		form.setStatus(covertDropdownValueToInt(form.getStatus()));
@@ -63,13 +57,13 @@ public class Sup03000Service {
 
 	public int covertDropdownValueToInt(int status) {
 
-		if (STATUS_ALL.equals(Integer.toString(status))) {
+		if (StatusConstant.ROLE_STATUS.STATUS_ALL.equals(Integer.toString(status))) {
 			return 2;
 
-		} else if (STATUS_INACTIVE.equals(Integer.toString(status))) {
+		} else if (StatusConstant.ROLE_STATUS.STATUS_INACTIVE.equals(Integer.toString(status))) {
 			return 1;
 
-		} else if (STATUS_ACTIVE.equals(Integer.toString(status))) {
+		} else if (StatusConstant.ROLE_STATUS.STATUS_ACTIVE.equals(Integer.toString(status))) {
 			return 0;
 		}
 		return 2;

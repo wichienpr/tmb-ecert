@@ -36,6 +36,7 @@ public class UserRoleDao {
 	
 	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
 	
+	
 	private static String INSERT_SQL = "  INSERT INTO ECERT_ROLE(ROLE_NAME,STATUS,CREATED_BY_ID,CREATED_BY_NAME " + 
 			" ,CREATED_DATETIME ) VALUES ( ?, ?, ?, ?, GETDATE() ) ";
 	

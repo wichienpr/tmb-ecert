@@ -26,6 +26,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FileImportRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentResponse;
 import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
@@ -55,14 +56,6 @@ public class UploadCertificateService {
 	private String ftpPassword;
 
 	private static String PATH_UPLOAD = "tmb-requestor/";
-	private static String CODE_SUCCESS = "0000";
-	private static String CODE_PARTIAL_SUCCESS = "0001";
-	private static String CODE_CHECK_SUCCESS = "0";
-
-	private static String SEGMENTCODE_1 = "20005";
-	private static String SEGMENTCODE_2 = "20004";
-	private static String SEGMENTCODE_3 = "20003";
-	private static String SEGMENTCODE_4 = "20002";
 
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
@@ -93,11 +86,21 @@ public class UploadCertificateService {
 				String pathReq = pathUploadfiel + PATH_UPLOAD + reqVo.getRequestFormFile();
 				String pathCer = pathUploadfiel + PATH_UPLOAD + reqVo.getCertificateFile();
 				String pathRec = pathUploadfiel + PATH_UPLOAD + reqVo.getReceiptFile();
+				
+				
+				
 				// STEP 1. SFTP File and save log fail or success !!
 				List<SftpFileVo> files = new ArrayList<>();
 				files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
 				files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
 				files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
+				
+				if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
+					files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+				}
+				if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+					files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+				}
 
 				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
 				boolean isSuccess = SftpUtils.putFile(sftpVo);
@@ -112,7 +115,7 @@ public class UploadCertificateService {
 						Thread.sleep(timesleep);
 
 						ImportDocumentResponse impResp = callImportWS(reqVo, reqID, channelid, userid, files, docTyep);
-						if (CODE_SUCCESS.equals(impResp.getResCode())) {
+						if (StatusConstant.IMPORT_ECM_WS.IMPORT_STATUS_SUCCESS.equals(impResp.getResCode())) {
 							statusUpload = true;
 							log.info("CALL WS IMPORT DOCUMENT SUCCESS ");
 							break ;
@@ -135,12 +138,12 @@ public class UploadCertificateService {
 									docTyep);
 							log.info("CALL WS CHECK STATUS {}", checkStatusVo.getDescription());
 
-							if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
+							if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(checkStatusVo.getStatusCode())) {
 //									statusUpload[i] = true;
 								statusUpload = true;
 								break uploadEcerLoop;
 
-							} else if (CODE_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
+							} else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 								statusUpload = false;
 //								statusUpload[i] = false;
 								countCheckStatus++;
@@ -151,6 +154,10 @@ public class UploadCertificateService {
 							}
 						}
 					}
+					if(statusUpload) {
+						break;
+					}
+					
 
 				} else {
 					statusUpload = false;
@@ -173,13 +180,13 @@ public class UploadCertificateService {
 	}
 
 	private String convertCostomerSegment(String segmentcode) {
-		if (SEGMENTCODE_1.equals(segmentcode)) {
+		if (StatusConstant.IMPORT_ECM_WS.SEGMENTCODE_MAP_1.equals(segmentcode)) {
 			return "1";
-		} else if (SEGMENTCODE_2.equals(segmentcode)) {
+		} else if (StatusConstant.IMPORT_ECM_WS.SEGMENTCODE_MAP_2.equals(segmentcode)) {
 			return "2";
-		} else if (SEGMENTCODE_3.equals(segmentcode)) {
+		} else if (StatusConstant.IMPORT_ECM_WS.SEGMENTCODE_MAP_3.equals(segmentcode)) {
 			return "3";
-		} else if (SEGMENTCODE_4.equals(segmentcode)) {
+		} else if (StatusConstant.IMPORT_ECM_WS.SEGMENTCODE_MAP_4.equals(segmentcode)) {
 			return "4";
 		} else {
 			return "0";
@@ -237,7 +244,7 @@ public class UploadCertificateService {
 		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHECK_STATUS);
 		RestTemplate restTemplate = new RestTemplate();
 		CheckStatusDocumentRequest checkReq = new CheckStatusDocumentRequest();
-		checkReq.setReqId(null);
+		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
 		checkReq.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));

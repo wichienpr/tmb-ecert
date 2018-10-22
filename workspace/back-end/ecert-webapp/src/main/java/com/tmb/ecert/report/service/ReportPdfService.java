@@ -44,7 +44,9 @@ import com.tmb.ecert.report.persistence.vo.RpReceiverVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormListVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 import com.tmb.ecert.report.persistence.vo.RpVatVo;
+import com.tmb.ecert.requestorform.persistence.dao.ReceiptGenKeyDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
+import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -82,6 +84,9 @@ public class ReportPdfService {
 
 	@Autowired
 	private ReportPdfDao reportPdfDao;
+	
+	@Autowired
+	private ReceiptGenKeyService receiptGenKeyService;
 
 	private Logger logger = LoggerFactory.getLogger(ReportPdfService.class);
 
@@ -107,6 +112,11 @@ public class ReportPdfService {
 			DecimalFormat formatNumber = new DecimalFormat("#,###.00");
 			req = checkReqDetailDao.findReqFormById(vo.getId(), false);
 			RpVatVo vat = reportPdfDao.vat().get(0);
+			if (StringUtils.isEmpty(req.getReceiptNo())) {
+				String receiptNo = receiptGenKeyService.getNextKey();
+				req.setReceiptNo(receiptNo);
+			}
+			
 			// RP001
 			String reportName01 = "RP_RECEIPT_TAX";
 			Map<String, Object> params01 = new HashMap<>();

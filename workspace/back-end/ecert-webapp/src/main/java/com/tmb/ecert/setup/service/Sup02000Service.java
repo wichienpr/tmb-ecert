@@ -28,9 +28,6 @@ public class Sup02000Service {
 	
 	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
 	
-	private static String MSG_SUCS = "ทำรายการสำเร็จ";
-	private static String MSG_ERR = "ทำรายการล้มเหลว  ";
-	
 	public List<ParameterConfig> getParmeter() {
 		return paramDao.getParameter();
 	}
