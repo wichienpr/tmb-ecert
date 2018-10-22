@@ -91,7 +91,7 @@ public class AuditLogsDao {
 			params.add(formVo.getActionCode());
 		}
 		
-		sql.append(" ORDER BY a.CREATED_DATETIME ");
+		sql.append(" ORDER BY a.CREATED_DATETIME DESC ");
 		
 		log.info("sqladl01000 : {}",sql.toString());
 		adl01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), params.toArray(), adl01000RowMapper);

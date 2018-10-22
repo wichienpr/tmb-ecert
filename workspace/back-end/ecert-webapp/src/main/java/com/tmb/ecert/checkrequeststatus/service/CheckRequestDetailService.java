@@ -9,14 +9,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -85,12 +88,38 @@ public class CheckRequestDetailService {
 	public CommonMessage<String> reject(RequestForm req) {
 		CommonMessage<String> commonMsg = new CommonMessage<String>();
 		Date currentDate = new Date();
+		RequestForm newReq = null;
+		String rejectStatusAction = null;
+		String rejectDesAction =null;
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			logger.info("CheckRequestDetailService::reject REQFORM_ID => {}", req.getReqFormId());
-			RequestForm newReq = dao.findReqFormById(req.getReqFormId(), false);
+			newReq = dao.findReqFormById(req.getReqFormId(), false);
 			newReq.setRejectReasonCode(req.getRejectReasonCode());
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
-			newReq.setStatus("10003");
+			
+			//Get Role of user login
+			StringBuilder roleName = new StringBuilder();
+			if(user!=null) {
+				for ( GrantedAuthority item : user.getAuthorities()) {
+					roleName.append(item.getAuthority());
+				} 
+			}
+			
+			if(StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
+				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
+				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
+				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
+			}else if(StatusConstant.NEW_REQUEST.equals(newReq.getStatus()) && roleName.indexOf(RoleConstant.ROLE.REQUESTOR.toLowerCase())>-1) {
+				rejectStatusAction = ACTION_AUDITLOG.CANCEL_REQ_CODE;
+				rejectDesAction = ACTION_AUDITLOG_DESC.CANCEL_REQ;
+				newReq.setStatus(StatusConstant.CANCEL_REQUEST);
+			}else {
+				rejectStatusAction = ACTION_AUDITLOG.REJECT_REQ_CODE;
+				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_REQ;
+				newReq.setStatus(StatusConstant.REFUSE_REQUEST);
+				
+			}
 			reqDao.update(newReq);
 			hstDao.save(newReq);
 			commonMsg.setMessage("SUCCESS");
@@ -99,9 +128,9 @@ public class CheckRequestDetailService {
 			commonMsg.setMessage("ERROR");
 			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
 		} finally {
-			auditLogService.insertAuditLog(ACTION_AUDITLOG.REJECT_REQ_CODE, ACTION_AUDITLOG_DESC.REJECT_REQ,
-					(req != null ? req.getTmbRequestNo() : StringUtils.EMPTY),
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
+			auditLogService.insertAuditLog(rejectStatusAction, rejectDesAction,
+					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY),
+					user, currentDate);
 		}
 		return commonMsg;
 	}

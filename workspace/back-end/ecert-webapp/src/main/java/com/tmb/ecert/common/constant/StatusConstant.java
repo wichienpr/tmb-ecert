@@ -7,7 +7,7 @@ public class StatusConstant {
 	public final static String CANCEL_REQUEST = "10004";
 	public final static String WAIT_PAYMENT_APPROVAL = "10005";
 	public final static String PAYMENT_APPROVALS ="10006";
-	public final static String CHARGE_BACK ="10007";
+	public final static String REJECT_PAYMENT ="10007";
 	public final static String PAYMENT_FAILED ="10008";
 	public final static String WAIT_UPLOAD_CERTIFICATE ="10009";
 	public final static String SUCCEED ="10010";

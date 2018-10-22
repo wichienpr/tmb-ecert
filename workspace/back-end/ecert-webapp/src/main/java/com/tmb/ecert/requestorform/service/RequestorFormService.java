@@ -3,6 +3,7 @@ package com.tmb.ecert.requestorform.service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,15 +12,19 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
@@ -28,6 +33,7 @@ import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
@@ -52,6 +58,9 @@ public class RequestorFormService {
 	
 	@Autowired
 	private RequestHistoryDao daoHst;
+	
+	@Autowired
+	private AuditLogService auditLogService;
 
 	@Autowired
 	private RequestGenKeyService gen;
@@ -349,6 +358,11 @@ public class RequestorFormService {
 			msg.setData(null);
 			msg.setMessage("ERROR");
 			return msg;
+		}finally {
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.REQFORM_01_CODE,
+					ACTION_AUDITLOG_DESC.REQFORM_01,reqTmbNo,
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+					new Date());
 		}
 	}
 

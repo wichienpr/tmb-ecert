@@ -65,7 +65,7 @@ public class CheckRequestStatusService {
 				countStatusVo.setWaitPaymentApproval(data.getCount());
 			} else if (StatusConstant.PAYMENT_APPROVALS.equals(data.getStatus())) {
 				countStatusVo.setPaymentApprovals(data.getCount());
-			} else if (StatusConstant.CHARGE_BACK.equals(data.getStatus())) {
+			} else if (StatusConstant.REJECT_PAYMENT.equals(data.getStatus())) {
 				countStatusVo.setChargeback(data.getCount());
 			} else if (StatusConstant.PAYMENT_FAILED.equals(data.getStatus())) {
 				countStatusVo.setPaymentfailed(data.getCount());

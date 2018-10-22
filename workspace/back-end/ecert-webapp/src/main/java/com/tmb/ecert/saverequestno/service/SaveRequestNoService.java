@@ -25,7 +25,6 @@ public class SaveRequestNoService {
 	private SaveRequestNoDao srn01000Dao;
 
 	public DataTableResponse<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
-		logger.info("findReqByTmbReqNo_Service");
 
 		DataTableResponse<Srn01000Vo> dt = new DataTableResponse<>();
 		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
