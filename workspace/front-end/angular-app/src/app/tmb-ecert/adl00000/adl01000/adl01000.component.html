@@ -77,14 +77,14 @@
         <ng-datatable-search [ng-datatable]="auditDt" ></ng-datatable-search>
         <br>
         <div style="overflow-x: auto;white-space: nowrap;">
-            <table [ngDatatable]="auditConfig" #auditDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%" id="table">
+            <table [ngDatatable]="auditConfig" #auditDt="ngDatatable" class="ui small celled table nowrap sortable" style="width: 100%" id="table">
                 <thead>
                     <tr>
-                        <th>ลำดับ</th>
-                        <th>วันที่ดำเนินการ</th>
-                        <th>User ID</th>
-                        <th>Action</th>
-                        <th>รายละเอียด</th>
+                        <th>ลำดับ </th>
+                        <th [ngSort]="auditDt" columnName="CREATED_DATETIME" >วันที่ดำเนินการ</th>
+                        <th [ngSort]="auditDt" columnName="CREATED_BY_ID" >User ID</th>
+                        <th [ngSort]="auditDt" columnName="ACTION_CODE" >Action</th>
+                        <th >รายละเอียด</th>
                     </tr>
                 
                 </thead>

@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AjaxService, CommonService } from '../../services';
 
@@ -9,6 +9,7 @@ import { AjaxService, CommonService } from '../../services';
 export class DatatableDirective implements OnInit , OnDestroy {
 
   @Input("ngDatatable") config: DatatableCofnig;
+  @Output("sortOutput") sortOutput: EventEmitter<any> = new EventEmitter();
 
   resp: DatatableResp = {
     data: [],
@@ -38,6 +39,20 @@ export class DatatableDirective implements OnInit , OnDestroy {
     if (this.config.sortColum) {
       this.sortColum = Object.assign({}, this.config.sortColum)
     }
+
+    this.sortOutput.subscribe ( item=>{
+      console.log("ngDatatable ==>", item);
+
+        if(item.column){
+          this.sortColum = [{
+            column : item.column,
+            order : item.sortType
+          }];
+          this.search();
+        }else{
+          console.log(" columnName=\"EXAMPLE\" <=== is not defind in [th]  ");
+        }
+    });
   }
 
   reload(): Promise<string> {
