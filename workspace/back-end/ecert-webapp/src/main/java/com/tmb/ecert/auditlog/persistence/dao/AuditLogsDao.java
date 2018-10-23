@@ -27,6 +27,7 @@ import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.DateConstant;
 
+import th.co.baiwa.buckwaframework.common.bean.DatatableSort;
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 
 @Repository
@@ -91,7 +92,18 @@ public class AuditLogsDao {
 			params.add(formVo.getActionCode());
 		}
 		
-		sql.append(" ORDER BY a.CREATED_DATETIME DESC ");
+		if(!formVo.getSort().isEmpty()) {
+			sql.append( "ORDER BY ");
+			List<String> orders = new ArrayList<>();
+			for(DatatableSort item : formVo.getSort()) {
+				orders.add("a." + item.getColumn() + " " + item.getOrder());
+			}
+			sql.append(StringUtils.join(orders,", "));
+		}else {
+			// default order
+			sql.append(" ORDER BY a.CREATED_DATETIME DESC ");			
+		}
+		
 		
 		log.info("sqladl01000 : {}",sql.toString());
 		adl01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), params.toArray(), adl01000RowMapper);
