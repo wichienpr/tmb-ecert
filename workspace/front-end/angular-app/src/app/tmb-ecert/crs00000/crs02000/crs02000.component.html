@@ -575,19 +575,22 @@
                 <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
               </tr>
               <tr class="text-center" *ngFor="let h of historyDt.datas; let i=index">
-                <td style="text-align: left   !important;">{{ h.createdDateTime | datetimeString }}</td>
+                <td style="text-align: center !important;">{{ i+1 }}</td>
+                <td style="text-align: center !important;">{{ h.createdDateTime | datetimeString }}</td>
                 <td style="text-align: left   !important;">{{ h.makerById + ' - ' + h.makerByName }}</td>
-                <td style="text-align: left   !important;">{{ h.requestDate | datetimeString }}</td>
-                <td style="text-align: left   !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
-                <td style="text-align: left   !important;">{{ h.ref1 | emptyString }}</td>
-                <td style="text-align: left   !important;">{{ h.ref2 | emptyString }}</td>
-                <td style="text-align: left   !important;">{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString)
+                <td style="text-align: center !important;">{{ h.requestDate | datetimeString }}</td>
+                <td style="text-align: center !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
+                <td style="text-align: center !important;">{{ h.ref1 | emptyString }}</td>
+                <td style="text-align: center !important;">{{ h.ref2 | emptyString }}</td>
+                <td style="text-align: right  !important;">{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString)
                   : (h.amount| decimalFormat:"###,###.00") }}</td>
                 <td style="text-align: left   !important;">{{ h.cerTypeCode | emptyString }}</td>
                 <td style="text-align: left   !important;">{{ h.organizeId | emptyString }}</td>
                 <td style="text-align: left   !important;">{{ h.companyName | emptyString }}</td>
                 <td style="text-align: left   !important;">{{ h.status | emptyString }}</td>
-                <td style="text-align: left   !important;">{{ h.rejectReasonCode | emptyString }}</td>
+                <td style="text-align: left   !important;">
+                  {{ (h.rejectReasonOther ? h.rejectReasonOther : h.rejectReasonCode) | emptyString }}
+                </td>
               </tr>
             </tbody>
           </table>
