@@ -41,7 +41,7 @@ export class DatatableDirective implements OnInit , OnDestroy {
     }
 
     this.sortOutput.subscribe ( item=>{
-      console.log("ngDatatable ==>", item);
+      // console.log("ngDatatable ==>", item);
 
         if(item.column){
           this.sortColum = [{
