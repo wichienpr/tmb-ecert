@@ -176,6 +176,7 @@ export class Sup01000Component implements OnInit {
       this.userRoleForm.reset({ roleName: "", status: 0 });
       this.store.dispatch(new SUP01000ACTION.ClearRole());
       this.statusDropDown.clear();
+      this.roleDT.clear();
     }
 
     clickImportRole() {

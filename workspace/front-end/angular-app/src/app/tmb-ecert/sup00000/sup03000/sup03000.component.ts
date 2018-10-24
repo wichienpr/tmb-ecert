@@ -137,6 +137,7 @@ export class Sup03000Component implements OnInit {
     this.store.dispatch(new SUP03000ACTION.ClearEmail());
     this.form.reset({ name: '', status: '' });
     this.statusDropDown.clear();
+    this.emailConfigDT.clear();
     // console.log("clear")
 
   }

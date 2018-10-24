@@ -185,7 +185,7 @@ export class Btm01000Component implements OnInit {
     }
     if (this.serchForm.valid) {
       this.batchMonitorDT.searchParams(this.serchForm.value)
-      this.batchMonitorDT.search()
+      this.batchMonitorDT.search();
     }
   }
 
