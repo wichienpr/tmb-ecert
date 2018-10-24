@@ -27,9 +27,15 @@ public class StatusConstant {
 	}
 
 	public static class PAYMENT_STATUS {
+		public final static String TMB = "TMB";
+		public final static String DBD = "DBD";
 		public final static String SUCCESS = "0";
 		public final static String SUCCESS_MSG = "SUCCESS";
 		public final static String ERROR_MSG = "ERROR";
+		public final static String PAY_TMB_DBD = "30001";
+		public final static String PAY_DBD = "30002";
+		public final static String PAY_TMB = "30003";
+		public final static String PAY_NONE = "30004";
 	}
 
 	public static class ROLE_STATUS {

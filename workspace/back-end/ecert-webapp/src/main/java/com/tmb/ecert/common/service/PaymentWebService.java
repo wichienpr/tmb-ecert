@@ -22,6 +22,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRespons
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.StatusConstant;
+import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -35,9 +36,9 @@ public class PaymentWebService {
 	@Value("${web.service.url}")
 	String WS_URL;
 
-	public CommonMessage<FeePaymentRequest> feePayment(RequestForm reqF, String beHalf) {
+	public CommonMessage<FeePaymentResponse> feePayment(RequestForm reqF, String beHalf) {
 		logger.info("PaymentWebService::feePayment for=> {}", beHalf);
-		CommonMessage<FeePaymentRequest> commonMsg = new CommonMessage<FeePaymentRequest>();
+		CommonMessage<FeePaymentResponse> commonMsg = new CommonMessage<FeePaymentResponse>();
 		String uuid = UUID.randomUUID().toString();
 		logger.info("PaymentWebService::feePayment UUID => {}", uuid);
 		FeePaymentRequest req = new FeePaymentRequest();
@@ -55,8 +56,13 @@ public class PaymentWebService {
 				: ApplicationCache.getParamValueByName("feepayment.fromacctref.account.type"));
 		req.setToAccountIdent(ApplicationCache.getParamValueByName("dbd.accountno"));
 		req.setToAccountType(ApplicationCache.getParamValueByName("feepayment.toacctref.account.type"));
-		req.setCurAmt(reqF.getAmountDbd() != null ? reqF.getAmountDbd(): new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_DBD
-		req.setBillPmtFee(new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_TMB
+		if (PAYMENT_STATUS.DBD.equalsIgnoreCase(beHalf)) {
+			req.setCurAmt(reqF.getAmountDbd()); // ECERT_REQUEST_FORM.AMOUNT_DBD	
+			req.setBillPmtFee(new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_TMB
+		} else {
+			req.setCurAmt(new BigDecimal(0.0)); // ECERT_REQUEST_FORM.AMOUNT_DBD	
+			req.setBillPmtFee(reqF.getAmountTmb()); // ECERT_REQUEST_FORM.AMOUNT_TMB
+		}
 		req.setRef1(reqF.getRef1()); // ECERT_REQUEST_FORM.REF1
 		req.setRef2(reqF.getRef2()); // ECERT_REQUEST_FORM.REF2
 		req.setPostedDate(DateConstant.convertDateToStrDDMMYYYY(new Date()));
@@ -70,11 +76,11 @@ public class PaymentWebService {
 			ResponseEntity<FeePaymentResponse> response = restTemplate.exchange(WS_URL + "api-payment/add",
 					HttpMethod.POST, request, FeePaymentResponse.class);
 			FeePaymentResponse res = response.getBody();
-			if (StatusConstant.PAYMENT_STATUS.SUCCESS.equals(res.getStatusCode())) {
-				commonMsg.setData(req);
+			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				commonMsg.setData(res);
 				commonMsg.setMessage("SUCCESS");
 			} else {
-				commonMsg.setData(req);
+				commonMsg.setData(res);
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
@@ -85,9 +91,9 @@ public class PaymentWebService {
 		return commonMsg;
 	}
 	
-	public CommonMessage<ApproveBeforePayRequest> approveBeforePayment(RequestForm reqF) {
+	public CommonMessage<ApproveBeforePayResponse> approveBeforePayment(RequestForm reqF) {
 		logger.info("PaymentWebService::approveBeforePayment");
-		CommonMessage<ApproveBeforePayRequest> commonMsg = new CommonMessage<ApproveBeforePayRequest>();
+		CommonMessage<ApproveBeforePayResponse> commonMsg = new CommonMessage<ApproveBeforePayResponse>();
 		ApproveBeforePayRequest req = new ApproveBeforePayRequest();
 		req.setBankCode(ApplicationCache.getParamValueByName("tmb.bankcode"));
 		req.setServiceCode(ApplicationCache.getParamValueByName("tmb.servicecode"));
@@ -100,11 +106,11 @@ public class PaymentWebService {
 			ResponseEntity<ApproveBeforePayResponse> response = restTemplate.exchange(WS_URL + "api-payment/approveBeforePay",
 					HttpMethod.POST, request, ApproveBeforePayResponse.class);
 			ApproveBeforePayResponse res = response.getBody();
-			if (StatusConstant.PAYMENT_STATUS.SUCCESS.equals(res.getStatusCode())) {
-				commonMsg.setData(req);
-				commonMsg.setMessage("SUCCESS");
+			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				commonMsg.setData(res);
+				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {
-				commonMsg.setData(req);
+				commonMsg.setData(res);
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
@@ -115,9 +121,9 @@ public class PaymentWebService {
 		return commonMsg;
 	}
 	
-	public CommonMessage<RealtimePaymentRequest> realtimePayment(RequestForm reqF) {
+	public CommonMessage<RealtimePaymentResponse> realtimePayment(RequestForm reqF) {
 		logger.info("PaymentWebService::realtimePayment");
-		CommonMessage<RealtimePaymentRequest> commonMsg = new CommonMessage<RealtimePaymentRequest>();
+		CommonMessage<RealtimePaymentResponse> commonMsg = new CommonMessage<RealtimePaymentResponse>();
 		RealtimePaymentRequest req = new RealtimePaymentRequest();
 		req.setServiceCode(ApplicationCache.getParamValueByName("tmb.servicecode"));
 		req.setTransactionNo(ApplicationCache.getParamValueByName("tmb.transactiono"));
@@ -137,11 +143,11 @@ public class PaymentWebService {
 			ResponseEntity<RealtimePaymentResponse> response = restTemplate.exchange(WS_URL + "api-payment/realTimePayment",
 					HttpMethod.POST, request, RealtimePaymentResponse.class);
 			RealtimePaymentResponse res = response.getBody();
-			if (StatusConstant.PAYMENT_STATUS.SUCCESS.equals(res.getStatusCode())) {
-				commonMsg.setData(req);
-				commonMsg.setMessage(StatusConstant.PAYMENT_STATUS.SUCCESS_MSG);
+			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				commonMsg.setData(res);
+				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {
-				commonMsg.setData(req);
+				commonMsg.setData(res);
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
