@@ -163,6 +163,18 @@
 
       <div class="inline fields">
         <div class="one wide field "></div>
+        <div class="two wide field">
+          <label>
+            สถานะ
+          </label>
+        </div>
+        <div class="five wide field">
+          {{ data.status | emptyString }}
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="one wide field "></div>
         <div class="two wide field ">
           <label>ประเภทคำขอ</label>
         </div>
@@ -447,72 +459,89 @@
           </div>
         </div>
 
-        <div class="ui centered inline field grid divider-header">
-          <div class="fourteen wide field">
-            <h4 class="header">รายละเอียดเอกสาร</h4>
-            <div class="ui divider"></div>
+        <div class="ui centered grid">
+          <div class="ui form accordion" style="width: 100%">
+            <!-- <div class="ui {{ toggleTitle }} centered inline field grid divider-header">
+            <div class="fourteen wide field">
+              <h4 class="header">รายละเอียดเอกสาร</h4>
+              <div class="ui divider"></div>
+            </div>
+          </div> -->
+            <div class="{{ toggleTitle }} inline field divider-header header-title" style="margin-bottom: 0.5em !important;margin-top: 1.5em !important;" (click)="toggleDocument()">
+              <div class="fourteen wide field" style="margin: 1em auto">
+                <h4 class="header">{{ documentMsg }} <div class="floated right" style="float: right">
+                    <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
+                    <i class="angle double up icon" *ngIf="toggleDoc == ''"></i>
+                  </div>
+                </h4>
+              </div>
+              <div class="ui divider" style="width: 87.5%;margin: 0 auto;"></div>
+            </div>
+
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field"></div>
+              <div class="three wide field">
+                <label>
+                  ใบคำขอ
+                </label>
+              </div>
+              <div class="eleven wide field">
+                <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.requestFormFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
+              </div>
+              <div class="eleven wide field ">
+                <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.idCardFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label class="half blue">อื่นๆ (ถ้ามี)</label>
+              </div>
+              <div class="eleven wide field ">
+                <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.changeNameFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>เอกสาร e-Certificate</label>
+              </div>
+              <div class="eleven wide field">
+                <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.certificateFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>หมายเหตุ</label>
+              </div>
+              <div class="eleven wide field ">
+                <textarea rows="2" disabled>{{ data.remark }}</textarea>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field"></div>
-          <div class="three wide field">
-            <label>
-              ใบคำขอ
-            </label>
-          </div>
-          <div class="eleven wide field">
-            <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.requestFormFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
-          </div>
-          <div class="eleven wide field ">
-            <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.idCardFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label class="half blue">อื่นๆ (ถ้ามี)</label>
-          </div>
-          <div class="eleven wide field ">
-            <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.changeNameFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>เอกสาร e-Certificate</label>
-          </div>
-          <div class="eleven wide field">
-            <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.certificateFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>หมายเหตุ</label>
-          </div>
-          <div class="eleven wide field ">
-            <textarea rows="2" disabled>{{ data.remark }}</textarea>
-          </div>
-        </div>
+
+
         <div class="inline field">
           <div class="ui btn-group center aligned grid">
             <!-- <button class="ui blue basic button" type="button" (click)="modalToggle('desp')">

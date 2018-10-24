@@ -112,6 +112,17 @@
         </div>
       </div>
 
+      <div class="inline fields" *ngIf="data">
+        <div class="two wide field">
+          <label>
+            สถานะ
+          </label>
+        </div>
+        <div class="five wide field">
+          {{ statusMsg | emptyString }}
+        </div>
+      </div>
+
       <div class="inline fields">
         <div class="required two wide field">
           <label>ประเภทคำขอ</label>

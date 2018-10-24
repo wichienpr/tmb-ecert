@@ -125,6 +125,7 @@ export class Crs02000Service {
       if (e) {
         this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
           if (response.json().message == "SUCCESS") {
+            this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             this.router.navigate(['/crs/crs01000'], {
               queryParams: { codeStatus: "10009" }
             });
@@ -215,6 +216,9 @@ export class Crs02000Service {
       const data = response.json();
       if(data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+        this.router.navigate(['/crs/crs01000'], {
+          queryParams: { codeStatus: "10010" }
+        });
       }
       else if (data && data.message == "PRESS_UPLOAD_RECIEPTTAX") {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาพิมพ์ใบเสร็จ" });

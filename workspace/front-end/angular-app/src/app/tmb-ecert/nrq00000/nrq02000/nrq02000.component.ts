@@ -48,6 +48,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   tranCode: string = "";
   accType: string = "";
   status: string = "";
+  statusMsg: string = "";
   accNo: string = "";
 
   cert: RequestCertificate[] = [];
@@ -141,6 +142,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.tranCode = tranCode;
       this.accType = accountType;
       this.status = status;
+      this.statusMsg = status;
       this.tmbReqFormId = tmbRequestNo;
       this.accNo = Acc.convertAccNo(accountNo);
 

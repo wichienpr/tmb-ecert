@@ -35,6 +35,9 @@ export class Crs02000Component implements OnInit {
   allowed: Dropdown;
   tab: any;
 
+  toggleDoc: string = "content";
+  toggleTitle: string = "title";
+
   @ViewChild("historyDt")
   historyDt: DatatableDirective;
   historyConfig: DatatableCofnig;
@@ -187,6 +190,22 @@ export class Crs02000Component implements OnInit {
     return this.data.status == status;
   }
 
+  toggleDocument() {
+    if (this.toggleDoc === "content") {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
+    } else {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
+    }
+  }
+  
+  get documentMsg() {
+    if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
+      return 'รายละเอียดเอกสาร';
+    }
+    return 'โปรดแนบเอกสาร';
+  }
   get onlyMaker() { return this.roles(ROLES.MAKER) }
   get onRequestor() { return this.roles(ROLES.REQUESTOR) }
   get onlyChecker() { return this.roles(ROLES.CHECKER) }
