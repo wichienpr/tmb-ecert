@@ -24,13 +24,17 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.common.constant.DateConstant;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Repository
 public class PaymentGLSummaryBatchDao {
@@ -46,13 +50,34 @@ public class PaymentGLSummaryBatchDao {
 			+ " C.CERTIFICATE_ID,C.CODE AS CERT_CODE,C.CERTIFICATE FROM ECERT_REQUEST_FORM A "
 			+ " INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID "
 			+ " INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE "
-	        + " WHERE A.STATUS IN ('10009','10010') AND CONVERT(date, A.REQUEST_DATE) = ? ";
+	        + " WHERE A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') AND CONVERT(date, A.REQUEST_DATE) = ? ";
+	
+	private final String QUERY_REQUESTFORM_SUMMARY = " SELECT REQFORM.*,A.* FROM ( " + 
+			"SELECT A.REQFORM_ID AS REQFORM_ID_0, " + 
+			"	B.REQFORM_ID AS REQFORM_ID_1, " + 
+			"	B.CERTIFICATE_CODE , " + 
+			"	C.CERTIFICATE_ID ," + 
+			"	C.CODE AS CERT_CODE, " + 
+			"	C.CERTIFICATE " + 
+			"FROM ECERT_REQUEST_FORM A   " + 
+			"INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID  " + 
+			"INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE " + 
+			"LEFT JOIN ECERT_JOBGL_FAILED D ON CAST(D.PAYMENTDATE AS DATE) = CAST(A.REQUEST_DATE AS DATE) " + 
+			"WHERE A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') " +
+			"AND (CONVERT(date, A.REQUEST_DATE) = ? OR CONVERT(date, D.PAYMENTDATE) <= ?) GROUP BY " + 
+			"	A.REQFORM_ID, " + 
+			"	B.REQFORM_ID, " + 
+			"	B.CERTIFICATE_CODE, " + 
+			"	C.CERTIFICATE_ID, " + 
+			"	C.CODE, " + 
+			"	C.CERTIFICATE " + 
+			") A INNER JOIN ECERT_REQUEST_FORM REQFORM ON A.REQFORM_ID_0 = REQFORM.REQFORM_ID ";
 	
 	private final String QUERY_REQ_GL_SUMMARY_PROCESS_FROMTODATE = " SELECT A.*,B.REQFORM_ID AS REQFORM_ID_1,B.CERTIFICATE_CODE,"
 			+ " C.CERTIFICATE_ID,C.CODE AS CERT_CODE,C.CERTIFICATE FROM ECERT_REQUEST_FORM A "
 			+ " INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID "
 			+ " INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE "
-	        + " WHERE A.STATUS IN ('10009','10010') AND CAST(A.REQUEST_DATE as DATE) >= ? AND CAST(A.REQUEST_DATE as DATE) <= ? ";
+	        + " WHERE A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') AND CONVERT(date,A.REQUEST_DATE) >= ? AND CONVERT(date,A.REQUEST_DATE) <= ? ";
 	
 	
 	private final String QUERY_UPDATE_ECERT_JOB_MONITORING = " UPDATE ECERT_JOB_MONITORING " + 
@@ -65,7 +90,7 @@ public class PaymentGLSummaryBatchDao {
 	
 	public List<RequestForm> queryReqGlSummaryProcess(Date runDate) {
 		String date = DateFormatUtils.format(runDate, this.DATE_FORMAT);
-		return jdbcTemplate.query(this.QUERY_REQ_GL_SUMMARY_PROCESS, new Object[] {date},reqFormListMapping);
+		return jdbcTemplate.query(this.QUERY_REQUESTFORM_SUMMARY, new Object[] {date,date},reqFormListMapping);
 	}
 	
 	public List<RequestForm> queryReqGlSummaryProcessByFromToDate(Date fromDate,Date toDate) {
@@ -197,6 +222,24 @@ public class PaymentGLSummaryBatchDao {
 		}, holder);
 		Long id = holder.getKey().longValue();
 		return id;
+	}
+	
+	public void deleteEcertJobGLFailed(List<RequestForm> requestForms) {
+		String sql = " DELETE FROM ECERT_JOBGL_FAILED WHERE CONVERT(date,PAYMENTDATE) IN (%s) ";
+		if(requestForms!=null && requestForms.size()>0) {
+			StringBuilder builderCondition = new StringBuilder();
+			List<String> dateList = new ArrayList<>();
+			for(RequestForm reqForm : requestForms) {
+				String reqDate = DateFormatUtils.format(reqForm.getRequestDate(), this.DATE_FORMAT);
+				dateList.add(reqDate);
+				if(dateList.size()>1)
+					builderCondition.append(",");
+				builderCondition.append("?");
+			}
+			sql = sql.replace("%s", builderCondition.toString());
+			jdbcTemplate.update(sql, dateList.toArray(new Object[dateList.size()]));
+		}
+		
 	}
 	
 	public void updatedStatusEcertJobMonitoring(EcertJobMonitoring ecertJobMonitoring) {
