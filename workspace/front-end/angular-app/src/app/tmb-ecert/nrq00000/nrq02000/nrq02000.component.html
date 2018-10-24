@@ -425,7 +425,7 @@
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" (focus)="ref1Focus()" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
+          <input type="text" (keypress)="accNoPress($event)" (focus)="ref1Focus()" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
         <div class="three wide field" *ngIf="btnMaker">
           <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
@@ -440,10 +440,10 @@
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
+          <input type="text" (keypress)="accNoPress($event, true)" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
         </div>
       </div>
-
+<!-- (keypress)="accNoPress($event)" -->
       <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
