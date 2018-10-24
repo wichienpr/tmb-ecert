@@ -429,7 +429,6 @@
         </div>
         <div class="three wide field" *ngIf="btnMaker">
           <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
-            <!-- <i class="barcode icon"></i> -->
             <img src="assets/image/barcode.png" style="height:28px;width:74px;filter:invert(100%);margin-top:2px;" alt="">
           </button>
           <span>สแกนบาร์โค้ด</span>
@@ -466,16 +465,25 @@
       </div>
 
       <div class="ui form accordion">
-        <div class="{{ toggleTitle }} inline field header-title" (click)="toggleDocument()">
+        <div class="{{ toggleTitle }} inline field header-title" (click)="toggleDocument()" *ngIf="onlyMaker">
           <h3 class="header space">&nbsp;</h3>
-          <h3 class="header">{{ documentMsg }} <div class="floated right"><i class="file outline icon"></i></div>
+          <h3 class="header">{{ documentMsg }} <div class="floated right">
+            <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
+            <i class="angle double up icon" *ngIf="toggleDoc == ''"></i>
+          </div>
           </h3>
+          <div class="ui divider"></div>
+        </div>
+
+        <div class="inline field header-title" *ngIf="onlyRequestor">
+          <h3 class="header space">&nbsp;</h3>
+          <h3 class="header">{{ documentMsg }} </h3>
           <div class="ui divider"></div>
         </div>
 
         <div class="{{ toggleDoc }} inline fields">
           <div class="required four wide field">
-            <label>ใบคำขอและหนังสือยินยอมให้หักเงินจากบัญชี</label>
+            <label>ใบคำขอ</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('requestFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
             <input type="file" accept="application/pdf" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
@@ -489,7 +497,7 @@
 
         <div class="{{ toggleDoc }} inline fields">
           <div class="required four wide field">
-            <label>สำเนาบัตรประชาชน</label>
+            <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('copyFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
             <input type="file" accept="application/pdf, image/png, image/jpeg" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
@@ -502,7 +510,7 @@
         </div>
         <div class="{{ toggleDoc }} inline fields">
           <div class="four wide field">
-            <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
+            <label class="half blue">อื่นๆ (ถ้ามี)</label>
           </div>
           <div class="five wide field" [ngClass]="{ 'hidden': onlyMaker||onlyChecker }">
             <input type="file" accept="application/pdf, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">

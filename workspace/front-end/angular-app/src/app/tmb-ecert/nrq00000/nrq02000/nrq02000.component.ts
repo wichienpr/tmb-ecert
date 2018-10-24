@@ -95,10 +95,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.allowedModal = { modalId: "allowed", type: "custom" };
     this.authForSubmit = { modalId: "auth", type: "custom" };
     this.store.select("user").subscribe(user => this.user = user);
-    this.init();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.init();
+  }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -229,7 +230,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   get onlyMaker() { return this.roles(ROLES.MAKER) }
-  get onRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get onlyRequestor() { return this.roles(ROLES.REQUESTOR) }
   get onlyChecker() { return this.roles(ROLES.CHECKER) }
 
   get btnForPay() { return this.form.get('payMethodSelect').value == "30004" }
@@ -387,12 +388,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
+          let value = '';
           if (this.form.controls[`chk${index}`]) {
             this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+            this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           } else {
             this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+            this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           }
           if (!obj.feeDbd) {
             obj.children = await this.service.reqTypeChange(obj.code);
@@ -524,6 +526,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.toggleChk(1);
       this.form.controls[`chk1`].setValue(true);
+      this.form.controls[`cer1`].setValue(1);
       this.loading = false;
     }, 1700);
   }
@@ -535,9 +538,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   toggleChk(index) {
     if (!this.form.controls[`chk${index}`].value) {
       this.form.controls[`cer${index}`].setValue(1);
-      // if (this.form.controls[`cal${index}`]) {
-      //   this.form.controls[`cal${index}`].setValue(dateLocaleEN(new Date()).split("/")[2]);
-      // }
     } else {
       this.form.controls[`cer${index}`].setValue('');
     }
@@ -554,10 +554,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           if (this.form.controls[`etc${index}Child${i}`]) {
             this.form.controls[`etc${index}Child${i}`].setValue('');
           }
-          if (i==1) {
-            this.toggleChkChild(index, i);
-            this.form.controls[`chk${index}Child${i}`].setValue(true);
-          }
+          // if (i==1) {
+          //   this.toggleChkChild(index, i);
+          //   this.form.controls[`chk${index}Child${i}`].setValue(true);
+          // }
         }
       }
     }

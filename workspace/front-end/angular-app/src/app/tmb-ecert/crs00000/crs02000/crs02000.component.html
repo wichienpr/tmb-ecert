@@ -458,9 +458,7 @@
           <div class="one wide field"></div>
           <div class="three wide field">
             <label>
-              ใบคำขอหนังสือรับรองนิติบุคคลและ
-              <br>
-              หนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
+              ใบคำขอ
             </label>
           </div>
           <div class="eleven wide field">
@@ -473,7 +471,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label>สำเนาบัตรประชาชน</label>
+            <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
           </div>
           <div class="eleven wide field ">
             <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
@@ -485,7 +483,7 @@
         <div class="inline fields">
           <div class="one wide field "></div>
           <div class="three wide field ">
-            <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
+            <label class="half blue">อื่นๆ (ถ้ามี)</label>
           </div>
           <div class="eleven wide field ">
             <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
@@ -577,7 +575,7 @@
               <tr class="text-center" *ngFor="let h of historyDt.datas; let i=index">
                 <td style="text-align: center !important;">{{ i+1 }}</td>
                 <td style="text-align: center !important;">{{ h.createdDateTime | datetimeString }}</td>
-                <td style="text-align: left   !important;">{{ h.makerById + ' - ' + h.makerByName }}</td>
+                <td style="text-align: left   !important;">{{ h.updateById + ' - ' + h.updateByName }}</td>
                 <td style="text-align: center !important;">{{ h.requestDate | datetimeString }}</td>
                 <td style="text-align: center !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
                 <td style="text-align: center !important;">{{ h.ref1 | emptyString }}</td>
