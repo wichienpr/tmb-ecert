@@ -252,40 +252,40 @@ export class Nrq02000Service {
                 this.common.blockui(); // Loading page
                 const formData = this.bindingData(certificates, files, form, addons);
                 let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
-                // this.ajax.upload(url, formData, response => {
-                //     if (response.json().message == "SUCCESS") {
-                //         const modal: Modal = {
-                //             msg: "บันทึกข้อมูลสำเร็จ",
-                //             // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                //             success: true
-                //         };
-                //         this.modal.alert(modal);
-                //         this.common.unblockui(); // Loading page
-                //         this.router.navigate(['/crs/crs01000'], {
-                //             queryParams: { codeStatus: addons.status }
-                //         });
-                //     } else {
-                //         if (response.json().data && response.json().data == "NEEDLOGIN") {
-                //             this.authForSubmit();
-                //             this.common.unblockui(); // Loading page
-                //             return;
-                //         }
-                //         let msg = "";
-                //         if (response.json().data && response.json().data == "HASMAKER") {
-                //             msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
-                //         } else {
-                //             msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
-                //         }
-                //         const modal: Modal = {
-                //             msg: msg,
-                //             success: false
-                //         };
-                //         this.modal.alert(modal);
-                //         this.common.unblockui(); // Loading page
-                //     }
-                // }, err => {
-                //     console.error(err)
-                // });
+                this.ajax.upload(url, formData, response => {
+                    if (response.json().message == "SUCCESS") {
+                        const modal: Modal = {
+                            msg: "บันทึกข้อมูลสำเร็จ",
+                            // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                            success: true
+                        };
+                        this.modal.alert(modal);
+                        this.common.unblockui(); // Loading page
+                        this.router.navigate(['/crs/crs01000'], {
+                            queryParams: { codeStatus: addons.status }
+                        });
+                    } else {
+                        if (response.json().data && response.json().data == "NEEDLOGIN") {
+                            this.authForSubmit();
+                            this.common.unblockui(); // Loading page
+                            return;
+                        }
+                        let msg = "";
+                        if (response.json().data && response.json().data == "HASMAKER") {
+                            msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                        } else {
+                            msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                        }
+                        const modal: Modal = {
+                            msg: msg,
+                            success: false
+                        };
+                        this.modal.alert(modal);
+                        this.common.unblockui(); // Loading page
+                    }
+                }, err => {
+                    console.error(err)
+                });
                 this.hasAuthed = "false";
                 return;
             }
@@ -294,40 +294,40 @@ export class Nrq02000Service {
                     this.common.blockui(); // Loading page
                     const formData = this.bindingData(certificates, files, form, addons);
                     let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
-                    // this.ajax.upload(url, formData, response => {
-                    //     if (response.json().message == "SUCCESS") {
-                    //         const modal: Modal = {
-                    //             msg: "บันทึกข้อมูลสำเร็จ",
-                    //             // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                    //             success: true
-                    //         };
-                    //         this.modal.alert(modal);
-                    //         this.common.unblockui(); // Loading page
-                    //         this.router.navigate(['/crs/crs01000'], {
-                    //             queryParams: { codeStatus: addons.status }
-                    //         });
-                    //     } else {
-                    //         if (response.json().data && response.json().data == "NEEDLOGIN") {
-                    //             this.authForSubmit();
-                    //             this.common.unblockui(); // Loading page
-                    //             return;
-                    //         }
-                    //         let msg = "";
-                    //         if (response.json().data && response.json().data == "HASMAKER") {
-                    //             msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
-                    //         } else {
-                    //             msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
-                    //         }
-                    //         const modal: Modal = {
-                    //             msg: msg,
-                    //             success: false
-                    //         };
-                    //         this.modal.alert(modal);
-                    //         this.common.unblockui(); // Loading page
-                    //     }
-                    // }, err => {
-                    //     console.error(err)
-                    // });
+                    this.ajax.upload(url, formData, response => {
+                        if (response.json().message == "SUCCESS") {
+                            const modal: Modal = {
+                                msg: "บันทึกข้อมูลสำเร็จ",
+                                // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                                success: true
+                            };
+                            this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
+                            this.router.navigate(['/crs/crs01000'], {
+                                queryParams: { codeStatus: addons.status }
+                            });
+                        } else {
+                            if (response.json().data && response.json().data == "NEEDLOGIN") {
+                                this.authForSubmit();
+                                this.common.unblockui(); // Loading page
+                                return;
+                            }
+                            let msg = "";
+                            if (response.json().data && response.json().data == "HASMAKER") {
+                                msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                            } else {
+                                msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                            }
+                            const modal: Modal = {
+                                msg: msg,
+                                success: false
+                            };
+                            this.modal.alert(modal);
+                            this.common.unblockui(); // Loading page
+                        }
+                    }, err => {
+                        console.error(err)
+                    });
                 }
             }, modalConf);
         }

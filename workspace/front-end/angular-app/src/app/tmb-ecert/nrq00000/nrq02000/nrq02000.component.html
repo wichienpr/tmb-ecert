@@ -440,7 +440,7 @@
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" (keypress)="accNoPress($event, true)" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
+          <input type="text" (keypress)="accNoPress($event)" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
         </div>
       </div>
 <!-- (keypress)="accNoPress($event)" -->
