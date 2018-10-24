@@ -557,10 +557,17 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           if (this.form.controls[`etc${index}Child${i}`]) {
             this.form.controls[`etc${index}Child${i}`].setValue('');
           }
-          // if (i==1) {
-          //   this.toggleChkChild(index, i);
-          //   this.form.controls[`chk${index}Child${i}`].setValue(true);
-          // }
+        }
+      } else {
+        for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
+          this.form.controls[`chk${index}Child${i}`].setValue(false);
+          this.form.controls[`cer${index}Child${i}`].setValue('');
+          if (this.form.controls[`cal${index}Child${i}`]) {
+            this.form.controls[`cal${index}Child${i}`].setValue('');
+          }
+          if (this.form.controls[`etc${index}Child${i}`]) {
+            this.form.controls[`etc${index}Child${i}`].setValue('');
+          }
         }
       }
     }
