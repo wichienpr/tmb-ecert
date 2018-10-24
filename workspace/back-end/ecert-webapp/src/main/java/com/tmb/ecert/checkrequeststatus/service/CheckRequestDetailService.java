@@ -143,7 +143,7 @@ public class CheckRequestDetailService {
 		try {
 			newReq = dao.findReqFormById(id, false);
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
-			switch (newReq.getPaidTypeCode()) {
+/*			switch (newReq.getPaidTypeCode()) {
 				case PAYMENT_STATUS.PAY_TMB_DBD: // 10001
 					CommonMessage<FeePaymentResponse> tmbStep = paymentWs.feePayment(newReq, PAYMENT_STATUS.TMB);
 					if (isSuccess(tmbStep.getMessage())) {
@@ -230,7 +230,10 @@ public class CheckRequestDetailService {
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 					break;
 
-			}
+			}*/
+			newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
+			updateForm(newReq, user);
+			response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {
 			logger.error(e.getMessage());

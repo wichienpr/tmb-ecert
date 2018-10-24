@@ -69,7 +69,7 @@ public class CheckRequestStatusDao {
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
 		sql.append(" ORDER BY H.TMB_REQUESTNO,H.UPDATED_DATETIME DESC");
 		crs01000VoList = jdbcTemplate.query(
@@ -115,7 +115,7 @@ public class CheckRequestStatusDao {
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
 
 		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
