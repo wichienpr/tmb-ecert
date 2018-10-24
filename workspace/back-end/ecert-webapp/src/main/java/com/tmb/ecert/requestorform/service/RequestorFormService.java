@@ -3,6 +3,7 @@ package com.tmb.ecert.requestorform.service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,10 +56,10 @@ public class RequestorFormService {
 
 	@Autowired
 	private CheckRequestDetailDao daoCrs;
-	
+
 	@Autowired
 	private RequestHistoryDao daoHst;
-	
+
 	@Autowired
 	private AuditLogService auditLogService;
 
@@ -75,10 +76,13 @@ public class RequestorFormService {
 				return msg;
 			}
 			if ("false".equals(form.getHasAuthed())) {
-				if (form.getAmount().doubleValue() > Double.parseDouble(ApplicationCache.getParamValueByName("payment.amount.limit"))) {
-					msg.setData("NEEDLOGIN");
-					msg.setMessage("ERROR");
-					return msg;
+				if (form.getAmount() != null) {
+					if (form.getAmount().doubleValue() > Double
+							.parseDouble(ApplicationCache.getParamValueByName("payment.amount.limit"))) {
+						msg.setData("NEEDLOGIN");
+						msg.setMessage("ERROR");
+						return msg;
+					}
 				}
 			}
 		}
@@ -162,6 +166,9 @@ public class RequestorFormService {
 					msg.setMessage("ERROR");
 					return msg;
 				}
+				List<RequestCertificate> oldReqCerts = daoCrs.findCertByReqFormId(nextId);
+				List<Long> forDeleteCerts = new ArrayList<>();
+				List<RequestCertificate> forUpdateCerts = new ArrayList<>();
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
@@ -169,16 +176,23 @@ public class RequestorFormService {
 						cert.setReqFormId(nextId);
 						cert.setCertificateCode(cer.getCode());
 						cert.setTotalNumber(cer.getValue());
-						cert.setCreatedById(userId);
-						cert.setCreatedByName(userName);
 						cert.setRegisteredDate(cer.getRegisteredDate());
 						cert.setStatementYear(cer.getStatementYear());
 						cert.setAcceptedDate(cer.getAcceptedDate());
 						cert.setOther(cer.getOther());
 						if (cer.getReqcertificateId() == null) {
+							cert.setCreatedById(userId);
+							cert.setCreatedByName(userName);
 							dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
 						} else {
+							cert.setUpdateById(userId);
+							cert.setUpdateByName(userName);
+							forUpdateCerts.add(cert);
 							dao.updateCertificates(cert); // UPDATE REQUEST CERTIFICATES
+						}
+					} else {
+						if (cer.getReqcertificateId() != null) {
+							dao.deleteCertificates(cer.getReqcertificateId()); // DELETE REQUEST CERTIFICATES
 						}
 					}
 				}
@@ -358,11 +372,9 @@ public class RequestorFormService {
 			msg.setData(null);
 			msg.setMessage("ERROR");
 			return msg;
-		}finally {
-			auditLogService.insertAuditLog(ACTION_AUDITLOG.REQFORM_01_CODE,
-					ACTION_AUDITLOG_DESC.REQFORM_01,reqTmbNo,
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-					new Date());
+		} finally {
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.REQFORM_01_CODE, ACTION_AUDITLOG_DESC.REQFORM_01, reqTmbNo,
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), new Date());
 		}
 	}
 

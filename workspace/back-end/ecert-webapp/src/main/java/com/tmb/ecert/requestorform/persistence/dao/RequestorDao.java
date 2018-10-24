@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +98,11 @@ public class RequestorDao {
 				new Object[] { vo.getReqFormId(), vo.getCertificateCode(), vo.getTotalNumber(), vo.getRegisteredDate(),
 						vo.getStatementYear(), vo.getAcceptedDate(), vo.getOther(), vo.getReqCertificateId() }); 
 		logger.info("SQL_ECERT_REQUEST_CERTIFICATE_UPDATE rows updated => {}", row);
+	}
+	
+	public void deleteCertificates(Long id) {
+		String sql = " DELETE FROM ECERT_REQUEST_CERTIFICATE WHERE REQCERTIFICATE_ID = ? ";
+		jdbcTemplate.update(sql, new Object[]{id});
 	}
 
 	public Long save(RequestForm vo) {

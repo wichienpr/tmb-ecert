@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.dao.ListOfValueDao;
 import com.tmb.ecert.common.domain.ListOfValue;
 
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
+
 @Service
 public class ListOfValueService {
 	
@@ -26,5 +28,10 @@ public class ListOfValueService {
 	public List<ListOfValue> lovAllType() {
 		logger.info("ListOfValueService::lovAllType");
 		return listOfValueDao.lovAllType();
+	}
+	
+	public ListOfValue lovByCode(String code) {
+		logger.info("ListOfValueService::lovByCode => params: [ code: {} ]", code);
+		return listOfValueDao.lovByCode(code);
 	}
 }
