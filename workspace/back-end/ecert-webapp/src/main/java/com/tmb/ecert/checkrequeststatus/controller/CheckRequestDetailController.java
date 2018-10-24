@@ -67,8 +67,8 @@ public class CheckRequestDetailController {
 	
 	@GetMapping("cert/approve/{reqFormId}")
 	@ResponseBody
-	public CommonMessage<RealtimePaymentRequest> approve(@PathVariable("reqFormId") String reqFormId) {
-		return this.crsService.approve(reqFormId);
+	public CommonMessage<String> approve(@PathVariable("reqFormId") String reqFormId) {
+		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin());
 	}
 	
 }

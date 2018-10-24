@@ -29,6 +29,7 @@ public class StatusConstant {
 	public static class PAYMENT_STATUS {
 		public final static String SUCCESS = "0";
 		public final static String SUCCESS_MSG = "SUCCESS";
+		public final static String ERROR_MSG = "ERROR";
 	}
 
 	public static class ROLE_STATUS {
