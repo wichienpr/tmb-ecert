@@ -33,9 +33,11 @@ export class RequestFormService {
      * @param url ลิ้งค์สำหรับสร้างไฟล์ pdf
      * @param data ข้อมูลที่จะใช้ในการเจนไฟล์
      */
-    getPdf(url: string, data: any) {
+    getPdf(url: string, data: any, error?: Function) {
         this.ajax.post(url, data, response => {
             this.ajax.download(URL.FORM_PDF + response._body + "/download");
+        }, err => {
+            error(err)
         });
     }
 

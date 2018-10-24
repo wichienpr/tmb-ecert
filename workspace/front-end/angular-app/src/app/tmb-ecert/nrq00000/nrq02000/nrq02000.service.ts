@@ -510,7 +510,9 @@ export class Nrq02000Service {
                 tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
                 rpReqFormList: rpReqFormList
             };
-            this.reqService.getPdf(URL.CREATE_FORM, data);
+            this.reqService.getPdf(URL.CREATE_FORM, data, error => {
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+            });
             this.common.unblockui(); // UnLoading page
             return true;
         } else {
@@ -724,8 +726,10 @@ export class Nrq02000Service {
                 });
                 this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             } else {
-                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ", success: true });
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ"});
             }
+        }, error => {
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
         });
     }
 

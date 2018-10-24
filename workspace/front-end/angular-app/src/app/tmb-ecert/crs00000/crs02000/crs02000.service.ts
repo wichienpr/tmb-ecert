@@ -93,8 +93,10 @@ export class Crs02000Service {
         });
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
       } else {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ", success: true });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
       }
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
     });
   }
 
@@ -129,6 +131,8 @@ export class Crs02000Service {
           } else {
             this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
           }
+        }, error => {
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
         });
       }
     }, modal);
@@ -187,12 +191,16 @@ export class Crs02000Service {
     if (what == cover) {
       this.ajax.post(URL.CREATE_COVER, { id: parseInt(id), tmpReqNo: tmbNo }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+      }, error => {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
     }
 
     if (what == receipt) {
       this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+      }, error => {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
     }
 
@@ -213,6 +221,8 @@ export class Crs02000Service {
       } else {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       }
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
     });
   }
 
