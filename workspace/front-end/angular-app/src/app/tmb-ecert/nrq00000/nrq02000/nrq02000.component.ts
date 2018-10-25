@@ -27,6 +27,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   data: RequestForm = initRequestForm;
   tmbReqFormId: String = "";
+  custsegmentCode: string = "";
   form: FormGroup;
   formReject: FormGroup;
   formAuth: FormGroup;
@@ -95,7 +96,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     };
     this.allowedModal = { modalId: "allowed", type: "custom" };
     this.authForSubmit = { modalId: "auth", type: "custom" };
-    this.store.select("user").subscribe(user => this.user = user);
+    this.store.select("user").subscribe(user => {
+      this.user = user
+    });
   }
 
   ngOnInit() {
@@ -128,7 +131,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       const {
         accNo, accName, corpName, corpName1, corpNo, address,
         acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-        departmentName, ref1, ref2, amountDbd, amountTmb
+        departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
       } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
@@ -156,7 +159,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       if (this.chkList && this.chkList.length > 0) {
         this.chkList = await this.service.matchChkList(this.chkList, this.cert);
       }
-
+      if (this.user.segment) {
+        customSegSelect.setValue(this.user.segment);
+      } else {
+        this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
+        customSegSelect.setValue(this.custsegmentCode);
+      }
       accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
       accNo.setValue(Acc.convertAccNo(accountNo));
       address.setValue(this.data.address);
@@ -213,7 +221,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
-      this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
+      this.form.controls.customSegSelect.setValue('');
       this.form.controls.payMethodSelect.setValue('30001');
     }
 
@@ -538,6 +546,19 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls[name].setValue(e);
   }
 
+  classByCode(e) {
+    switch (e) {
+      case '50001':
+        return 'bg-red';
+      case '50002':
+        return 'bg-pink';
+      case '50003':
+        return 'bg-yellow';
+      default:
+        return ''
+    }
+  }
+
   toggleChk(index) {
     if (!this.form.controls[`chk${index}`].value) {
       this.form.controls[`cer${index}`].setValue(1);
@@ -546,7 +567,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
     if (this.reqTypeChanged[index].children) {
       this.showChildren = !this.form.controls[`chk${index}`].value;
-      this.form.get(`chk${index}`).setValue(this.showChildren)
+      this.form.get(`chk${index}`).setValue(this.showChildren);
       if (this.showChildren) {
         for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
           this.form.controls[`chk${index}Child${i}`].setValue(false);

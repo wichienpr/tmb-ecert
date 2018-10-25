@@ -153,28 +153,18 @@
           <tbody>
             <ng-container *ngIf="reqTypeIsNull">
               <tr class="center aligned">
-                <td colspan="5">
+                <td colspan="6">
                   <h5> ไม่มีข้อมูลประเภทคำขอ </h5>
                 </td>
-                <td style="display: none">&nbsp;</td>
-                <td style="display: none">&nbsp;</td>
-                <td style="display: none">&nbsp;</td>
-                <td style="display: none">&nbsp;</td>
-                <td style="display: none">&nbsp;</td>
               </tr>
             </ng-container>
             <ng-container *ngIf="!reqTypeIsNull">
               <ng-container *ngFor="let req of reqTypeChanged; let i = index">
                 <ng-container *ngIf="!req.code">
-                  <tr>
-                    <td colspan="5">
+                  <tr [className]="classByCode(req.typeCode)">
+                    <td colspan="6">
                       <h5>{{ req.typeDesc }}</h5>
                     </td>
-                    <td style="display: none">&nbsp;</td>
-                    <td style="display: none">&nbsp;</td>
-                    <td style="display: none">&nbsp;</td>
-                    <td style="display: none">&nbsp;</td>
-                    <td style="display: none">&nbsp;</td>
                   </tr>
                 </ng-container>
                 <ng-container *ngIf="req.code&&req.feeDbd">
@@ -312,7 +302,7 @@
           </label>
         </div>
         <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid('customSegSelect'), 'disabled': roles(_roles.REQUESTOR) }">
-          <ui-dropdown [selected]="data ? data.custsegmentCode : ''" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
+          <ui-dropdown [selected]="custsegmentCode" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
         <div class="two wide field" [ngClass]="{'required': !roles(_roles.MAKER)}">
           <label>เลขที่ CA/มติอนุมัติ
@@ -414,7 +404,7 @@
           </div>
         </div> -->
         <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
-          <input type="text" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
+          <input type="text" class="txt-red" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>

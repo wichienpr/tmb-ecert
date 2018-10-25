@@ -22,3 +22,31 @@ img:focus {
     top: 12px;
     right: 12px;
 } */
+
+[class*="logo"] {
+    cursor: pointer !important;
+    outline: none !important;
+    border: 0 !important;
+}
+
+.logo-main {
+    width: 105px !important;
+}
+
+.logo-partner {
+    margin-top: 17px !important;
+    margin-right: 17px;
+    height: 44px !important;
+    width: 44px !important;
+}
+
+.ui.menu .active.item {
+    background: rgba(0, 0, 0, .25) !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+.ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, .15);
+}

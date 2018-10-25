@@ -53,3 +53,23 @@ h3.header.space {
 .barcode {
     cursor: pointer !important;
 }
+
+[class*="bg"] {
+    color: black;
+}
+
+.bg-yellow {
+    background: yellow;
+}
+
+.bg-red {
+    background: red;
+}
+
+.bg-pink {
+    background: pink;
+}
+
+.txt-red {
+    color: red !important;
+}

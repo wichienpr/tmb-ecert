@@ -1,5 +1,6 @@
 <div class="ui borderless menu fixed" style="background:#0079c0;z-index: 999;height: 75px;">
-  <img class="logo" routerLink="/home" src="assets/image/TMBLogo.png" style="width: 105px;">
+  <img class="logo-main" routerLink="/home" src="assets/image/TMBLogo.png">
+  <img class="logo-partner" routerLink="/home" src="assets/image/footer.jpg">
   <ng-container *ngFor="let main of routes">
     <ng-container *ngIf="main.func">
       <a class="ui dropdown item" (click)="main.func()">{{main.label}}</a>
