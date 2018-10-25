@@ -147,6 +147,8 @@ public class RequestorFormService {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
 				}
+				req.setUpdatedById(userId);
+				req.setUpdatedByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestFormFile(requestFileName);

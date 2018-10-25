@@ -187,7 +187,7 @@ public class RequestorDao {
 						vo.getAccountType(), vo.getAccountNo(), vo.getAccountName(), vo.getCustomerNameReceipt(),
 						vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
 						vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
-						vo.getMakerByName(), vo.getMakerById(), vo.getMakerByName(), new java.util.Date(),
+						vo.getMakerByName(), vo.getUpdatedById(), vo.getUpdatedByName(), new java.util.Date(),
 						vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 						vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
 						vo.getAmountTmb(), vo.getAmountDbd(),

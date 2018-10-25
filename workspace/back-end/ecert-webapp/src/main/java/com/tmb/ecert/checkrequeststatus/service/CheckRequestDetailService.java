@@ -13,9 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayResponse;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentResponse;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -101,13 +98,17 @@ public class CheckRequestDetailService {
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
 
 			// Get Role of user login
-			StringBuilder roleName = new StringBuilder();
+			// StringBuilder roleName = new StringBuilder();
 			newReq.setUpdatedById(user.getUserId());
 			newReq.setUpdatedByName(user.getUsername());
 
 			if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
+				if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
+					newReq.setCheckerById(user.getUserId());
+					newReq.setCheckerById(user.getUsername());
+				}
 				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
 			} else if (StatusConstant.NEW_REQUEST.equals(newReq.getStatus())
 					&& UserLoginUtils.ishasRole(user, ROLES.REQUESTOR)) {
@@ -118,7 +119,6 @@ public class CheckRequestDetailService {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_REQ_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_REQ;
 				newReq.setStatus(StatusConstant.REFUSE_REQUEST);
-
 			}
 			reqDao.update(newReq);
 			hstDao.save(newReq);
@@ -143,6 +143,10 @@ public class CheckRequestDetailService {
 		try {
 			newReq = dao.findReqFormById(id, false);
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
+			if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
+				newReq.setCheckerById(user.getUserId());
+				newReq.setCheckerById(user.getUsername());
+			}
 //			switch (newReq.getPaidTypeCode()) {
 //				case PAYMENT_STATUS.PAY_TMB_DBD: // 10001
 //					CommonMessage<FeePaymentResponse> tmbStep = paymentWs.feePaymentTMB(newReq);
