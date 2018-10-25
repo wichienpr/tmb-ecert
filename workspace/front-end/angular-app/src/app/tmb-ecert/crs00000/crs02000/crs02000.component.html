@@ -604,7 +604,7 @@
               <tr class="text-center" *ngFor="let h of historyDt.datas; let i=index">
                 <td style="text-align: center !important;">{{ i+1 }}</td>
                 <td style="text-align: center !important;">{{ h.createdDateTime | datetimeString }}</td>
-                <td style="text-align: left   !important;">{{ h.updateById + ' - ' + h.updateByName }}</td>
+                <td style="text-align: left   !important;">{{ h.updatedById + ' - ' + h.updatedByName }}</td>
                 <td style="text-align: center !important;">{{ h.requestDate | datetimeString }}</td>
                 <td style="text-align: center !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
                 <td style="text-align: center !important;">{{ h.ref1 | emptyString }}</td>
