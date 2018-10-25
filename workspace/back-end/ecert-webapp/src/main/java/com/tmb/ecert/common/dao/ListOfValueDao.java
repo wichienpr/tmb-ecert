@@ -39,6 +39,19 @@ public class ListOfValueDao {
 
 		return result;
 	}
+	
+	public ListOfValue lovByCode(String code) {
+		StringBuilder sql = new StringBuilder(template);
+		sql.append(" AND CODE = ? ");
+		sql.append(" ORDER BY SEQUENCE ASC ");
+		
+		List<Object> params = new ArrayList<>();
+		params.add(code);
+		
+		ListOfValue result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), lovMapper);
+		
+		return result;
+	}
 
 	private RowMapper<ListOfValue> typeMapper = new RowMapper<ListOfValue>() {
 		@Override

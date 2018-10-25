@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayRequest;
-import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentRequest;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @RequestMapping("api/crs/crs02000")
 @Controller
@@ -31,7 +31,7 @@ public class CheckRequestDetailController {
 
 	@GetMapping("/data/{id}")
 	@ResponseBody
-	public List<RequestForm> formFromId(@PathVariable("id") String id) {
+	public RequestForm formFromId(@PathVariable("id") String id) {
 		return crsService.findReqFormById(id);
 	}
 	
@@ -61,14 +61,14 @@ public class CheckRequestDetailController {
 	
 	@PostMapping("cert/reject")
 	@ResponseBody
-	public CommonMessage<String> reject(@RequestBody RequestForm req) {
-		return this.crsService.reject(req);
+	public CommonMessage<String> rejectMak(@RequestBody RequestForm req) {
+		return this.crsService.reject(req, UserLoginUtils.getCurrentUserLogin());
 	}
 	
 	@GetMapping("cert/approve/{reqFormId}")
 	@ResponseBody
-	public CommonMessage<RealtimePaymentRequest> approve(@PathVariable("reqFormId") String reqFormId) {
-		return this.crsService.approve(reqFormId);
+	public CommonMessage<String> approve(@PathVariable("reqFormId") String reqFormId) {
+		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin());
 	}
 	
 }

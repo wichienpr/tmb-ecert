@@ -47,10 +47,10 @@ public class AuditLogService {
 			AuditLog auditLog = new AuditLog(); 
 			auditLog.setActionCode(actionCode);
 			String description = String.format(ApplicationCache.getParamValueByName(actionDesc),
-					StringUtils.defaultString(user.getUserId()),EcerDateUtils.formatLogDate(actionDate));
+					StringUtils.defaultString(user!=null ? user.getUserId():StringUtils.EMPTY),EcerDateUtils.formatLogDate(actionDate));
 			auditLog.setDescription(description);
-			auditLog.setCreateById(user.getUserId());
-			auditLog.setCreatedByName(user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName()));
+			auditLog.setCreateById(user!=null ? user.getUserId():StringUtils.EMPTY);
+			auditLog.setCreatedByName(user!=null ? (user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName())): StringUtils.EMPTY);
 			Long id = auditLogsDao.insertAuditLog(auditLog);
 			if(id!=null)
 				result =  true;
@@ -68,10 +68,10 @@ public class AuditLogService {
 			AuditLog auditLog = new AuditLog(); 
 			auditLog.setActionCode(actionCode);
 			String description = String.format(ApplicationCache.getParamValueByName(actionDesc),
-					StringUtils.defaultString(user.getUserId()),tmbReqNo,EcerDateUtils.formatLogDate(actionDate));
+					StringUtils.defaultString(user!=null ? user.getUserId():StringUtils.EMPTY),tmbReqNo,EcerDateUtils.formatLogDate(actionDate));
 			auditLog.setDescription(description);
-			auditLog.setCreateById(user.getUserId());
-			auditLog.setCreatedByName(user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName()));
+			auditLog.setCreateById(user!=null ? user.getUserId():StringUtils.EMPTY);
+			auditLog.setCreatedByName(user!=null ? (user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName())): StringUtils.EMPTY);
 			Long id = auditLogsDao.insertAuditLog(auditLog);
 			if(id!=null)
 				result =  true;

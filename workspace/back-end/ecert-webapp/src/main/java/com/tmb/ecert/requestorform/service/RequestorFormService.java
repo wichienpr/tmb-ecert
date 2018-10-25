@@ -2,8 +2,9 @@ package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,15 +13,19 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
+import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
@@ -29,6 +34,7 @@ import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
@@ -50,16 +56,19 @@ public class RequestorFormService {
 
 	@Autowired
 	private CheckRequestDetailDao daoCrs;
-	
+
 	@Autowired
 	private RequestHistoryDao daoHst;
+
+	@Autowired
+	private AuditLogService auditLogService;
 
 	@Autowired
 	private RequestGenKeyService gen;
 
 	public CommonMessage<String> update(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
-		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false).get(0);
+		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
 		if ("10005".equals(form.getStatus())) {
 			if (req.getMakerById() != null) {
 				msg.setData("HASMAKER");
@@ -67,10 +76,13 @@ public class RequestorFormService {
 				return msg;
 			}
 			if ("false".equals(form.getHasAuthed())) {
-				if (form.getAmount().doubleValue() > Double.parseDouble("3000"/*ApplicationCache.getParamValueByName("")*/)) {
-					msg.setData("NEEDLOGIN");
-					msg.setMessage("ERROR");
-					return msg;
+				if (form.getAmount() != null) {
+					if (form.getAmount().doubleValue() > Double
+							.parseDouble(ApplicationCache.getParamValueByName("payment.amount.limit"))) {
+						msg.setData("NEEDLOGIN");
+						msg.setMessage("ERROR");
+						return msg;
+					}
 				}
 			}
 		}
@@ -135,6 +147,8 @@ public class RequestorFormService {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
 				}
+				req.setUpdatedById(userId);
+				req.setUpdatedByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestFormFile(requestFileName);
@@ -143,17 +157,20 @@ public class RequestorFormService {
 				try {
 					dao.update(req); // SAVE REQUEST FORM
 				} catch (Exception e) {
-					logger.info("REQUESTFORM UPDATE => ", e);
+					logger.error("REQUESTFORM UPDATE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
 				}
 				try {
 					daoHst.save(req); // ADD HISTORY
 				} catch (Exception e) {
-					logger.info("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
+					logger.error("REQUESTFORM ADD HISTORY STATUS({}) => {}", req.getStatus(), e);
 					msg.setMessage("ERROR");
 					return msg;
 				}
+				List<RequestCertificate> oldReqCerts = daoCrs.findCertByReqFormId(nextId);
+				List<Long> forDeleteCerts = new ArrayList<>();
+				List<RequestCertificate> forUpdateCerts = new ArrayList<>();
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
 						RequestCertificate cert = new RequestCertificate();
@@ -161,26 +178,33 @@ public class RequestorFormService {
 						cert.setReqFormId(nextId);
 						cert.setCertificateCode(cer.getCode());
 						cert.setTotalNumber(cer.getValue());
-						cert.setCreatedById(userId);
-						cert.setCreatedByName(userName);
 						cert.setRegisteredDate(cer.getRegisteredDate());
 						cert.setStatementYear(cer.getStatementYear());
 						cert.setAcceptedDate(cer.getAcceptedDate());
 						cert.setOther(cer.getOther());
 						if (cer.getReqcertificateId() == null) {
+							cert.setCreatedById(userId);
+							cert.setCreatedByName(userName);
 							dao.saveCertificates(cert); // SAVE REQUEST CERTIFICATES
 						} else {
+							cert.setUpdateById(userId);
+							cert.setUpdateByName(userName);
+							forUpdateCerts.add(cert);
 							dao.updateCertificates(cert); // UPDATE REQUEST CERTIFICATES
+						}
+					} else {
+						if (cer.getReqcertificateId() != null) {
+							dao.deleteCertificates(cer.getReqcertificateId()); // DELETE REQUEST CERTIFICATES
 						}
 					}
 				}
 				msg.setMessage("SUCCESS");
 			} catch (Exception e) {
-				logger.info("REQUESTFORM UPDATE => ", e);
+				logger.error("REQUESTFORM UPDATE => ", e);
 			}
 			return msg;
 		} catch (IOException e) {
-			logger.info("REQUESTFORM UPDATE => ", e);
+			logger.error("REQUESTFORM UPDATE => ", e);
 			msg.setMessage("ERROR");
 			return msg;
 		}
@@ -350,12 +374,15 @@ public class RequestorFormService {
 			msg.setData(null);
 			msg.setMessage("ERROR");
 			return msg;
+		} finally {
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.REQFORM_01_CODE, ACTION_AUDITLOG_DESC.REQFORM_01, reqTmbNo,
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), new Date());
 		}
 	}
 
-	public List<RequestForm> findReqFormById(String id) {
+	public RequestForm findReqFormById(String id) {
 		Long reqFormId = Long.valueOf(id);
-		List<RequestForm> reqForm = daoCrs.findReqFormById(reqFormId);
+		RequestForm reqForm = daoCrs.findReqFormById(reqFormId);
 		return reqForm;
 	}
 

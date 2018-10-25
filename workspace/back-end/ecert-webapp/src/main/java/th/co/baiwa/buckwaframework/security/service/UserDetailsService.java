@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.dao.UserProfileDao;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
@@ -36,37 +37,37 @@ public class UserDetailsService implements org.springframework.security.core.use
 //		passwordEncoder.encode("password")
 		UserDetails userDetails = new UserDetails(username,"",grantedAuthorityList);
 		if("ADMIN".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("ADMIN"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
 			userDetails.setFirstName("ผู้ดูแลระบบ");
 			userDetails.setLastName("ธนาคารทหารไทย");
 			userDetails.setUserId("0001");
 		}
 		if("IT".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("IT"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.IT));
 			userDetails.setFirstName("IT");
 			userDetails.setLastName("Technologies");
 			userDetails.setUserId("0002");
 		}
 		if("ISA".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("ISA"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ISA));
 			userDetails.setFirstName("ISA");
 			userDetails.setLastName("Security");
 			userDetails.setUserId("0003");
 		}
 		if("REQUESTOR".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("REQUESTOR"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
 			userDetails.setFirstName("Requestor");
 			userDetails.setLastName("RM");
 			userDetails.setUserId("0004");
 		}
 		if("MAKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("MAKER"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
 			userDetails.setFirstName("Maker");
 			userDetails.setLastName("TMB Center");
 			userDetails.setUserId("0005");
 		}
 		if("CHECKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority("CHECKER"));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
 			userDetails.setFirstName("Checker");
 			userDetails.setLastName("TMB Center");
 			userDetails.setUserId("0006");

@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.tmb.ecert.common.constant.DateConstant;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000FormVo;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;
@@ -43,11 +44,11 @@ public class SaveRequestNoDao {
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
-		sql.append(" AND H.STATUS = 10011");
+		sql.append(" AND H.STATUS = "+StatusConstant.WAIT_SAVE_REQUEST);
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
 
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
@@ -72,11 +73,11 @@ public class SaveRequestNoDao {
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
 		sql.append(" WHERE 1 = 1 ");
-		sql.append(" AND H.STATUS = 10011");
+		sql.append(" AND H.STATUS = "+StatusConstant.WAIT_SAVE_REQUEST);
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
-			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo()) + "%");
+			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
 
 		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,

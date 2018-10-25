@@ -62,11 +62,16 @@ public class Sup01000Controller {
 	
 	@GetMapping("/exportRole/{roleName}/{roleStatus}")
 	@ResponseBody
-	public void exportRole(@PathVariable("roleName") String roleName,@PathVariable("roleStatus") int roleStatus ,HttpServletResponse response) {
+	public void exportRole(@PathVariable("roleName") String roleName,@PathVariable("roleStatus") String roleStatus ,HttpServletResponse response) {
 		Sup01100FormVo roleVo = new Sup01100FormVo();
-		roleVo.setRoleName(roleName);
-		roleVo.setStatus(roleStatus);
+
 		try {
+			roleVo.setRoleName(roleName);
+			if ("NULL".equals(roleStatus)) {
+				roleVo.setStatus(2);
+			}else {
+				roleVo.setStatus(Integer.parseInt(roleStatus));
+			}
 			service.exportFile(roleVo,response);
 		} catch (IOException e) {
 			e.printStackTrace();

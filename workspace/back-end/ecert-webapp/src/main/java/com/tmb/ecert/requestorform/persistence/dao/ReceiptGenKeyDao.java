@@ -9,27 +9,24 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RequestGenKeyDao {
-
+public class ReceiptGenKeyDao {
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public Integer getNextKey(String keyYear) {
-		String sql =" select ISNULL(max(RUNNING),0) from ECERT_REQUEST_GENKEY where YEAR=?";
+	public Integer getRecNextKey(String keyYear) {
+		String sql =" select ISNULL(max(RUNNING),0) from ECERT_RECEIPT_GENKEY where YEAR= ? ";
 		List<BigDecimal> res = jdbcTemplate.queryForList(sql,BigDecimal.class, NumberUtils.toInt(keyYear));
 		if(res.isEmpty()) {
 			return 0;
 		}
 		return res.get(0).intValue();
 	}
-
-	public void updateKeyrunning(int nextRunning, String keyYear) {
-		jdbcTemplate.update(" update ECERT_REQUEST_GENKEY set RUNNING=? where YEAR=?",nextRunning,  NumberUtils.toInt(keyYear) );
+	public void updateRecKeyrunning(int nextRunning, String keyYear) {
+		jdbcTemplate.update(" update ECERT_RECEIPT_GENKEY set RUNNING=? where YEAR=?",nextRunning,  NumberUtils.toInt(keyYear) );
 	}
 
-	public void insertKeyrunning(int nextRunning, String keyYear) {
-		jdbcTemplate.update(" insert INTO ECERT_REQUEST_GENKEY (RUNNING,YEAR) VALUES( ?, ? ) ",nextRunning,  NumberUtils.toInt(keyYear) );
+	public void insertRecKeyrunning(int nextRunning, String keyYear) {
+		jdbcTemplate.update(" insert INTO ECERT_RECEIPT_GENKEY (RUNNING,YEAR) VALUES( ?, ? ) ",nextRunning,  NumberUtils.toInt(keyYear) );
 	}
-
-	
 }

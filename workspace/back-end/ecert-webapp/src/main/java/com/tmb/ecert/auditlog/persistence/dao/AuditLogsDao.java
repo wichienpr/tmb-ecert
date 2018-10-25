@@ -27,6 +27,7 @@ import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.common.constant.DateConstant;
 
+import th.co.baiwa.buckwaframework.common.bean.DatatableSort;
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 
 @Repository
@@ -91,7 +92,18 @@ public class AuditLogsDao {
 			params.add(formVo.getActionCode());
 		}
 		
-		sql.append(" ORDER BY a.CREATED_DATETIME ");
+		if(!formVo.getSort().isEmpty()) {
+			sql.append( "ORDER BY ");
+			List<String> orders = new ArrayList<>();
+			for(DatatableSort item : formVo.getSort()) {
+				orders.add("a." + item.getColumn() + " " + item.getOrder());
+			}
+			sql.append(StringUtils.join(orders,", "));
+		}else {
+			// default order
+			sql.append(" ORDER BY a.CREATED_DATETIME DESC ");			
+		}
+		
 		
 		log.info("sqladl01000 : {}",sql.toString());
 		adl01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), params.toArray(), adl01000RowMapper);
@@ -105,7 +117,7 @@ public class AuditLogsDao {
 	    	public Adl01000Vo mapRow(ResultSet rs, int arg1) throws SQLException {
 	    		Adl01000Vo vo = new Adl01000Vo();
 	    		vo.setId(rs.getLong("AUDITLOG_ID"));
-	    		vo.setCreatedDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("CREATED_DATETIME")));
+	    		vo.setCreatedDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getTimestamp("CREATED_DATETIME")));
 	    		vo.setCreatedById(rs.getString("CREATED_BY_ID"));
 	    		vo.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 	    		vo.setActionCode(rs.getString("ACTION_CODE"));

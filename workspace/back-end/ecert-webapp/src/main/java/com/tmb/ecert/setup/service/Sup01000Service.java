@@ -37,6 +37,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RoleVo;
 import com.tmb.ecert.common.service.ExcalService;
@@ -68,11 +69,6 @@ public class Sup01000Service {
 
 	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
 
-	private static String MSG_DUP = "Role name ซ้ำ  ";
-	private static String MSG_SUCS = "ทำรายการสำเร็จ";
-	private static String MSG_SUCS_EXC = "ทำรายการสำเร็จ";
-	private static String MSG_ERR = "ทำรายการล้มเหลว  ";
-	private static String MSG_ERR_EXC = "ไฟล์อัพโหลดผิดพลาด";
 	private static String EXCEL_FILE_XLSX = "xlsx";
 	private static String EXCEL_FILE_ACTIVE = "Active";
 	private static String EXCEL_FILE_INACTIVE = "Inactive";
@@ -83,10 +79,6 @@ public class Sup01000Service {
 	private static String EXCEL_DATE_FORMAT =  "yyyyMMdd";
 	private static String EXCEL_REPORT = "report/excel_template/";
 	private static String EXCEL_TEMPALTE = "RolePermission_Template.xlsx";
-	
-	private static String STATUS_ALL = "90001";
-	private static String STATUS_ACTIVE= "90002";
-	private static String STATUS_INACTIVE = "90003";
 	
 
 	private static String[] headerTable = { "Role Name ", " สถานะ ", "ยินดีต้อนรับ \n (UI-00002)",
@@ -128,7 +120,7 @@ public class Sup01000Service {
 			int countDup = userRoleDao.validateDuplicateRoleName(form);
 			if (form.getRoleId() == null || form.getRoleId() == 0) {
 				if (countDup == 0) {
-//					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
+					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
 				} else {
 					message.setData(MESSAGE_STATUS.FAILED);
 					message.setMessage(MESSAGE_STATUS.FAILED);
@@ -162,13 +154,13 @@ public class Sup01000Service {
 	}
 
 	public DataTableResponse<RoleVo> getRole(Sup01100FormVo form) {
-		if (STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
+		if (StatusConstant.ROLE_STATUS.STATUS_ALL.equals(Integer.toString(form.getStatus())) || form.getStatus() == 0 ) {
 			form.setStatus(2);
 			
-		}else if (STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
+		}else if (StatusConstant.ROLE_STATUS.STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(1);
 			
-		}else if (STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
+		}else if (StatusConstant.ROLE_STATUS.STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(0);
 		}
 		
@@ -193,13 +185,13 @@ public class Sup01000Service {
 			form.setRoleName(null);
 		}
 		
-		if (STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
+		if (StatusConstant.ROLE_STATUS.STATUS_ALL.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(2);
 			
-		}else if (STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
+		}else if (StatusConstant.ROLE_STATUS.STATUS_INACTIVE.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(1);
 			
-		}else if (STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
+		}else if (StatusConstant.ROLE_STATUS.STATUS_ACTIVE.equals(Integer.toString(form.getStatus()))) {
 			form.setStatus(0);
 		}
 		
@@ -467,6 +459,7 @@ public class Sup01000Service {
 						for (int j = 2; j < currentRow.getLastCellNum() ; j++) {
 							RoleVo roleVo = new RoleVo();
 							currentCell = currentRow.getCell(j);
+//							check format value
 							int statusPermisFlag = covertStatus(currentCell.getStringCellValue());
 							if (statusPermisFlag == 2) {
 								logger.error("uploadFileRole","Upload Role Permission format error");

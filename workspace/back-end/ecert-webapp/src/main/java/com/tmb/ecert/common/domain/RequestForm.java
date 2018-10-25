@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestForm {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class RequestForm extends DatatableRequest {
 	private Long reqFormId;
 	private Timestamp requestDate;
 	private String tmbRequestNo;

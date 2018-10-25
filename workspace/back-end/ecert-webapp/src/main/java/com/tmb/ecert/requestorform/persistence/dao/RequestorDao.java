@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,8 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.utils.BeanUtils;
+
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @Repository
 public class RequestorDao {
@@ -96,6 +101,11 @@ public class RequestorDao {
 						vo.getStatementYear(), vo.getAcceptedDate(), vo.getOther(), vo.getReqCertificateId() }); 
 		logger.info("SQL_ECERT_REQUEST_CERTIFICATE_UPDATE rows updated => {}", row);
 	}
+	
+	public void deleteCertificates(Long id) {
+		String sql = " DELETE FROM ECERT_REQUEST_CERTIFICATE WHERE REQCERTIFICATE_ID = ? ";
+		jdbcTemplate.update(sql, new Object[]{id});
+	}
 
 	public Long save(RequestForm vo) {
 
@@ -169,9 +179,8 @@ public class RequestorDao {
 		sql.append("REMARK=?,RECEIPT_NO=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,");
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
-		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?");
+		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?");
 		sql.append(" WHERE REQFORM_ID = ?");
-
 		int row = jdbcTemplate.update(sql.toString(),
 				new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(), vo.getCustomerName(), vo.getCompanyName(),
 						vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(), vo.getDepartment(),
@@ -179,10 +188,10 @@ public class RequestorDao {
 						vo.getAccountType(), vo.getAccountNo(), vo.getAccountName(), vo.getCustomerNameReceipt(),
 						vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
 						vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
-						vo.getMakerByName(), vo.getMakerById(), vo.getMakerByName(), new java.util.Date(),
+						vo.getMakerByName(), UserLoginUtils.getCurrentUserLogin().getUserId(), UserLoginUtils.getCurrentUserLogin().getUsername(), new java.util.Date(),
 						vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 						vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
-						vo.getAmountTmb(), vo.getAmountDbd(),
+						vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(),
 						vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
