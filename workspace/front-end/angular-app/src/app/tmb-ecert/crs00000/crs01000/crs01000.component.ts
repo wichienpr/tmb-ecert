@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Crs01000Service } from 'app/tmb-ecert/crs00000/crs01000/crs01000.service';
-import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Dropdown, DropdownMode,Lov } from 'models/';
+import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Dropdown, DropdownMode, Lov } from 'models/';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
 import { Router, ActivatedRoute, Params } from "@angular/router";
@@ -44,7 +44,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   countSucceed: Number = 0;
   countWaitSaveRequest: Number = 0;
 
-  
+
   constructor(
     private crs01000Service: Crs01000Service,
     private ajax: AjaxService,
@@ -55,12 +55,12 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   ngOnInit() {
     let now = moment().format('DD/MM/YYYY');
-    this.form  = new FormGroup({
-      reqDate: new FormControl(now, Validators.required),     //วันที่ขอ
-      toReqDate: new FormControl(now, Validators.required),   //ถึงวันที่
-      organizeId: new FormControl(''),  //เลขที่นิติบุคคล
-      companyName: new FormControl(''),  //ชื่อนิติบุคคล
-      tmbReqNo: new FormControl(''),     //TMB Req. No.
+    this.form = new FormGroup({
+      reqDate: new FormControl(now, Validators.required),   //วันที่ขอ
+      toReqDate: new FormControl(now, Validators.required), //ถึงวันที่
+      organizeId: new FormControl(''),                      //เลขที่นิติบุคคล
+      companyName: new FormControl(''),                     //ชื่อนิติบุคคล
+      tmbReqNo: new FormControl(''),                        //TMB Req. No.
       status: new FormControl(''),
     });
 
@@ -76,13 +76,13 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       placehold: "กรุณาเลือก"
     };
     this.crs01000Service.getActionDropdown().subscribe((obj: Lov[]) => this.actionDropdown.values = obj)
-    
+
     this.calendar1 = {
       id: "calendar1",
       formControl: this.form.get("reqDate"),
       endCalendar: "calendar2"
     };
-    
+
     this.calendar2 = {
       id: "calendar2",
       formControl: this.form.get("toReqDate"),
@@ -102,62 +102,58 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.statusHome = this.route.snapshot.queryParams["codeStatus"];
-    console.log(this.statusHome)
+    // console.log(this.statusHome)
     if (this.statusHome) {
       setTimeout(() => {
         this.searchStatusByHomePage(this.statusHome);
       }, 500);
-      
-    }else{
+
+    } else {
       $('.ui.sidebar')
-      .sidebar({
-        context: '.ui.grid.pushable'
-      })
-      .sidebar('setting', 'transition', 'push')
-      .sidebar('toggle');
+        .sidebar({
+          context: '.ui.grid.pushable'
+        })
+        .sidebar('setting', 'transition', 'push')
+        .sidebar('toggle');
     }
   }
 
   onToggle() {
     this.getCountStatus();
     $('.ui.sidebar')
-      .sidebar({
-        context: '.ui.grid.pushable'
-      })
+      .sidebar({ context: '.ui.grid.pushable' })
       .sidebar('setting', 'transition', 'push')
       .sidebar('toggle');
   }
 
 
   searchData() {
-    this.form.setValue({ status: "", 
-    reqDate: this.form.value.reqDate ,
-    toReqDate:this.form.value.toReqDate,
-    organizeId:this.form.value.organizeId,
-    companyName:this.form.value.companyName,
-    tmbReqNo:this.form.value.tmbReqNo});
-    console.log(this.form.value)
-
+    this.form.setValue({
+      status: "",
+      reqDate: this.form.value.reqDate,
+      toReqDate: this.form.value.toReqDate,
+      organizeId: this.form.value.organizeId,
+      companyName: this.form.value.companyName,
+      tmbReqNo: this.form.value.tmbReqNo
+    });
+    // console.log(this.form.value)
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
         let fc = this.form.get(element);
         fc.markAsTouched({ onlySelf: true });
       });
     }
-
     if (this.form.invalid) {
-      console.log("form invalid");
+      // console.log("form invalid");
       return false;
     }
-
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
-
   }
 
   searchStatusByHomePage(code): void {
-    this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
-    console.log(this.form.value);
+    this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
+    // console.log(this.form.value);
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }
@@ -176,13 +172,11 @@ export class Crs01000Component implements OnInit, AfterViewInit {
         })
         .sidebar('setting', 'transition', 'push')
         .sidebar('toggle');
-      
-      console.log("searchStatus");
-      
-      this.form.setValue({ status: code, reqDate: "" ,toReqDate:"",organizeId:"",companyName:"",tmbReqNo:""});
-      console.log(this.form.value);
+      // console.log("searchStatus");
+      this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
+      // console.log(this.form.value);
       this.dataDt.searchParams(this.form.value);
-      this.dataDt.search();  
+      this.dataDt.search();
     }
   }
 
@@ -190,7 +184,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     this.form.reset();
     this.dataDt.clear();
   }
-
 
   getCountStatus() {
     const URL = "/api/crs/crs01000/countStatus";
@@ -210,9 +203,8 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   }
 
-
   detail(idReq, status): void {
-    console.log(idReq + "," + status, "ROLES IS MAKER: " + this.roles(ROLES.MAKER))
+    // console.log(idReq + "," + status, "ROLES IS MAKER: " + this.roles(ROLES.MAKER))
     return this.crs01000Service.redirectFor(idReq, status);
   }
 
@@ -220,62 +212,47 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  statusForBlue(status) { return status == '10001' || status == '10005' || status == '10009' || status == '10011' }
+  statusForGray(status) { return status == '10002' || status == '10010' || status == '10006' }
+  statusForRed(status) { return status == '10003' || status == '10007' || status == '10004' || status == '10005' || status == '10008' }
 
   getFontStyeColor(status) {
-    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
+    if (this.statusForBlue(status)) {
       return '#2185D0';
-    } else if (status == '10002' || status == '10007' || status == '10010') {
+    } else if (this.statusForGray(status)) {
       return 'gray';
-    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
+    } else if (this.statusForRed(status)) {
       return 'red';
+    } else {
+      return 'gray';
     }
-
   }
 
-
-  getButtonStyeColor(status) {
-    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
+  getButtonStlyeColor(status) {
+    if (this.statusForBlue(status)) {
       return 'ui blue basic button center';
-    } else if (status == '10002' || status == '10007' || status == '10010') {
+    } else if (this.statusForGray(status)) {
       return 'ui gray basic button center';
-    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
+    } else if (this.statusForRed(status)) {
       return 'ui red basic button center';
+    } else {
+      return 'ui gray basic button center';
     }
-
   }
-
-
-
-  // receiptTaxTest
-  // getTest() {
-  //   const URL = "/api/report/pdf/createAndUpload/receiptTax";
-  //   this.ajax.post(URL, {
-  //     id: "297"
-  //   }, res => {
-  //     console.log(res)
-  //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
-  //   });
-  // }
 
   getTest() {
     const URL = "/api/report/pdf/coverSheet";
     this.ajax.post(URL, {
       id: "275"
     }, res => {
-      console.log(res)
+      // console.log(res)
       this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
     });
   }
 
+  get reqDate() { return this.form.get("reqDate") }
 
-
-  get reqDate() {
-    return this.form.get("reqDate");
-  }
-
-  get toReqDate() {
-    return this.form.get("toReqDate");
-  }
+  get toReqDate() { return this.form.get("toReqDate") }
 
 }
 

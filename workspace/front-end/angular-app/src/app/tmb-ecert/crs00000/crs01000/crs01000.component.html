@@ -1,193 +1,195 @@
 <div class="ui grid pushable">
-    <div class="ui left vertical sidebar menu"  >
-      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
-        คำขอใหม่
-        <div class="ui  label blue" style="font-size: 13px">{{countNewrequest}}</div>
-      </a>
-      <!-- <a class="item" style="font-size: 13px;" (click)="searchStatus('10002')">
+  <div class="ui left vertical sidebar menu">
+    <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
+      คำขอใหม่
+      <div class="ui  label blue" style="font-size: 13px">{{countNewrequest}}</div>
+    </a>
+    <!-- <a class="item" style="font-size: 13px;" (click)="searchStatus('10002')">
         ดำเนินการชำระเงิน
         <div class="ui label ">{{countPaymentProcessing }}</div>
       </a> -->
-      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
-        ปฏิเสธคำขอ
-        <div class="ui label red">{{countRefuseRequest}}</div>
-      </a>
-      <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
-        ยกเลิกคำขอ
-        <div class="ui label red ">{{countCancelRequest}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
-        รออนุมัติการชำระเงิน
-        <div class="ui label blue">{{countWaitPaymentApproval }}</div>
-      </a>
-      <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
-        อนุมัติการชำระเงิน
-        <div class="ui label ">{{countPaymentApprovals}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
-        ปฏิเสธการชำระเงิน
-        <div class="ui label red">{{countChargeback}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
-        ชำระเงินไม่สำเร็จ
-        <div class="ui label red">{{countPaymentfailed}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
-        รออัพโหลด Certificate
-        <div class="ui label blue">{{countWaitUploadCertificate}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
-        ดำเนินการสำเร็จ
-        <div class="ui label ">{{countSucceed}}</div>
-      </a>
-      <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
-        รอบันทึกคำขอ
-        (ลูกค้าทำรายเอง)
-        <div class="ui label blue">{{countWaitSaveRequest}}</div>
-      </a>
-    </div>
+    <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
+      ปฏิเสธคำขอ
+      <div class="ui label red">{{countRefuseRequest}}</div>
+    </a>
+    <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
+      ยกเลิกคำขอ
+      <div class="ui label red ">{{countCancelRequest}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
+      รออนุมัติการชำระเงิน
+      <div class="ui label blue">{{countWaitPaymentApproval }}</div>
+    </a>
+    <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
+      อนุมัติการชำระเงิน
+      <div class="ui label ">{{countPaymentApprovals}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
+      ปฏิเสธการชำระเงิน
+      <div class="ui label red">{{countChargeback}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
+      ชำระเงินไม่สำเร็จ
+      <div class="ui label red">{{countPaymentfailed}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
+      รออัพโหลด Certificate
+      <div class="ui label blue">{{countWaitUploadCertificate}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
+      ดำเนินการสำเร็จ
+      <div class="ui label ">{{countSucceed}}</div>
+    </a>
+    <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
+      รอบันทึกคำขอ
+      (ลูกค้าทำรายเอง)
+      <div class="ui label blue">{{countWaitSaveRequest}}</div>
+    </a>
+  </div>
 
 
-    <div class="sixteen wide column pusher">
-      <div class="ui one column">
-        <div class="row">
-          <div class="one column">
-            <h3 class="ui header side-menu">
-              <div class="ui grey button icon" data-position="right center" (click)="onToggle()" data-tooltip="แสดงรายการ">
-                <i class="list icon"></i>
-              </div>
-              <div class="content">
-                ตรวจสอบสถานะคำขอ
-              </div>
-            </h3>
-          </div> 
-        </div>
-
-        <div class="row">
-          
-          <div class="ui top attached header segment">
-            <span>ระบุเงื่อนไขในการค้นหา </span>
-          </div>
-
-          <div class="ui attached segment">
-            <form class="ui form"  #ngForm="ngForm" [formGroup]="form">
-              
-                <div class="inline fields">
-                  <div class="two wide field" >
-                    <label class="custom-label-w-22">วันที่ขอ<span style="color: red"> * </span></label>
-                  </div>
-                  <div class="five wide field" [ngClass]="{'error':(reqDate.invalid && (reqDate.dirty || reqDate.touched))}">
-                    <ng-calendar [config]="calendar1"  style="width:100%"></ng-calendar>
-                  </div>
-                  <div class="two wide field ">
-                    <label>ถึงวันที่<span style="color: red"> * </span></label>
-                  </div>
-                  <div class="five wide field" [ngClass]="{'error':(toReqDate.invalid && (toReqDate.dirty || toReqDate.touched))}"> 
-                    <ng-calendar [config]="calendar2" style="width:100%"></ng-calendar>
-                  </div>
-                </div>
-
-
-                <div class="inline fields">
-                  <div class="two wide field ">
-                    <label>เลขที่นิติบุคคล
-                    </label>
-                  </div>
-                  <div class="five wide field">
-                    <input type="text" formControlName="organizeId" placeholder="เลขที่นิติบุคคล">
-                  </div>
-                  <div class="two wide field ">
-                    <label>ชื่อนิติบุคคล</label>
-                  </div>
-                  <div class="five wide field">
-                    <input type="text" formControlName="companyName" placeholder="ชื่อนิติบุคคล">
-                  </div>
-                </div>
-
-                <div class="inline fields">
-                  <div class="two wide field ">
-                    <label>TMB Req. No. </label>
-                  </div>
-                  <div class="five wide field">
-                    <input type="text" formControlName="tmbReqNo" placeholder="TMB Req. No.">
-                  </div>
-                </div>
-
-                <div class="inline field">
-                  <div class="ui centered grid">
-                    <div class="six wide column center aligned">
-                      <button class="ui blue basic button" type="button" (click)="searchData()">
-                        <i class="search icon"></i>
-                        ค้นหา
-                      </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                      <button class="ui grey basic button" type="button" (click)="clearData()">
-                        <i class="trash alternate outline icon"></i>
-                        ล้างข้อมูล
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-            </form>
-          </div>
-          <br>
-          <div class="sixteen wide column" [hidden]="!dataDt.isSearch">
-            <div class="ui top attached header segment">
-              <span>ผลการค้นหา </span>
+  <div class="sixteen wide column pusher">
+    <div class="ui one column">
+      <div class="row">
+        <div class="one column">
+          <h3 class="ui header side-menu">
+            <div class="ui grey button icon" data-position="right center" (click)="onToggle()" data-tooltip="แสดงรายการ">
+              <i class="list icon"></i>
             </div>
-              <div class="ui attached segment">
-                 <ng-datatable-search [ng-datatable]="dataDt"></ng-datatable-search>
-                 <br>
-                <div style="overflow-x: auto;white-space: nowrap;">
-                  <table [ngDatatable]="dataConfig" #dataDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%" id="table">
-                    <thead>
-                      <tr>
-                        <th class="collapsing">ลำดับ</th>
-                        <th >วันที่ยื่นคำขอ</th>
-                        <th>TMB Req. No.</th>
-                        <th>เลขที่คำขอ (Ref.1)</th>
-                        <th>เลขที่ตรวจสอบ (Ref.2)</th>
-                        <th>จำนวนเงิน</th>
-                        <th>ประเภทคำขอ</th>
-                        <th>เลขที่นิติบุคคล </th>
-                        <th>ชื่อบริษัท</th>
-                        <th>สถานะดำเนินการ</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center" *ngIf="dataDt.isEmpty">
-                        <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
-                      </tr>
-                      <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
-                          <td style="text-align: center !important;">{{i+1}}</td>
-                          <td style="text-align: center !important;">{{data.reqDateStr}}</td>
-                          <td style="text-align: center !important;">{{data.tmbReqNo | tmbReqNo}}</td>
-                          <td style="text-align: center !important;">{{ data.ref1 | emptyString }}</td>
-                          <td style="text-align: center !important;">{{ data.ref2 | emptyString }}</td>
-                          <td style="text-align: right !important;">{{data.amount | decimalFormat :"###,###.00" | emptyString }} </td>
-                          <td style="text-align: left !important;">{{data.typeDesc| emptyString}}</td>
-                          <td style="text-align: center !important;">{{data.organizeId| emptyString}}</td>
-                          <td style="text-align: left !important;">{{data.companyName| emptyString}}</td>
-                          <td style="text-align: left !important;">{{data.statusName}}</td>
-                          <td>
-                            <button [ngClass]="getButtonStyeColor(data.statusCode)"  (click)="detail(data.id,data.statusCode)">แสดง
-                              <i class="arrow alternate circle right outline icon"></i>
-                            </button>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <br>
-                <ng-datatable-footer [ng-datatable]="dataDt"></ng-datatable-footer>
-    
-                <br>
-                <br>
+            <div class="content">
+              ตรวจสอบสถานะคำขอ
+            </div>
+          </h3>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="ui top attached header segment">
+          <span>ระบุเงื่อนไขในการค้นหา </span>
+        </div>
+
+        <div class="ui attached segment">
+          <form class="ui form" #ngForm="ngForm" [formGroup]="form">
+
+            <div class="inline fields">
+              <div class="two wide field">
+                <label class="custom-label-w-22">วันที่ขอ<span style="color: red"> * </span></label>
               </div>
+              <div class="five wide field" [ngClass]="{'error':(reqDate.invalid && (reqDate.dirty || reqDate.touched))}">
+                <ng-calendar [config]="calendar1" style="width:100%"></ng-calendar>
+              </div>
+              <div class="two wide field ">
+                <label>ถึงวันที่<span style="color: red"> * </span></label>
+              </div>
+              <div class="five wide field" [ngClass]="{'error':(toReqDate.invalid && (toReqDate.dirty || toReqDate.touched))}">
+                <ng-calendar [config]="calendar2" style="width:100%"></ng-calendar>
+              </div>
+            </div>
+
+
+            <div class="inline fields">
+              <div class="two wide field ">
+                <label>เลขที่นิติบุคคล
+                </label>
+              </div>
+              <div class="five wide field">
+                <input type="text" formControlName="organizeId" placeholder="เลขที่นิติบุคคล">
+              </div>
+              <div class="two wide field ">
+                <label>ชื่อนิติบุคคล</label>
+              </div>
+              <div class="five wide field">
+                <input type="text" formControlName="companyName" placeholder="ชื่อนิติบุคคล">
+              </div>
+            </div>
+
+            <div class="inline fields">
+              <div class="two wide field ">
+                <label>TMB Req. No. </label>
+              </div>
+              <div class="five wide field">
+                <input type="text" formControlName="tmbReqNo" placeholder="TMB Req. No.">
+              </div>
+            </div>
+
+            <div class="inline field">
+              <div class="ui centered grid">
+                <div class="six wide column center aligned">
+                  <button class="ui blue basic button" type="button" (click)="searchData()">
+                    <i class="search icon"></i>
+                    ค้นหา
+                  </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="ui grey basic button" type="button" (click)="clearData()">
+                    <i class="trash alternate outline icon"></i>
+                    ล้างข้อมูล
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <br>
+        <div class="sixteen wide column" [hidden]="!dataDt.isSearch">
+          <div class="ui top attached header segment">
+            <span>ผลการค้นหา </span>
+          </div>
+          <div class="ui attached segment">
+            <ng-datatable-search [ng-datatable]="dataDt"></ng-datatable-search>
+            <br>
+            <div style="overflow-x: auto;white-space: nowrap;">
+              <table [ngDatatable]="dataConfig" #dataDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%"
+                id="table">
+                <thead>
+                  <tr>
+                    <th class="collapsing">ลำดับ</th>
+                    <th>วันที่ยื่นคำขอ</th>
+                    <th>TMB Req. No.</th>
+                    <th>เลขที่คำขอ (Ref.1)</th>
+                    <th>เลขที่ตรวจสอบ (Ref.2)</th>
+                    <th>จำนวนเงิน</th>
+                    <th>ประเภทคำขอ</th>
+                    <th>เลขที่นิติบุคคล </th>
+                    <th>ชื่อบริษัท</th>
+                    <th>สถานะดำเนินการ</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" *ngIf="dataDt.isEmpty">
+                    <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+                  </tr>
+                  <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
+                    <td style="text-align: center !important;">{{ i+1}}</td>
+                    <td style="text-align: center !important;">{{ data.reqDateStr }}</td>
+                    <td style="text-align: center !important;">{{ data.tmbReqNo | tmbReqNo }}</td>
+                    <td style="text-align: center !important;">{{ data.ref1 | emptyString }}</td>
+                    <td style="text-align: center !important;">{{ data.ref2 | emptyString }}</td>
+                    <td style="text-align: right  !important;">{{ data.amount | decimalFormat :"###,###.00" |
+                      emptyString }} </td>
+                    <td style="text-align: left   !important;">{{ data.typeDesc| emptyString }}</td>
+                    <td style="text-align: center !important;">{{ data.organizeId| emptyString }}</td>
+                    <td style="text-align: left   !important;">{{ data.companyName| emptyString }}</td>
+                    <td style="text-align: left   !important;">{{ data.statusName }}</td>
+                    <td>
+                      <button [ngClass]="getButtonStlyeColor(data.statusCode)" (click)="detail(data.id,data.statusCode)">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <ng-datatable-footer [ng-datatable]="dataDt"></ng-datatable-footer>
+
+            <br>
+            <br>
           </div>
         </div>
-        
       </div>
+
     </div>
   </div>
+</div>
