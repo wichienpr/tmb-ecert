@@ -16,7 +16,7 @@ const URL = {
 export class RequestFormService {
 
     private tmbReqNumber: Observable<string>;
-    private requestForm: Observable<RequestForm[]>;
+    private requestForm: Observable<RequestForm>;
 
     constructor(private ajax: AjaxService, private httpClient: HttpClient) { }
 
@@ -33,9 +33,11 @@ export class RequestFormService {
      * @param url ลิ้งค์สำหรับสร้างไฟล์ pdf
      * @param data ข้อมูลที่จะใช้ในการเจนไฟล์
      */
-    getPdf(url: string, data: any) {
+    getPdf(url: string, data: any, error?: Function) {
         this.ajax.post(url, data, response => {
             this.ajax.download(URL.FORM_PDF + response._body + "/download");
+        }, err => {
+            error(err)
         });
     }
 
@@ -44,8 +46,8 @@ export class RequestFormService {
      * @param formId รหัสแบบฟอร์มคำขอ
      * @returns `requestForm` ข้อมูลแบบฟอร์มจาก `formId`
      */
-    getReqFormByFormId(formId: number): Observable<RequestForm[]> {
-        this.requestForm = this.httpClient.get<RequestForm[]>(`${AjaxService.CONTEXT_PATH}${URL.REQUEST_FORM}/${formId}`);
+    getReqFormByFormId(formId: number): Observable<RequestForm> {
+        this.requestForm = this.httpClient.get<RequestForm>(`${AjaxService.CONTEXT_PATH}${URL.REQUEST_FORM}/${formId}`);
         return this.requestForm;
     }
 

@@ -24,3 +24,8 @@
 .divider-header .fourteen .divider {
     margin-top: 0 !important;
 }
+
+.header-title {
+    /* width: 62.5%; */
+    cursor: pointer;
+}

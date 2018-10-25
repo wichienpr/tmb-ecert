@@ -163,6 +163,18 @@
 
       <div class="inline fields">
         <div class="one wide field "></div>
+        <div class="two wide field">
+          <label>
+            สถานะ
+          </label>
+        </div>
+        <div class="five wide field">
+          {{ data.status | emptyString }}
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="one wide field "></div>
         <div class="two wide field ">
           <label>ประเภทคำขอ</label>
         </div>
@@ -196,7 +208,7 @@
                   <td style="display: none">&nbsp;</td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="chk.code && chk.feeTmb">
+              <ng-container *ngIf="chk.code && chk.feeTmb&& chk.value !== 0">
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
@@ -215,7 +227,7 @@
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
               </ng-container>
-              <ng-container *ngIf="chk.code && !chk.feeTmb">
+              <ng-container *ngIf="chk.code && !chk.feeTmb && chk.value !== 0">
                 <tr>
                   <td class="center aligned">
                     <div class="ui checkbox">
@@ -226,8 +238,8 @@
                   <td colspan="4">{{ chk.certificate }}</td>
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
-                <ng-container>
-                  <tr *ngFor="let db of chk.children; let j = index">
+                <ng-container *ngFor="let db of chk.children; let j = index">
+                  <tr *ngIf="db.value !== 0">
                     <td>
                     </td>
                     <td>
@@ -241,7 +253,10 @@
                     </td>
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
-                    <td class="center aligned">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
+                    <td class="center aligned" *ngIf="db.registeredDate">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="db.acceptedDate">{{ db.acceptedDate | dateString }}</td>
+                    <td class="center aligned" *ngIf="db.statementYear">{{ db.statementYear | emptyString }}</td>
                     <td class="right aligned">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
@@ -265,129 +280,148 @@
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.organizeId">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>เลขที่นิติบุคคล</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.organizeId | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.companyName">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>ชื่อนิติบุคคล</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.companyName | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.custsegmentCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Customer Segment</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.custsegmentCode | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.department">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>ชื่อหน่วยงาน</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.department | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.caNumber">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>เลขที่ CA/มติอนุมัติ</label>
           </div>
 
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.caNumber | emptyString }}
           </div>
         </div>
 
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.paidTypeCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>วิธีการรับชำระ</label>
           </div>
           <div class="eleven wide field ">
             {{ data.paidTypeCode | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.debitAccountType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>วิธีหักบัญชีจาก</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.debitAccountType | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.tranCode">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Tran Code</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.tranCode | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.glType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>GL Type</label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.glType | emptyString }}
           </div>
         </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
+        <div class="inline fields" *ngIf="data.accountType">
+          <div class="one wide field"></div>
+          <div class="three wide field">
             <label>Account Type
             </label>
           </div>
-          <div class="eleven wide field ">
+          <div class="eleven wide field">
             {{ data.accountType | emptyString }}
           </div>
         </div>
 
         <div class="inline fields">
           <div class="one wide field"></div>
-          <div class="three wide field">
+          <div class="three wide field" *ngIf="data.accountNo">
             <label>เลขที่บัญชี
             </label>
           </div>
-          <div class="three wide field">
+          <div class="three wide field" *ngIf="data.accountNo">
             {{ data.accountNo | accountNo }}
           </div>
-          <div class="one wide field">
+          <div class="one wide field" *ngIf="data.accountName">
             <label>ชื่อบัญชี</label>
           </div>
-          <div class="seven wide field">
+          <div class="seven wide field" *ngIf="data.accountName">
             {{ data.accountName | emptyString }}
           </div>
         </div>
 
-        <div class="ui centered inline field grid divider-header">
+        <div class="inline fields" *ngIf="data.customerNameReceipt">
+          <div class="one wide field"></div>
+          <div class="three wide field">
+            <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
+          </div>
+          <div class="eleven wide field">
+            {{ data.customerNameReceipt | emptyString }}
+          </div>
+        </div>
+        <div class="inline fields" *ngIf="data.telephone">
+          <div class="one wide field"></div>
+          <div class="three wide field">
+            <label>เบอร์โทรลูกค้า</label>
+          </div>
+          <div class="eleven wide field">
+            {{ data.telephone | emptyString }}
+          </div>
+        </div>
+
+        <div class="ui centered inline field grid divider-header" *ngIf="onlyMaker||onlyChecker">
           <div class="fourteen wide field">
             <h4 class="header">ข้อมูลการชำระเงิน</h4>
             <div class="ui divider"></div>
           </div>
         </div>
 
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.ref1">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่อ้างอิง (Ref.1)</label>
@@ -397,7 +431,7 @@
           </div>
         </div>
 
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.ref2">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่ตรวจสอบ (Ref.2)</label>
@@ -406,7 +440,7 @@
             {{ data.ref2 | emptyString }}
           </div>
         </div>
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountDbd">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน DBD (บาท)</label>
@@ -415,7 +449,7 @@
             {{ (data.amountDbd||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
-        <div class="inline fields">
+        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountTmb">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน TMB (บาท)</label>
@@ -424,95 +458,92 @@
             {{ (data.amountTmb||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
-          </div>
-          <div class="eleven wide field ">
-            {{ data.customerNameReceipt | emptyString }}
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>เบอร์โทรลูกค้า</label>
-          </div>
-          <div class="eleven wide field ">
-            {{ data.telephone | emptyString }}
+
+        <div class="ui centered grid">
+          <div class="ui form accordion" style="width: 100%">
+            <!-- <div class="ui {{ toggleTitle }} centered inline field grid divider-header">
+            <div class="fourteen wide field">
+              <h4 class="header">รายละเอียดเอกสาร</h4>
+              <div class="ui divider"></div>
+            </div>
+          </div> -->
+            <div class="{{ toggleTitle }} inline field divider-header header-title" style="margin-bottom: 0.5em !important;margin-top: 1.5em !important;" (click)="toggleDocument()">
+              <div class="fourteen wide field" style="margin: 1em auto">
+                <h4 class="header">{{ documentMsg }} <div class="floated right" style="float: right">
+                    <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
+                    <i class="angle double up icon" *ngIf="toggleDoc == ''"></i>
+                  </div>
+                </h4>
+              </div>
+              <div class="ui divider" style="width: 87.5%;margin: 0 auto;"></div>
+            </div>
+
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field"></div>
+              <div class="three wide field">
+                <label>
+                  ใบคำขอ
+                </label>
+              </div>
+              <div class="eleven wide field">
+                <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.requestFormFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
+              </div>
+              <div class="eleven wide field ">
+                <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.idCardFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label class="half blue">อื่นๆ (ถ้ามี)</label>
+              </div>
+              <div class="eleven wide field ">
+                <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.changeNameFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>เอกสาร e-Certificate</label>
+              </div>
+              <div class="eleven wide field">
+                <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.certificateFile">-</p>
+              </div>
+            </div>
+            <div class="{{ toggleDoc }} inline fields">
+              <div class="one wide field "></div>
+              <div class="three wide field ">
+                <label>หมายเหตุ</label>
+              </div>
+              <div class="eleven wide field ">
+                <textarea rows="2" disabled>{{ data.remark }}</textarea>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="ui centered inline field grid divider-header">
-          <div class="fourteen wide field">
-            <h4 class="header">รายละเอียดเอกสาร</h4>
-            <div class="ui divider"></div>
-          </div>
-        </div>
 
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>
-              ใบคำขอหนังสือรับรองนิติบุคคลและ
-              <br>
-              หนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
-            </label>
-          </div>
-          <div class="eleven wide field">
-            <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.requestFormFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>สำเนาบัตรประชาชน</label>
-          </div>
-          <div class="eleven wide field ">
-            <a class="download-link" (click)="download(data.idCardFile)" *ngIf="data.idCardFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.idCardFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label class="half blue">สำเนาใบเปลี่ยนชื่อหรือนามสกุล(ถ้ามี)</label>
-          </div>
-          <div class="eleven wide field ">
-            <a class="download-link" (click)="download(data.changeNameFile)" *ngIf="data.changeNameFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.changeNameFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>เอกสาร e-Certificate</label>
-          </div>
-          <div class="eleven wide field">
-            <a class="download-link" (click)="download(data.certificateFile)" *ngIf="data.certificateFile">
-              <u>Download</u>
-            </a>
-            <p *ngIf="!data.certificateFile">-</p>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="one wide field "></div>
-          <div class="three wide field ">
-            <label>หมายเหตุ</label>
-          </div>
-          <div class="eleven wide field ">
-            <textarea rows="2" disabled>{{ data.remark }}</textarea>
-          </div>
-        </div>
+
         <div class="inline field">
-          <div class="ui btn-group center aligned grid">
+          <div class="ui btn-group center aligned grid" style="margin: 1.5em 0 0 0 !important;">
             <!-- <button class="ui blue basic button" type="button" (click)="modalToggle('desp')">
               <i class="check circle outline icon"></i>
               ดำเนินการชำระเงิน
@@ -545,8 +576,10 @@
         </div>
       </div>
       <div class="ui bottom attached tab segment {{ tab.B }}">
+        <ng-datatable-search [ng-datatable]="historyDt"></ng-datatable-search>
+        <br>
         <div class="scrollable">
-          <table class="ui small celled table" cellpadding="0" cellspacing="0" id="table">
+          <table [ngDatatable]="historyConfig" #historyDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%">
             <thead>
               <tr style="text-align: center;">
                 <th>ลำดับ</th>
@@ -565,24 +598,32 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let h of history; let i = index">
-                <td class="text-center">{{ i+1 }}</td>
-                <td>{{ h.createdDateTime | datetimeString }}</td>
-                <td>{{ h.makerById + ' - ' + h.makerByName }}</td>
-                <td>{{ h.requestDate | datetimeString }}</td>
-                <td>{{ h.tmbRequestNo | tmbReqNo }}</td>
-                <td>{{ h.ref1 | emptyString }}</td>
-                <td>{{ h.ref2 | emptyString }}</td>
-                <td>{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString) : (h.amount| decimalFormat: "###,###.00") }}</td>
-                <td>{{ h.cerTypeCode | emptyString }}</td>
-                <td>{{ h.organizeId | emptyString }}</td>
-                <td>{{ h.companyName | emptyString }}</td>
-                <td>{{ h.status | emptyString }}</td>
-                <td>{{ h.rejectReasonCode | emptyString }}</td>
+              <tr class="text-center" *ngIf="historyDt.isEmpty">
+                <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+              </tr>
+              <tr class="text-center" *ngFor="let h of historyDt.datas; let i=index">
+                <td style="text-align: center !important;">{{ i+1 }}</td>
+                <td style="text-align: center !important;">{{ h.createdDateTime | datetimeString }}</td>
+                <td style="text-align: left   !important;">{{ h.updatedById + ' - ' + h.updatedByName }}</td>
+                <td style="text-align: center !important;">{{ h.requestDate | datetimeString }}</td>
+                <td style="text-align: center !important;">{{ h.tmbRequestNo | tmbReqNo }}</td>
+                <td style="text-align: center !important;">{{ h.ref1 | emptyString }}</td>
+                <td style="text-align: center !important;">{{ h.ref2 | emptyString }}</td>
+                <td style="text-align: right  !important;">{{ (h.amount| emptyString) == "-" ? (h.amount| emptyString)
+                  : (h.amount| decimalFormat:"###,###.00") }}</td>
+                <td style="text-align: left   !important;">{{ h.cerTypeCode | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.organizeId | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.companyName | emptyString }}</td>
+                <td style="text-align: left   !important;">{{ h.status | emptyString }}</td>
+                <td style="text-align: left   !important;">
+                  {{ (h.rejectReasonOther ? h.rejectReasonOther : h.rejectReasonCode) | emptyString }}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+        <br>
+        <ng-datatable-footer [ng-datatable]="historyDt"></ng-datatable-footer>
       </div>
     </div>
   </div>

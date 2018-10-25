@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Srn01000Service } from 'app/tmb-ecert/srn00000/srn01000/srn01000.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AjaxService } from 'app/baiwa/common/services';
+import { AjaxService, CommonService } from 'app/baiwa/common/services';
 import { isValid } from 'app/baiwa/common/helpers';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
+import { ROLES } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-srn01000',
@@ -15,21 +16,24 @@ import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives
 export class Srn01000Component implements OnInit, AfterViewInit {
   form: FormGroup = new FormGroup({
     tmbReqNo: new FormControl('', Validators.required),
-    status: new FormControl('',)
+    status: new FormControl('')
   });
-  
+
   statusHomePage: string;
- 
+
 
 
   dataConfig: DatatableCofnig;
   @ViewChild("dataDt")
   dataDt: DatatableDirective
 
-  constructor(private srn01000Service: Srn01000Service,
+  constructor(
+    private srn01000Service: Srn01000Service,
     private ajax: AjaxService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private common: CommonService
+  ) { }
 
   ngOnInit() {
     this.dataConfig = {
@@ -85,11 +89,11 @@ export class Srn01000Component implements OnInit, AfterViewInit {
 
   detail(idReq, status): void {
     console.log(idReq + "," + status)
-    if (status == "10011") {
-      this.router.navigate(["/nrq/nrq02000"], {
-        queryParams: { id: idReq }
-      });
-    }
+    this.srn01000Service.redirectFor(idReq, status);
+  }
+
+  roles(role: ROLES) {
+    return this.common.isRole(role);
   }
 
   getFontStyeColor(status) {

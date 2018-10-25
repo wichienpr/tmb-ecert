@@ -3,9 +3,10 @@ import { Location } from '@angular/common';
 import { ModalService, AjaxService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CertFile } from './crs02000.models';
+import { CertFile, Rejected } from './crs02000.models';
+import { REQ_STATUS } from 'app/baiwa/common/constants';
 
-const URL = {
+export const URL = {
   REQUEST_FORM: "/api/crs/crs02000/data",
   REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
   DOWNLOAD: "/api/crs/crs02000/download/",
@@ -35,6 +36,10 @@ export class Crs02000Service {
 
   getId() {
     return this.route.snapshot.queryParams["id"] || "";
+  }
+
+  getStatusCode() {
+    return this.route.snapshot.queryParams["statusCode"] || "";
   }
 
   getHistory(id: string) {
@@ -69,8 +74,8 @@ export class Crs02000Service {
 
   getData(id: string) {
     return this.ajax.get(`${URL.REQUEST_FORM}/${id}`, response => {
-      let data: RequestForm[] = response.json() as RequestForm[];
-      return data.length > 0 ? data[0] : initRequestForm;
+      let data: RequestForm = response.json() as RequestForm;
+      return data ? data : initRequestForm;
     })
   }
 
@@ -81,18 +86,21 @@ export class Crs02000Service {
     });
   }
 
-  rejected(data: any) {
+  rejected(data: Rejected) {
+    const code = data.for == "checker" ? REQ_STATUS.ST10007 : REQ_STATUS.ST10004;
     this.ajax.post(URL.CER_REJECT, data, response => {
       const data = response.json();
       if (data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
         this.router.navigate(['/crs/crs01000'], {
-          queryParams: { codeStatus: "10003" }
+          queryParams: { codeStatus: code }
         });
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
       } else {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ", success: true });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
       }
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
     });
   }
 
@@ -121,12 +129,15 @@ export class Crs02000Service {
       if (e) {
         this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
           if (response.json().message == "SUCCESS") {
+            this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             this.router.navigate(['/crs/crs01000'], {
               queryParams: { codeStatus: "10009" }
             });
           } else {
             this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
           }
+        }, error => {
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
         });
       }
     }, modal);
@@ -141,8 +152,6 @@ export class Crs02000Service {
           if (obj.code == ob.certificateCode) {
             obj.check = true;
             obj.value = ob.totalNumber;
-            obj.acceptedDate = ob.acceptedDate;
-            obj.statementYear = ob.statementYear;
           }
         });
         if (obj.children) {
@@ -153,6 +162,7 @@ export class Crs02000Service {
               if (ob.code == o.certificateCode) {
                 ob.registeredDate = o.registeredDate;
                 ob.acceptedDate = o.acceptedDate;
+                ob.statementYear = o.statementYear;
                 ob.other = o.other;
                 ob.check = true;
                 ob.value = o.totalNumber;
@@ -186,12 +196,16 @@ export class Crs02000Service {
     if (what == cover) {
       this.ajax.post(URL.CREATE_COVER, { id: parseInt(id), tmpReqNo: tmbNo }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+      }, error => {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
     }
 
     if (what == receipt) {
       this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+      }, error => {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
     }
 
@@ -206,12 +220,17 @@ export class Crs02000Service {
       const data = response.json();
       if(data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+        this.router.navigate(['/crs/crs01000'], {
+          queryParams: { codeStatus: "10010" }
+        });
       }
       else if (data && data.message == "PRESS_UPLOAD_RECIEPTTAX") {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาพิมพ์ใบเสร็จ" });
       } else {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       }
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
     });
   }
 

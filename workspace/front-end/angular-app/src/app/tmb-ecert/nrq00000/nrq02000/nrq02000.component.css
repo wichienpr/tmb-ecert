@@ -32,3 +32,44 @@ h3.header.space {
 .download-link:hover {
     color: rgb(88, 88, 88);
 }
+
+.header-title {
+    /* width: 62.5%; */
+    cursor: pointer;
+}
+
+.barcode.icon {
+    margin: 0 0.25em 0 0 !important;
+    padding-top: 7px !important;
+    font-size: 33px !important;
+    transition: transform .2s !important;
+    cursor: pointer !important;
+}
+
+.barcode.icon:hover {
+    transform: scale(1.5);
+}
+
+.barcode {
+    cursor: pointer !important;
+}
+
+[class*="bg"] {
+    color: black;
+}
+
+.bg-yellow {
+    background: yellow;
+}
+
+.bg-red {
+    background: red;
+}
+
+.bg-pink {
+    background: pink;
+}
+
+.txt-red {
+    color: red !important;
+}

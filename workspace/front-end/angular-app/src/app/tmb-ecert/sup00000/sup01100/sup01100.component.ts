@@ -343,12 +343,13 @@ export class sup01100Component implements OnInit {
   }
   // swich check
   chanageStatus(fuctioncode, index, index2) {
-    // console.log("swift toggle ", fuctioncode, " index", index, " j ", index2);
     if (index2 == -1) {
       if (this.rolepermisson[index].status == 0) {
         this.rolepermisson[index].status = 1
+        this.changeStatusChlid(index,1);
       } else {
         this.rolepermisson[index].status = 0
+        this.changeStatusChlid(index,0);
       }
     } else {
       if (this.rolepermisson[index].chliddata[index2].status == 0) {
@@ -359,14 +360,26 @@ export class sup01100Component implements OnInit {
     }
   }
 
+  changeStatusChlid(index,status){
+
+    for (let i = 0; i < this.rolepermisson[index].chliddata.length; i++) {
+      if (status ==0 ){
+        this.rolepermisson[index].chliddata[i].status = 0;
+      }else{
+        this.rolepermisson[index].chliddata[i].status = 1;
+      }
+   }
+
+  }
+
   clickCancle() {
-    console.log("swift toggle ");
+    // console.log("swift toggle ");
     this.router.navigate(["/sup/sup01000"], {});
   }
 
   setRolePermission(data) {
     let index = 0;
-    console.log("swift toggle ", data);
+    // console.log("swift toggle ", data);
     if (data.length == 1) {
       this.rolepermisson.forEach(element => {
         element.status = 0;
@@ -389,10 +402,6 @@ export class sup01100Component implements OnInit {
       });
 
     }
-
-    // this.rolepermisson.forEach(element => {
-    //   console.log(element.fuctioncode, " status ", element.status)
-    // });
 
   }
   

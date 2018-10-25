@@ -8,6 +8,7 @@ import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calend
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { CommonService } from 'app/baiwa/common/services';
 import * as moment from 'moment';
+import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class Adl01000Component implements OnInit {
   auditConfig: DatatableCofnig;
   @ViewChild("auditDt")
   auditDt: DatatableDirective
+
+  @ViewChild("statusDropDown")
+  statusDropDown: DropdownComponent;
 
   constructor(
     private ajax: AjaxService,
@@ -99,8 +103,11 @@ export class Adl01000Component implements OnInit {
   }
 
   clearData(): void {
-    this.formadl.reset();
+    // this.formadl.reset();
+    let now = moment().format('DD/MM/YYYY');
+    this.formadl.setValue({dateForm:now,dateTo:now,createdById:'',actionCode:""});
     this.auditDt.clear();
+    this.statusDropDown.clear();
   }
 
   exportFile() {

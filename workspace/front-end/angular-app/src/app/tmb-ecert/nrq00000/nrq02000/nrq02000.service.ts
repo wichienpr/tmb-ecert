@@ -8,9 +8,9 @@ import { AjaxService, ModalService, DropdownService, RequestFormService, CommonS
 import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
 import { Nrq02000 } from "./nrq02000.model";
-import { ROLES } from "app/baiwa/common/constants";
+import { ROLES, REQ_STATUS } from "app/baiwa/common/constants";
 
-declare var $:any;
+declare var $: any;
 
 const URL = {
     LOV_BY_TYPE: "/api/lov/type",
@@ -26,6 +26,7 @@ const URL = {
     FORM_PDF: "/api/report/pdf/",
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
     DOWNLOAD: "/api/crs/crs02000/download/",
+    CER_REJECT: "/api/crs/crs02000/cert/reject",
 }
 
 @Injectable()
@@ -130,7 +131,7 @@ export class Nrq02000Service {
         if (id !== "") {
             return new Promise(async resolve => {
                 const data = await this.reqService.getReqFormByFormId(id).toPromise();
-                resolve(data && data.length > 0 ? data[0] : initRequestForm);
+                resolve(data ? data : initRequestForm);
             });
         } else {
             return new Promise(resolve => {
@@ -286,7 +287,7 @@ export class Nrq02000Service {
                     console.error(err)
                 });
                 this.hasAuthed = "false";
-                return ;
+                return;
             }
             this.modal.confirm((e) => {
                 if (e) {
@@ -337,6 +338,10 @@ export class Nrq02000Service {
         return true;
     }
 
+    getAccordion() {
+        $('.ui.accordion').accordion();
+    }
+
     authForSubmit() {
         $("#auth").modal("show");
     }
@@ -378,9 +383,11 @@ export class Nrq02000Service {
     }
 
     pdf(form, dt, reqTypeChanged, reqDate): boolean {
+        this.common.blockui(); // Loading page
         let chkMsg = this.chkCertsC(reqTypeChanged, form);
         if ("" != chkMsg) {
             this.modal.alertWithAct({ msg: chkMsg });
+            this.common.unblockui(); // UnLoading page
             return;
         }
         let modalAler: Modal = { msg: "", success: false }
@@ -392,18 +399,21 @@ export class Nrq02000Service {
                             modalAler.msg = ValidatorMessages[enu];
                             modalAler.success = false;
                             this.modal.alert(modalAler);
+                            this.common.unblockui(); // UnLoading page
                             return;
                         }
                     }
                 }
                 if (key != "requestFile" && key != "copyFile") {
+                    this.common.unblockui(); // UnLoading page
                     return;
                 }
             }
         }
-        if (form.valid || (form.controls.requestFile.invalid && form.controls.copyFile.invalid)) {
+        if (form.valid || (form.controls.requestFile.invalid || form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
             let rpReqFormList = [];
+            let rpReqFormLast = [];
             let boxIndex = 0;
             const controls = form.controls;
             reqTypeChanged.forEach((obj, index) => {
@@ -436,8 +446,33 @@ export class Nrq02000Service {
                                     d.numSetCc = controls[`cer${index}Child${idx}`].value;
                                 } else {
                                     d.numEditCc = controls[`cer${index}Child${idx}`].value;
-                                    if (idx != 1) {
+                                    if (idx == 2) {
                                         d.dateEditReg = controls[`cal${index}Child${idx}`].value;
+                                    } else if (idx > 2 && idx < obj.children.length - 1) {
+                                        let year = null;
+                                        let date = null;
+                                        let id = 1;
+                                        if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length == 4) {
+                                            year = controls[`cal${index}Child${idx}`].value;
+                                            id = 3;
+                                        }
+                                        if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length > 4) {
+                                            date = controls[`cal${index}Child${idx}`].value;
+                                            id = 4;
+                                        }
+                                        const dd = {
+                                            "totalNum": controls[`cer${index}`].value,
+                                            "numSetCc": null,
+                                            "numEditCc": null,
+                                            "numOtherCc": null,
+                                            "dateOtherReg": null,
+                                            "other": null,
+                                            "dateEditReg": null,
+                                            "statementYear": year,
+                                            "dateAccepted": date,
+                                            "boxIndex": id
+                                        };
+                                        rpReqFormLast = [...rpReqFormLast, dd];
                                     }
                                 }
                             }
@@ -460,6 +495,9 @@ export class Nrq02000Service {
                     }
                 }
             });
+            for (let i = 0; i < rpReqFormLast.length; i++) {
+                rpReqFormList.push(rpReqFormLast[i]);
+            }
             const data = {
                 typeCertificate: this.form.get("reqTypeSelect").value,
                 customerName: this.form.get("corpName").value,
@@ -472,8 +510,14 @@ export class Nrq02000Service {
                 tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
                 rpReqFormList: rpReqFormList
             };
-            this.reqService.getPdf(URL.CREATE_FORM, data);
+            this.reqService.getPdf(URL.CREATE_FORM, data, error => {
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+            });
+            this.common.unblockui(); // UnLoading page
             return true;
+        } else {
+            this.common.unblockui(); // UnLoading page
+            return;
         }
     }
 
@@ -526,8 +570,6 @@ export class Nrq02000Service {
                         obj.reqcertificateId = ob.reqCertificateId;
                         obj.check = true;
                         obj.value = ob.totalNumber;
-                        obj.acceptedDate = ob.acceptedDate;
-                        obj.statementYear = ob.statementYear;
                     }
                 });
                 if (obj.children) {
@@ -539,6 +581,7 @@ export class Nrq02000Service {
                                 ob.reqcertificateId = o.reqCertificateId;
                                 ob.registeredDate = o.registeredDate;
                                 ob.acceptedDate = o.acceptedDate;
+                                ob.statementYear = o.statementYear;
                                 ob.other = o.other;
                                 ob.check = true;
                                 ob.value = o.totalNumber;
@@ -571,14 +614,6 @@ export class Nrq02000Service {
                     obj.check = false;
                     obj.value = 0;
                 }
-                if (obj.code == '10007') {
-                    let str = form.controls['cal' + index].value.split("/");
-                    obj.acceptedDate = new Date(str[2], str[1], str[0]);
-                }
-                if (obj.code == '10006' || obj.code == '20006' || obj.code == '30005') {
-                    let value = parseInt(form.controls['cal' + index].value);
-                    obj.statementYear = value;
-                }
                 if (obj.children) {
                     obj.children.forEach((ob, idx) => {
                         if (idx != 0) {
@@ -587,11 +622,23 @@ export class Nrq02000Service {
                             if (idx == 1) {
                                 ob.registeredDate = null;
                             }
-                            if (idx != 1) {
+                            if (idx == 2) {
                                 let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                 ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                             }
+                            if (idx > 2 && idx < obj.children.length - 1) {
+                                if (ob.code == '10007') {
+                                    let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                    ob.acceptedDate = new Date(str[2], str[1], str[0]);
+                                }
+                                if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
+                                    let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
+                                    ob.statementYear = value;
+                                }
+                            }
                             if (idx == obj.children.length - 1) {
+                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }
                             if (ob.check == "" && ob.value == "") {
@@ -655,6 +702,7 @@ export class Nrq02000Service {
             hasAuthed: this.hasAuthed,
             userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : ""
         };
+        console.log("data", data);
         for (let key in data) {
             if (data[key]) {
                 if (key == "certificates") {
@@ -669,6 +717,23 @@ export class Nrq02000Service {
 
     toggleModal(name: string) {
         this.modal.show(name);
+    }
+
+    rejected(data) {
+        this.ajax.post(URL.CER_REJECT, data, response => {
+            const data = response.json();
+            if (data && data.message == "SUCCESS") {
+                this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+                this.router.navigate(['/crs/crs01000'], {
+                    queryParams: { codeStatus: REQ_STATUS.ST10003 }
+                });
+                this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+            } else {
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+            }
+        }, error => {
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+        });
     }
 
 }

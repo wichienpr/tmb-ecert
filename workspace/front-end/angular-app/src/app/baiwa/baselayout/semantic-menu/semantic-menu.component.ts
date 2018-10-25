@@ -157,6 +157,8 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     // console.log(this.clockdisplay);
   }
 
+  get currentRoute() { return this.router.url == '/home' }
+
 }
 
 class Routing {

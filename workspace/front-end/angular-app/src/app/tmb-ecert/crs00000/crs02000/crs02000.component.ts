@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
-import { Crs02000Service } from './crs02000.service';
-import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { Crs02000Service, URL } from './crs02000.service';
+import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
 import { CommonService, DropdownService } from 'app/baiwa/common/services';
 import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CertFile, Rejected } from './crs02000.models';
+import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 
 declare var $: any;
 @Component({
@@ -34,6 +35,13 @@ export class Crs02000Component implements OnInit {
   allowed: Dropdown;
   tab: any;
 
+  toggleDoc: string = "content";
+  toggleTitle: string = "title";
+
+  @ViewChild("historyDt")
+  historyDt: DatatableDirective;
+  historyConfig: DatatableCofnig;
+
   files: any;
 
   constructor(
@@ -53,6 +61,12 @@ export class Crs02000Component implements OnInit {
     this.tab = {
       A: "active",
       B: ""
+    };
+
+    this.historyConfig = {
+      url: URL.REQUEST_HISTORY,
+      serverSide: true,
+      useBlockUi: true
     };
   }
 
@@ -107,6 +121,10 @@ export class Crs02000Component implements OnInit {
   }
 
   tabs(name: string) {
+    if ("" == this.tab.B) {
+      this.historyDt.searchParams({ reqFormId: parseInt(this.id) });
+      this.historyDt.search()
+    }
     this.tab = this.service.tabsToggle(name, this.tab);
   }
 
@@ -155,25 +173,61 @@ export class Crs02000Component implements OnInit {
   }
 
   reject() {
+    const what = this.roles(ROLES.CHECKER) ? 'checker' : 'requestor';
     this.rejectSubmitted = true;
     if (this.formReject.valid) {
       const data: Rejected = {
         reqFormId: this.data.reqFormId,
         rejectReasonCode: this.allowedSelect.value,
-        rejectReasonOther: this.otherReason.value
+        rejectReasonOther: this.otherReason.value,
+        for: what
       };
       this.service.rejected(data);
     }
   }
 
+  chkStatus = status => {
+    return this.service.getStatusCode() == status;
+  }
+
+  toggleDocument() {
+    if (this.toggleDoc === "content") {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
+    } else {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
+    }
+  }
+  
+  get documentMsg() {
+    if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
+      return 'รายละเอียดเอกสาร';
+    }
+    return 'โปรดแนบเอกสาร';
+  }
+  get onlyMaker() { return this.roles(ROLES.MAKER) }
+  get onRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get onlyChecker() { return this.roles(ROLES.CHECKER) }
+
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
 
   get certFile() { return this.formCert.get('certFile') }
-  get btnApprove() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000402) }
-  get btnReject() { return this.roles(ROLES.CHECKER) && this.data.status == "10005" && this.common.isAuth(PAGE_AUTH.P0000403) }
-  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000404)}
-  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000405)}
-  get btnUpload() { return this.roles(ROLES.MAKER) && this.data.status == "10009" && this.common.isAuth(PAGE_AUTH.P0000406)}
+  get btnApprove() { return this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005) && this.common.isAuth(PAGE_AUTH.P0000402) }
+  get btnReject() {
+    if (this.common.isAuth(PAGE_AUTH.P0000403)) {
+      if (this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005)) {
+        return true;
+      } else if (this.roles(ROLES.REQUESTOR) && this.chkStatus(REQ_STATUS.ST10001)) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) }
+  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
+  get btnUpload() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000406) }
 
 }

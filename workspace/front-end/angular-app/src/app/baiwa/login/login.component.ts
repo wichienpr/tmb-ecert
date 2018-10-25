@@ -36,10 +36,11 @@ export class LoginComponent implements OnInit {
 
   onSubmit(event) {
     this.loading = true;
+    this.showLoginMessage = false;
 
     this.loginsv.login(this.username, this.password).subscribe(resp => {
-      let result: AjaxLoginVo = resp.json() as AjaxLoginVo;
-      console.log(result);
+      let result: AjaxLoginVo = resp as AjaxLoginVo;
+      console.log("ACTION : LOGIN", result);
       this.loading = false;
       if (result.status == "SUCCESS") {
         const INIT_USER_DETAIL: UserDetail = {
@@ -82,14 +83,22 @@ export class LoginComponent implements OnInit {
           }
         }, modal);
       } else if (result.status == "OUTOFF_SERVICE") {
-        this.loginMessage = "ไม่สามารถดำเนินการต่อได้ในขณะนี้เนื่องจากปิดระบบตั้งแต่เวลา........ถึงเวลา........";
+        this.loginMessage = "ไม่สามารถดำเนินการต่อได้ในขณะนี้เนื่องจากปิดระบบตั้งแต่เวลา " + result.discription; //........ถึงเวลา........";
         this.showLoginMessage = true;
       }
 
     },
       error => {
-        $.unblockUI();
-      })
+        this.loading = false;
+        this.loginMessage = "เกิดข้อผิดผลาดกรุณาติดต่อผู้ดูแลระบบ";
+        this.showLoginMessage = true;
+        console.log("error")
+      },
+      ()=>{
+        this.loading = false;
+        // console.log("complete")
+      }
+      )
       ;
 
     return false;

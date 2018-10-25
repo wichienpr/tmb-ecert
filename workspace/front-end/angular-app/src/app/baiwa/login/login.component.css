@@ -35,7 +35,7 @@ div1 {
 }
 
 .bg-login {
-    background:#0A6197;
+    background: #0A6197;
     height: calc(100vh - 75px - 67px);
     box-shadow: none !important;
     border: 0 !important;
@@ -62,16 +62,12 @@ div1 {
 }
 
 .menu.fixed {
-    background:#0079c0;
+    background: #0079c0;
     height: 75px;
 }
 
 .i-logo {
     padding: 0 !important;
-}
-
-.i-logo > img {
-    width: 105px !important;
 }
 
 .warning {
@@ -80,10 +76,27 @@ div1 {
     color: #fff !important;
 }
 
-
-.bg-alert > div.header {
+.bg-alert>div.header {
     background: rgb(231, 185, 58) !important;
 }
-.bg-alert > div.header > div {
+
+.bg-alert>div.header>div {
     color: #fff !important;
+}
+
+[class*="logo"] {
+    cursor: pointer !important;
+    outline: none !important;
+    border: 0 !important;
+}
+
+.logo-main {
+    width: 105px !important;
+    height: 100%;
+}
+
+.logo-partner {
+    margin-top: 17px;
+    height: 44px !important;
+    width: 44px !important;
 }

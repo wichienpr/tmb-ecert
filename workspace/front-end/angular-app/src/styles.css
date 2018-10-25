@@ -93,3 +93,11 @@ tr:nth-child(even) {
 .ui.active.dimmer:not(.modals) {
     z-index: 800 !important;
 }
+
+.ui.sortable.table thead th.ngsortth:after {
+    content: '\f0dc'
+}
+
+.ui.table thead tr:first-child>th:last-child{
+    border-right: 0 !important; 
+}

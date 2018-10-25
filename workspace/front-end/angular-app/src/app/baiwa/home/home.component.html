@@ -5,7 +5,7 @@
 
   <div class="ui two wide column">
     <div class="ig">
-      <div class="ui vertical menu"  *ngIf="isShowDashBrod" >
+      <div class="ui vertical menu" *ngIf="isShowDashBrod">
         <a class="   item " style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
           คำขอใหม่
           <div class="ui  label blue" style="font-size: 13px"> {{(dashboard|async).newReq}} </div>
@@ -20,35 +20,35 @@
         </a>
         <a class="item teal item red" style="font-size: 13px;color:red;" (click)="searchStatus('10004')">
           ยกเลิกคำขอ
-          <div class="ui label red ">  {{(dashboard|async).cancle}}  </div>
+          <div class="ui label red "> {{(dashboard|async).cancle}} </div>
         </a>
         <a class=" item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10005')">
           รออนุมัติการชำระเงิน
-          <div class="ui label blue">  {{(dashboard|async).paywaiting}}  </div>
+          <div class="ui label blue"> {{(dashboard|async).paywaiting}} </div>
         </a>
         <a class="item" style="font-size: 13px;" (click)="searchStatus('10006')">
           อนุมัติการชำระเงิน
-          <div class="ui label ">   {{(dashboard|async).payapprove}}   </div>
+          <div class="ui label "> {{(dashboard|async).payapprove}} </div>
         </a>
         <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10007')">
           ปฏิเสธการชำระเงิน
-          <div class="ui label red">  {{(dashboard|async).payreject}}   </div>
+          <div class="ui label red"> {{(dashboard|async).payreject}} </div>
         </a>
         <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10008')">
           ชำระเงินไม่สำเร็จ
-          <div class="ui label red">  {{(dashboard|async).payfail}}  </div>
+          <div class="ui label red"> {{(dashboard|async).payfail}} </div>
         </a>
         <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10009')">
           รออัพโหลด Certificate
-          <div class="ui label blue">  {{(dashboard|async).waituploadcert}}  </div>
+          <div class="ui label blue"> {{(dashboard|async).waituploadcert}} </div>
         </a>
         <a class="item" style="font-size: 13px;" (click)="searchStatus('10010')">
           ดำเนินการสำเร็จ
-          <div class="ui label ">  {{(dashboard|async).complete}}  </div>
+          <div class="ui label "> {{(dashboard|async).complete}} </div>
         </a>
         <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10011')">
           รอบันทึกคำขอ<br>(ลูกค้าทำรายเอง)
-          <div class="ui label blue">   {{(dashboard|async).keyinReq}}   </div>
+          <div class="ui label blue"> {{(dashboard|async).keyinReq}} </div>
         </a>
       </div>
     </div>
@@ -79,7 +79,7 @@
 <div class="ui vertical footer" style="background:#0079C0; color: #FFF;">
   <div class="ui container fluid">
     <div class="ui one column grid">
-      <div class="ui seven wide leftfloated column">
+      <div class="ui seven wide left floated column">
         <p style="font-size: 10.5px;">
           <a class="underline  white">การให้บริการ TMB e-Certificate System</a>
           <br> - เปิดให้บริการทำการ ทุกวันจันทร์ - ศุกร์ เวลา 08.30 - 16.30 น. หลังเวลาทำการให้บริการในวันถัดไป
@@ -96,13 +96,20 @@
           <br>
         </p>
       </div>
-      <div class="ui three wide right floated column">
+      <!-- <div class="ui one wide right floated column">
+        <div class="item" style="margin-top: 5%;margin-right: -25%;position: relative;">
+          <div class="image" style="position: absolute;">
+            <img src="assets/image/footer.jpg" width="72px" alt="">
+          </div>
+        </div>
+      </div> -->
+      <div class="ui three wide right floated column" style="margin-left: 0;">
         <p style="font-size: 10.5px;">
           <a class="underline  white">หากมีข้อสงสัย สอบถามเพิ่มเติมได้ที่</a>
           <br> TMB Center e-Certificate ชั้น 4B
           <br> ธนาคารทหารไทย จำกัด(มหาชน) สำนักงานใหญ่
           <br> 3000 ถนนพหลโยธิน แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900
-          <br> หรือ เบอร์โทรศัพท์ 02-299-1111 ต่อ 5444
+          <br> หรือ เบอร์โทรศัพท์ 02-299-1111 ต่อ 5544
           <br> E-mail:
           <a class="underline white">
             TMB_Certificate@tmbbank.com
@@ -111,9 +118,9 @@
       </div>
     </div>
 
-      <div class="ui center aligned container">
-        <p style="color: #ffffff;    margin-top: -30px;" >© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
-      </div>
+    <div class="ui center aligned container">
+      <p style="color: #ffffff;    margin-top: -30px;">© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
+    </div>
 
 
   </div>

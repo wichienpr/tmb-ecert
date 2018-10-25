@@ -46,6 +46,9 @@ export class Sup01000Service {
         if(roleName == "" || roleName == undefined){
             roleName = "NULL"
         }
+        if(roleStatus == "" || roleStatus == undefined){
+            roleStatus = "NULL"
+        }
         let path = URL.EXPORT_EXCELL+"/"+roleName+"/"+roleStatus;
         return this.ajax.download(path);
     }

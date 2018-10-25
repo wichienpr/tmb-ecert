@@ -9,6 +9,7 @@ import { MESSAGE_STATUS, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import { Btm01000 } from './btm01000.model';
 import * as moment from 'moment';
+import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
 @Component({
   selector: 'app-btm01000',
   templateUrl: './btm01000.component.html',
@@ -33,6 +34,12 @@ export class Btm01000Component implements OnInit {
 
   @ViewChild("calendarTo")
   calendarTo: NgCalendarComponent;
+
+  @ViewChild("statusDropDown")
+  statusDropDown: DropdownComponent;
+
+  @ViewChild("typeDropDown")
+  typeDropDown: DropdownComponent;
 
 
 
@@ -62,7 +69,7 @@ export class Btm01000Component implements OnInit {
   tempItem: Btm01000;
 
   constructor(private service: Btm01000Service, private modalService: ModalService,
-     private commonserice: CommonService ) {
+    private commonserice: CommonService) {
 
     this.messageRes = {
       data: "",
@@ -77,8 +84,8 @@ export class Btm01000Component implements OnInit {
     this.serchForm = new FormGroup({
       dateFrom: new FormControl(now, Validators.required),
       dateTo: new FormControl(now, Validators.required),
-      batchType: new FormControl(null),
-      operationType: new FormControl(null),
+      batchType: new FormControl(),
+      operationType: new FormControl(),
     });
 
     this.reRunForm = new FormGroup({
@@ -92,31 +99,30 @@ export class Btm01000Component implements OnInit {
       type: "custom"
     };
 
-    
+
     this.dropdownBatchJob = {
-      action: {
-        dropdownId: "batchJobType",
-        dropdownName: "batchJobType",
-        type: "search",
-        formGroup: this.serchForm,
-        formControlName: "batchType",
-        values: [],
-        valueName: "code",
-        labelName: "name"
-      }
+
+      dropdownId: "batchJobType",
+      dropdownName: "batchJobType",
+      type: "search",
+      formGroup: this.serchForm,
+      formControlName: "batchType",
+      values: [],
+      valueName: "code",
+      labelName: "name"
+
     };
 
     this.dropdownJobMonitor = {
-      action: {
-        dropdownId: "jobMonitoring",
-        dropdownName: "jobMonitoring",
-        type: "search",
-        formGroup: this.serchForm,
-        formControlName: "operationType",
-        values: [],
-        valueName: "code",
-        labelName: "name"
-      }
+      dropdownId: "jobMonitoring",
+      dropdownName: "jobMonitoring",
+      type: "search",
+      formGroup: this.serchForm,
+      formControlName: "operationType",
+      values: [],
+      valueName: "code",
+      labelName: "name"
+
     };
 
     this.batchMonitorConfig = {
@@ -151,9 +157,13 @@ export class Btm01000Component implements OnInit {
       formatter: "dd/mm/yyyy"
     };
 
-    
-    this.service.getDropdownBatchJob().subscribe((obj: Lov[]) => this.dropdownBatchJob.action.values = obj);
-    this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) => this.dropdownJobMonitor.action.values = obj);
+
+    this.service.getDropdownBatchJob().subscribe((obj: Lov[]) => {
+      this.dropdownBatchJob.values = obj
+    });
+    this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) =>{
+      this.dropdownJobMonitor.values = obj
+    });
 
 
   }
@@ -175,7 +185,7 @@ export class Btm01000Component implements OnInit {
     }
     if (this.serchForm.valid) {
       this.batchMonitorDT.searchParams(this.serchForm.value)
-      this.batchMonitorDT.search()
+      this.batchMonitorDT.search();
     }
   }
 
@@ -221,8 +231,12 @@ export class Btm01000Component implements OnInit {
   }
 
   clearSearchData() {
-    this.serchForm.reset();
+    console.log("clear search");
+    let now = moment().format('DD/MM/YYYY');
+    this.serchForm.setValue({ dateFrom: now, dateTo: now, batchType: '', operationType: '' });
     this.batchMonitorDT.clear();
+    this.statusDropDown.clear();
+    this.typeDropDown.clear();
   }
   continueRerun() {
     this.tempItem.endofdate = this.reRunForm.get("reRunDateForm").value
@@ -247,10 +261,10 @@ export class Btm01000Component implements OnInit {
 
   modalEvent(event: any) {
     // console.log("modal event : ", event);
-    if (this.rerunDateOnly){
+    if (this.rerunDateOnly) {
       this.calendarRerunFrom.refresh();
       this.calendarRerunTo.refresh();
-    }else{
+    } else {
       this.calendarRerunFrom.refresh();
     }
 
@@ -271,6 +285,13 @@ export class Btm01000Component implements OnInit {
   }
   get btnrerun() {
     return this.commonserice.isAuth(PAGE_AUTH.P0001101)
+  }
+
+  get operationType() {
+    return this.serchForm.get("operationType");
+  }
+  get batchType() {
+    return this.serchForm.get("batchType");
   }
 
 }

@@ -5,7 +5,7 @@ import { Sup01000 } from "app/tmb-ecert/sup00000/sup01000/sup01000.model";
 // Initial
 const INIT_DATA: Sup01000 = {
     roldId:null,
-    status: null,
+    status: 2,
     roleName: '',
     rolePermissionId: '',
     functionCode:'',

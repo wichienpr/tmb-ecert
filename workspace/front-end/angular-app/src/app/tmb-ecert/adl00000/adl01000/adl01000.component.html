@@ -42,7 +42,7 @@
                         <label>Action</label>
                     </div>
                     <div class="five wide field">
-                        <ui-dropdown [dropdown]="actionDropdown"></ui-dropdown>
+                        <ui-dropdown [dropdown]="actionDropdown" #statusDropDown="ui-dropdown"></ui-dropdown>
                     </div>
                 </div>
                 <br>
@@ -77,14 +77,14 @@
         <ng-datatable-search [ng-datatable]="auditDt" ></ng-datatable-search>
         <br>
         <div style="overflow-x: auto;white-space: nowrap;">
-            <table [ngDatatable]="auditConfig" #auditDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%" id="table">
+            <table [ngDatatable]="auditConfig" #auditDt="ngDatatable" class="ui small celled table nowrap sortable" style="width: 100%" id="table">
                 <thead>
                     <tr>
-                        <th>ลำดับ</th>
-                        <th>วันที่ดำเนินการ</th>
-                        <th>User ID</th>
-                        <th>Action</th>
-                        <th>รายละเอียด</th>
+                        <th width="10%">ลำดับ </th>
+                        <th width="20%" [ngSort]="auditDt" columnName="CREATED_DATETIME" >วันที่ดำเนินการ</th>
+                        <th width="10%" [ngSort]="auditDt" columnName="CREATED_BY_ID" >User ID</th>
+                        <th width="20%" [ngSort]="auditDt" columnName="ACTION_CODE" >Action</th>
+                        <th width="40%" >รายละเอียด</th>
                     </tr>
                 
                 </thead>
@@ -96,8 +96,8 @@
                         <td style="text-align: center !important;">{{ auditDt.rownum + (i+1) }}</td>
                         <td style="text-align: center !important;">{{data.createdDatetime}}</td>
                         <td style="text-align: center !important;">{{data.createdById}}</td>
-                        <td style="text-align: left   !important;">{{data.actionDesc}}</td>
-                        <td style="text-align: left   !important;">{{data.description}}</td>
+                        <td style="text-align: left   !important; white-space: pre-wrap; ">{{data.actionDesc}}</td>
+                        <td style="text-align: left   !important; white-space: pre-wrap; ">{{data.description}}</td>
                     </tr>
                 </tbody>
             </table>

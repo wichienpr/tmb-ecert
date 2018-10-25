@@ -7,7 +7,7 @@ import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',
@@ -27,6 +27,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   data: RequestForm = initRequestForm;
   tmbReqFormId: String = "";
+  custsegmentCode: string = "";
   form: FormGroup;
   formReject: FormGroup;
   formAuth: FormGroup;
@@ -42,11 +43,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   authSubmitted: boolean = false;
   hiddenReceipt3: boolean = false;
   hiddenReceipt4: boolean = false;
-
+  toggleDoc: string = "content";
+  toggleTitle: string = "title";
   glType: string = "";
   tranCode: string = "";
   accType: string = "";
   status: string = "";
+  statusMsg: string = "";
   accNo: string = "";
 
   cert: RequestCertificate[] = [];
@@ -77,8 +80,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       otherReason: new FormControl(),
     });
     this.formAuth = new FormGroup({
-      authUsername: new FormControl('', Validators.required), 
-      authPassword: new FormControl('', Validators.required), 
+      authUsername: new FormControl('', Validators.required),
+      authPassword: new FormControl('', Validators.required),
     });
     this.allowed = {
       type: "selection",
@@ -93,11 +96,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     };
     this.allowedModal = { modalId: "allowed", type: "custom" };
     this.authForSubmit = { modalId: "auth", type: "custom" };
-    this.store.select("user").subscribe(user => this.user = user);
-    this.init();
+    this.store.select("user").subscribe(user => {
+      this.user = user
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.init();
+  }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -125,7 +131,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       const {
         accNo, accName, corpName, corpName1, corpNo, address,
         acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-        departmentName, ref1, ref2, amountDbd, amountTmb
+        departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
       } = this.form.controls;
       const {
         accountNo, accountName, tmbRequestNo, requestDate,
@@ -139,6 +145,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.tranCode = tranCode;
       this.accType = accountType;
       this.status = status;
+      this.statusMsg = status;
       this.tmbReqFormId = tmbRequestNo;
       this.accNo = Acc.convertAccNo(accountNo);
 
@@ -152,7 +159,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       if (this.chkList && this.chkList.length > 0) {
         this.chkList = await this.service.matchChkList(this.chkList, this.cert);
       }
-
+      if (this.user.segment) {
+        customSegSelect.setValue(this.user.segment);
+      } else {
+        this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
+        customSegSelect.setValue(this.custsegmentCode);
+      }
       accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
       accNo.setValue(Acc.convertAccNo(accountNo));
       address.setValue(this.data.address);
@@ -187,6 +199,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   checkRoles() {
     if (this.roles(ROLES.REQUESTOR)) {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
       this.form.controls.customSegSelect.clearValidators();
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
@@ -195,6 +209,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
 
     if (this.roles(ROLES.MAKER)) {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
       if (this.data.paidTypeCode != "30004") {
         this.form.controls.ref1.setValidators([Validators.required]);
         this.form.controls.ref2.setValidators([Validators.required]);
@@ -205,7 +221,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
       this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
-      this.form.controls.customSegSelect.setValue(this.data.custsegmentCode);
+      this.form.controls.customSegSelect.setValue('');
       this.form.controls.payMethodSelect.setValue('30001');
     }
 
@@ -216,6 +232,17 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  get documentMsg() {
+    if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
+      return 'รายละเอียดเอกสาร';
+    }
+    return 'โปรดแนบเอกสาร';
+  }
+
+  get onlyMaker() { return this.roles(ROLES.MAKER) }
+  get onlyRequestor() { return this.roles(ROLES.REQUESTOR) }
+  get onlyChecker() { return this.roles(ROLES.CHECKER) }
+
   get btnForPay() { return this.form.get('payMethodSelect').value == "30004" }
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
@@ -223,7 +250,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
   get btnChecker() { return this.roles(ROLES.CHECKER) }
   get btnMaker() { return this.roles(ROLES.MAKER) }
-  get btnMakerApprove() { return this.roles(ROLES.MAKER)&&this.common.isAuth(PAGE_AUTH.P0000401) }
+  get btnMakerApprove() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000401) }
   get btnMakerReject() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000403) }
 
   get authUsername() { return this.formAuth.get("authUsername") }
@@ -276,20 +303,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   reject(event) {
     this.rejectSubmitted = true;
     const data = {
-      glType: this.glType,
-      tranCode: this.tranCode,
-      accType: this.accType,
-      acctno: this.accNo,
-      changeNameFile: this.form.controls.changeNameFile.value ? null : this.data.changeNameFile,
-      idCardFile: this.form.controls.copyFile.value ? null : this.data.idCardFile,
-      requestFormFile: this.form.controls.requestFile.value ? null : this.data.requestFormFile,
-      status: "10003", // ปฏิเสธ
+      reqFormId: this.data.reqFormId,
       rejectReasonCode: this.allowedSelect.value,
-      rejectReasonOther: this.otherReason.value,
-      tmbRequestNo: this.data.tmbRequestNo
-    }
+      rejectReasonOther: this.otherReason.value
+    };
     if (this.formReject.valid) {
-      this.formSubmit(this.form, data);
+      this.service.rejected(data);
     }
   }
 
@@ -310,29 +329,45 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     e.preventDefault();
     this.authSubmitted = true;
     if (this.formAuth.valid) {
-      if(this.service.toAuthed()) {
+      if (this.service.toAuthed()) {
         this.formSubmit(this.form);
       }
     }
+  }
+
+  ref1Focus() {
+    this.firstEnter = true; // reset FirstEnter
   }
 
   keytab(one, two) {
     let element1 = this[one].nativeElement; // get the sibling element
     let element2 = this[two].nativeElement; // get the sibling element
     if (this.firstEnter) {
-      element1.value = "";
+      this.ref1.nativeElement.focus();
+      this.form.get('ref1').patchValue('');
+      this.form.get('ref2').patchValue('');
+      this.form.get('amountDbd').patchValue('');
+      // this.form.get('amountTmb').patchValue('');
       this.firstEnter = false;
-      return ;
+      return;
     } else {
-      if (two=='tmb') {
+      if (two == 'tmb') {
         this.firstEnter = true; // reset FirstEnter
         const df = new DecimalFormat('###,###.00');
-        let value = element1.value.replace(/,/g,'');
-        value = parseFloat(value)/100;
-        this.form.get('amountDbd').patchValue(df.format(value));
+        let value = element1.value.replace(/,/g, '');
+        if (value) {
+          value = df.format(parseFloat(value) / 100);
+        } else {
+          value = "";
+        }
+        this.form.get('amountDbd').patchValue(value);
       }
       element2.focus();   // focus if not null
     }
+  }
+
+  focusOn(viewChild: string) {
+    this[viewChild].nativeElement.focus();
   }
 
   cancel() {
@@ -348,44 +383,29 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls.corpName1.setValue(data);
   }
 
+  toggleDocument() {
+    if (this.toggleDoc === "content") {
+      this.toggleDoc = "";
+      this.toggleTitle = "";
+    } else {
+      this.toggleDoc = "content";
+      this.toggleTitle = "title";
+    }
+  }
+
   async reqTypeChange(e) {
     this.loading = true;
     if (e != "") {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
-          if (obj.code == '10007') {
-            this.calend[index] = {
-              calendarId: `cal${index}`,
-              calendarName: `cal${index}`,
-              formGroup: this.form,
-              formControlName: `cal${index}`,
-              type: CalendarType.DATE,
-              formatter: CalendarFormatter.DEFAULT,
-              local: CalendarLocal.EN,
-              icon: 'calendar'
-            };
-            this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
-          }
-          if (obj.code == '10006' || obj.code == '20006' || obj.code == '30005') {
-            this.calend[index] = {
-              calendarId: `cal${index}`,
-              calendarName: `cal${index}`,
-              formGroup: this.form,
-              formControlName: `cal${index}`,
-              type: CalendarType.YEAR,
-              formatter: CalendarFormatter.yyyy,
-              local: CalendarLocal.EN,
-              icon: 'calendar'
-            };
-            this.form.addControl(`cal${index}`, new FormControl('', Validators.required));
-          }
+          let value = '';
           if (this.form.controls[`chk${index}`]) {
             this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.setControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+            this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           } else {
             this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.addControl(`cer${index}`, new FormControl({ value: '', disabled: true }, Validators.required));
+            this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           }
           if (!obj.feeDbd) {
             obj.children = await this.service.reqTypeChange(obj.code);
@@ -402,6 +422,30 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                     local: CalendarLocal.EN,
                     icon: 'calendar'
                   };
+                  if (ob.code == '10007') {
+                    this.calendar[idx] = {
+                      calendarId: `cal${index}Child${idx}`,
+                      calendarName: `cal${index}Child${idx}`,
+                      formGroup: this.form,
+                      formControlName: `cal${index}Child${idx}`,
+                      type: CalendarType.DATE,
+                      formatter: CalendarFormatter.DEFAULT,
+                      local: CalendarLocal.EN,
+                      icon: 'calendar'
+                    };
+                  }
+                  if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
+                    this.calendar[idx] = {
+                      calendarId: `cal${index}Child${idx}`,
+                      calendarName: `cal${index}Child${idx}`,
+                      formGroup: this.form,
+                      formControlName: `cal${index}Child${idx}`,
+                      type: CalendarType.YEAR,
+                      formatter: CalendarFormatter.yyyy,
+                      local: CalendarLocal.EN,
+                      icon: 'calendar'
+                    };
+                  }
                 }
                 if (idx === obj.children.length - 1) {
                   if (this.form.controls[`etc${index}Child${idx}`]) {
@@ -448,38 +492,40 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             obj.registeredDate = this.chkList[index - 1].registeredDate;
             controls[`chk${index}`].setValue(obj.check);
             controls[`cer${index}`].setValue(obj.value);
-            if (controls[`cal${index}`] && obj.statementYear) {
-              controls[`cal${index}`].setValue(obj.statementYear);
-            }
-            if (controls[`cal${index}`] && obj.acceptedDate) {
-              var d = new Date(obj.acceptedDate),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-              controls[`cal${index}`].setValue([digit(day), digit(month), year].join("/"));
-            }
             if (obj.children) {
               this.showChildren = obj.check;
               obj.children.forEach((ob, idx) => {
                 if (idx != 0) {
-                  ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
-                  ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
-                  ob.value = this.chkList[index - 1].children[idx - 1].value;
-                  ob.check = this.chkList[index - 1].children[idx - 1].check;
-                  ob.other = this.chkList[index - 1].children[idx - 1].other;
-                  ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
-                  ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
-                  controls[`chk${index}Child${idx}`].setValue(ob.check);
-                  controls[`cer${index}Child${idx}`].setValue(ob.value);
-                  if (controls[`etc${index}Child${idx}`]) {
-                    controls[`etc${index}Child${idx}`].setValue(ob.other);
-                  }
-                  if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                    var d = new Date(ob.registeredDate),
-                      month = '' + (d.getMonth() + 1),
-                      day = '' + d.getDate(),
-                      year = d.getFullYear();
-                    controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                  if (this.chkList[index - 1].children) {
+                    ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
+                    ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
+                    ob.value = this.chkList[index - 1].children[idx - 1].value;
+                    ob.check = this.chkList[index - 1].children[idx - 1].check;
+                    ob.other = this.chkList[index - 1].children[idx - 1].other;
+                    ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
+                    ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
+                    controls[`chk${index}Child${idx}`].setValue(ob.check);
+                    controls[`cer${index}Child${idx}`].setValue(ob.value);
+                    if (controls[`etc${index}Child${idx}`]) {
+                      controls[`etc${index}Child${idx}`].setValue(ob.other);
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
+                      controls[`cal${index}Child${idx}`].setValue(ob.statementYear);
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
+                      var d = new Date(ob.acceptedDate),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+                      controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                    }
+                    if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
+                      var d = new Date(ob.registeredDate),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+                      controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
+                    }
                   }
                 }
               });
@@ -489,6 +535,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
     }, 1500);
     setTimeout(() => {
+      this.toggleChk(1);
+      this.form.controls[`chk1`].setValue(true);
+      this.form.controls[`cer1`].setValue(1);
       this.loading = false;
     }, 1700);
   }
@@ -497,18 +546,40 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls[name].setValue(e);
   }
 
+  classByCode(e) {
+    switch (e) {
+      case '50001':
+        return 'bg-red';
+      case '50002':
+        return 'bg-pink';
+      case '50003':
+        return 'bg-yellow';
+      default:
+        return ''
+    }
+  }
+
   toggleChk(index) {
     if (!this.form.controls[`chk${index}`].value) {
       this.form.controls[`cer${index}`].setValue(1);
-      // if (this.form.controls[`cal${index}`]) {
-      //   this.form.controls[`cal${index}`].setValue(dateLocaleEN(new Date()).split("/")[2]);
-      // }
     } else {
       this.form.controls[`cer${index}`].setValue('');
     }
     if (this.reqTypeChanged[index].children) {
       this.showChildren = !this.form.controls[`chk${index}`].value;
-      if (this.form.controls[`chk${index}`].value) {
+      this.form.get(`chk${index}`).setValue(this.showChildren);
+      if (this.showChildren) {
+        for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
+          this.form.controls[`chk${index}Child${i}`].setValue(false);
+          this.form.controls[`cer${index}Child${i}`].setValue('');
+          if (this.form.controls[`cal${index}Child${i}`]) {
+            this.form.controls[`cal${index}Child${i}`].setValue('');
+          }
+          if (this.form.controls[`etc${index}Child${i}`]) {
+            this.form.controls[`etc${index}Child${i}`].setValue('');
+          }
+        }
+      } else {
         for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
           this.form.controls[`chk${index}Child${i}`].setValue(false);
           this.form.controls[`cer${index}Child${i}`].setValue('');

@@ -8,5 +8,6 @@ export interface CertFile {
 export interface Rejected {
     reqFormId: number;
 	rejectReasonCode: string;
-	rejectReasonOther: string;
+    rejectReasonOther: string;
+    for: string;
 }

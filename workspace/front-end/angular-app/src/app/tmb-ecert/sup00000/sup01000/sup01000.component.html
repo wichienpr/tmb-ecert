@@ -67,7 +67,7 @@
                <label>Status</label>
             </div>
             <div class="five wide field ">
-               <ui-dropdown [dropdown]="dropDownStatus"></ui-dropdown>
+               <ui-dropdown [dropdown]="dropDownStatus" #statusDropDown="ui-dropdown" ></ui-dropdown>
             </div>
          </div>
          <br>
@@ -151,7 +151,7 @@
             <div class="sixteen wide column">
                <!-- <button class="ui blue basic button" (click)="clickExportRole()"> -->
                <button class="ui blue basic button" (click)="clickExportRole()" *ngIf="isCanExport"> 
-                  <i class="file excel outline icon"></i>Export to Role</button>
+                  <i class="file excel outline icon"></i>Export to Excel</button>
             </div>
          </div>
          <br>
