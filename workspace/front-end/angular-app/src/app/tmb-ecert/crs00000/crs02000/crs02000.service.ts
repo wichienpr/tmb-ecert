@@ -38,6 +38,10 @@ export class Crs02000Service {
     return this.route.snapshot.queryParams["id"] || "";
   }
 
+  getStatusCode() {
+    return this.route.snapshot.queryParams["statusCode"] || "";
+  }
+
   getHistory(id: string) {
     return this.ajax.get(`${URL.REQUEST_HISTORY}/${id}`, response => {
       let data: RequestForm[] = response.json() as RequestForm[];

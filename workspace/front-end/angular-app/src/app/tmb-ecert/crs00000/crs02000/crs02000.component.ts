@@ -187,7 +187,7 @@ export class Crs02000Component implements OnInit {
   }
 
   chkStatus = status => {
-    return this.data.status == status;
+    return this.service.getStatusCode() == status;
   }
 
   toggleDocument() {

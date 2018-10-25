@@ -44,7 +44,7 @@ export class Srn01000Service {
       return;
     }
     this.router.navigate(["/crs/crs02000"], {
-      queryParams: { id: idReq }
+      queryParams: { id: idReq, statusCode: status }
     });
     return;
   }
