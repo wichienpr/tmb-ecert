@@ -3,6 +3,7 @@ package com.tmb.ecert.history.persistence.dao;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.history.persistence.vo.RequestHistoryVo;
 
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @Repository
 public class RequestHistoryDao {
@@ -49,6 +51,8 @@ public class RequestHistoryDao {
 		sql.append("?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,");
 		sql.append("?,?,?,?,?,?,?,?,?,?,?,?,?,?");
 		sql.append(")");
+		
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 		List<Object> params = new ArrayList<>();
 		params.add(form.getReqFormId());
@@ -103,11 +107,11 @@ public class RequestHistoryDao {
 		params.add(form.getRejectReasonOther());
 		params.add(form.getCreatedById());
 		params.add(form.getCreatedByName());
-		params.add(form.getCreatedDateTime());
-		params.add(form.getUpdatedById());
+		params.add(timestamp); // params.add(form.getCreatedDateTime());
+		params.add(UserLoginUtils.getCurrentUserLogin().getUserId()); // params.add(form.getUpdatedById());
 
-		params.add(form.getUpdatedByName());
-		params.add(form.getUpdatedDateTime());
+		params.add(UserLoginUtils.getCurrentUserLogin().getUsername()); // params.add(form.getUpdatedByName());
+		params.add(timestamp); // params.add(form.getUpdatedDateTime());
 		params.add(form.getMakerById());
 		params.add(form.getMakerByName());
 		params.add(form.getCheckerById());
