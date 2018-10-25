@@ -37,3 +37,19 @@ h3.header.space {
     /* width: 62.5%; */
     cursor: pointer;
 }
+
+.barcode.icon {
+    margin: 0 0.25em 0 0 !important;
+    padding-top: 7px !important;
+    font-size: 33px !important;
+    transition: transform .2s !important;
+    cursor: pointer !important;
+}
+
+.barcode.icon:hover {
+    transform: scale(1.5);
+}
+
+.barcode {
+    cursor: pointer !important;
+}

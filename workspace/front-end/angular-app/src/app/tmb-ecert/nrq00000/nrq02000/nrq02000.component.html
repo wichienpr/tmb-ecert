@@ -438,10 +438,11 @@
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
           <input type="text" (keypress)="accNoPress($event)" (focus)="ref1Focus()" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
-        <div class="three wide field" *ngIf="btnMaker">
-          <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
+        <div class="three wide field barcode" (click)="focusOn('ref1')" *ngIf="btnMaker">
+          <!-- <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
             <img src="assets/image/barcode.png" style="height:28px;width:74px;filter:invert(100%);margin-top:2px;" alt="">
-          </button>
+          </button> -->
+          <i class="barcode icon"></i>
           <span>สแกนบาร์โค้ด</span>
         </div>
       </div>
