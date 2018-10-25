@@ -179,7 +179,7 @@ public class RequestorDao {
 		sql.append("REMARK=?,RECEIPT_NO=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,");
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
-		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_ID=?,CHECKER_NAME=?");
+		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?");
 		sql.append(" WHERE REQFORM_ID = ?");
 		int row = jdbcTemplate.update(sql.toString(),
 				new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(), vo.getCustomerName(), vo.getCompanyName(),
