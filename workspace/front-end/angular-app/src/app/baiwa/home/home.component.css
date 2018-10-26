@@ -1,96 +1,137 @@
 .bg {
-    z-index: -999;
-    top: -25px;
-    left: 0vw;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
+  z-index: -999;
+  top: -25px;
+  left: 0vw;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.ui.footer {
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 0.5em;
+  z-index: 1000;
+  height: 154px;
+}
+
+.footer .container.fluid {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+a.underline {
+  text-decoration: underline;
+}
+
+a.bold {
+  font-weight: bold;
+}
+
+.blue {
+  color: blue;
+}
+
+.white {
+  color: #FFF;
+}
+
+.black {
+  color: black;
+}
+
+.text-content {
+  position: relative;
+  height: calc(100vh - 227px);
+}
+
+.logo {
+  font-size: 50px;
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+
+/**
+* New Version CSS
+*/
+
+.content {
+  color: white;
+}
+
+.row.content {
+  padding: 0 !important;
+}
+
+.three.wide.column.content {
+  padding: 0;
+  min-height: calc(100vh - 227px);
+  max-height: calc(100vh - 227px);
+}
+
+.sixteen.wide.tablet.thirteen.wide.computer.column {
+  min-height: calc(100vh - 227px);
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+  text-align: center;
+}
+
+.ui.vertical.menu {
+  width: 100%;
+  border-radius: 0 !important;
+}
+
+.common-footer {
+  color: #ffffff;
+}
+
+[class*="head"] {
+  position: absolute;
+  width: 100%;
+  left: -4em;
+}
+
+.head-1 {
+  top: 1em;
+}
+
+.head-2 {
+  bottom: calc(1.28571429rem + 2em);
+}
+
+.head-3 {
+  bottom: 1em;
+}
+
+@media only screen and (max-width: 993px) {
+  .row.content {
+    padding: 1em !important;
   }
-  
-  .ig{
-    margin-top: -11px;
-    margin-left: -15px;
-    width: 16vw !important;
-    min-height: calc(100vh - 227px);
-    max-height: calc(100vh - 227px);
-    overflow-y: auto;
-    overflow-x: hidden;
+  .three.wide.column.content {
+    padding: 0 1em 1em 1em !important;
+    min-height: auto !important;
   }
-  
-  .ig > .ui.menu {
-    width: 16vw !important;
-  }
-  
   .ui.footer {
     background-color: #fff;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding-top: 0.5em;
+    position: relative;
+    margin-top: 1em;
+    margin-bottom: -64px;
     z-index: 1000;
-    height: 154px;
+    height: auto !important;
   }
-  
-  .footer .container.fluid {
-    padding-left: 1em;
-    padding-right: 1em;
+  .sixteen.wide.tablet.thirteen.wide.computer.column {
+    min-height: calc(100vh - 227px) !important;
+    padding: 0 1em 1em 1em !important;
   }
-  
-  a.underline {
-    text-decoration: underline;
+  .common-footer {
+    margin-top: 1em !important;
   }
-  
-  a.bold {
-    font-weight: bold;
+  [class*="head"] {
+    left: 0 !important;
   }
-  
-  .blue {
-    color: blue;
-  }
-  
-  .white {
-    color: #FFF;
-  }
-  
-  .black {
-    color: black;
-  }
-  
-  .text-content {
-    position: relative;
-    height: calc(100vh - 227px);
-  }
-  
-  .logo {
-    font-size: 50px;
-    color: white;
-    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-  }
-  
-  .content {
-    color: white;
-  }
-  
-  h2 p {
-    position: relative;
-    left: -50%;
-  }
-  
-  h3 p {
-    position: relative;
-    left: -50%;
-  }
-  
-  h4 p {
-    position: relative;
-    left: -50%;
-  }
-  
-  h2, h3, h4 {
-    left: 50%;
-    width: 100%;
-    position: absolute;
-  }
+}

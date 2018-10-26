@@ -1,19 +1,12 @@
-<div class="bg" style="background-image: url(assets/image/Background.png);">
-
-</div>
-<div class="ui one column grid">
-
-  <div class="ui two wide column">
-    <div class="ig">
-      <div class="ui vertical menu" *ngIf="isShowDashBrod">
-        <a class="   item " style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
+<div class="bg" style="background-image: url(assets/image/Background.png);"></div>
+<div class="ui stackable grid">
+  <div class="row content" *ngIf="isShowDashBoard">
+    <div class="sixteen wide tablet three wide computer column content">
+      <div class="ui vertical menu">
+        <a class="item" style="font-size: 13px;color:#2185D0;" (click)="searchStatus('10001')">
           คำขอใหม่
           <div class="ui  label blue" style="font-size: 13px"> {{(dashboard|async).newReq}} </div>
         </a>
-        <!-- <a class=" item" style="font-size: 13px;" (click)="searchStatus('10002')">
-          ดำเนินการชำระเงิน
-          <div class="ui label "> {{(dashboard|async).paying}} </div>
-        </a> -->
         <a class="item" style="font-size: 13px;color:red;" (click)="searchStatus('10003')">
           ปฏิเสธคำขอ
           <div class="ui label red"> {{(dashboard|async).reject}} </div>
@@ -52,76 +45,53 @@
         </a>
       </div>
     </div>
-  </div>
-
-  <div class="ui thirteen wide center aligned column text-content content">
-    <div class="ui two wide column" style="text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-      <h2 style="top: 10px;">
-        <p>ยินดีต้อนรับ คุณ {{ (userdetail|async).firstName}} {{ (userdetail|async).lastName}} </p>
-      </h2>
-      <h2 style="top: 44px;">
-      </h2>
-      <h2 style="bottom: 50px;">
-        <p style="bottom: -100px"></p>
-      </h2>
-      <h3 style="bottom: 30px">
-        <p>ระบบ TMB e-Certificate ได้เพิ่มช่องทางการให้บริการออกหนังสือรับรองนิติบุคคล</p>
-      </h3>
-      <h3 style="bottom: 10px">
-        <p>เพื่อให้ผู้ใช้บริการเกิดความสะดวก ประหยัดเวลา และค่าใช้จ่ายในการเดินทาง ได้อย่างมีประสิทธิภาพ.....</p>
-      </h3>
+    <div class="sixteen wide tablet thirteen wide computer column">
+      <h2 class="head-1">ยินดีต้อนรับ คุณ {{ (userdetail|async).firstName}} {{ (userdetail|async).lastName}}</h2>
+      <h3 class="head-2">ระบบ TMB e-Certificate ได้เพิ่มช่องทางการให้บริการออกหนังสือรับรองนิติบุคคล</h3>
+      <h3 class="head-3">เพื่อให้ผู้ใช้บริการเกิดความสะดวก ประหยัดเวลา และค่าใช้จ่ายในการเดินทาง
+        ได้อย่างมีประสิทธิภาพ.....</h3>
     </div>
   </div>
-  <div class="ui two wide column">
-
-  </div>
-</div>
-<div class="ui vertical footer" style="background:#0079C0; color: #FFF;">
-  <div class="ui container fluid">
-    <div class="ui one column grid">
-      <div class="ui seven wide left floated column">
-        <p style="font-size: 10.5px;">
-          <a class="underline  white">การให้บริการ TMB e-Certificate System</a>
-          <br> - เปิดให้บริการทำการ ทุกวันจันทร์ - ศุกร์ เวลา 08.30 - 16.30 น. หลังเวลาทำการให้บริการในวันถัดไป
-          <br>
-          <a class="underline  white">
-            ข้อปฎิบัติการใช้ระบบ</a>
-          <br> 1.ผู้ขอใช้บริการ ต้องกรอกข้อมูลรายละเอียดต่างๆ ตามจริงให้ครบถ้วน พร้อมแนบเอกสารที่เกี่ยวข้องทุกครั้ง
-          <br> 2.เจ้าของบัญชีเงินฝาก ต้องแนบสำเนาบัตรประชาชน พร้อมรับรองสำเนาถูกต้อง
-          <br> 3.ธนาคารจะดำเนินการตามความประสงค์ที่ระบุในแบบฟอร์ม ไม่สามารถยกเลิก หรือ เปลี่ยนแปลง หรือคืนค่าใช้จ่ายใดๆ
-          <br> 4.การขอหนังสือรับรอง รับรองสำเนาเอกสารและถ่ายเอกสารทางทะเบียนนิติบุคคลผ่านธนาคาร
-          ธนาคารจะเรียกเก็บชำระค่าธรรมเนียม
-          และค่าบริการตามที่กำหนดไว้ในระบบเท่านั้น
-          <br> 5.กรณียอดเงินในบัญชี ไม่พอตัดค่าธรรมเนียมทั้งจำนวน หน่วยงานส่งเรื่องคืนผู้ขอใช้บริการ
-          <br>
-        </p>
-      </div>
-      <!-- <div class="ui one wide right floated column">
-        <div class="item" style="margin-top: 5%;margin-right: -25%;position: relative;">
-          <div class="image" style="position: absolute;">
-            <img src="assets/image/footer.jpg" width="72px" alt="">
-          </div>
+  <div class="ui vertical footer" style="background:#0079C0; color: #FFF;">
+    <div class="ui container fluid">
+      <div class="ui one stackable column grid">
+        <div class="ui sixteen wide tablet seven wide computer left floated column">
+          <p style="font-size: 10.5px;">
+            <a class="underline white">การให้บริการ TMB e-Certificate System</a>
+            <br> - เปิดให้บริการทำการ ทุกวันจันทร์ - ศุกร์ เวลา 08.30 - 16.30 น. หลังเวลาทำการให้บริการในวันถัดไป
+            <br>
+            <a class="underline white">
+              ข้อปฎิบัติการใช้ระบบ</a>
+            <br> 1.ผู้ขอใช้บริการ ต้องกรอกข้อมูลรายละเอียดต่างๆ ตามจริงให้ครบถ้วน พร้อมแนบเอกสารที่เกี่ยวข้องทุกครั้ง
+            <br> 2.เจ้าของบัญชีเงินฝาก ต้องแนบสำเนาบัตรประชาชน พร้อมรับรองสำเนาถูกต้อง
+            <br> 3.ธนาคารจะดำเนินการตามความประสงค์ที่ระบุในแบบฟอร์ม ไม่สามารถยกเลิก หรือ เปลี่ยนแปลง
+            หรือคืนค่าใช้จ่ายใดๆ
+            <br> 4.การขอหนังสือรับรอง รับรองสำเนาเอกสารและถ่ายเอกสารทางทะเบียนนิติบุคคลผ่านธนาคาร
+            ธนาคารจะเรียกเก็บชำระค่าธรรมเนียม
+            และค่าบริการตามที่กำหนดไว้ในระบบเท่านั้น
+            <br> 5.กรณียอดเงินในบัญชี ไม่พอตัดค่าธรรมเนียมทั้งจำนวน หน่วยงานส่งเรื่องคืนผู้ขอใช้บริการ
+            <br>
+          </p>
         </div>
-      </div> -->
-      <div class="ui three wide right floated column" style="margin-left: 0;">
-        <p style="font-size: 10.5px;">
-          <a class="underline  white">หากมีข้อสงสัย สอบถามเพิ่มเติมได้ที่</a>
-          <br> TMB Center e-Certificate ชั้น 4B
-          <br> ธนาคารทหารไทย จำกัด(มหาชน) สำนักงานใหญ่
-          <br> 3000 ถนนพหลโยธิน แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900
-          <br> หรือ เบอร์โทรศัพท์ 02-299-1111 ต่อ 5544
-          <br> E-mail:
-          <a class="underline white">
-            TMB_Certificate@tmbbank.com
-          </a>
-        </p>
+        <div class="ui sixteen wide tablet three wide computer right floated column" style="margin-left: 0;">
+          <p style="font-size: 10.5px;">
+            <a class="underline white">หากมีข้อสงสัย สอบถามเพิ่มเติมได้ที่</a>
+            <br> TMB Center e-Certificate ชั้น 4B
+            <br> ธนาคารทหารไทย จำกัด(มหาชน) สำนักงานใหญ่
+            <br> 3000 ถนนพหลโยธิน แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900
+            <br> หรือ เบอร์โทรศัพท์ 02-299-1111 ต่อ 5544
+            <br> E-mail:
+            <a class="underline white">
+              TMB_Certificate@tmbbank.com
+            </a>
+          </p>
+        </div>
       </div>
+
+      <div class="ui center aligned container common-footer grid" style="margin-top: -30px;">
+        <p>© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
+      </div>
+
     </div>
-
-    <div class="ui center aligned container">
-      <p style="color: #ffffff;    margin-top: -30px;">© สงวนลิขสิทธิ์ 2561 ธนาคารทหารไทย จำกัด (มหาชน)</p>
-    </div>
-
-
   </div>
 </div>

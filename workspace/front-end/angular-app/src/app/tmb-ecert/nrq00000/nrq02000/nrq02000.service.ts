@@ -27,6 +27,7 @@ const URL = {
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
     DOWNLOAD: "/api/crs/crs02000/download/",
     CER_REJECT: "/api/crs/crs02000/cert/reject",
+    LOCK: "/api/nrq/lock"
 }
 
 @Injectable()
@@ -206,6 +207,15 @@ export class Nrq02000Service {
 
     getDropdownObj(): any {
         return this.dropdownObj;
+    }
+
+    lock(flag:number = 1) {
+        const id = this.route.snapshot.queryParams["id"] || "";
+        if (id !== "") {
+            this.ajax.post(URL.LOCK, { reqFormId: parseInt(id), lockFlag: flag }, response => {
+                console.log(response);
+            });
+        }
     }
 
     /**
@@ -527,6 +537,7 @@ export class Nrq02000Service {
         }
         this.modal.confirm(e => {
             if (e) {
+                this.lock(0);
                 this.router.navigate(['/home']);
             }
         }, modal);
@@ -700,7 +711,8 @@ export class Nrq02000Service {
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther,
             hasAuthed: this.hasAuthed,
-            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : ""
+            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : "",
+            lockFlag: 0
         };
         console.log("data", data);
         for (let key in data) {

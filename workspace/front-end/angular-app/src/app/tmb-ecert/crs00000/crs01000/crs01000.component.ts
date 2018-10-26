@@ -96,13 +96,10 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     };
 
     this.getCountStatus();
-
-    //this.getTest();
   }
 
   ngAfterViewInit() {
     this.statusHome = this.route.snapshot.queryParams["codeStatus"];
-    // console.log(this.statusHome)
     if (this.statusHome) {
       setTimeout(() => {
         this.searchStatusByHomePage(this.statusHome);
@@ -144,7 +141,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       });
     }
     if (this.form.invalid) {
-      // console.log("form invalid");
       return false;
     }
     this.dataDt.searchParams(this.form.value);
@@ -153,7 +149,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   searchStatusByHomePage(code): void {
     this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
-    // console.log(this.form.value);
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }
@@ -172,9 +167,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
         })
         .sidebar('setting', 'transition', 'push')
         .sidebar('toggle');
-      // console.log("searchStatus");
       this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
-      // console.log(this.form.value);
       this.dataDt.searchParams(this.form.value);
       this.dataDt.search();
     }
@@ -203,9 +196,8 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
   }
 
-  detail(idReq, status): void {
-    // console.log(idReq + "," + status, "ROLES IS MAKER: " + this.roles(ROLES.MAKER))
-    return this.crs01000Service.redirectFor(idReq, status);
+  detail(idReq, status, lockFlag, updatedById): void {
+    return this.crs01000Service.redirectFor(idReq, status, lockFlag, updatedById);
   }
 
   roles(role: ROLES) {
@@ -240,15 +232,14 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     }
   }
 
-  getTest() {
-    const URL = "/api/report/pdf/coverSheet";
-    this.ajax.post(URL, {
-      id: "275"
-    }, res => {
-      // console.log(res)
-      this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
-    });
-  }
+  // getTest() {
+  //   const URL = "/api/report/pdf/coverSheet";
+  //   this.ajax.post(URL, {
+  //     id: "275"
+  //   }, res => {
+  //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
+  //   });
+  // }
 
   get reqDate() { return this.form.get("reqDate") }
 

@@ -121,6 +121,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
    * @ `form` ข้อมูลแบบฟอร์มคำขอ
    */
   async init() {
+    this.service.lock();
+
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
     this.checkRoles();
