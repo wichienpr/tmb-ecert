@@ -22,6 +22,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -66,10 +67,32 @@ public class RequestorFormService {
 	@Autowired
 	private RequestGenKeyService gen;
 
+	public CommonMessage<String> pageActive(RequestForm vo) {
+		CommonMessage<String> msg = new CommonMessage<String>();
+		try {
+			String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
+			String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+			vo.setUpdatedById(userId);
+			vo.setUpdatedByName(userName);
+			dao.updateLockStatus(vo);
+			msg.setMessage("SUCCESS");
+		} catch (Exception e) {
+			msg.setData(e.getMessage());
+			msg.setMessage("ERROR");
+			e.printStackTrace();
+		}
+		return msg;
+	}
+
 	public CommonMessage<String> update(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
 		if ("10005".equals(form.getStatus())) {
+			if (req.getLockFlag() == 1) {
+				msg.setData("HASMAKER");
+				msg.setMessage("ERROR");
+				return msg;
+			}
 			if (req.getMakerById() != null) {
 				msg.setData("HASMAKER");
 				msg.setMessage("ERROR");
@@ -78,7 +101,7 @@ public class RequestorFormService {
 			if ("false".equals(form.getHasAuthed())) {
 				if (form.getAmount() != null) {
 					if (form.getAmount().doubleValue() > Double
-							.parseDouble(ApplicationCache.getParamValueByName("payment.amount.limit"))) {
+							.parseDouble(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.AMOUNT_LIMIT))) {
 						msg.setData("NEEDLOGIN");
 						msg.setMessage("ERROR");
 						return msg;

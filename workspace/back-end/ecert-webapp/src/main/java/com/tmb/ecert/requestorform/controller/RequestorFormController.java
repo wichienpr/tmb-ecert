@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,6 +32,12 @@ public class RequestorFormController {
 	@ResponseBody
 	public String gerenateKeys() {
 		return generateKey.getNextKey();
+	}
+	
+	@PostMapping("/lock")
+	@ResponseBody
+	public CommonMessage<String> lock(@RequestBody RequestForm req) {
+		return reqService.pageActive(req);
 	}
 	
 	@PostMapping("/save")

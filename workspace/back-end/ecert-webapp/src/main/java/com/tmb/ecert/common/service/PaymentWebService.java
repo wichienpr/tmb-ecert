@@ -34,9 +34,6 @@ public class PaymentWebService {
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_PAYMENT);
 
-	@Value("${web.service.url}")
-	String WS_URL;
-
 	public CommonMessage<FeePaymentResponse> feePaymentTMB(RequestForm reqF) {
 		logger.info("PaymentWebService::feePaymentTMB");
 		CommonMessage<FeePaymentResponse> commonMsg = new CommonMessage<FeePaymentResponse>();

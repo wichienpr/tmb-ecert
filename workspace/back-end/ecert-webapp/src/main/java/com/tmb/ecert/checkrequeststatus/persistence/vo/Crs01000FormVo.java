@@ -13,6 +13,24 @@ public class Crs01000FormVo extends DatatableRequest {
 	private String organizeId;
 	private String tmbReqNo;
 	private String status;
+	private Integer lockFlag;
+	private String updatedById;
+
+	public Integer getLockFlag() {
+		return lockFlag;
+	}
+
+	public void setLockFlag(Integer lockFlag) {
+		this.lockFlag = lockFlag;
+	}
+
+	public String getUpdatedById() {
+		return updatedById;
+	}
+
+	public void setUpdatedById(String updatedById) {
+		this.updatedById = updatedById;
+	}
 
 	public String getReqDate() {
 		return reqDate;

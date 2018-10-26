@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,13 +95,13 @@ public class RequestorDao {
 		sql.append(" WHERE REQCERTIFICATE_ID=?");
 		int row = jdbcTemplate.update(sql.toString(),
 				new Object[] { vo.getReqFormId(), vo.getCertificateCode(), vo.getTotalNumber(), vo.getRegisteredDate(),
-						vo.getStatementYear(), vo.getAcceptedDate(), vo.getOther(), vo.getReqCertificateId() }); 
+						vo.getStatementYear(), vo.getAcceptedDate(), vo.getOther(), vo.getReqCertificateId() });
 		logger.info("SQL_ECERT_REQUEST_CERTIFICATE_UPDATE rows updated => {}", row);
 	}
-	
+
 	public void deleteCertificates(Long id) {
 		String sql = " DELETE FROM ECERT_REQUEST_CERTIFICATE WHERE REQCERTIFICATE_ID = ? ";
-		jdbcTemplate.update(sql, new Object[]{id});
+		jdbcTemplate.update(sql, new Object[] { id });
 	}
 
 	public Long save(RequestForm vo) {
@@ -116,8 +113,9 @@ public class RequestorDao {
 		sql.append("ACCOUNT_NAME,CUSTOMER_NAMERECEIPT,TELEPHONE,REQUESTFORM_FILE,");
 		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
 		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
-		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE");
-		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE,");
+		sql.append("LOCK_FLAG");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -159,6 +157,10 @@ public class RequestorDao {
 				ps.setString(30, null);
 				ps.setString(31, vo.getTmbRequestNo());
 				ps.setTimestamp(32, vo.getRequestDate()); // timestamp
+				/**
+				 * Lock Status 0, locked 1, unlocked
+				 */
+				ps.setInt(33, 1);
 				return ps;
 			}
 		}, holder);
@@ -179,21 +181,30 @@ public class RequestorDao {
 		sql.append("REMARK=?,RECEIPT_NO=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,");
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
-		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?");
+		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?,LOCK_FLAG=?");
 		sql.append(" WHERE REQFORM_ID = ?");
-		int row = jdbcTemplate.update(sql.toString(),
-				new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(), vo.getCustomerName(), vo.getCompanyName(),
-						vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(), vo.getDepartment(),
-						vo.getPaidTypeCode(), vo.getDebitAccountType(), vo.getTranCode(), vo.getGlType(),
-						vo.getAccountType(), vo.getAccountNo(), vo.getAccountName(), vo.getCustomerNameReceipt(),
-						vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
-						vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
-						vo.getMakerByName(), UserLoginUtils.getCurrentUserLogin().getUserId(), UserLoginUtils.getCurrentUserLogin().getUsername(), new java.util.Date(),
-						vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
-						vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
-						vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(),
-						vo.getReqFormId() });
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(),
+				vo.getCustomerName(), vo.getCompanyName(), vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(),
+				vo.getDepartment(), vo.getPaidTypeCode(), vo.getDebitAccountType(), vo.getTranCode(), vo.getGlType(),
+				vo.getAccountType(), vo.getAccountNo(), vo.getAccountName(), vo.getCustomerNameReceipt(),
+				vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
+				vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
+				vo.getMakerByName(), UserLoginUtils.getCurrentUserLogin().getUserId(),
+				UserLoginUtils.getCurrentUserLogin().getUsername(), new java.util.Date(), vo.getStatus(),
+				vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(), vo.getRef1(), vo.getRef2(), vo.getAmount(),
+				vo.getRejectReasonCode(), vo.getRejectReasonOther(), vo.getAmountTmb(), vo.getAmountDbd(),
+				vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(), vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
+
+	public void updateLockStatus(RequestForm vo) { // ON
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		sql.append(" LOCK_FLAG=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getLockFlag(), vo.getUpdatedById(),
+				vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
+		logger.info("updateLockStatus SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+
 }
