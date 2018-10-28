@@ -395,9 +395,19 @@ public class ReportPdfService {
 				params01.put("accountName", vo.getAccountName());
 				rpReqFormListVo.setSeq(String.valueOf(i + 1));
 
-				if (BeanUtils.isNotEmpty(data.getBoxIndex())) {
-					rpReqFormListVo.setBoxIndex(data.getBoxIndex());
+				if (BeanUtils.isNotEmpty(data.getBox1())) {
+					rpReqFormListVo.setBox1(data.getBox1());
 				}
+				if (BeanUtils.isNotEmpty(data.getBox2())) {
+					rpReqFormListVo.setBox2(data.getBox2());
+				}
+				if (BeanUtils.isNotEmpty(data.getBox3())) {
+					rpReqFormListVo.setBox3(data.getBox3());
+				}
+				if (BeanUtils.isNotEmpty(data.getBox4())) {
+					rpReqFormListVo.setBox4(data.getBox4());
+				}
+				
 				if (BeanUtils.isNotEmpty(data.getTotalNum())) {
 					rpReqFormListVo.setTotalNum(data.getTotalNum());
 				}

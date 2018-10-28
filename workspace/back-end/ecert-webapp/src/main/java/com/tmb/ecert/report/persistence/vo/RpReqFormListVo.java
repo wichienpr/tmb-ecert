@@ -2,7 +2,10 @@ package com.tmb.ecert.report.persistence.vo;
 
 public class RpReqFormListVo {
 	private String seq;
-	private String boxIndex;
+	private Boolean box1;
+	private Boolean box2;
+	private Boolean box3;
+	private Boolean box4;
 	private int totalNum;
 	private int totalNumCc;
 	private int numSetCc;
@@ -22,12 +25,36 @@ public class RpReqFormListVo {
 		this.seq = seq;
 	}
 
-	public String getBoxIndex() {
-		return boxIndex;
+	public Boolean getBox1() {
+		return box1;
 	}
 
-	public void setBoxIndex(String boxIndex) {
-		this.boxIndex = boxIndex;
+	public void setBox1(Boolean box1) {
+		this.box1 = box1;
+	}
+
+	public Boolean getBox2() {
+		return box2;
+	}
+
+	public void setBox2(Boolean box2) {
+		this.box2 = box2;
+	}
+
+	public Boolean getBox3() {
+		return box3;
+	}
+
+	public void setBox3(Boolean box3) {
+		this.box3 = box3;
+	}
+
+	public Boolean getBox4() {
+		return box4;
+	}
+
+	public void setBox4(Boolean box4) {
+		this.box4 = box4;
 	}
 
 	public int getTotalNum() {
