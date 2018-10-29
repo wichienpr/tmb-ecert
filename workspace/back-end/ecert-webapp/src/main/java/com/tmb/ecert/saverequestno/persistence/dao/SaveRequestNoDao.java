@@ -43,7 +43,7 @@ public class SaveRequestNoDao {
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0  ");
 		sql.append(" AND H.STATUS = "+StatusConstant.WAIT_SAVE_REQUEST);
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
@@ -72,7 +72,7 @@ public class SaveRequestNoDao {
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0  ");
 		sql.append(" AND H.STATUS = "+StatusConstant.WAIT_SAVE_REQUEST);
 
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
@@ -100,7 +100,7 @@ public class SaveRequestNoDao {
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0  ");
 
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");
@@ -123,7 +123,7 @@ public class SaveRequestNoDao {
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0 ");
 
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");

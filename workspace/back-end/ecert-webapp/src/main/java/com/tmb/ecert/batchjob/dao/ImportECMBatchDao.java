@@ -19,7 +19,7 @@ public class ImportECMBatchDao {
 	private JdbcTemplate jdbcTemplate;
 		
 	public List<RequestForm> getRequestFormWithEcmFlag() {
-		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE ECM_FLAG = 0 "
+		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE ECM_FLAG = 0 AND DELETE_FLAG=0 "
 				+ "AND CA_NUMBER IS NOT NULL "
 				+ "AND STATUS = '10010' "
 				+ "AND CERTIFICATE_FILE IS NOT NULL ", mapping);
