@@ -190,10 +190,12 @@ public class RequestorDao {
 				vo.getTelephone(), vo.getRequestFormFile(), vo.getIdCardFile(), vo.getChangeNameFile(),
 				vo.getCertificateFile(), vo.getAddress(), vo.getRemark(), vo.getReceiptNo(), vo.getMakerById(),
 				vo.getMakerByName(), UserLoginUtils.getCurrentUserLogin().getUserId(),
-				UserLoginUtils.getCurrentUserLogin().getUsername(), new java.util.Date(), vo.getStatus(),
-				vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(), vo.getRef1(), vo.getRef2(), vo.getAmount(),
-				vo.getRejectReasonCode(), vo.getRejectReasonOther(), vo.getAmountTmb(), vo.getAmountDbd(),
-				vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(), vo.getReqFormId() });
+				UserLoginUtils.getCurrentUserLogin().getFirstName()
+						.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName()),
+				new java.util.Date(), vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
+				vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
+				vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(),
+				vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
@@ -201,9 +203,10 @@ public class RequestorDao {
 	public void updateLockStatus(RequestForm vo) { // ON
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		sql.append(" LOCK_FLAG=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
-		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getLockFlag(), vo.getUpdatedById(),
-				vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
+		sql.append(
+				" LOCK_FLAG=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getLockFlag(), vo.getMakerById(),
+				vo.getMakerByName(), vo.getUpdatedById(), vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
 		logger.info("updateLockStatus SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
 

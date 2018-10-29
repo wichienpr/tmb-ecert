@@ -19,34 +19,28 @@ import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 @RequestMapping("api/history/")
 @Controller
 public class RequestHistoryController {
-	
+
 	@Autowired
 	private RequestHistoryService reqHistory;
-	
+
 	@GetMapping("/")
 	@ResponseBody
 	public String requestHistory() {
 		return "This is RequestHistory API";
 	}
-	
-	@GetMapping("/list/num")
-	@ResponseBody
-	public List<String> numList() {
-		return reqHistory.test();
-	}
-	
+
 	@GetMapping("/list")
 	@ResponseBody
 	public List<RequestHistoryVo> list() {
 		return reqHistory.findAll();
 	}
-	
+
 	@PostMapping("/list")
 	@ResponseBody
 	public DataTableResponse<RequestHistoryVo> listByVo(@RequestBody RequestHistoryVo vo) {
 		return reqHistory.findByVo(vo);
 	}
-	
+
 	@GetMapping("/list/{id}")
 	@ResponseBody
 	public List<RequestHistoryVo> list(@PathVariable("id") String reqFormId) {

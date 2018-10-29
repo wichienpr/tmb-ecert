@@ -62,7 +62,7 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private AuditLogService auditLogService;
-	
+
 	@Autowired
 	private EmailService emailService;
 
@@ -109,14 +109,14 @@ public class CheckRequestDetailService {
 			// Get Role of user login
 			// StringBuilder roleName = new StringBuilder();
 			newReq.setUpdatedById(user.getUserId());
-			newReq.setUpdatedByName(user.getUsername());
+			newReq.setUpdatedByName(user.getFirstName().concat(" " + user.getLastName()));
 
 			if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
 				if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
 					newReq.setCheckerById(user.getUserId());
-					newReq.setCheckerById(user.getUsername());
+					newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 				}
 				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
 			} else if (StatusConstant.NEW_REQUEST.equals(newReq.getStatus())
@@ -132,8 +132,9 @@ public class CheckRequestDetailService {
 			reqDao.update(newReq);
 			hstDao.save(newReq);
 //			send email reject request
-			ListOfValue reason = ApplicationCache.getLovByCode(newReq.getRejectReasonCode()); 
-			emailService.sendEmailRejectPayment(newReq.getCompanyName(), newReq.getCustomerName(), newReq.getTmbRequestNo(), reason.getName(), newReq.getRejectReasonOther());
+			ListOfValue reason = ApplicationCache.getLovByCode(newReq.getRejectReasonCode());
+			emailService.sendEmailRejectPayment(newReq.getCompanyName(), newReq.getCustomerName(),
+					newReq.getTmbRequestNo(), reason.getName(), newReq.getRejectReasonOther());
 			commonMsg.setMessage("SUCCESS");
 			logger.info("CheckRequestDetailService::reject finished...");
 		} catch (Exception e) {
@@ -157,7 +158,7 @@ public class CheckRequestDetailService {
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
 			if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
 				newReq.setCheckerById(user.getUserId());
-				newReq.setCheckerById(user.getUsername());
+				newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 			}
 			switch (newReq.getPaidTypeCode()) {
 			case PAYMENT_STATUS.PAY_TMB_DBD: // 10001
@@ -240,7 +241,7 @@ public class CheckRequestDetailService {
 					updateForm(newReq, user);
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 				} else {
-					
+
 					response = handlerErrorReq(response, newReq, user);
 					response.setData(
 							tmbOnlyStep.getData().getStatusCode() + ":" + tmbOnlyStep.getData().getDescription());
@@ -256,7 +257,8 @@ public class CheckRequestDetailService {
 			}
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {
-			emailService.sendEmailFailFeePayment(newReq,ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
+			emailService.sendEmailFailFeePayment(newReq, ApplicationCache.getParamValueByName("tmb.servicecode"),
+					new Date(), e.toString());
 			logger.error(e.getMessage());
 		} finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
@@ -272,7 +274,7 @@ public class CheckRequestDetailService {
 
 	private void updateForm(RequestForm req, UserDetails user) {
 		req.setUpdatedById(user.getUserId());
-		req.setUpdatedByName(user.getUsername());
+		req.setUpdatedByName(user.getFirstName().concat(" " + user.getLastName()));
 		reqDao.update(req);
 		hstDao.save(req);
 	}

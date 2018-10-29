@@ -14,7 +14,16 @@ public class Crs01000FormVo extends DatatableRequest {
 	private String tmbReqNo;
 	private String status;
 	private Integer lockFlag;
+	private String createdById;
 	private String updatedById;
+
+	public String getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(String createdById) {
+		this.createdById = createdById;
+	}
 
 	public Integer getLockFlag() {
 		return lockFlag;
@@ -86,5 +95,4 @@ public class Crs01000FormVo extends DatatableRequest {
 				+ ", organizeId=" + organizeId + ", tmbReqNo=" + tmbReqNo + ", status=" + status + "]";
 	}
 
-	
 }

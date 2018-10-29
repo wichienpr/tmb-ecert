@@ -19,6 +19,24 @@ public class Crs01000Vo {
 	private String statusCode;
 	private Integer lockFlag;
 	private String updatedById;
+	private String makerById;
+	private String createdById;
+
+	public String getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(String createdById) {
+		this.createdById = createdById;
+	}
+
+	public String getMakerById() {
+		return makerById;
+	}
+
+	public void setMakerById(String makerById) {
+		this.makerById = makerById;
+	}
 
 	public Integer getLockFlag() {
 		return lockFlag;
@@ -52,9 +70,6 @@ public class Crs01000Vo {
 		this.reqDate = reqDate;
 	}
 
-	
-	
-	
 	public String getReqDateStr() {
 		return ReqDateStr;
 	}
