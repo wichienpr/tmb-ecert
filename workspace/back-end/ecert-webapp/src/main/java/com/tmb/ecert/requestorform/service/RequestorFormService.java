@@ -312,6 +312,8 @@ public class RequestorFormService {
 				req.setRequestDate(timestamp);
 				req.setRequestFormFile(BeanUtils.isNotEmpty(form.getRequestFile()) ? requestFileName : null);
 				req.setStatus("10001");
+				req.setLockFlag(0);
+				req.setDeleteFlag(0);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
 				try {
@@ -406,6 +408,7 @@ public class RequestorFormService {
 			req.setRemark(null);
 			req.setTelephone(null);
 			req.setLockFlag(0);
+			req.setDeleteFlag(0);
 			dao.save(req); // SAVE REQUEST FORM
 			msg.setData(reqTmbNo);
 			msg.setMessage("SUCCESS");

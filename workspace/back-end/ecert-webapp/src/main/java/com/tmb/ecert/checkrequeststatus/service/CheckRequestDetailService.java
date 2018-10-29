@@ -281,8 +281,8 @@ public class CheckRequestDetailService {
 
 	private CommonMessage<String> handlerErrorReq(CommonMessage<String> msg, RequestForm req, UserDetails user) {
 		req.setStatus(StatusConstant.PAYMENT_FAILED);
-		updateForm(req, user);
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
+		updateForm(req, user);
 		return msg;
 	}
 

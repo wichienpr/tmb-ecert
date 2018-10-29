@@ -75,6 +75,15 @@ public class RequestForm extends DatatableRequest {
 	private Integer ecmFlag;
 	
 	private Integer lockFlag;
+	private Integer deleteFlag;
+
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
 
 	public Integer getLockFlag() {
 		return lockFlag;
