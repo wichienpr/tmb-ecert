@@ -209,7 +209,7 @@ export class Nrq02000Service {
         return this.dropdownObj;
     }
 
-    lock(flag:number = 1) {
+    lock(flag: number = 1) {
         const id = this.route.snapshot.queryParams["id"] || "";
         if (id !== "") {
             this.ajax.post(URL.LOCK, { reqFormId: parseInt(id), lockFlag: flag }, response => {
@@ -422,28 +422,29 @@ export class Nrq02000Service {
         }
         if (form.valid || (form.controls.requestFile.invalid || form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
-            let rpReqFormList = [];
-            let rpReqFormLast = [];
+            let rpReqFormList: ReportReqForm[] = [];
             let boxIndex = 0;
             const controls = form.controls;
+            let d: ReportReqForm = {
+                "totalNum": null,
+                "numSetCc": null,
+                "numEditCc": null,
+                "numOtherCc": null,
+                "dateOtherReg": null,
+                "other": null,
+                "dateEditReg": null,
+                "statementYear": null,
+                "dateAccepted": null,
+                "box1": false,
+                "box2": false,
+                "box3": false,
+                "box4": false
+            };
             reqTypeChanged.forEach((obj, index) => {
+                
                 if (index != 0 && controls[`chk${index}`].value) {
                     if (obj.children) {
-                        if (index == 1) {
-                            boxIndex = 2;
-                        }
-                        let d = {
-                            "totalNum": null,
-                            "numSetCc": null,
-                            "numEditCc": null,
-                            "numOtherCc": null,
-                            "dateOtherReg": null,
-                            "other": null,
-                            "dateEditReg": null,
-                            "statementYear": null,
-                            "dateAccepted": null,
-                            "boxIndex": index == 1 ? boxIndex : index
-                        };
+                        d.box2 = index == 1 || index == 2;
                         obj.children.forEach((ob, idx) => {
                             if (idx != 0 && controls[`chk${index}Child${idx}`].value) {
                                 if (controls[`etc${index}Child${idx}`]) {
@@ -464,51 +465,29 @@ export class Nrq02000Service {
                                         let id = 1;
                                         if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length == 4) {
                                             year = controls[`cal${index}Child${idx}`].value;
+                                            d.statementYear = year;
                                             id = 3;
+                                            d.box3 = true;
                                         }
                                         if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length > 4) {
                                             date = controls[`cal${index}Child${idx}`].value;
+                                            d.dateAccepted = date;
                                             id = 4;
+                                            d.box4 = true;
                                         }
-                                        const dd = {
-                                            "totalNum": controls[`cer${index}`].value,
-                                            "numSetCc": null,
-                                            "numEditCc": null,
-                                            "numOtherCc": null,
-                                            "dateOtherReg": null,
-                                            "other": null,
-                                            "dateEditReg": null,
-                                            "statementYear": year,
-                                            "dateAccepted": date,
-                                            "boxIndex": id
-                                        };
-                                        rpReqFormLast = [...rpReqFormLast, dd];
                                     }
                                 }
                             }
                         });
-                        rpReqFormList = [...rpReqFormList, d];
                     } else {
-                        const d = {
-                            "totalNum": controls[`cer${index}`].value,
-                            "numSetCc": null,
-                            "numEditCc": null,
-                            "numOtherCc": null,
-                            "dateOtherReg": null,
-                            "other": null,
-                            "dateEditReg": null,
-                            "statementYear": controls[`cal${index}`] && controls[`cal${index}`].value.length == 4 ? controls[`cal${index}`].value : null,
-                            "dateAccepted": controls[`cal${index}`] && controls[`cal${index}`].value.length > 4 ? controls[`cal${index}`].value : null,
-                            "boxIndex": boxIndex == 0 ? index : boxIndex + 1
-                        };
-                        rpReqFormList = [...rpReqFormList, d];
+                        d.totalNum = controls[`cer${index}`].value;
+                        d.box1 = boxIndex == 0 || index == 1;
                     }
                 }
             });
-            for (let i = 0; i < rpReqFormLast.length; i++) {
-                rpReqFormList.push(rpReqFormLast[i]);
-            }
-            const data = {
+            rpReqFormList = [...rpReqFormList, d];
+            const data: Pdf = {
+                id: dt.reqFormId,
                 typeCertificate: this.form.get("reqTypeSelect").value,
                 customerName: this.form.get("corpName").value,
                 companyName: this.form.get("corpName").value,
@@ -545,18 +524,23 @@ export class Nrq02000Service {
 
     reqTypeChange(e): Promise<any> {
         return this.ajax.post(URL.CER_BY_TYPE, { typeCode: e }, response => {
-            let lists = response.json();
-            const list = lists.slice(0, 1);
-            let data: Certificate = {
-                code: "",
-                typeCode: list[0].typeCode,
-                typeDesc: list[0].typeDesc,
-                certificate: list[0].certificate,
-                feeDbd: list[0].feeDbd,
-                feeTmb: list[0].feeTmb,
-            };
-            lists.unshift(data);
-            return [...lists];
+            if (response) {
+                let lists = response.json();
+                const list = lists.slice(0, 1);
+                let data: Certificate = {
+                    code: "",
+                    typeCode: list[0].typeCode,
+                    typeDesc: list[0].typeDesc,
+                    certificate: list[0].certificate,
+                    feeDbd: list[0].feeDbd,
+                    feeTmb: list[0].feeTmb,
+                };
+                lists.unshift(data);
+                return [...lists];
+            }
+            return [];
+        }, error => {
+            return [];
         });
     }
 
@@ -774,4 +758,34 @@ export enum ValidatorMessages {
     // ref2 = "ref2",
     // amountDbd = "amountDbd",
     // amountTmb = "amountTmb",
+}
+
+interface Pdf {
+    id: string // "314",
+    typeCertificate: string // "50001",
+    customerName: string //"dsfsdf  sdfsdf",
+    companyName: string // "Toffee Solotion Lt",
+    organizeId: string // "342342344234",
+    accountName: string //"GG_EZ",
+    accountNo: string // "12341455",
+    telephone: string // "0821211699",
+    reqDate: string // "16/10/2018",
+    tmpReqNo: string // "TopTest003",
+    rpReqFormList: ReportReqForm[]
+}
+
+class ReportReqForm {
+    box1: boolean = false // true,
+    box2: boolean = false // true,
+    box3: boolean = false // true,
+    box4: boolean = false // true,
+    totalNum: number // 1,
+    numSetCc: number // 1,
+    numEditCc: number // 1,
+    numOtherCc: number // 1,
+    dateOtherReg: string // 16/10/2018,
+    other: string // sdsdsdsd,
+    dateEditReg: string // 16/10/2018,
+    statementYear: string // 2018,
+    dateAccepted: string // 16/10/2018
 }
