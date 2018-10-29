@@ -114,16 +114,20 @@
             </div>
 
             <div class="inline field">
-              <div class="ui centered grid">
-                <div class="six wide column center aligned">
-                  <button class="ui blue basic button" type="button" (click)="searchData()">
-                    <i class="search icon"></i>
-                    ค้นหา
-                  </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="ui grey basic button" type="button" (click)="clearData()">
-                    <i class="trash alternate outline icon"></i>
-                    ล้างข้อมูล
-                  </button>
+              <div class="ui centered stackable grid">
+                <div class="ui eight wide tablet six wide computer column center aligned grid">
+                  <div class="eight wide column">
+                    <button class="ui blue basic fluid button" type="button" (click)="searchData()">
+                      <i class="search icon"></i>
+                      ค้นหา
+                    </button>
+                  </div>
+                  <div class="eight wide column">
+                    <button class="ui grey basic fluid button" type="button" (click)="clearData()">
+                      <i class="trash alternate outline icon"></i>
+                      ล้างข้อมูล
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -139,9 +143,9 @@
             <ng-datatable-search [ng-datatable]="dataDt"></ng-datatable-search>
             <br>
             <div style="overflow-x: auto;white-space: nowrap;">
-              <table [ngDatatable]="dataConfig" #dataDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%"
-                id="table">
-                <thead>
+              <table [ngDatatable]="dataConfig" #dataDt="ngDatatable" class="ui unstackable small celled table nowrap"
+                style="width: 100%" id="table">
+                <thead class="full-width">
                   <tr>
                     <th class="collapsing">ลำดับ</th>
                     <th>วันที่ยื่นคำขอ</th>
@@ -173,7 +177,7 @@
                     <td style="text-align: left   !important;">{{ data.companyName| emptyString }}</td>
                     <td style="text-align: left   !important;">{{ data.statusName }}</td>
                     <td>
-                      <button [ngClass]="getButtonStlyeColor(data.statusCode)" (click)="detail(data.id,data.statusCode)">แสดง
+                      <button [ngClass]="getButtonStlyeColor(data.statusCode)" (click)="detail(data.id,data.statusCode, data.lockFlag, data.updatedById)">แสดง
                         <i class="arrow alternate circle right outline icon"></i>
                       </button>
                     </td>

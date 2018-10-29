@@ -19,6 +19,7 @@ export interface Nrq02000 {
     copyFile: File;               // สำเนาบัตรประชาชน
     changeNameFile?: File;        // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
     tmbReqFormNo: string;         // TMB Req No.
+    lockFlag: number;
     requestFileName?: string;
     copyFileName?: string;
     changeNameFileName?: string;

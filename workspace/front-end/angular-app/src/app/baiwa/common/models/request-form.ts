@@ -52,6 +52,7 @@ export interface RequestForm {
     checkerById: string
     checkerByName: string
     companyName: string
+    lockFlag: number
 }
 
 export const initRequestForm: RequestForm = {
@@ -107,4 +108,5 @@ export const initRequestForm: RequestForm = {
     checkerById: "",
     checkerByName: "",
     companyName: "",
+    lockFlag: 0,
 };

@@ -5,9 +5,10 @@ import { Store } from '@ngrx/store';
 import { EcerDashBoard } from 'app/dash-board.reducer';
 import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import * as DashboardAction from 'app/dash-board.action';
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Router } from "@angular/router";
 import { CommonService } from '../common/services';
 import { ROLES } from '../common/constants';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -18,20 +19,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   userdetail: Observable<UserDetail>;
   dashboard: Observable<EcerDashBoard>;
 
-  constructor(private store: Store<AppState>, private dashboardService: DashboardService, 
-    private router: Router, private commonserv:CommonService) {
+  constructor(private store: Store<AppState>, private dashboardService: DashboardService,
+    private router: Router, private commonserv: CommonService) {
     this.userdetail = this.store.select("user");
     this.dashboard = this.store.select("ecerdashboard");
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   ngAfterViewInit(): void {
     this.dashboardService.getDashBoard().subscribe(
       (data: any) => {
-        // console.log(data);
         const initdashBord: EcerDashBoard = {
           newReq: data.newrequest,
           paying: data.paymentProcessing,
@@ -54,8 +52,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
-
-
   searchStatus(code): void {
     if (code == 10011) {
       this.router.navigate(["/srn/srn01000"], {
@@ -66,13 +62,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         queryParams: { codeStatus: code }
       });
     }
-
   }
 
-  get isShowDashBrod (){
-      return !this.commonserv.isRole(ROLES.ADMIN);
+  get isShowDashBoard() {
+    return !this.commonserv.isRole(ROLES.ADMIN);
   }
-
 
 }
 

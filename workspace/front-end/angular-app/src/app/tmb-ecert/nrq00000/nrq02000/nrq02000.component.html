@@ -131,8 +131,8 @@
           <ui-dropdown [selected]="data.cerTypeCode" [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
-      <div class="inline field ui-table">
-        <table class="ui segment small celled table" style="width: 100%">
+      <div class="inline field ui-table scrollable">
+        <table class="ui segment unstackable small celled table nowrap" style="width: 100%">
 
           <div class="ui active inverted dimmer" *ngIf="loading">
             <div class="ui loader"></div>
@@ -223,7 +223,7 @@
                           </div>
                         </div>
                       </td>
-                      <td colspan="5">{{ req.certificate }}</td>
+                      <td colspan="6">{{ req.certificate }}</td>
                     </tr>
                   </ng-container>
                   <ng-container *ngFor="let item of req.children; let j = index">
@@ -426,7 +426,8 @@
           <label>เลขที่คำขอ (Ref.1)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref1') }" *ngIf="btnMaker">
-          <input type="text" (keypress)="accNoPress($event)" (focus)="ref1Focus()" (keyup.enter)="keytab('ref1','ref2')" #ref1 maxlength="50" name="ref1" formControlName="ref1">
+          <input type="text" (keypress)="accNoPress($event)" (focus)="ref1Focus()" (keyup.enter)="keytab('ref1','ref2')"
+            #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
         <div class="three wide field barcode" (click)="focusOn('ref1')" *ngIf="btnMaker">
           <!-- <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
@@ -442,10 +443,11 @@
           <label>เลขที่ตรวจสอบ (Ref.2)</label>
         </div>
         <div class="five wide field" [ngClass]="{ 'error': invalid('ref2') }" *ngIf="btnMaker">
-          <input type="text" (keypress)="accNoPress($event)" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50" name="ref2" formControlName="ref2">
+          <input type="text" (keypress)="accNoPress($event)" (keyup.enter)="keytab('ref2','dbd')" #ref2 maxlength="50"
+            name="ref2" formControlName="ref2">
         </div>
       </div>
-<!-- (keypress)="accNoPress($event)" -->
+      <!-- (keypress)="accNoPress($event)" -->
       <div class="inline fields" *ngIf="btnMaker" [ngClass]="{'hidden': hiddenReceipt4}">
         <div class="four wide field required" *ngIf="btnMaker">
           <label>จำนวนเงิน DBD (บาท)</label>
@@ -470,9 +472,9 @@
         <div class="{{ toggleTitle }} inline field header-title" (click)="toggleDocument()" *ngIf="onlyMaker">
           <h3 class="header space">&nbsp;</h3>
           <h3 class="header">{{ documentMsg }} <div class="floated right">
-            <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
-            <i class="angle double up icon" *ngIf="toggleDoc == ''"></i>
-          </div>
+              <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
+              <i class="angle double up icon" *ngIf="toggleDoc == ''"></i>
+            </div>
           </h3>
           <div class="ui divider"></div>
         </div>
@@ -488,7 +490,8 @@
             <label>ใบคำขอ</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('requestFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" accept="application/pdf" #requestFile (change)="changeUpload('requestFile', $event)" formControlName="requestFile">
+            <input type="file" accept="application/pdf" #requestFile (change)="changeUpload('requestFile', $event)"
+              formControlName="requestFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.requestFormFile" (click)="download(data.requestFormFile)">
@@ -502,7 +505,8 @@
             <label>สำเนาบัตรประชาชนเจ้าของบัญชี</label>
           </div>
           <div class="five wide field" [ngClass]="{'error': invalid('copyFile') && isdownload, 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" accept="application/pdf, image/png, image/jpeg" #copyFile (change)="changeUpload('copyFile', $event)" formControlName="copyFile">
+            <input type="file" accept="application/pdf, image/png, image/jpeg" #copyFile (change)="changeUpload('copyFile', $event)"
+              formControlName="copyFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.idCardFile" (click)="download(data.idCardFile)">
@@ -515,7 +519,8 @@
             <label class="half blue">อื่นๆ (ถ้ามี)</label>
           </div>
           <div class="five wide field" [ngClass]="{ 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" accept="application/pdf, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)" formControlName="changeNameFile">
+            <input type="file" accept="application/pdf, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)"
+              formControlName="changeNameFile">
           </div>
           <div class="two wide field">
             <a class="download-link" *ngIf="data&&data.changeNameFile" (click)="download(data.changeNameFile)">

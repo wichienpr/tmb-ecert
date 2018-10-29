@@ -1,5 +1,6 @@
 .ui-table {
     margin: 2em 0 !important;
+    overflow: unset;
 }
 
 .custom-rt {
@@ -55,7 +56,8 @@ h3.header.space {
 }
 
 [class*="bg"] {
-    color: black;
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px grey, 0 0 5px darkgrey;
 }
 
 .bg-yellow {
@@ -63,13 +65,20 @@ h3.header.space {
 }
 
 .bg-red {
-    background: red;
+    background: #f53d3d;
 }
 
 .bg-pink {
-    background: pink;
+    background: #ff66a3;
 }
 
 .txt-red {
     color: red !important;
+}
+
+@media only screen and (max-width: 1251px) {
+    .ui-table {
+        margin: 2em 0 !important;
+        overflow: auto;
+    }
 }

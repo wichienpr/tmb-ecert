@@ -37,6 +37,10 @@ export class CommonService {
     return false;
   }
 
+  isUser(userId: string): boolean {
+    return this.user.userId === userId
+  }
+
   blockui() {
     $.blockUI({
       css: { border: 0 },
