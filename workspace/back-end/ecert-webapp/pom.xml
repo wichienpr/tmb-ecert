@@ -358,6 +358,14 @@
 		   <groupId>commons-codec</groupId>
 		   <artifactId>commons-codec</artifactId>
 		</dependency>
+		
+		  <!-- Spring LDAP -->
+        <dependency>
+            <groupId>org.springframework.ldap</groupId>
+            <artifactId>spring-ldap-core</artifactId>
+<!--             <version>${spring.ldap.version}</version> -->
+        </dependency>
+        
 	</dependencies>
 
 	<build>
