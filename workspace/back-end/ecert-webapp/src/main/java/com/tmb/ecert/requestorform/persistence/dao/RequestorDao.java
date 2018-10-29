@@ -223,4 +223,16 @@ public class RequestorDao {
 		logger.info("updateDeleteStatus SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
 
+	public void updateErrorDescription(String errorDesciption, Long reqFormId) {
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
+		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
+				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
+		sql.append(" ERROR_DESCRIPTION=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { errorDesciption, userId,
+				userName, timestamp, reqFormId });
+		logger.info("updateErrorDescription SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+
 }

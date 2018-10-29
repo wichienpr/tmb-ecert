@@ -131,7 +131,7 @@ public class CheckRequestDetailService {
 			}
 			reqDao.update(newReq);
 			hstDao.save(newReq);
-//			send email reject request
+			// send email reject request
 			ListOfValue reason = ApplicationCache.getLovByCode(newReq.getRejectReasonCode());
 			emailService.sendEmailRejectPayment(newReq.getCompanyName(), newReq.getCustomerName(),
 					newReq.getTmbRequestNo(), reason.getName(), newReq.getRejectReasonOther());
@@ -140,6 +140,7 @@ public class CheckRequestDetailService {
 		} catch (Exception e) {
 			commonMsg.setMessage("ERROR");
 			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
+			reqDao.updateErrorDescription("REJECT:" + e.getMessage(), newReq.getReqFormId());
 		} finally {
 			auditLogService.insertAuditLog(rejectStatusAction, rejectDesAction,
 					(newReq != null ? newReq.getTmbRequestNo() : StringUtils.EMPTY), user, currentDate);
@@ -166,7 +167,7 @@ public class CheckRequestDetailService {
 				if (isSuccess(tmbStep.getMessage())) {
 
 					CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePayment(newReq);
-					if (isSuccess(paymentWs.approveBeforePayment(newReq).getMessage())) {
+					if (isSuccess(approveStep.getMessage())) {
 
 						CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBD(newReq);
 						if (isSuccess(dbdStep.getMessage())) {
@@ -180,31 +181,28 @@ public class CheckRequestDetailService {
 
 							} else {
 								response = handlerErrorReq(response, newReq, user);
-								response.setData(realtimeStep.getData().getStatusCode() + ":"
-										+ realtimeStep.getData().getDescription());
-								throw new Exception(response.getMessage() + "=>" + response.getData());
+								response.setData(realtimeStep.getData().getDescription());
+								throw new Exception(response.getData());
 							}
 						} else {
 							response = handlerErrorReq(response, newReq, user);
-							response.setData(
-									dbdStep.getData().getStatusCode() + ":" + dbdStep.getData().getDescription());
-							throw new Exception(response.getMessage() + "=>" + response.getData());
+							response.setData(dbdStep.getData().getDescription());
+							throw new Exception(response.getData());
 						}
 					} else {
 						response = handlerErrorReq(response, newReq, user);
-						response.setData(
-								approveStep.getData().getStatusCode() + ":" + approveStep.getData().getDescription());
-						throw new Exception(response.getMessage() + "=>" + response.getData());
+						response.setData(approveStep.getData().getDescription());
+						throw new Exception(response.getData());
 					}
 				} else {
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(tmbStep.getData().getStatusCode() + ":" + tmbStep.getData().getDescription());
-					throw new Exception(response.getMessage() + "=>" + response.getData());
+					response.setData(tmbStep.getData().getDescription());
+					throw new Exception(response.getData());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_DBD: // 10002
 				CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePayment(newReq);
-				if (isSuccess(paymentWs.approveBeforePayment(newReq).getMessage())) {
+				if (isSuccess(approveStep.getMessage())) {
 
 					CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBD(newReq);
 					if (isSuccess(dbdStep.getMessage())) {
@@ -218,20 +216,18 @@ public class CheckRequestDetailService {
 
 						} else {
 							response = handlerErrorReq(response, newReq, user);
-							response.setData(realtimeStep.getData().getStatusCode() + ":"
-									+ realtimeStep.getData().getDescription());
-							throw new Exception(response.getMessage() + "=>" + response.getData());
+							response.setData(realtimeStep.getData().getDescription());
+							throw new Exception(response.getData());
 						}
 					} else {
 						response = handlerErrorReq(response, newReq, user);
-						response.setData(dbdStep.getData().getStatusCode() + ":" + dbdStep.getData().getDescription());
-						throw new Exception(response.getMessage() + "=>" + response.getData());
+						response.setData(dbdStep.getData().getDescription());
+						throw new Exception(response.getData());
 					}
 				} else {
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(
-							approveStep.getData().getStatusCode() + ":" + approveStep.getData().getDescription());
-					throw new Exception(response.getMessage() + "=>" + response.getData());
+					response.setData(approveStep.getData().getDescription());
+					throw new Exception(response.getData());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_TMB: // 10003
@@ -243,9 +239,8 @@ public class CheckRequestDetailService {
 				} else {
 
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(
-							tmbOnlyStep.getData().getStatusCode() + ":" + tmbOnlyStep.getData().getDescription());
-					throw new Exception(response.getMessage() + "=>" + response.getData());
+					response.setData(tmbOnlyStep.getData().getDescription());
+					throw new Exception(response.getData());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_NONE: // 10004
@@ -259,6 +254,7 @@ public class CheckRequestDetailService {
 		} catch (Exception e) {
 			emailService.sendEmailFailFeePayment(newReq, ApplicationCache.getParamValueByName("tmb.servicecode"),
 					new Date(), e.toString());
+			reqDao.updateErrorDescription(e.getMessage(), newReq.getReqFormId());
 			logger.error(e.getMessage());
 		} finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,

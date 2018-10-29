@@ -96,15 +96,12 @@ public class RequestorFormService {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
 		if ("10005".equals(form.getStatus())) {
-			if (req.getLockFlag() == 1) {
-				msg.setData("HASMAKER");
-				msg.setMessage("ERROR");
-				return msg;
-			}
 			if (req.getMakerById() != null) {
-				msg.setData("HASMAKER");
-				msg.setMessage("ERROR");
-				return msg;
+				if (!req.getMakerById().equalsIgnoreCase(UserLoginUtils.getCurrentUserLogin().getUserId())) {
+					msg.setData("HASMAKER");
+					msg.setMessage("ERROR");
+					return msg;
+				}
 			}
 			if ("false".equals(form.getHasAuthed())) {
 				if (form.getAmount() != null) {
@@ -186,6 +183,7 @@ public class RequestorFormService {
 				req.setRequestFormFile(requestFileName);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
+				req.setLockFlag(0);
 				try {
 					dao.update(req); // SAVE REQUEST FORM
 					// CHECK FOR SEND EMAIL
