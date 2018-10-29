@@ -1,17 +1,18 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Crs01000Service } from 'app/tmb-ecert/crs00000/crs01000/crs01000.service';
-import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Dropdown, DropdownMode, Lov } from 'models/';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Dropdown, DropdownMode, Lov } from 'models/';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { ROLES } from 'app/baiwa/common/constants';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import * as moment from 'moment';
 
 declare var $: any;
+
 @Component({
   selector: 'app-crs01000',
   templateUrl: './crs01000.component.html',
@@ -19,15 +20,15 @@ declare var $: any;
   providers: [Crs01000Service, DatePipe]
 })
 export class Crs01000Component implements OnInit, AfterViewInit {
+
+  @ViewChild("dataDt")
+  dataDt: DatatableDirective
+
   actionDropdown: Dropdown;
   calendar1: NgCalendarConfig;
   calendar2: NgCalendarConfig;
   form: FormGroup;
   dataConfig: DatatableCofnig;
-  @ViewChild("dataDt")
-  dataDt: DatatableDirective
-
-
 
   status: string;
   statusHome: string;
@@ -43,7 +44,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   countWaitUploadCertificate: Number = 0;
   countSucceed: Number = 0;
   countWaitSaveRequest: Number = 0;
-
 
   constructor(
     private crs01000Service: Crs01000Service,
@@ -122,7 +122,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       .sidebar('toggle');
   }
 
-
   searchData() {
     this.form.setValue({
       status: "",
@@ -132,7 +131,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       companyName: this.form.value.companyName,
       tmbReqNo: this.form.value.tmbReqNo
     });
-    // console.log(this.form.value)
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
         let fc = this.form.get(element);
@@ -151,7 +149,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }
-
 
   searchStatus(code): void {
     if (code == 10011) {
@@ -202,6 +199,9 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     return this.common.isRole(role);
   }
 
+  get reqDate() { return this.form.get("reqDate") }
+  get toReqDate() { return this.form.get("toReqDate") }
+
   statusForBlue(status) { return status == '10001' || status == '10005' || status == '10009' || status == '10011' }
   statusForGray(status) { return status == '10002' || status == '10010' || status == '10006' }
   statusForRed(status) { return status == '10003' || status == '10007' || status == '10004' || status == '10005' || status == '10008' }
@@ -235,19 +235,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       return 'ui gray basic button center';
     }
   }
-
-  // getTest() {
-  //   const URL = "/api/report/pdf/coverSheet";
-  //   this.ajax.post(URL, {
-  //     id: "275"
-  //   }, res => {
-  //     this.ajax.download("/api/report/pdf/view/" + res._body + "/download");
-  //   });
-  // }
-
-  get reqDate() { return this.form.get("reqDate") }
-
-  get toReqDate() { return this.form.get("toReqDate") }
 
 }
 

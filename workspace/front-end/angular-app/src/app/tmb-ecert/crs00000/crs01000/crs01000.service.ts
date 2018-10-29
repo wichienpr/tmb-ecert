@@ -4,15 +4,12 @@ import { dateLocale } from "helpers/";
 import { Router } from '@angular/router';
 import { ROLES } from 'app/baiwa/common/constants';
 
-
-
 @Injectable()
 export class Crs01000Service {
 
   dropdownObj: any;
 
   constructor(
-    private ajax: AjaxService,
     private dropdown: DropdownService,
     private router: Router,
     private modal: ModalService,

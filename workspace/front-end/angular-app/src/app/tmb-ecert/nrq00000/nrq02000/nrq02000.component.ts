@@ -3,11 +3,11 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
-import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
+import { Acc, digit, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',

@@ -31,7 +31,6 @@ export class Nrq01000Service {
     this.ajax.post(URL.CREATE_FORM, { tmpReqNo: tmpNo, typeCertificate: "" }, response => {
       this.ajax.download(URL.FORM_PDF + response._body + "/download");
     });
-    // this.ajax.download(URL.NRQ_PDF + "nrq02000");
     return true;
   }
 
