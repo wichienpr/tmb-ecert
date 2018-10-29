@@ -30,7 +30,7 @@ export class Crs01000Service {
   }
 
   redirectFor(idReq: number, status: string, lockFlag: number, userId: string) {
-    console.log(lockFlag, userId);
+    console.log(status, userId);
     if (lockFlag == 1 && !this.common.isUser(userId)) {
       this.modal.confirm(
         e => {
@@ -50,6 +50,12 @@ export class Crs01000Service {
       return;
     }
     if (status == "10011") {
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq }
+      });
+      return;
+    }
+    if (status == "10003" && this.common.isRole(ROLES.REQUESTOR) && this.common.isUser(userId)) {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });

@@ -173,6 +173,18 @@
         </div>
       </div>
 
+      <div class="inline fields" *ngIf="data.lockFlag == 1">
+        <div class="one wide field "></div>
+        <div class="two wide field">
+          <label>
+            ผู้ดำเนินการ
+          </label>
+        </div>
+        <div class="five wide field">
+          {{ (data.makerById + " - " + data.makerByName) | emptyString }}
+        </div>
+      </div>
+
       <div class="inline fields">
         <div class="one wide field "></div>
         <div class="two wide field ">
@@ -197,15 +209,10 @@
           <tbody>
             <ng-container *ngFor="let chk of chkList; let i = index">
               <ng-container *ngIf="!chk.code">
-                <tr>
-                  <td colspan="5">
+                <tr [className]="classByCode(chk.typeCode)">
+                  <td colspan="6">
                     <h5>{{ chk.typeDesc }}</h5>
                   </td>
-                  <td style="display: none">&nbsp;</td>
-                  <td style="display: none">&nbsp;</td>
-                  <td style="display: none">&nbsp;</td>
-                  <td style="display: none">&nbsp;</td>
-                  <td style="display: none">&nbsp;</td>
                 </tr>
               </ng-container>
               <ng-container *ngIf="chk.code && chk.feeTmb&& chk.value !== 0">

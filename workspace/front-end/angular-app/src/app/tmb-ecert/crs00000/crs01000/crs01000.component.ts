@@ -104,7 +104,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.searchStatusByHomePage(this.statusHome);
       }, 500);
-
     } else {
       $('.ui.sidebar')
         .sidebar({
@@ -155,7 +154,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
 
 
   searchStatus(code): void {
-
     if (code == 10011) {
       this.router.navigate(["/srn/srn01000"], {
         queryParams: { codeStatus: code }
@@ -208,7 +206,10 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   statusForGray(status) { return status == '10002' || status == '10010' || status == '10006' }
   statusForRed(status) { return status == '10003' || status == '10007' || status == '10004' || status == '10005' || status == '10008' }
 
-  getFontStyeColor(status) {
+  getFontStyeColor(status, lockFlag, userId) {
+    if (lockFlag == "1" && !this.common.isUser(userId)) {
+      return 'gray';
+    }
     if (this.statusForBlue(status)) {
       return '#2185D0';
     } else if (this.statusForGray(status)) {
@@ -220,7 +221,10 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     }
   }
 
-  getButtonStlyeColor(status) {
+  getButtonStlyeColor(status, lockFlag, userId) {
+    if (lockFlag == "1" && !this.common.isUser(userId)) {
+      return 'ui gray basic button center';
+    }
     if (this.statusForBlue(status)) {
       return 'ui blue basic button center';
     } else if (this.statusForGray(status)) {

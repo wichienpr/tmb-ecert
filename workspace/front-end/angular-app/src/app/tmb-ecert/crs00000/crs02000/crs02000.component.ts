@@ -199,6 +199,19 @@ export class Crs02000Component implements OnInit {
       this.toggleTitle = "title";
     }
   }
+
+  classByCode(e) {
+    switch (e) {
+      case '50001':
+        return 'bg-red';
+      case '50002':
+        return 'bg-pink';
+      case '50003':
+        return 'bg-yellow';
+      default:
+        return ''
+    }
+  }
   
   get documentMsg() {
     if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
@@ -218,8 +231,6 @@ export class Crs02000Component implements OnInit {
   get btnReject() {
     if (this.common.isAuth(PAGE_AUTH.P0000403)) {
       if (this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005)) {
-        return true;
-      } else if (this.roles(ROLES.REQUESTOR) && this.chkStatus(REQ_STATUS.ST10001)) {
         return true;
       }
       return false;

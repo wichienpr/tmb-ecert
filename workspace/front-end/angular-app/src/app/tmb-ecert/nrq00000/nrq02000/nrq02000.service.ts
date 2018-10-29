@@ -211,7 +211,7 @@ export class Nrq02000Service {
 
     lock(flag: number = 1) {
         const id = this.route.snapshot.queryParams["id"] || "";
-        if (id !== "") {
+        if (id !== "" && this.common.isRole(ROLES.MAKER)) {
             this.ajax.post(URL.LOCK, { reqFormId: parseInt(id), lockFlag: flag }, response => {
                 console.log(response);
             });
@@ -720,8 +720,9 @@ export class Nrq02000Service {
             const data = response.json();
             if (data && data.message == "SUCCESS") {
                 this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+                const status = this.common.isRole(ROLES.MAKER) ? REQ_STATUS.ST10003 : REQ_STATUS.ST10004;
                 this.router.navigate(['/crs/crs01000'], {
-                    queryParams: { codeStatus: REQ_STATUS.ST10003 }
+                    queryParams: { codeStatus: status }
                 });
                 this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             } else {
