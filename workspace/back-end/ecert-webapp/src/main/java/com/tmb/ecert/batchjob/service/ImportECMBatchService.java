@@ -36,6 +36,7 @@ import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.SftpUtils;
 
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
@@ -79,6 +80,9 @@ public class ImportECMBatchService {
 	
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	private static String PATH_UPLOAD = "tmb-requestor/";
 	private static String SEGMENTCODE_1 = "20005";
@@ -193,6 +197,7 @@ public class ImportECMBatchService {
 							
 				
 						} else {
+							emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP , "FTP FILE IMPORT DOCUMENT FAIL");
 							statusUpload = false;
 							break;
 						}

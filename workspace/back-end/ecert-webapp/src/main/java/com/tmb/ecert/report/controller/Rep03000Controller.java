@@ -1,6 +1,7 @@
 package com.tmb.ecert.report.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 import com.tmb.ecert.report.service.Rep03000tService;
@@ -28,6 +31,9 @@ public class Rep03000Controller {
 	
 	@Autowired
 	private Rep03000tService rep03000tService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@PostMapping("/list")
 	@ResponseBody
@@ -49,6 +55,7 @@ public class Rep03000Controller {
 		try {
 			rep03000tService.exportFile(formVo, response);
 		} catch (Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_EXPORT_EXCEL, e.toString());
 			log.error("Error ! ==> Rep03000Controller method exportFile",e);
 		}
 		

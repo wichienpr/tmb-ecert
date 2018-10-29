@@ -29,10 +29,12 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.DateConstant;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.AuditLogService;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.common.utils.ThaiBaht;
@@ -87,6 +89,9 @@ public class ReportPdfService {
 	
 	@Autowired
 	private ReceiptGenKeyService receiptGenKeyService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	private Logger logger = LoggerFactory.getLogger(ReportPdfService.class);
 
@@ -281,6 +286,7 @@ public class ReportPdfService {
 			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
 			ReportUtils.closeResourceFileInputStream(params01);
 		}catch(Exception  e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_COVERSHEET, e.toString());
 			logger.error("ReportPdfService Error: ", e);
 		}finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.COVERSHEET_CODE, ACTION_AUDITLOG_DESC.COVERSHEET,
@@ -485,6 +491,7 @@ public class ReportPdfService {
 			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
 			ReportUtils.closeResourceFileInputStream(params02);
 		}catch(Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_RECEIPT, e.toString());
 			logger.error("ReportPdfService Error: ", e);
 		}finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.PRINT_FORMREQ_CODE, ACTION_AUDITLOG_DESC.PRINT_FORMREQ,

@@ -168,8 +168,9 @@ public class UploadCertificateService {
 					
 
 				} else {
-					wsErrorDesc = "FTP FILE DOCUMENT NOT SUCCESS.";
+					wsErrorDesc = "FTP FILE IMPORT DOCUMENT FAIL";
 					statusUpload = false;
+					emailservice.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, wsErrorDesc );
 					break;
 				}
 				countftp++;

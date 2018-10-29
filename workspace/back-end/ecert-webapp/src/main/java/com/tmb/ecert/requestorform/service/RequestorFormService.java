@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -193,6 +194,7 @@ public class RequestorFormService {
 						emailSerivce.sendEmailPaymentOrder(req.getCompanyName(), req.getTmbRequestNo(), fullName);
 					}
 				} catch (Exception e) {
+					emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 					logger.error("REQUESTFORM UPDATE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
@@ -315,6 +317,7 @@ public class RequestorFormService {
 				try {
 					nextId = dao.save(req); // SAVE REQUEST FORM
 				} catch (Exception e) {
+					emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_CREATE_REQUESTFORM, e.toString());
 					logger.info("REQUESTFORM SAVE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
@@ -410,6 +413,7 @@ public class RequestorFormService {
 			msg.setMessage("SUCCESS");
 			return msg;
 		} catch (Exception e) {
+			emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			e.printStackTrace();
 			msg.setData(null);
 			msg.setMessage("ERROR");

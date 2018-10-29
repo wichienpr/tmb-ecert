@@ -25,6 +25,7 @@ import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile.Header;
 import com.tmb.ecert.batchjob.domain.DBDSummaryTransactionFile.Total;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
@@ -33,6 +34,7 @@ import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.common.utils.SftpUtils;
 
@@ -49,6 +51,9 @@ public class PaymentDBDSummaryBatchService {
 
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
+	
+	@Autowired
+	private EmailService emailService;
 
 	/**
 	 * 
@@ -101,6 +106,7 @@ public class PaymentDBDSummaryBatchService {
 					if(!isSuccess){
 						log.error("PaymentDBDSummaryBatchService FTP Error: {} ",sftpVo.getErrorMessage());
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
+						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP ,sftpVo.getErrorMessage() );
 					}
 				}
 			}

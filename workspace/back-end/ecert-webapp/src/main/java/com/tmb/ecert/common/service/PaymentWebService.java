@@ -81,6 +81,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
+			emailService.sendEmailFailFeePayment(reqF,ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
@@ -131,6 +132,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
+			emailService.sendEmailFailFeePayment(reqF,ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;

@@ -16,6 +16,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentResponse;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -138,6 +139,7 @@ public class CheckRequestDetailService {
 			commonMsg.setMessage("SUCCESS");
 			logger.info("CheckRequestDetailService::reject finished...");
 		} catch (Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			commonMsg.setMessage("ERROR");
 			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
 			reqDao.updateErrorDescription("REJECT:" + e.getMessage(), newReq.getReqFormId());
@@ -252,8 +254,9 @@ public class CheckRequestDetailService {
 			}
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {
-			emailService.sendEmailFailFeePayment(newReq, ApplicationCache.getParamValueByName("tmb.servicecode"),
-					new Date(), e.toString());
+//			emailService.sendEmailFailFeePayment(newReq, ApplicationCache.getParamValueByName("tmb.servicecode"),
+//					new Date(), e.toString());
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			reqDao.updateErrorDescription(e.getMessage(), newReq.getReqFormId());
 			logger.error(e.getMessage());
 		} finally {

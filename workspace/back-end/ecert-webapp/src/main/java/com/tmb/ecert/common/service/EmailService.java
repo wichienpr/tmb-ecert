@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.setup.dao.EmailTemplateDao;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
@@ -32,8 +33,8 @@ public class EmailService {
 
 	private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
-	private static String emailFrom = "keadtisak.test@gmail.com";
-	private static String emailTo = "keadtisak.chai@gmail.com,chaiyawanlive@gmail.com";
+//	private static String emailFrom = "keadtisak.test@gmail.com";
+//	private static String emailTo = "keadtisak.chai@gmail.com,chaiyawanlive@gmail.com";
 
 	public void sendEmailPaymentOrder(String paymentCompanyName, String tmbRequsetNo, String makerName) {
 		try {
@@ -47,7 +48,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 
 	}
@@ -64,7 +66,8 @@ public class EmailService {
 
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 
 	}
@@ -81,7 +84,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 
@@ -98,7 +102,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 
@@ -119,7 +124,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 
@@ -140,7 +146,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 
@@ -161,7 +168,8 @@ public class EmailService {
 			
 			sendEmailToEmailGateWay(emailtemplate, bodyParam ,subjectParam);
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 
 	}
@@ -182,7 +190,8 @@ public class EmailService {
 
 			sendEmailToEmailGateWay(emailtemplate, bodyParam ,subjectParam);
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 
 	}
@@ -204,7 +213,8 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, bodyParam ,subjectParam);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 	
@@ -220,7 +230,7 @@ public class EmailService {
 			
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("SEND EMAIL FAIL {}", e.toString());
 		}
 	}
 	
@@ -228,14 +238,14 @@ public class EmailService {
 	public void sendEmailToEmailGateWay(Sup03100Vo emailtemplate , Object[] bodyParam ,Object[] bodySubject) {
 		
 		try {
-			
+			log.info("SEND EAIL TO EMAILGATEWAY ");
 			MimeMessageHelper mail = mailGateWay.newMail();
 			mail.setSubject(emailtemplate.getSubject());
 			String body = "<!DOCTYPE html><html ><body><pre style='font-size:16px;'>";
 			body += emailtemplate.getBody();
 			body += "</pre></body></html>";
 			List<String> ccReceiver = new ArrayList<>();
-			List<String> receiver = Arrays.asList(emailTo.split(","));
+			List<String> receiver = Arrays.asList(emailtemplate.getTo().split(","));
 			
 			for (int i = 0; i < receiver.size(); i++) {
 				if (i == 0 ) {
@@ -245,15 +255,15 @@ public class EmailService {
 				}
 			}
 			mail.setCc(ccReceiver.toArray(new String[0]));
-			mail.setFrom(emailFrom);
+			mail.setFrom(emailtemplate.getFrom());
 			mail.setSubject(MessageFormat.format(emailtemplate.getSubject(), bodySubject));
 			mail.setText(MessageFormat.format(body, bodyParam), true);
 			mailGateWay.sendEmail(mail);
 
-			log.info("send email success.....");
+			log.info("SEND EAIL TO EMAILGATEWAY SUCCESS");
 			
 		} catch (Exception e) {
-			
+			log.error("SEND EAIL TO EMAILGATEWAY FAIL {} ",e.toString());
 		}
 		
 	}

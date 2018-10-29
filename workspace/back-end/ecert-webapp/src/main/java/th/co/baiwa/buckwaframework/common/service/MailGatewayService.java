@@ -47,7 +47,7 @@ public class MailGatewayService {
 	/**
 	 * @param messageHelper
 	 */
-	@Async
+	
 	public void sendEmail(MimeMessageHelper messageHelper) {
 		if(sendFalg){
 			 mailGateWaySender.send(messageHelper.getMimeMessage());

@@ -27,12 +27,14 @@ import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.batchjob.domain.HeaderOndemand;
 import com.tmb.ecert.batchjob.domain.OnDemandSummaryTransactionFile;
 import com.tmb.ecert.batchjob.domain.OnDemandSummaryTransactionFile.Page;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.ListOfValue;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.SftpUtils;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
@@ -48,6 +50,9 @@ public class PaymentOnDemandSummaryBatchService {
 
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
+	
+	@Autowired 
+	private EmailService  emailService;
 
 	/**
 	 * 
@@ -96,6 +101,7 @@ public class PaymentOnDemandSummaryBatchService {
 					if(!isSuccess){
 						log.error("PaymentOnDemandSummaryBatchService FTP Error: {} ",sftpVo.getErrorMessage());
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
+						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, sftpVo.getErrorMessage());
 					}
 				}
 			}
