@@ -206,8 +206,6 @@ public class RequestorFormService {
 					msg.setMessage("ERROR");
 					return msg;
 				}
-				List<RequestCertificate> oldReqCerts = daoCrs.findCertByReqFormId(nextId);
-				List<Long> forDeleteCerts = new ArrayList<>();
 				List<RequestCertificate> forUpdateCerts = new ArrayList<>();
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {

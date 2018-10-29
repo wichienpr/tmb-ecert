@@ -114,8 +114,8 @@ public class RequestorDao {
 		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
 		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
 		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE,");
-		sql.append("LOCK_FLAG");
-		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		sql.append("LOCK_FLAG, DELETE_FLAG");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -158,9 +158,13 @@ public class RequestorDao {
 				ps.setString(31, vo.getTmbRequestNo());
 				ps.setTimestamp(32, vo.getRequestDate()); // timestamp
 				/**
-				 * Lock Status 0, locked 1, unlocked
+				 * Lock Flag 0, unlocked 1, locked
 				 */
-				ps.setInt(33, 1);
+				ps.setInt(33, 0);
+				/**
+				 * Delete Flag 0, unlocked 1, deleted
+				 */
+				ps.setInt(34, 0);
 				return ps;
 			}
 		}, holder);
@@ -208,6 +212,15 @@ public class RequestorDao {
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getLockFlag(), vo.getMakerById(),
 				vo.getMakerByName(), vo.getUpdatedById(), vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
 		logger.info("updateLockStatus SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+
+	public void updateDeleteStatus(RequestForm vo) { // ON
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		sql.append(" DELETE_FLAG=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getDeleteFlag(), vo.getUpdatedById(),
+				vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
+		logger.info("updateDeleteStatus SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
 
 }
