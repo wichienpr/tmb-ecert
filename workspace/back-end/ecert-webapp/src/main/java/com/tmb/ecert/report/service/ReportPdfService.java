@@ -310,10 +310,15 @@ public class ReportPdfService {
 
 			List<RpReqFormListVo> rpReqFormListVoList = new ArrayList<>();
 			RpReqFormListVo rpReqFormListVo = null;
-
+			
 			for (int i = 0; i < 5; i++) {
 				rpReqFormListVo = new RpReqFormListVo();
 				rpReqFormListVo.setSeq(String.valueOf(i + 1));
+				rpReqFormListVo.setBox1(false);
+				rpReqFormListVo.setBox2(false);
+				rpReqFormListVo.setBox3(false);
+				rpReqFormListVo.setBox4(false);			
+				
 				rpReqFormListVoList.add(rpReqFormListVo);
 			}
 
@@ -325,6 +330,7 @@ public class ReportPdfService {
 
 			Map<String, Object> params02 = new HashMap<>();
 			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params02.put("tmpReqNo", vo.getTmpReqNo());
 			JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
 
 			List<ExporterInputItem> itemList = new ArrayList<>();
