@@ -98,6 +98,18 @@ tr:nth-child(even) {
     content: '\f0dc'
 }
 
-.ui.table thead tr:first-child>th:last-child{
-    border-right: 0 !important; 
+.ui.table thead tr:first-child>th:last-child {
+    border-right: 0 !important;
+}
+
+@media only screen and (max-width: 993px) {
+    .text-left {
+        text-align: left !important;
+    }
+    .text-center {
+        text-align: left !important;
+    }
+    .text-right {
+        text-align: left !important;
+    }
 }

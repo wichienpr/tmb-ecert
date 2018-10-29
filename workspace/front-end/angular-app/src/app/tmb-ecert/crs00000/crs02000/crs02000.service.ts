@@ -51,18 +51,23 @@ export class Crs02000Service {
 
   getChkList(id: string) {
     return this.ajax.get(`${URL.CER_BY_TYPE}/${id}`, response => {
-      let lists = response.json();
-      const list = lists.slice(0, 1);
-      let data: Certificate = {
-        code: "",
-        typeCode: list[0].typeCode,
-        typeDesc: list[0].typeDesc,
-        certificate: list[0].certificate,
-        feeDbd: list[0].feeDbd,
-        feeTmb: list[0].feeTmb,
-      };
-      lists.unshift(data);
-      return [...lists];
+      if (response) {
+        let lists = response.json();
+        const list = lists.slice(0, 1);
+        let data: Certificate = {
+          code: "",
+          typeCode: list[0].typeCode,
+          typeDesc: list[0].typeDesc,
+          certificate: list[0].certificate,
+          feeDbd: list[0].feeDbd,
+          feeTmb: list[0].feeTmb,
+        };
+        lists.unshift(data);
+        return [...lists];
+      }
+      return [];
+    }, error => {
+      return [];
     });
   }
 

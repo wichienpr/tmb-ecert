@@ -28,11 +28,11 @@
 
             <div class="inline field">
               <div class="ui centered grid">
-                <div class="six wide column center aligned">
+                <div class="six wide column btn-group center aligned">
                   <button class="ui blue basic button" type="button" (click)="searchData()">
                     <i class="search icon"></i>
                     ค้นหา
-                  </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </button>
                   <button class="ui grey basic button" type="button" (click)="clearData()">
                     <i class="trash alternate outline icon"></i>
                     ล้างข้อมูล
@@ -73,7 +73,7 @@
                   <tr class="text-center" *ngIf="dataDt.isEmpty">
                     <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
                   </tr>
-                  <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode)}">
+                  <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode, data.lockFlag, data.makerById)}">
                     <td style="text-align: center !important;">{{i+1}}</td>
                     <td style="text-align: center !important;">{{data.reqDateStr}}</td>
                     <td style="text-align: center !important;">{{data.tmbReqNo | tmbReqNo}}</td>
@@ -86,7 +86,12 @@
                     <td style="text-align: left !important;">{{data.companyName| emptyString}}</td>
                     <td style="text-align: left !important;">{{data.statusName}}</td>
                     <td>
-                      <button [ngClass]="getButtonStyeColor(data.statusCode)" (click)="detail(data.id,data.statusCode)">แสดง
+                      <button *ngIf="data.statusCode!=='10003'" [ngClass]="getButtonStlyeColor(data.statusCode, data.lockFlag, data.makerById)"
+                        (click)="detail(data.id,data.statusCode, data.lockFlag, data.makerById)">แสดง
+                        <i class="arrow alternate circle right outline icon"></i>
+                      </button>
+                      <button *ngIf="data.statusCode=='10003'" [ngClass]="getButtonStlyeColor(data.statusCode, data.lockFlag, data.makerById)"
+                        (click)="detail(data.id,data.statusCode, data.lockFlag, data.createdById)">แสดง
                         <i class="arrow alternate circle right outline icon"></i>
                       </button>
                     </td>
