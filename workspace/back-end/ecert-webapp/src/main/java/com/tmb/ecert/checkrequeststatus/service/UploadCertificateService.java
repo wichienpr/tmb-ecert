@@ -30,6 +30,7 @@ import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.SftpUtils;
 
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
@@ -59,15 +60,20 @@ public class UploadCertificateService {
 
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
+	
+	@Autowired
+	private EmailService emailservice;
 
 	@Async
 	public void uploadEcertificate(Long certificateID, String userid) {
 		String channelid = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHANNELID);
 		String docTyep = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_DOCTYPE);
 		int countftp = 0;
+		String wsErrorDesc = "";
 //		boolean statusUpload[] = new boolean[3];
 		boolean statusUpload = false;
 		boolean statusCheck = false;
+		RequestForm reqVo = null;
 		try {
 			log.info(" START PROCESS UPLOAD CERTIFIACTE... ");
 			int timesleep = Integer.parseInt(
@@ -82,7 +88,7 @@ public class UploadCertificateService {
 			uploadEcerLoop: while (countftp < timeLoop) {
 
 				// STEP 1 : read 3 file from db
-				RequestForm reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
+				reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
 				String pathReq = pathUploadfiel + PATH_UPLOAD + reqVo.getRequestFormFile();
 				String pathCer = pathUploadfiel + PATH_UPLOAD + reqVo.getCertificateFile();
 				String pathRec = pathUploadfiel + PATH_UPLOAD + reqVo.getReceiptFile();
@@ -120,6 +126,7 @@ public class UploadCertificateService {
 							log.info("CALL WS IMPORT DOCUMENT SUCCESS ");
 							break ;
 						} else {
+							wsErrorDesc = impResp.getResCode()+" "+impResp.getDescription();
 							statusUpload = false;
 							countImport++;
 							log.info("CALL WS IMPORT DOCUMENT FIAL {} ", impResp.getDescription());
@@ -148,6 +155,7 @@ public class UploadCertificateService {
 //								statusUpload[i] = false;
 								countCheckStatus++;
 							}else {
+								wsErrorDesc = checkStatusVo.getStatusCode()+" "+checkStatusVo.getDescription();
 								statusUpload = false;
 //									statusUpload[i] = false;
 								countCheckStatus++;
@@ -160,6 +168,7 @@ public class UploadCertificateService {
 					
 
 				} else {
+					wsErrorDesc = "FTP FILE DOCUMENT NOT SUCCESS.";
 					statusUpload = false;
 					break;
 				}
@@ -170,11 +179,13 @@ public class UploadCertificateService {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
-				log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
+//				log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
+				throw new Exception(wsErrorDesc);
 			}
 
 		} catch (Exception e) {
-			log.error("FTP FILE UPLOAD CERTIFICATE ERR ", e);
+			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
+			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
 		}
 
 	}
@@ -244,7 +255,7 @@ public class UploadCertificateService {
 		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHECK_STATUS);
 		RestTemplate restTemplate = new RestTemplate();
 		CheckStatusDocumentRequest checkReq = new CheckStatusDocumentRequest();
-		checkReq.setReqId(reqID);
+		checkReq.setReqId(null);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
 		checkReq.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));

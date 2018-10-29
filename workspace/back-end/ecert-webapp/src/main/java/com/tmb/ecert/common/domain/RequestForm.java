@@ -73,6 +73,16 @@ public class RequestForm extends DatatableRequest {
 	private Timestamp receiptDate;
 	private String receiptFile;
 	private Integer ecmFlag;
+	
+	private Integer lockFlag;
+
+	public Integer getLockFlag() {
+		return lockFlag;
+	}
+
+	public void setLockFlag(Integer lockFlag) {
+		this.lockFlag = lockFlag;
+	}
 
 	public Integer getEcmFlag() {
 		return ecmFlag;

@@ -38,6 +38,10 @@
 	<field name="dateEditReg" class="java.lang.String"/>
 	<field name="statementYear" class="java.lang.String"/>
 	<field name="dateAccepted" class="java.lang.String"/>
+	<field name="box1" class="java.lang.Boolean"/>
+	<field name="box2" class="java.lang.Boolean"/>
+	<field name="box3" class="java.lang.Boolean"/>
+	<field name="box4" class="java.lang.Boolean"/>
 	<title>
 		<band height="60" splitType="Stretch">
 			<textField isBlankWhenNull="true">
@@ -235,7 +239,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{totalNum} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{box1})? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="16" width="100" height="16" uuid="ce0b1ac2-9b1d-4737-8e21-460a0c462bc5"/>
@@ -264,7 +268,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{totalNumCc} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{box2})? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="32" width="100" height="16" uuid="80ea161b-7291-4822-9a6d-01b14af620bb"/>
@@ -288,8 +292,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{numSetCc} > 0)? "\u2611" : "\u2610"
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{numSetCc} > 0)? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="60" y="48" width="105" height="16" uuid="c69c3edf-1b2b-4779-8bc9-6a576048dfca"/>
@@ -305,7 +308,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{dateEditReg}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{dateEditReg} != null)? $F{dateEditReg} : ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="468" y="48" width="36" height="16" uuid="cb923933-f6ed-4e26-bdee-990a7806d723"/>
@@ -342,7 +345,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{other}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{other}!= null)? $F{other}: ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="372" y="64" width="68" height="16" uuid="19cb02e4-c4bf-41bc-b5e6-3e473cc1bef1"/>
@@ -355,7 +358,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{dateOtherReg}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{dateOtherReg}!= null)? $F{dateOtherReg}: ""]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="80" width="30" height="16" uuid="2805ea49-f8cf-4a8a-8752-2f0f280525c4"/>
@@ -367,7 +370,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{statementYear} != null)? "\u2611" : "\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{box3})? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="80" width="68" height="16" uuid="5ccfda8d-be46-474f-8dba-e32b88eb63c7"/>
@@ -379,7 +382,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{statementYear}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{statementYear}!= null)? $F{statementYear}: ""]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="sub_detail" x="0" y="96" width="30" height="16" uuid="6098bcac-aa5b-4e88-892a-2ead96e690c3"/>
@@ -391,7 +394,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $F{dateAccepted} != null)? "\u2611" : "\u2610"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[( $F{box4})? "\u2611" : "\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="sub_detail" x="48" y="96" width="152" height="16" uuid="6c168adf-cd6c-4228-8085-9918b7b03f9e"/>
@@ -403,7 +406,7 @@
 						<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
 					</box>
 					<textElement textAlignment="Left"/>
-					<textFieldExpression><![CDATA[$F{dateAccepted}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{dateAccepted}!= null)? $F{dateAccepted}: ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="453" y="48" width="12" height="16" uuid="5105c466-566b-4e1b-8701-d445d353a12f"/>

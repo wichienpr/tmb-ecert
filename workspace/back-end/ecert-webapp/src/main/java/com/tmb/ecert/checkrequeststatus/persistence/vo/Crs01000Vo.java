@@ -17,6 +17,24 @@ public class Crs01000Vo {
 	private String companyName;
 	private String statusName;
 	private String statusCode;
+	private Integer lockFlag;
+	private String updatedById;
+
+	public Integer getLockFlag() {
+		return lockFlag;
+	}
+
+	public void setLockFlag(Integer lockFlag) {
+		this.lockFlag = lockFlag;
+	}
+
+	public String getUpdatedById() {
+		return updatedById;
+	}
+
+	public void setUpdatedById(String updatedById) {
+		this.updatedById = updatedById;
+	}
 
 	public Long getId() {
 		return id;
