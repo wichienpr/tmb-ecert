@@ -27,6 +27,7 @@ import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestStatusDao;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
@@ -50,6 +51,9 @@ public class HouseKeepingBatchService {
 		
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
+	
+	@Autowired
+	private CheckRequestStatusDao checkRequestStatusDao;
 
 	/**
 	 * 
@@ -68,7 +72,7 @@ public class HouseKeepingBatchService {
 		
 		try {
 			
-			//############################ WRITE AND ARCHIVE FILE HOUSE KEEPING SUMMARY BEGIN #################################
+			//############################ WRITE AND ARCHIVE FILE AUDIT LOG HOUSE KEEPING SUMMARY BEGIN #################################
 			List<AuditLog> auditLogs = auditLogDao.findAuditLogWithDays(days);
 			if(auditLogs!=null && auditLogs.size()>0){
 				Date currentDate = new Date();
@@ -94,7 +98,11 @@ public class HouseKeepingBatchService {
 					}
 				}
 			}
-			//############################ WRITE AND ARCHIVE FILE HOUSE KEEPING SUMMARY END #################################
+			//############################ WRITE AND ARCHIVE FILE AUDIT LOG HOUSE KEEPING SUMMARY BEGIN #################################
+			
+			//ARCHIVING REQUEST FORM
+			checkRequestStatusDao.deleteRequestFormByDeleteFlag(days);
+
 		} catch (Exception ex) {
 			log.error("HouseKeepingBatchService Error = ",ex);
 			jobMonitoring.setErrorDesc(ex.getMessage());

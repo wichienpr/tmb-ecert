@@ -54,7 +54,7 @@ public class ReportPdfDao {
 		sql.append(" LEFT JOIN ECERT_CERTIFICATE E ");
 		sql.append(" ON C.CERTIFICATE_CODE = E.CODE ");
 		if (BeanUtils.isNotEmpty(id)) {
-			sql.append(" WHERE R.REQFORM_ID = ? ");
+			sql.append(" WHERE R.REQFORM_ID = ? AND R.DELETE_FLAG=0 ");
 			valueList.add(id);
 		}
 		sql.append(" ORDER BY C.CERTIFICATE_CODE ASC ");
@@ -89,7 +89,7 @@ public class ReportPdfDao {
 		sql.append(" FROM ECERT_REQUEST_FORM F ");
 
 		if (BeanUtils.isNotEmpty(id)) {
-			sql.append(" WHERE F.REQFORM_ID = ? ");
+			sql.append(" WHERE F.REQFORM_ID = ? AND F.DELETE_FLAG=0 ");
 			valueList.add(id);
 		}
 

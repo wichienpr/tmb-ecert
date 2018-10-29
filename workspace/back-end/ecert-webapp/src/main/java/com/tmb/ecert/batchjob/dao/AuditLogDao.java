@@ -35,7 +35,7 @@ public class AuditLogDao {
 			AuditLog row = new AuditLog();
 			row.setAuditLogId(rs.getLong("AUDITLOG_ID"));
 			row.setActionCode(rs.getString("ACTION_CODE"));
-			row.setDescription(rs.getString("DESCRIPTION "));
+			row.setDescription(rs.getString("DESCRIPTION"));
 			row.setCreateById(rs.getString("CREATED_BY_ID"));
 			row.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 			row.setCreateDatetime(rs.getDate("CREATED_DATETIME"));
