@@ -24,7 +24,6 @@ public class CheckRequestDetailDao {
 
 	private static Logger Log = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
-	private final String SQL_ECERT_REQUEST_FORM = " SELECT F.* FROM ECERT_REQUEST_FORM F ";
 	private final String SQL_ECERT_REQUEST_CERTIFICATE = " SELECT C.* FROM ECERT_REQUEST_CERTIFICATE C ";
 
 	public RequestForm findReqFormById(Long reqFormId) {
@@ -63,7 +62,7 @@ public class CheckRequestDetailDao {
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE R ON F.REJECTREASON_CODE = R.CODE ");
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE S ON F.STATUS = S.CODE ");
 		}
-		sql.append(" WHERE F.REQFORM_ID = ? ");
+		sql.append(" WHERE F.REQFORM_ID = ? AND F.DELETE_FLAG = 0 ");
 		params.add(reqFormId);
 		RequestForm reqForm = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), formMapping);
 		Log.info("RequestorDao::findReqFormById finished with... tmbReqNo:{}", reqForm.getTmbRequestNo());
@@ -99,7 +98,7 @@ public class CheckRequestDetailDao {
 		Log.info("RequestorDao::findCertificateFileByReqID finding by id:{}", reqID);
 		StringBuilder sql = new StringBuilder(" ");
 		// sql.append(" SELECT REQUESTFORM_FILE,CERTIFICATE_FILE,RECEIPT_FILE FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ? ");
-		sql.append("   SELECT * FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ?   ");
+		sql.append("   SELECT * FROM ECERT_REQUEST_FORM WHERE REQFORM_ID = ? AND DELETE_FLAG = 0  ");
 		List<Object> params = new ArrayList<>();
 		params.add(reqID);
 

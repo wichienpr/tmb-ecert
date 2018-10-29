@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import th.co.baiwa.buckwaframework.security.constant.SecurityConstants.LOGIN_STATUS;
+import th.co.baiwa.buckwaframework.security.provider.TmbAuthenticationProvider;
 import th.co.baiwa.buckwaframework.security.service.UserDetailsService;
 
 @Configuration
@@ -29,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-
+	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -62,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.authenticationProvider(tmbAuthenticationProvider());
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
@@ -86,6 +88,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public SessionRegistry sessionRegistry() {
 	    return new SessionRegistryImpl();
+	}
+	
+	@Bean("tmbAuthenticationProvider")
+	public TmbAuthenticationProvider tmbAuthenticationProvider() {
+		TmbAuthenticationProvider p = new TmbAuthenticationProvider();
+		p.setUserDetailsService(userDetailsService);
+		return p;
 	}
 
 }

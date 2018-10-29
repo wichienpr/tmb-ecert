@@ -38,13 +38,13 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0 ");
 
 		if (StringUtils.isNotBlank(formVo.getReqDate())) {
 			sql.append(" AND  CAST(H.REQUEST_DATE as DATE) >= ? ");
@@ -84,13 +84,13 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG=0 ");
 
 		if (StringUtils.isNotBlank(formVo.getReqDate())) {
 			sql.append(" AND  CAST(H.REQUEST_DATE as DATE) >= ? ");
@@ -132,13 +132,13 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG = 0 ");
 
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");
@@ -155,13 +155,13 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
 		sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ");
 		sql.append(" ON H.CERTYPE_CODE = C.CODE ");
-		sql.append(" WHERE 1 = 1 ");
+		sql.append(" WHERE 1 = 1 AND H.DELETE_FLAG=0 ");
 
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");
@@ -193,7 +193,9 @@ public class CheckRequestStatusDao {
 			vo.setStatusName(rs.getString("STATUS_NAME"));
 			vo.setStatusCode(rs.getString("STATUS"));
 			vo.setLockFlag(rs.getInt("LOCK_FLAG"));
+			vo.setCreatedById(rs.getString("CREATED_BY_ID"));
 			vo.setUpdatedById(rs.getString("UPDATED_BY_ID"));
+			vo.setMakerById(rs.getString("MAKER_BY_ID"));
 			return vo;
 		}
 
@@ -204,7 +206,7 @@ public class CheckRequestStatusDao {
 		List<StatusVo> statusVoList = new ArrayList<StatusVo>();
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT COUNT(*) AS COUNT_STATUS, H.STATUS ");
-		sql.append(" FROM ECERT_REQUEST_FORM H ");
+		sql.append(" FROM ECERT_REQUEST_FORM H WHERE H.DELETE_FLAG=0 ");
 		sql.append(" GROUP BY H.STATUS ");
 		sql.append(" ORDER BY H.STATUS ASC ");
 
@@ -224,5 +226,11 @@ public class CheckRequestStatusDao {
 		}
 
 	};
-
+	
+	public void deleteRequestFormByDeleteFlag(int days) {
+		String ARCHIVE_REQUESTFORM = " UPDATE ECERT_REQUEST_FORM SET DELETE_FLAG = 1 WHERE CREATED_DATETIME < GETDATE()  - ? " ;
+		jdbcTemplate.update(ARCHIVE_REQUESTFORM, new Object[] {days});
+	}
+	
+	
 }

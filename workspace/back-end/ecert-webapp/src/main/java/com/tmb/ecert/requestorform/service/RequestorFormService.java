@@ -68,7 +68,7 @@ public class RequestorFormService {
 
 	@Autowired
 	private RequestGenKeyService gen;
-	
+
 	@Autowired
 	private EmailService emailSerivce;
 
@@ -76,7 +76,10 @@ public class RequestorFormService {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		try {
 			String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
-			String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+			String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
+					.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
+			vo.setMakerById(userId);
+			vo.setMakerByName(userName);
 			vo.setUpdatedById(userId);
 			vo.setUpdatedByName(userName);
 			dao.updateLockStatus(vo);
@@ -115,7 +118,8 @@ public class RequestorFormService {
 			}
 		}
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
-		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
+				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
 		String folder = PATH;
 		Long nextId = form.getReqFormId();
 
@@ -184,9 +188,10 @@ public class RequestorFormService {
 				req.setTelephone(form.getTelReq());
 				try {
 					dao.update(req); // SAVE REQUEST FORM
-//					CHECK FOR SEND EMAIL
-					String fullName = UserLoginUtils.getCurrentUserLogin().getFirstName()+UserLoginUtils.getCurrentUserLogin().getLastName();
-					if(StatusConstant.WAIT_PAYMENT_APPROVAL.equals(req.getStatus())) {
+					// CHECK FOR SEND EMAIL
+					String fullName = UserLoginUtils.getCurrentUserLogin().getFirstName() + " "
+							+ UserLoginUtils.getCurrentUserLogin().getLastName();
+					if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(req.getStatus())) {
 						emailSerivce.sendEmailPaymentOrder(req.getCompanyName(), req.getTmbRequestNo(), fullName);
 					}
 				} catch (Exception e) {
@@ -201,8 +206,6 @@ public class RequestorFormService {
 					msg.setMessage("ERROR");
 					return msg;
 				}
-				List<RequestCertificate> oldReqCerts = daoCrs.findCertByReqFormId(nextId);
-				List<Long> forDeleteCerts = new ArrayList<>();
 				List<RequestCertificate> forUpdateCerts = new ArrayList<>();
 				for (Nrq02000CerVo cer : cers) {
 					if (cer.getCheck()) {
@@ -246,7 +249,8 @@ public class RequestorFormService {
 	public CommonMessage<String> save(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
-		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
+				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
 		String folder = PATH;
 
 		String requestFileName = "";
@@ -306,6 +310,8 @@ public class RequestorFormService {
 				req.setRequestDate(timestamp);
 				req.setRequestFormFile(BeanUtils.isNotEmpty(form.getRequestFile()) ? requestFileName : null);
 				req.setStatus("10001");
+				req.setLockFlag(0);
+				req.setDeleteFlag(0);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
 				try {
@@ -364,7 +370,8 @@ public class RequestorFormService {
 		String reqTmbNo = gen.getNextKey();
 		CommonMessage<String> msg = new CommonMessage<String>();
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
-		String userName = UserLoginUtils.getCurrentUserLogin().getUsername();
+		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
+				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
 		try {
 			RequestForm req = new RequestForm();
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -398,6 +405,8 @@ public class RequestorFormService {
 			req.setStatus("10011");
 			req.setRemark(null);
 			req.setTelephone(null);
+			req.setLockFlag(0);
+			req.setDeleteFlag(0);
 			dao.save(req); // SAVE REQUEST FORM
 			msg.setData(reqTmbNo);
 			msg.setMessage("SUCCESS");

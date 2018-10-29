@@ -54,7 +54,6 @@ public class PaymentGLSummaryBatchService {
 	
 	private String DATE_FORMAT_DDMMYYYY = "ddMMyyyy";
 	private String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
-	private String DATE_FILE_NAME = "yyyyMMddHHmmss";
 	private final String CONST_PIPE = "|";
 	private final String CONST_DASH = "-";
 	private final String CONST_COMMA = ",";

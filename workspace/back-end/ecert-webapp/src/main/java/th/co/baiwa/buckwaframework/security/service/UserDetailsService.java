@@ -15,10 +15,11 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.dao.UserProfileDao;
 
+import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
 @Service
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService, TmbUserDetailsService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
 	
@@ -86,5 +87,65 @@ public class UserDetailsService implements org.springframework.security.core.use
 		rs.setAuths(auths);
 		return rs;
 	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username, TMBPerson tMBPerson) throws UsernameNotFoundException {
+		logger.info("loadUserByUsername username={}", username);
+		
+		// Initial Granted Authority
+		List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
+//		passwordEncoder.encode("password")
+		UserDetails userDetails = new UserDetails(username,"",grantedAuthorityList);
+		if("ADMIN".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
+			userDetails.setFirstName("ผู้ดูแลระบบ");
+			userDetails.setLastName("ธนาคารทหารไทย");
+			userDetails.setUserId("0001");
+		}
+		if("IT".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.IT));
+			userDetails.setFirstName("IT");
+			userDetails.setLastName("Technologies");
+			userDetails.setUserId("0002");
+		}
+		if("ISA".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ISA));
+			userDetails.setFirstName("ISA");
+			userDetails.setLastName("Security");
+			userDetails.setUserId("0003");
+		}
+		if("REQUESTOR".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
+			userDetails.setFirstName("Requestor");
+			userDetails.setLastName("RM");
+			userDetails.setUserId("0004");
+		}
+		if("MAKER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			userDetails.setFirstName("Maker");
+			userDetails.setLastName("TMB Center");
+			userDetails.setUserId("0005");
+		}
+		if("CHECKER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			userDetails.setFirstName("Checker");
+			userDetails.setLastName("TMB Center");
+			userDetails.setUserId("0006");
+		}
+		UserDetails rs = new UserDetails(username, passwordEncoder.encode("password"),grantedAuthorityList	);
+		rs.setUserId(userDetails.getUserId());
+		rs.setFirstName(userDetails.getFirstName());
+		rs.setLastName(userDetails.getLastName());
+		
+		List<String> roles = new ArrayList<>();
+		for ( GrantedAuthority g : grantedAuthorityList) {
+			roles.add(g.toString());
+		}
+		
+		List<String> auths = userProfileDao.getAuthbyRole(roles);
+		rs.setAuths(auths);
+		return rs;
+	}
+	
 	
 }

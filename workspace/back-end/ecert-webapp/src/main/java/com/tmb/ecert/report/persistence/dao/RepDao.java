@@ -47,7 +47,7 @@ public class RepDao {
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.PAIDTYPE_CODE = d.CODE "); 
-			sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+			sql.append(" WHERE a.DELETE_FLAG = 0 AND (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 		
 		if (StringUtils.isNotBlank(formVo.getDateForm())) {
 			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) >= ? ");
@@ -166,7 +166,7 @@ public class RepDao {
 					sql.append("   FROM ECERT_REQUEST_FORM a      "); 
 					sql.append("   LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE   "); 
 					sql.append("   LEFT JOIN ECERT_REQUEST_CERTIFICATE b on a.REQFORM_ID = b.REQFORM_ID    "); 
-					sql.append("   WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010')"); 
+					sql.append("   WHERE a.DELETE_FLAG = 0 AND (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010')"); 
 					sql.append("   AND (b.CERTIFICATE_CODE = '10001' OR b.CERTIFICATE_CODE = '20001')  ");
 					sql.append("   AND c.CODE = ? ");
 					
@@ -218,7 +218,7 @@ public class RepDao {
 					sql.append("   FROM ECERT_REQUEST_FORM a      "); 
 					sql.append("   LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE   "); 
 					sql.append("   LEFT JOIN ECERT_REQUEST_CERTIFICATE b on a.REQFORM_ID = b.REQFORM_ID    "); 
-					sql.append("   WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010')"); 
+					sql.append("   WHERE a.DELETE_FLAG = 0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010')"); 
 					sql.append("   AND (b.CERTIFICATE_CODE != '10001' AND b.CERTIFICATE_CODE != '20001')  ");
 					sql.append("   AND c.CODE = ? ");
 					
@@ -271,7 +271,7 @@ public class RepDao {
 					sql.append(" SELECT count(*) FROM ECERT_REQUEST_FORM a "); 
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CUSTSEGMENT_CODE = b.CODE  "); 
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.PAIDTYPE_CODE = d.CODE "); 
-					sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+					sql.append(" WHERE a.DELETE_FLAG = 0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 					sql.append(" AND b.CODE = ? AND a.PAIDTYPE_CODE = ? ");
 			List<Object> params = new ArrayList<>();
 			int count = 0;
@@ -303,7 +303,7 @@ public class RepDao {
 
 		
 		public int getCountStatusRep02000(Rep02000FormVo formVo,Rep02000Vo vo) {
-			StringBuilder sql = new StringBuilder(" SELECT count(*) AS COUNT FROM ECERT_REQUEST_FORM a WHERE (a.STATUS = '10009' OR a.STATUS = '10010') AND a.CUSTSEGMENT_CODE = ? ");
+			StringBuilder sql = new StringBuilder(" SELECT count(*) AS COUNT FROM ECERT_REQUEST_FORM a WHERE a.DELETE_FLAG=0 and  (a.STATUS = '10009' OR a.STATUS = '10010') AND a.CUSTSEGMENT_CODE = ? ");
 			List<Object> params = new ArrayList<>();
 			int count = 0;
 			
@@ -348,7 +348,7 @@ public class RepDao {
 			sql.append("  FROM ECERT_REQUEST_FORM a    "); 
 			sql.append("  LEFT JOIN ECERT_LISTOFVALUE c  "); 
 			sql.append("  on a.CUSTSEGMENT_CODE = c.CODE  ");
-			sql.append("  WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'  "); 
+			sql.append("  WHERE a.DELETE_FLAG = 0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007'  "); 
 			sql.append("  OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 			
 			if (StringUtils.isNotBlank(formVo.getDateForm())) {
@@ -412,7 +412,7 @@ public class RepDao {
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ");
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.STATUS = d.CODE "); 
-					sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008') ");
+					sql.append(" WHERE a.DELETE_FLAG = 0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008') ");
 					
 				if (StringUtils.isNotBlank(formVo.getCustsegmentCode())) {
 						sql.append(" AND c.CODE = ?");
@@ -476,7 +476,7 @@ public class RepDao {
 						sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
 						sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ");
 						sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.STATUS = d.CODE "); 
-						sql.append(" WHERE (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+						sql.append(" WHERE a.DELETE_FLAG=0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
 						
 					if (StringUtils.isNotBlank(formVo.getCustsegmentCode())) {
 							sql.append(" AND c.CODE = ?");
@@ -529,7 +529,7 @@ public class RepDao {
 					List<Object> params = new ArrayList<>();
 					List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 					
-				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 "); 
+				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 "); 
 					
 					if (StringUtils.isNotBlank(formVo.getPaymentDate())) {
 						sql.append("  AND  MONTH(a.PAYMENT_DATE) = MONTH(?) AND YEAR(a.PAYMENT_DATE)= YEAR(?) ");
