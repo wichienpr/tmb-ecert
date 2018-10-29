@@ -3,11 +3,11 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
-import { Acc, digit, dateLocaleEN, DecimalFormat } from 'helpers/';
+import { Acc, digit, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService } from 'app/baiwa/common/services';
-import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
+import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
   selector: 'app-nrq02000',
@@ -253,7 +253,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get btnChecker() { return this.roles(ROLES.CHECKER) }
   get btnMaker() { return this.roles(ROLES.MAKER) }
   get btnMakerApprove() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000401) }
-  get btnMakerReject() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000403) }
+  get btnMakerReject() { return (this.roles(ROLES.MAKER) || this.roles(ROLES.REQUESTOR)) && this.common.isAuth(PAGE_AUTH.P0000403) && this.data.reqFormId }
 
   get authUsername() { return this.formAuth.get("authUsername") }
   get authPassword() { return this.formAuth.get("authPassword") }

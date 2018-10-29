@@ -9,51 +9,52 @@
 
 
         <div class="ui attached segment">
-            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
-                <div class="inline fields">
-                    <div class="one wide field "></div>
-                    <div class="two wide field ">
-                        <label>เดือนปีภาษี<span style="color: red"> * </span></label>
-                    </div>
-                    <div class="five wide field" [ngClass]="validate('dateVat', ngForm.submitted) ? '' : 'error'">
-                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateVat',$event)" style="width:100%"></ui-calendar>
-                    </div>
-                    <div class="two wide field ">
-                        <label>เลขประจำตัวผู้เสียภาษีอากร<span style="color: red"> * </span></label>
-                    </div>
-                    <div class="five wide field " [ngClass]="validate('organizeId', ngForm.submitted) ? '' : 'error'">
-                        <input type="number" formControlName="organizeId" placeholder="เลขประจำตัวผู้เสียภาษีอากร">
-                    </div>
+            <div class="ui centered grid">
+                <div class="fourteen wide column">
+                    <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
+                        <div class="inline fields">
+                            <div class="three wide field required">
+                                <label class="full-width text-right">เดือนปีภาษี</label>
+                            </div>
+                            <div class="five wide field" [ngClass]="validate('dateVat', ngForm.submitted) ? '' : 'error'">
+                                <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateVat',$event)"
+                                    style="width:100%"></ui-calendar>
+                            </div>
+                            <div class="three wide field required">
+                                <label class="full-width text-right">เลขประจำตัวผู้เสียภาษีอากร</label>
+                            </div>
+                            <div class="five wide field " [ngClass]="validate('organizeId', ngForm.submitted) ? '' : 'error'">
+                                <input type="text" (keypress)="onlyNumber($event)" formControlName="organizeId"
+                                    placeholder="เลขประจำตัวผู้เสียภาษีอากร">
+                            </div>
+                        </div>
 
+                        <div class="inline fields">
+                            <div class="three wide field ">
+                                <label class="full-width text-right">ชื่อผู้ประกอบการ </label>
+                            </div>
+                            <div class="five wide field ">
+                                <input type="text" formControlName="customerName" placeholder="ชื่อผู้ประกอบการ">
+                            </div>
+                        </div>
+
+                        <div class="inline field">
+                            <div class="ui grid">
+                                <div class="sixteen center aligned btn-group wide column">
+                                    <button class="ui blue basic button" type="submit">
+                                        <i class="search icon"></i>
+                                        ค้นหา
+                                    </button>
+                                    <button class="ui grey  basic button" type="button" (click)="clearData()">
+                                        <i class="trash alternate outline icon"></i>
+                                        ล้างข้อมูล
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="inline fields">
-                    <div class="one wide field "></div>
-                    <div class="two wide field ">
-                        <label>ชื่อผู้ประกอบการ </label>
-                    </div>
-                    <div class="five wide field ">
-                        <input type="text" formControlName="customerName" placeholder="ชื่อผู้ประกอบการ">
-                    </div>
-                </div>
-
-
-                <br>
-                <br>
-                <div class="ui center aligned grid">
-                    <button class="ui blue basic button" type="submit">
-                        <i class="search icon"></i>
-                        ค้นหา
-                    </button>
-                    <button class="ui grey  basic button" type="button" (click)="clearData()">
-                        <i class="trash alternate outline icon"></i>
-                        ล้างข้อมูล
-                    </button>
-                    <br>
-                </div>
-            </form>
-            <br>
-            <br>
+            </div>
         </div>
     </div>
 </div>
@@ -141,7 +142,7 @@
                 <tbody>
                     <tr class="text-center" *ngIf="dataT.length==0">
                         <td colspan="10" style="text-align: center !important;">ไม่มีข้อมูล</td>
-                    </tr>	
+                    </tr>
                     <tr class="text-center" *ngFor="let data of dataT; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.receiptNo}}</td>

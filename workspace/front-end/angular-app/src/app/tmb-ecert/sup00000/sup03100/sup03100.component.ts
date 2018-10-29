@@ -33,7 +33,7 @@ export class Sup03100Component implements OnInit {
       // [groupName, [list of button]]
       ['misc', ['codeview', 'undo', 'redo']],
       ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      ['font', [ 'strikethrough']],
       ['fontsize', ['fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']]
     ],

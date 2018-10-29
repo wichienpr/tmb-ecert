@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AjaxService, ModalService, DropdownService } from "services/";
-import { Modal } from "models/";
-import { forEach } from '@angular/router/src/utils/collection';
+import { AjaxService } from "services/";
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { isValid } from 'app/baiwa/common/helpers';
-
-import { Certificate } from 'models/';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Rep03000Service } from 'app/tmb-ecert/rep00000/rep03000/rep03000.service';
 
-declare var $: any;
 const URL = {
-  export:"/api/rep/rep03000/exportFile"
+  export: "/api/rep/rep03000/exportFile"
 }
+
 @Component({
   selector: 'app-rep03000',
   templateUrl: './rep03000.component.html',
@@ -21,16 +16,15 @@ const URL = {
   providers: [Rep03000Service]
 })
 export class Rep03000Component implements OnInit {
-  showData: boolean = false; 
+  showData: boolean = false;
 
-  //Head Table
-  customerNameHead:String;
-  organizeIdHead:String;
-  companyNameHead:String;
-  branchHead:String;
-  addressHead:String;
+  customerNameHead: String;
+  organizeIdHead: String;
+  companyNameHead: String;
+  branchHead: String;
+  addressHead: String;
 
-  dataT: any[]= [];
+  dataT: any[] = [];
   loading: boolean = false;
 
   calendar1: Calendar;
@@ -38,10 +32,7 @@ export class Rep03000Component implements OnInit {
 
   constructor(
     private ajax: AjaxService,
-    private modal: ModalService,
-    private service: Rep03000Service,
-    private route: ActivatedRoute,
-    private router: Router
+    private service: Rep03000Service
   ) {
     this.service.getForm().subscribe(form => {
       this.form = form
@@ -57,78 +48,82 @@ export class Rep03000Component implements OnInit {
       icon: "time icon",
       initial: new Date
     };
-   }
-
-  ngOnInit() {}
-  ngAfterViewInit() {}
-  
-  calendarValue(name,e) {
-    this.form.controls[name].setValue(e);
-    console.log(this.form);
-    console.log(this.form.controls[name].value);
-    
   }
 
-  getData=()=>{
-    console.log(this.form);
+  ngOnInit() { }
+
+  calendarValue(name, e) {
+    this.form.controls[name].setValue(e);
+  }
+
+  getData = () => {
     this.loading = true;
-    this.dataT=[];
+    this.dataT = [];
     const URL = "/api/rep/rep03000/list";
-    this.ajax.post(URL,{
-      paymentDate: this.form.controls.dateVat.value,
-      organizeId: this.form.controls.organizeId.value,
-      customerName: this.form.controls.customerName.value
-    },async res => {
-      const data = await res.json();
-  
+    let customerName = this.form.get('customerName').value;
+    if (customerName != null) {
+      this.form.get('customerName').patchValue(customerName.trim());
+    }
+    this.ajax.post(URL, {
+      paymentDate: this.form.get('dateVat').value,
+      organizeId: this.form.get('organizeId').value,
+      customerName: this.form.get('customerName').value
+    }, res => {
+      const {
+        customerNameHead,
+        organizeIdHead,
+        companyNameHead,
+        branchHead,
+        addressHead,
+        rep03000VoList
+      } = res.json();
+
       setTimeout(() => {
         this.loading = false;
-      },200);
+      }, 200);
 
-      console.log("Data : ",data);
+      this.customerNameHead = customerNameHead;
+      this.organizeIdHead = organizeIdHead;
+      this.companyNameHead = companyNameHead;
+      this.branchHead = branchHead;
+      this.addressHead = addressHead;
 
-      this.customerNameHead=data.customerNameHead;
-      this.organizeIdHead=data.organizeIdHead;
-      this.companyNameHead=data.companyNameHead;
-      this.branchHead=data.branchHead;
-      this.addressHead=data.addressHead;
-      
-      data.rep03000VoList.forEach(element => {
+      rep03000VoList.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data length",this.dataT.length);
-    console.log("getData True : Data ",this.dataT);
     });
-    
   }
 
   searchData(): void {
-    if(this.form.valid){
-      console.log("searchData True");
-          this.showData = true;
-          this.getData();
-      }else{
-        console.log("searchData False");
-      }
+    if (this.form.valid) {
+      this.showData = true;
+      this.getData();
+    }
   }
-  
+
   clearData(): void {
-    console.log("clearData");
     this.form.reset();
     this.showData = false;
   }
-  exportFile=()=>{
-    console.log("exportFile");
+  exportFile = () => {
     let param = "";
-    param+="?paymentDate="+this.form.controls.dateVat.value;
-    param+="&organizeId="+this.form.controls.organizeId.value;
-
-    (this.form.controls.customerName.value!=null)?param+="&customerName="+this.form.controls.customerName.value:"";
-
-    this.ajax.download(URL.export+param);
+    param += "?paymentDate=" + this.form.get('dateVat').value;
+    param += "&organizeId=" + this.form.get('organizeId').value;
+    let customerName = this.form.get('customerName').value;
+    if (customerName != null) {
+      customerName = customerName.trim();
+      this.form.get('customerName').patchValue(customerName);
+      param += "&customerName=" + customerName;
+    }
+    this.ajax.download(URL.export + param);
   }
 
   validate(input: string, submitted: boolean) {
     return isValid(this.form, input, submitted);
   }
+
+  onlyNumber(e) {
+    return e.charCode >= 48 && e.charCode <= 57;
+  }
+
 }

@@ -9,8 +9,6 @@ const routes: Routes = [
     component: SemanticBodyComponent,
     canActivateChild : [AuthGuard],
     children: [
-      // For Examples
-      { path: 'examples', loadChildren: 'app/tmb-ecert/example/example.module#ExampleModule' },
       // TMB Modules
       { path: 'home', loadChildren: 'app/baiwa/home/home.module#HomeModule' },
       { path: 'nrq', loadChildren: 'app/tmb-ecert/nrq00000/nrq00000.module#Nrq00000Module' },
