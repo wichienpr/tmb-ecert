@@ -71,8 +71,8 @@ public class Btm01000Service {
 
 			if(StatusConstant.JOBMONITORING.BATCH_AUDILOG.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_AUDILOG.");
-				auditlogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE));
-				
+				auditlogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE),
+						EcerDateUtils.parseDateEN(form.getEndofdate()));
 			}else if (StatusConstant.JOBMONITORING.BATCH_HOUSEKEEP.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_HOUSEKEEP.");
 				houseKeepingBatchService.archiveAuditLog();

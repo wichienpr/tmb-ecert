@@ -51,6 +51,7 @@ public class ProjectConstant {
 		public static final String DOWNLOAD_ECERT_CODE = "70016";
 		public static final String PRINT_FORM_CODE = "70018";
 		public static final String PRINT_FORMREQ_CODE = "70019";
+		public static final String LOGIN_FAILED = "70020";
 
 	}
 

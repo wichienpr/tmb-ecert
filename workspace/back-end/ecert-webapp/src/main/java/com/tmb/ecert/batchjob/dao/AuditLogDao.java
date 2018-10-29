@@ -2,8 +2,10 @@ package com.tmb.ecert.batchjob.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,8 +27,9 @@ public class AuditLogDao {
 		return jdbcTemplate.update("DELETE FROM ECERT_AUDIT_LOG WHERE CREATED_DATETIME < GETDATE()  - ?", days);
 	}
 	
-	public List<AuditLog> findAuditLogByActionCode(String actionCode) {
-		return jdbcTemplate.query("SELECT * FROM ECERT_AUDIT_LOG WHERE ACTION_CODE = ?",new Object[] {actionCode}, mapping);
+	public List<AuditLog> findAuditLogByActionCode(String actionCode,Date runDate) {
+		String date = DateFormatUtils.format(runDate, "yyyy-MM-dd");
+		return jdbcTemplate.query("SELECT * FROM ECERT_AUDIT_LOG WHERE ACTION_CODE = ? AND CONVERT(date, CREATED_DATETIME) = ? ",new Object[] {actionCode,date}, mapping);
 	}
 	
 	private RowMapper<AuditLog> mapping = new RowMapper<AuditLog> () {

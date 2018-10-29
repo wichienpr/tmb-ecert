@@ -2,6 +2,9 @@ package com.tmb.ecert.batchjob.job;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -20,7 +23,7 @@ public class AuditLogBatchJob extends QuartzJobBean{
 	    JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 		try {
 			AuditLogBatchService auditLogBatchService = (AuditLogBatchService) dataMap.get("auditLogBatchService");
-			auditLogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE));
+			auditLogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE),new Date());
 		}catch (Exception e) {
 			log.error("AuditLogBatchJob: " , e);
 		}

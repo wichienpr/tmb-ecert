@@ -44,7 +44,7 @@ public class AuditLogBatchService {
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
 
-	public void transferAuditLogByActionCode(String actionCode) {
+	public void transferAuditLogByActionCode(String actionCode,Date runDate) {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
 		Date current = new Date();
 		long start = System.currentTimeMillis();
@@ -59,10 +59,10 @@ public class AuditLogBatchService {
 
 		try {
 			//############################ WRITE FILE AND FTP AUDIT LOG SUMMARY BEGIN #################################
-			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode);
+			List<AuditLog> auditLogs = auditLogDao.findAuditLogByActionCode(actionCode,runDate);
 			if(auditLogs!=null && auditLogs.size()>0){
 				SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss" , Locale.US);
-				fileName = fileName.replace("{0}", df.format(new Date()));
+				fileName = String.format(fileName,  df.format(new Date()));
 				String fileNameFull = localPath + File.separator + fileName;							
 
 				// Step 1. Write File include file ISA format
