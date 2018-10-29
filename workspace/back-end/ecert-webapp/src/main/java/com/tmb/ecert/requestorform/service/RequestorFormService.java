@@ -23,11 +23,13 @@ import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.DownloadService;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
@@ -66,6 +68,9 @@ public class RequestorFormService {
 
 	@Autowired
 	private RequestGenKeyService gen;
+	
+	@Autowired
+	private EmailService emailSerivce;
 
 	public CommonMessage<String> pageActive(RequestForm vo) {
 		CommonMessage<String> msg = new CommonMessage<String>();
@@ -179,6 +184,11 @@ public class RequestorFormService {
 				req.setTelephone(form.getTelReq());
 				try {
 					dao.update(req); // SAVE REQUEST FORM
+//					CHECK FOR SEND EMAIL
+					String fullName = UserLoginUtils.getCurrentUserLogin().getFirstName()+UserLoginUtils.getCurrentUserLogin().getLastName();
+					if(StatusConstant.WAIT_PAYMENT_APPROVAL.equals(req.getStatus())) {
+						emailSerivce.sendEmailPaymentOrder(req.getCompanyName(), req.getTmbRequestNo(), fullName);
+					}
 				} catch (Exception e) {
 					logger.error("REQUESTFORM UPDATE => ", e);
 					msg.setMessage("ERROR");

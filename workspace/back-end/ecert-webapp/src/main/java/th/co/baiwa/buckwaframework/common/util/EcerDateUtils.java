@@ -15,6 +15,7 @@ public class EcerDateUtils {
 	public static String DDMMYYYY_EN_FORMAT = "dd/MM/yyyy";
 	public static String DDMMYYYYHHMMSS_EN_FORMAT = "dd/MM/yyyy HH:mm:ss" ;
 	public static String yyMMdd_EN_FORMAT = "yyMMdd";
+	public static String HHmm_EN_FORMAT = "HH:mm";
 	
 	public static Date parseDateEN(String date) {
 		if(StringUtils.isBlank(date)) {
@@ -62,6 +63,14 @@ public class EcerDateUtils {
 		}
 		
 		return DateFormatUtils.format(date, yyMMdd_EN_FORMAT);
+	}
+	
+	public static String formatHHMM(Date date) {
+		if (date == null) {
+			return null;
+		}
+		
+		return DateFormatUtils.format(date, HHmm_EN_FORMAT);
 	}
 	
 	

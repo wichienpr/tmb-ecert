@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -33,6 +34,9 @@ import th.co.baiwa.buckwaframework.support.ApplicationCache;
 public class PaymentWebService {
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_PAYMENT);
+	
+	@Autowired
+	private EmailService emailService;
 
 	public CommonMessage<FeePaymentResponse> feePaymentTMB(RequestForm reqF) {
 		logger.info("PaymentWebService::feePaymentTMB");
@@ -157,6 +161,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
+			emailService.sendEmailFailApproveBeforePay(reqF, ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
@@ -194,6 +199,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
+			emailService.sendEmailFailRealtimePayment(reqF, ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;

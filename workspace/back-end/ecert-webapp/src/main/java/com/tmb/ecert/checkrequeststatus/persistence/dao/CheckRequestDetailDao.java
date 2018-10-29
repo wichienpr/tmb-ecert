@@ -136,6 +136,7 @@ public class CheckRequestDetailDao {
 			row.setOrganizeId(rs.getString("ORGANIZE_ID"));
 			row.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
 			row.setCompanyName(rs.getString("COMPANY_NAME"));
+			row.setRequestDate(rs.getTimestamp("REQUEST_DATE"));
 			return row;
 		}
 	};
