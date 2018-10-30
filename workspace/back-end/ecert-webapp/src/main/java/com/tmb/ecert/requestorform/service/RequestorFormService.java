@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -96,15 +97,12 @@ public class RequestorFormService {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
 		if ("10005".equals(form.getStatus())) {
-			if (req.getLockFlag() == 1) {
-				msg.setData("HASMAKER");
-				msg.setMessage("ERROR");
-				return msg;
-			}
 			if (req.getMakerById() != null) {
-				msg.setData("HASMAKER");
-				msg.setMessage("ERROR");
-				return msg;
+				if (!req.getMakerById().equalsIgnoreCase(UserLoginUtils.getCurrentUserLogin().getUserId())) {
+					msg.setData("HASMAKER");
+					msg.setMessage("ERROR");
+					return msg;
+				}
 			}
 			if ("false".equals(form.getHasAuthed())) {
 				if (form.getAmount() != null) {
@@ -186,6 +184,7 @@ public class RequestorFormService {
 				req.setRequestFormFile(requestFileName);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
+				req.setLockFlag(0);
 				try {
 					dao.update(req); // SAVE REQUEST FORM
 					// CHECK FOR SEND EMAIL
@@ -195,6 +194,7 @@ public class RequestorFormService {
 						emailSerivce.sendEmailPaymentOrder(req.getCompanyName(), req.getTmbRequestNo(), fullName);
 					}
 				} catch (Exception e) {
+					emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 					logger.error("REQUESTFORM UPDATE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
@@ -317,6 +317,7 @@ public class RequestorFormService {
 				try {
 					nextId = dao.save(req); // SAVE REQUEST FORM
 				} catch (Exception e) {
+					emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_CREATE_REQUESTFORM, e.toString());
 					logger.info("REQUESTFORM SAVE => ", e);
 					msg.setMessage("ERROR");
 					return msg;
@@ -412,6 +413,7 @@ public class RequestorFormService {
 			msg.setMessage("SUCCESS");
 			return msg;
 		} catch (Exception e) {
+			emailSerivce.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			e.printStackTrace();
 			msg.setData(null);
 			msg.setMessage("ERROR");

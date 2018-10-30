@@ -16,6 +16,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
@@ -31,12 +32,14 @@ import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.dao.PaymentGLSummaryBatchDao;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.SftpUtils;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
@@ -51,6 +54,9 @@ public class PaymentGLSummaryBatchService {
 	
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	private String DATE_FORMAT_DDMMYYYY = "ddMMyyyy";
 	private String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
@@ -96,6 +102,7 @@ public class PaymentGLSummaryBatchService {
 			}
 		} catch (Exception e) {
 			errorDesc = e.getMessage();
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, errorDesc);
 			log.error("exception in PaymentGLSummaryBatch : ", e);
 		} finally {
 			

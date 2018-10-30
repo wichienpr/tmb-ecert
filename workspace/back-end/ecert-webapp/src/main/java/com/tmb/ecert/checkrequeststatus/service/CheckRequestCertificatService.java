@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestCertificateDao;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.CertificateVo;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
@@ -84,6 +85,7 @@ public class CheckRequestCertificatService {
 			}
 			return msg;
 		} catch (Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			e.printStackTrace();
 			msg.setMessage("Error");
 		}finally {

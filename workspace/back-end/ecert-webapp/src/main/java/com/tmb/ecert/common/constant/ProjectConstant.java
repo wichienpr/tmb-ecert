@@ -116,4 +116,21 @@ public class ProjectConstant {
 		
 		public static final String AMOUNT_LIMIT = "payment.amount.limit";
 	}
+	
+	public static class EMAIL_SERVICE {
+		
+		public static final String EMAIL_GATEWAY_HOST= "mail.gateway.host";
+		public static final String EMAIL_GATEWAY_PORT= "mail.gateway.port";
+		
+		public static final String FUNCTION_NAME_UPDATE_STATUS = "Update Status";
+		public static final String FUNCTION_NAME_CREATE_REQUESTFORM = "CreateForm";
+		public static final String FUNCTION_NAME_SEND_EMAIL = "Send Email";
+		public static final String FUNCTION_NAME_SEND_FTP = "Send FTP File";
+		public static final String FUNCTION_NAME_EXPORT_EXCEL = "Export Excel";
+		public static final String FUNCTION_NAME_DOWNLOAD = "Download";
+		public static final String FUNCTION_NAME_PRINT_RECEIPT = "Print Receipt";
+		public static final String FUNCTION_NAME_PRINT_COVERSHEET = "Print Coversheet";
+		public static final String FUNCTION_NAME_PRINT_UPLOADCERTIFICATE = "Upload Certificate";
+
+	}
 }

@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
+import com.tmb.ecert.common.constant.ProjectConstant;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
+
 @Configuration
 @ConditionalOnProperty(name = "mail.gateway.host")
 public class MailGatewayConfig {
@@ -28,6 +33,9 @@ public class MailGatewayConfig {
 	@Bean(name="mailGateWaySender")
 	public JavaMailSenderImpl mailGateWaySender(){
 		JavaMailSenderImpl m = new JavaMailSenderImpl();
+		
+		String appHost = ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_HOST);
+		String appport = ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_PORT);
 		
 		m.setHost(host);
 		m.setPort(pot);

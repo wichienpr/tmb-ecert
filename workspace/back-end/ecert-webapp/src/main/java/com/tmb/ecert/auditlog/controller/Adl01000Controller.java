@@ -1,5 +1,7 @@
 package com.tmb.ecert.auditlog.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tmb.ecert.auditlog.persistence.vo.Adl01000FormVo;
 import com.tmb.ecert.auditlog.persistence.vo.Adl01000Vo;
 import com.tmb.ecert.auditlog.service.Adl01000tService;
+import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.service.EmailService;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 
@@ -27,6 +31,9 @@ public class Adl01000Controller {
 
 	@Autowired
 	private Adl01000tService adl01000tService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@PostMapping("/list")
 	@ResponseBody
@@ -42,6 +49,7 @@ public class Adl01000Controller {
 			adl01000tService.exportFile(formVo, response);
 		} catch (Exception e) {
 			log.error("Error ! ==> adl01000Controller method exportFile", e);
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_EXPORT_EXCEL, e.toString());
 		}
 
 	}

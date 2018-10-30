@@ -22,12 +22,14 @@ import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
+import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.utils.SftpUtils;
 
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
@@ -43,6 +45,9 @@ public class AuditLogBatchService {
 	
 	@Autowired
 	private JobMonitoringDao jobMonitoringDao;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public void transferAuditLogByActionCode(String actionCode,Date runDate) {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
@@ -76,6 +81,7 @@ public class AuditLogBatchService {
 				    isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
 						log.error("AuditLogBatchService FTP Error: {} ",sftpVo.getErrorMessage());
+						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, jobMonitoring.getErrorDesc() );
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
 					}
 				}
