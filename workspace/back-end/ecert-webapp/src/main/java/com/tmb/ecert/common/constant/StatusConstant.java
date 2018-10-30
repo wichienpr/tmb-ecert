@@ -37,6 +37,14 @@ public class StatusConstant {
 		public final static String PAY_TMB = "30003";
 		public final static String PAY_NONE = "30004";
 	}
+	
+	public static class REJECT_CODE {
+		public final static String CUST_ENOUGH = "11001";
+		public final static String CUST_FILE = "11002";
+		public final static String CUST_CANCEL = "11003";
+		public final static String BANK_CANCEL = "11004";
+		public final static String OTHER = "11005"; 
+	}
 
 	public static class ROLE_STATUS {
 		public final static String STATUS_ALL = "90001";

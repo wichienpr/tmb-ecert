@@ -239,7 +239,6 @@ public class CheckRequestDetailService {
 					updateForm(newReq, user);
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 				} else {
-
 					response = handlerErrorReq(response, newReq, user);
 					response.setData(tmbOnlyStep.getData().getDescription());
 					throw new Exception(response.getData());
@@ -250,7 +249,6 @@ public class CheckRequestDetailService {
 				updateForm(newReq, user);
 				response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 				break;
-
 			}
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {

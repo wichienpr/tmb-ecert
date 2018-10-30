@@ -1,28 +1,30 @@
 package com.tmb.ecert.batchjob.job;
 
-import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-public class FeepaymentAutoRetryBatchJob  implements Job {
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
+import com.tmb.ecert.batchjob.service.FeepaymentAutoRetryBatchService;
 
-	private static final Logger log = LoggerFactory.getLogger(FeepaymentAutoRetryBatchJob.class);
+public class FeepaymentAutoRetryBatchJob extends QuartzJobBean {
+
+	private static final Logger log = LoggerFactory.getLogger(BACHJOB_LOG_NAME.ECERT_AUTOPAYMENT);
 
 	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
+	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		log.info("execute");
-//		   	  JobKey key = context.getJobDetail().getKey();
-//		      JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-//		      String jobSays = dataMap.getString("jobSays");
-//			try {
-//				
-//			}
-//			}catch (Exception e) {
-//				log.error("AdjLogsJobService" , e);
-//			}
-		
+	    JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+		try {
+			FeepaymentAutoRetryBatchService feepaymentAutoRetryBatchService = (FeepaymentAutoRetryBatchService) dataMap.get("feepaymentAutoRetryBatchService");
+			feepaymentAutoRetryBatchService.run();
+		} catch (Exception e) {
+			log.error("FeepaymentAutoRetryBatchJob: ", e);
+		}
+		log.info("finish");
 	}
 
 }
