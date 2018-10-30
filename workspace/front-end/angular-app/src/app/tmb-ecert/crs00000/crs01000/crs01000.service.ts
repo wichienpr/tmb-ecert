@@ -27,7 +27,6 @@ export class Crs01000Service {
   }
 
   redirectFor(idReq: number, status: string, lockFlag: number, userId: string) {
-    console.log(status, userId);
     if (lockFlag == 1 && !this.common.isUser(userId)) {
       this.modal.confirm(
         e => {
@@ -46,7 +45,7 @@ export class Crs01000Service {
       });
       return;
     }
-    if (status == "10011") {
+    if (status == "10011" && this.common.isRole(ROLES.REQUESTOR)) {
       this.router.navigate(["/nrq/nrq02000"], {
         queryParams: { id: idReq }
       });

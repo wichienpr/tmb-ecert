@@ -87,35 +87,49 @@ export class Srn01000Component implements OnInit, AfterViewInit {
     this.dataDt.search();
   }
 
-  detail(idReq, status): void {
-    console.log(idReq + "," + status)
-    this.srn01000Service.redirectFor(idReq, status);
+  detail(idReq, status, lockFlag, updatedById): void {
+    return this.srn01000Service.redirectFor(idReq, status, lockFlag, updatedById);
   }
 
   roles(role: ROLES) {
     return this.common.isRole(role);
   }
 
-  getFontStyeColor(status) {
-    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
-      return '#2185D0';
-    } else if (status == '10002' || status == '10007' || status == '10010') {
-      return 'gray';
-    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
-      return 'red';
-    }
+  get reqDate() { return this.form.get("reqDate") }
+  get toReqDate() { return this.form.get("toReqDate") }
 
+  statusForBlue(status) { return status == '10001' || status == '10005' || status == '10009' || status == '10011' }
+  statusForGray(status) { return status == '10002' || status == '10010' || status == '10006' }
+  statusForRed(status) { return status == '10003' || status == '10007' || status == '10004' || status == '10005' || status == '10008' }
+
+  getFontStyeColor(status, lockFlag, userId) {
+    if (lockFlag == "1" && !this.common.isUser(userId)) {
+      return 'gray';
+    }
+    if (this.statusForBlue(status)) {
+      return '#2185D0';
+    } else if (this.statusForGray(status)) {
+      return 'gray';
+    } else if (this.statusForRed(status)) {
+      return 'red';
+    } else {
+      return 'gray';
+    }
   }
 
-  getButtonStyeColor(status) {
-    if (status == '10001' || status == '10005' || status == '10009' || status == '10011') {
-      return 'ui blue basic button center';
-    } else if (status == '10002' || status == '10007' || status == '10010') {
+  getButtonStlyeColor(status, lockFlag, userId) {
+    if (lockFlag == "1" && !this.common.isUser(userId)) {
       return 'ui gray basic button center';
-    } else if (status == '10003' || status == '10004' || status == '10005' || status == '10006') {
-      return 'ui red basic button center';
     }
-
+    if (this.statusForBlue(status)) {
+      return 'ui blue basic button center';
+    } else if (this.statusForGray(status)) {
+      return 'ui gray basic button center';
+    } else if (this.statusForRed(status)) {
+      return 'ui red basic button center';
+    } else {
+      return 'ui gray basic button center';
+    }
   }
 
   get tmbReqNo() {
