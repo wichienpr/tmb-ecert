@@ -94,48 +94,23 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		// Initial Granted Authority
 		List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
-//		passwordEncoder.encode("password")
-		UserDetails userDetails = new UserDetails(username,"",grantedAuthorityList);
-		if("ADMIN".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
-			userDetails.setFirstName("ผู้ดูแลระบบ");
-			userDetails.setLastName("ธนาคารทหารไทย");
-			userDetails.setUserId("0001");
+		//Roles
+		List<String> rolesInAd = tMBPerson.getMemberOfs();
+		for (String role : rolesInAd) {
+			//TODO debug if AD OK
+			logger.debug("rolesInAd : {}", role); // TODO plz checked
+			grantedAuthorityList.add(new SimpleGrantedAuthority(role));
 		}
-		if("IT".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.IT));
-			userDetails.setFirstName("IT");
-			userDetails.setLastName("Technologies");
-			userDetails.setUserId("0002");
-		}
-		if("ISA".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ISA));
-			userDetails.setFirstName("ISA");
-			userDetails.setLastName("Security");
-			userDetails.setUserId("0003");
-		}
-		if("REQUESTOR".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
-			userDetails.setFirstName("Requestor");
-			userDetails.setLastName("RM");
-			userDetails.setUserId("0004");
-		}
-		if("MAKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
-			userDetails.setFirstName("Maker");
-			userDetails.setLastName("TMB Center");
-			userDetails.setUserId("0005");
-		}
-		if("CHECKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
-			userDetails.setFirstName("Checker");
-			userDetails.setLastName("TMB Center");
-			userDetails.setUserId("0006");
-		}
-		UserDetails rs = new UserDetails(username, passwordEncoder.encode("password"),grantedAuthorityList	);
-		rs.setUserId(userDetails.getUserId());
-		rs.setFirstName(userDetails.getFirstName());
-		rs.setLastName(userDetails.getLastName());
+		
+		UserDetails rs = new UserDetails(username, "" ,grantedAuthorityList	);
+		rs.setUserId(tMBPerson.getUserid());
+		
+		String fullName = tMBPerson.getName(); // firstname , lastname
+		logger.debug("Full Name : {}", fullName); // TODO plz checked
+		String[] spfullName = fullName.split(" ");
+		 
+		rs.setFirstName(spfullName[0]);
+		rs.setLastName(spfullName[1]);
 		
 		List<String> roles = new ArrayList<>();
 		for ( GrantedAuthority g : grantedAuthorityList) {
