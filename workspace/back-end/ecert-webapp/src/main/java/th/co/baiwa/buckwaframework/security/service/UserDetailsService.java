@@ -83,6 +83,8 @@ public class UserDetailsService implements org.springframework.security.core.use
 		rs.setUserId(userDetails.getUserId());
 		rs.setFirstName(userDetails.getFirstName());
 		rs.setLastName(userDetails.getLastName());
+		rs.setBranchCode("001");
+
 		
 		List<String> roles = new ArrayList<>();
 		for ( GrantedAuthority g : grantedAuthorityList) {
