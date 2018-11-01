@@ -1,13 +1,13 @@
 package com.tmb.ecert.common.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,9 @@ import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
 import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
+import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
@@ -37,6 +39,9 @@ public class PaymentWebService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private RequestorDao reqDao;
 
 	public CommonMessage<FeePaymentResponse> feePaymentTMB(RequestForm reqF) {
 		logger.info("PaymentWebService::feePaymentTMB");
@@ -74,6 +79,9 @@ public class PaymentWebService {
 					HttpMethod.POST, request, FeePaymentResponse.class);
 			FeePaymentResponse res = response.getBody();
 			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				Date date = EcerDateUtils.parseTranDateFromExpress(res.getPostedDate().concat(" " + res.getPostedTime()));
+				reqF.setPostDate(new Timestamp(date.getTime()));
+				reqDao.updatePostDate(reqF);
 				commonMsg.setData(res);
 				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {
@@ -123,6 +131,9 @@ public class PaymentWebService {
 					HttpMethod.POST, request, FeePaymentResponse.class);
 			FeePaymentResponse res = response.getBody();
 			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				Date date = EcerDateUtils.parseTranDateFromExpress(res.getPostedDate().concat(" " + res.getPostedTime()));
+				reqF.setPostDate(new Timestamp(date.getTime()));
+				reqDao.updatePostDate(reqF);
 				commonMsg.setData(res);
 				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {
@@ -172,6 +183,9 @@ public class PaymentWebService {
 					HttpMethod.POST, request, FeePaymentResponse.class);
 			FeePaymentResponse res = response.getBody();
 			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				Date date = EcerDateUtils.parseTranDateFromExpress(res.getPostedDate().concat(" " + res.getPostedTime()));
+				reqF.setPostDate(new Timestamp(date.getTime()));
+				reqDao.updatePostDate(reqF);
 				commonMsg.setData(res);
 				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {
@@ -221,6 +235,9 @@ public class PaymentWebService {
 					HttpMethod.POST, request, FeePaymentResponse.class);
 			FeePaymentResponse res = response.getBody();
 			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
+				Date date = EcerDateUtils.parseTranDateFromExpress(res.getPostedDate().concat(" " + res.getPostedTime()));
+				reqF.setPostDate(new Timestamp(date.getTime()));
+				reqDao.updatePostDate(reqF);
 				commonMsg.setData(res);
 				commonMsg.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 			} else {

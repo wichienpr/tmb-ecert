@@ -114,8 +114,8 @@ public class RequestorDao {
 		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
 		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
 		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE,");
-		sql.append("LOCK_FLAG, DELETE_FLAG");
-		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		sql.append("LOCK_FLAG, DELETE_FLAG, PAYMENT_BRANCHCODE");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -165,6 +165,7 @@ public class RequestorDao {
 				 * Delete Flag 0, unlocked 1, deleted
 				 */
 				ps.setInt(34, 0);
+				ps.setString(35, vo.getPaymentBranchCode());
 				return ps;
 			}
 		}, holder);
@@ -185,7 +186,8 @@ public class RequestorDao {
 		sql.append("REMARK=?,RECEIPT_NO=?,MAKER_BY_ID=?,MAKER_BY_NAME=?,UPDATED_BY_ID=?,");
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
-		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?,LOCK_FLAG=?");
+		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?,LOCK_FLAG=?,PAYMENT_BRANCHCODE=?,");
+		sql.append("PAYMENT_DATE=?");
 		sql.append(" WHERE REQFORM_ID = ?");
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(),
 				vo.getCustomerName(), vo.getCompanyName(), vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(),
@@ -199,6 +201,7 @@ public class RequestorDao {
 				new java.util.Date(), vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 				vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
 				vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(),
+				vo.getPaymentBranchCode(), vo.getPaymentDate(),
 				vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
@@ -233,6 +236,15 @@ public class RequestorDao {
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { errorDesciption, userId,
 				userName, timestamp, reqFormId });
 		logger.info("updateErrorDescription SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+	
+	public void updatePostDate(RequestForm vo) { // From DBD
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		sql.append(" POSTDATE=?,UPDATED_BY_ID=?,UPDATED_BY_NAME=?,UPDATED_DATETIME=? WHERE REQFORM_ID=? ");
+		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getPostDate(), vo.getUpdatedById(),
+				vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
+		logger.info("updatePostDate SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
 
 }

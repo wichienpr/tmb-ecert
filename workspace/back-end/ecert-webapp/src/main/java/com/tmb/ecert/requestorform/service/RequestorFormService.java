@@ -122,7 +122,7 @@ public class RequestorFormService {
 		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		String folder = PATH;
 		Long nextId = form.getReqFormId();
-
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		String requestFileName = form.getRequestFileName();
 		String copyFile = form.getCopyFileName();
 		String changeNameFile = form.getChangeNameFileName();
@@ -160,7 +160,7 @@ public class RequestorFormService {
 				req.setTmbRequestNo(form.getTmbReqFormNo());
 				req.setAccountType(form.getAccountType());
 				req.setAddress(form.getAddress());
-				req.setBranch(branchCode);
+				req.setPaymentBranchCode(branchCode);
 				req.setCaNumber(form.getAcceptNo());
 				req.setCerTypeCode(form.getReqTypeSelect());
 				req.setChangeNameFile(changeNameFile);
@@ -177,6 +177,7 @@ public class RequestorFormService {
 				if ("MAKER".equals(form.getUserStatus())) {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
+					req.setPaymentDate(timestamp);
 				}
 				req.setUpdatedById(userId);
 				req.setUpdatedByName(userName);
@@ -288,7 +289,7 @@ public class RequestorFormService {
 				req.setTmbRequestNo(form.getTmbReqFormNo());
 				req.setAccountType(form.getAccountType());
 				req.setAddress(form.getAddress());
-				req.setBranch(branchCode);
+				req.setPaymentBranchCode(branchCode);
 				req.setCaNumber(form.getAcceptNo());
 				req.setCerTypeCode(form.getReqTypeSelect());
 				req.setChangeNameFile(BeanUtils.isNotEmpty(form.getChangeNameFile()) ? changeNameFile : null);
@@ -381,7 +382,7 @@ public class RequestorFormService {
 			req.setCreatedByName(userName);
 			req.setCreatedDateTime(timestamp);
 			req.setRequestDate(timestamp);
-			req.setBranch(branchCode);
+			req.setPaymentBranchCode(branchCode);
 			req.setStatus("10011");
 			req.setLockFlag(0);
 			req.setDeleteFlag(0);
