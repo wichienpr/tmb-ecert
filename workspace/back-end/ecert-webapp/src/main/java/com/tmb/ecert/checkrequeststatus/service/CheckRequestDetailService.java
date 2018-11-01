@@ -183,24 +183,24 @@ public class CheckRequestDetailService {
 								response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 
 							} else {
-								response = handlerErrorReq(response, newReq, user);
 								response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
-								throw new Exception(response.getData().getMessage());
+								response = handlerErrorReq(response, newReq, user);
+								throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 							}
 						} else {
-							response = handlerErrorReq(response, newReq, user);
 							response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
-							throw new Exception(response.getData().getMessage());
+							response = handlerErrorReq(response, newReq, user);
+							throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 						}
 					} else {
-						response = handlerErrorReq(response, newReq, user);
 						response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
-						throw new Exception(response.getData().getMessage());
+						response = handlerErrorReq(response, newReq, user);
+						throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 					}
 				} else {
-					response = handlerErrorReq(response, newReq, user);
 					response.setData(new ResponseVo(tmbStep.getData().getDescription(), tmbStep.getData().getStatusCode()));
-					throw new Exception(response.getData().getMessage());
+					response = handlerErrorReq(response, newReq, user);
+					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_DBD: // 10002
@@ -218,19 +218,19 @@ public class CheckRequestDetailService {
 							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 
 						} else {
-							response = handlerErrorReq(response, newReq, user);
 							response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
-							throw new Exception(response.getData().getMessage());
+							response = handlerErrorReq(response, newReq, user);
+							throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 						}
 					} else {
-						response = handlerErrorReq(response, newReq, user);
 						response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
-						throw new Exception(response.getData().getMessage());
+						response = handlerErrorReq(response, newReq, user);
+						throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 					}
 				} else {
-					response = handlerErrorReq(response, newReq, user);
 					response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
-					throw new Exception(response.getData().getMessage());
+					response = handlerErrorReq(response, newReq, user);
+					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_TMB: // 10003
@@ -240,9 +240,9 @@ public class CheckRequestDetailService {
 					updateForm(newReq, user);
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 				} else {
-					response = handlerErrorReq(response, newReq, user);
 					response.setData(new ResponseVo(tmbOnlyStep.getData().getDescription(), tmbOnlyStep.getData().getStatusCode()));
-					throw new Exception(response.getData().getMessage());
+					response = handlerErrorReq(response, newReq, user);
+					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_NONE: // 10004

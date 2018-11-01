@@ -37,6 +37,7 @@ import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
@@ -404,6 +405,14 @@ public class RequestorFormService {
 		Long reqFormId = Long.valueOf(id);
 		RequestForm reqForm = daoCrs.findReqFormById(reqFormId);
 		return reqForm;
+	}
+	
+	public boolean confirmAD(ReqUser user) {
+		if ("admin".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
