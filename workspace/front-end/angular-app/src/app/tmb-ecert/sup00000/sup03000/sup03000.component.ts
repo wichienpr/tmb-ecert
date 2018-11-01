@@ -83,7 +83,7 @@ export class Sup03000Component implements OnInit {
 
     this.emailDTConfig = {
       url: "/api/setup/sup03000/getEmailTemplate",
-      serverSide: false,
+      serverSide: true,
       useBlockUi: true
     };
   }

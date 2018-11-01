@@ -53,13 +53,13 @@
         <b>ผลการค้นหา</b>
       </div>
       <ng-datatable-search [ng-datatable]="emailConfigDT" ></ng-datatable-search>
-      <table [ngDatatable]="emailDTConfig" #emailConfigDT="ngDatatable" class="ui small celled table nowrap" id="table"
+      <table [ngDatatable]="emailDTConfig" #emailConfigDT="ngDatatable" class="ui small celled table nowrap sortable" id="table"
         style="width: 100%">
         <thead>
           <tr style="text-align: center;">
             <th>No.</th>
-            <th>Email Name </th>
-            <th>Status</th>
+            <th  [ngSort]="emailConfigDT" columnName="NAME">Email Name </th>
+            <th  [ngSort]="emailConfigDT" columnName="STATUS">Status</th>
             <th>Action </th>
           </tr>
         </thead>

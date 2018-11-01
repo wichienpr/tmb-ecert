@@ -104,14 +104,14 @@
          </div>
          <div>
             <ng-datatable-search [ng-datatable]="roleDT"></ng-datatable-search>
-            <table [ngDatatable]="roleDTConfig" #roleDT="ngDatatable" class="ui small celled table nowrap" style="width: 100%"
+            <table [ngDatatable]="roleDTConfig" #roleDT="ngDatatable" class="ui small celled table nowrap sortable" style="width: 100%"
                id="table">
                <thead>
                   <tr>
                      <th>No.</th>
-                     <th>Role Name</th>
-                     <th>Status</th>
-                     <th>Action</th>
+                     <th [ngSort]="roleDT" columnName="ROLE_NAME">Role Name</th>
+                     <th [ngSort]="roleDT" columnName="STATUS" >Status</th>
+                     <th >Action</th>
                   </tr>
                </thead>
                <tbody>

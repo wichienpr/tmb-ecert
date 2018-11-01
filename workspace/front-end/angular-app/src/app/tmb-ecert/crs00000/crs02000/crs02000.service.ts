@@ -242,12 +242,14 @@ export class Crs02000Service {
 
   saveCertFile(data: CertFile) {
     this.common.isLoading();
+    this.common.blockui();
     const formData: FormData =  new FormData();
     for(let key in data) {
       formData.append(key, data[key]);
     }
     this.ajax.upload(URL.UPLOAD, formData, response => {
       this.common.isLoaded();
+      this.common.unblockui();
       const data = response.json();
       if (data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
@@ -263,6 +265,7 @@ export class Crs02000Service {
     }, error => {
       console.error(error);
       this.common.isLoaded();
+      this.common.unblockui();
       this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
     });
   }
