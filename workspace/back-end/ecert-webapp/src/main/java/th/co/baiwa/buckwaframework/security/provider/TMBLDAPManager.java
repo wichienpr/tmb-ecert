@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.AuthenticationException;
 import org.springframework.ldap.core.AttributesMapper;
@@ -57,13 +59,26 @@ public class TMBLDAPManager {
 					tmbPerson.setUserid(username);
 					tmbPerson.setName(attrs.get("displayName").get().toString());
 					List<String> memberOfs = new ArrayList<>();
-					for (int i = 0; i < attrs.get("memberOf").size(); i++) {
-						Object str = attrs.get("memberOf").get(i);
-						//check NSLL Project
-						if(str.toString().indexOf(ADConstant.AD_PROJECT) != -1){
-							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);							
+					Attribute memberOf = attrs.get("memberOf");
+					if(memberOf != null) {
+						for (int i = 0; i < memberOf.size(); i++) {
+							Object str = memberOf.get(i);
+							//check NSLL Project
+							if(str.toString().indexOf(ADConstant.AD_PROJECT) != -1){
+								memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);							
+							}
 						}
+					}else {
+						//Not have role in AD
 					}
+					
+					//branchCode
+					Attribute branchCode = attrs.get("extensionAttribute11");
+					if(branchCode != null) {
+						String[] branch = StringUtils.split( branchCode.get().toString(), "|");
+						tmbPerson.setBranchCode(StringUtils.trim(branch[1]));
+					}
+									
 					tmbPerson.setMemberOfs(memberOfs);
 					return tmbPerson;
 				}

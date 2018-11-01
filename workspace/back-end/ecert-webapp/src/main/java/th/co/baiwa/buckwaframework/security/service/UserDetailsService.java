@@ -42,36 +42,42 @@ public class UserDetailsService implements org.springframework.security.core.use
 			userDetails.setFirstName("ผู้ดูแลระบบ");
 			userDetails.setLastName("ธนาคารทหารไทย");
 			userDetails.setUserId("0001");
+			userDetails.setBranchCode("001");
 		}
 		if("IT".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.IT));
 			userDetails.setFirstName("IT");
 			userDetails.setLastName("Technologies");
 			userDetails.setUserId("0002");
+			userDetails.setBranchCode("001");
 		}
 		if("ISA".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ISA));
 			userDetails.setFirstName("ISA");
 			userDetails.setLastName("Security");
 			userDetails.setUserId("0003");
+			userDetails.setBranchCode("001");
 		}
 		if("REQUESTOR".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
 			userDetails.setFirstName("Requestor");
 			userDetails.setLastName("RM");
 			userDetails.setUserId("0004");
+			userDetails.setBranchCode("001");
 		}
 		if("MAKER".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
 			userDetails.setFirstName("Maker");
 			userDetails.setLastName("TMB Center");
 			userDetails.setUserId("0005");
+			userDetails.setBranchCode("001");
 		}
 		if("CHECKER".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
 			userDetails.setFirstName("Checker");
 			userDetails.setLastName("TMB Center");
 			userDetails.setUserId("0006");
+			userDetails.setBranchCode("001");
 		}
 		UserDetails rs = new UserDetails(username, passwordEncoder.encode("password"),grantedAuthorityList	);
 		rs.setUserId(userDetails.getUserId());
@@ -104,6 +110,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		
 		UserDetails rs = new UserDetails(username, "" ,grantedAuthorityList	);
 		rs.setUserId(tMBPerson.getUserid());
+		rs.setBranchCode(tMBPerson.getBranchCode());
 		
 		String fullName = tMBPerson.getName(); // firstname , lastname
 		logger.debug("Full Name : {}", fullName); // TODO plz checked

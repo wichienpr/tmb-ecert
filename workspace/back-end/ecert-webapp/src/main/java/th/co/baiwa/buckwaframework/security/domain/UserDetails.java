@@ -16,6 +16,7 @@ public class UserDetails extends User implements UserBean {
 	private List<String> auths = new ArrayList<>();
 	private String firstName;
 	private String lastName;
+	private String branchCode;
 	
 	// Constructor
 	public UserDetails(String username, String password, boolean enabled,boolean accountNonExpired,
@@ -63,6 +64,14 @@ public class UserDetails extends User implements UserBean {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getBranchCode() {
+		return branchCode;
+	}
+
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
 	}
 
 }
