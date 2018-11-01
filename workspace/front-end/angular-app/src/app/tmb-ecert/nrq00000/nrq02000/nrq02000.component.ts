@@ -690,6 +690,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF เท่านั้น" });
             data.target.value = "";
             this.form.get('requestFile').patchValue("");
+          } else {
+            this.files[control] = data.target.files[0];
           }
         } else {
           if (fileExtension != ".pdf" && fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != "jpeg") {
