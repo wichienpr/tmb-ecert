@@ -197,7 +197,7 @@ public class Sup01000Service {
 			form.setStatus(0);
 		}
 		
-		List<RoleVo> roleList = userRoleDao.getRole(form);
+		List<RoleVo> roleList = userRoleDao.getRoleForExport(form);
 		
 		XSSFWorkbook workbook = excalService.setUpExcel();
 		CellStyle thStyle = excalService.bgLightBule;
