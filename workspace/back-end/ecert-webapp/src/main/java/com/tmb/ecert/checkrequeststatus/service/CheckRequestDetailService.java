@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ResponseVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentResponse;
@@ -150,11 +151,11 @@ public class CheckRequestDetailService {
 		return commonMsg;
 	}
 
-	public CommonMessage<String> approve(String reqFormId, UserDetails user) {
+	public CommonMessage<ResponseVo> approve(String reqFormId, UserDetails user) {
 		logger.info("CheckRequestDetailService::approve REQFORM_ID => {}", reqFormId);
 		Date currentDate = new Date();
 		Long id = Long.valueOf(reqFormId);
-		CommonMessage<String> response = new CommonMessage<String>();
+		CommonMessage<ResponseVo> response = new CommonMessage<ResponseVo>();
 		RequestForm newReq = new RequestForm();
 		try {
 			newReq = dao.findReqFormById(id, false);
@@ -183,23 +184,23 @@ public class CheckRequestDetailService {
 
 							} else {
 								response = handlerErrorReq(response, newReq, user);
-								response.setData(realtimeStep.getData().getDescription());
-								throw new Exception(response.getData());
+								response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
+								throw new Exception(response.getData().getMessage());
 							}
 						} else {
 							response = handlerErrorReq(response, newReq, user);
-							response.setData(dbdStep.getData().getDescription());
-							throw new Exception(response.getData());
+							response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
+							throw new Exception(response.getData().getMessage());
 						}
 					} else {
 						response = handlerErrorReq(response, newReq, user);
-						response.setData(approveStep.getData().getDescription());
-						throw new Exception(response.getData());
+						response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
+						throw new Exception(response.getData().getMessage());
 					}
 				} else {
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(tmbStep.getData().getDescription());
-					throw new Exception(response.getData());
+					response.setData(new ResponseVo(tmbStep.getData().getDescription(), tmbStep.getData().getStatusCode()));
+					throw new Exception(response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_DBD: // 10002
@@ -218,18 +219,18 @@ public class CheckRequestDetailService {
 
 						} else {
 							response = handlerErrorReq(response, newReq, user);
-							response.setData(realtimeStep.getData().getDescription());
-							throw new Exception(response.getData());
+							response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
+							throw new Exception(response.getData().getMessage());
 						}
 					} else {
 						response = handlerErrorReq(response, newReq, user);
-						response.setData(dbdStep.getData().getDescription());
-						throw new Exception(response.getData());
+						response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
+						throw new Exception(response.getData().getMessage());
 					}
 				} else {
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(approveStep.getData().getDescription());
-					throw new Exception(response.getData());
+					response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
+					throw new Exception(response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_TMB: // 10003
@@ -240,8 +241,8 @@ public class CheckRequestDetailService {
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 				} else {
 					response = handlerErrorReq(response, newReq, user);
-					response.setData(tmbOnlyStep.getData().getDescription());
-					throw new Exception(response.getData());
+					response.setData(new ResponseVo(tmbOnlyStep.getData().getDescription(), tmbOnlyStep.getData().getStatusCode()));
+					throw new Exception(response.getData().getMessage());
 				}
 				break;
 			case PAYMENT_STATUS.PAY_NONE: // 10004
@@ -276,7 +277,7 @@ public class CheckRequestDetailService {
 		hstDao.save(req);
 	}
 
-	private CommonMessage<String> handlerErrorReq(CommonMessage<String> msg, RequestForm req, UserDetails user) {
+	private CommonMessage<ResponseVo> handlerErrorReq(CommonMessage<ResponseVo> msg, RequestForm req, UserDetails user) {
 		req.setStatus(StatusConstant.PAYMENT_FAILED);
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
 		updateForm(req, user);
