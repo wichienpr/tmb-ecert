@@ -13,6 +13,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.ProjectConstant;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
+
 @Service
 @ConditionalOnProperty(name = "mail.gateway.host")
 public class MailGatewayService {
@@ -35,6 +39,12 @@ public class MailGatewayService {
 	 */
 	public MimeMessageHelper newMail() {
 		MimeMessage message = mailGateWaySender.createMimeMessage();
+		
+		String appHost = ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_HOST);
+		String appport = (ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_PORT));
+
+		mailGateWaySender.setHost(appHost);
+		mailGateWaySender.setPort(Integer.parseInt(appport));
 		MimeMessageHelper helper = null;
 		try {
 			helper = new MimeMessageHelper(message, true);
