@@ -99,7 +99,31 @@ public class UserRoleDao {
 	
 //		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup01000RowMapper);
 		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), sup01000RowMapper);
+		return list;
 		
+	}
+	
+	public List<RoleVo> getRoleForExport(Sup01100FormVo form){
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		List<RoleVo> list = new ArrayList<>();
+		
+		sql.append(" SELECT ROLE_ID,ROLE_NAME,STATUS FROM ECERT_ROLE WHERE 1 = 1 ");
+		
+		if (StringUtils.isNotBlank(form.getRoleName())) {
+			sql.append(" AND  ROLE_NAME LIKE ? ");
+			params.add("%"+StringUtils.trim(form.getRoleName())+"%");
+		}
+		if(!(form.getStatus() == 2)) {
+			sql.append(" AND  STATUS =  ? ");
+			params.add(form.getStatus());
+		}
+		
+//		sql.append(" ORDER BY CREATED_DATETIME ");
+	
+		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup01000RowMapper);
+//		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), sup01000RowMapper);
 		return list;
 		
 	}
