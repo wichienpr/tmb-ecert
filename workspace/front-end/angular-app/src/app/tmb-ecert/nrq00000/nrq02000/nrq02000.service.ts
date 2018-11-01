@@ -7,7 +7,7 @@ import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertifica
 import { AjaxService, ModalService, DropdownService, RequestFormService, CommonService } from "services/";
 import { Acc, Assigned, dateLocaleEN } from "helpers/";
 
-import { Nrq02000 } from "./nrq02000.model";
+import { Nrq02000, ResponseVo } from "./nrq02000.model";
 import { ROLES, REQ_STATUS } from "app/baiwa/common/constants";
 
 declare var $: any;
@@ -259,7 +259,7 @@ export class Nrq02000Service {
                 // color: "notification"
             }
             if (this.hasAuthed == "true") {
-                this.common.blockui(); // Loading page
+                this.common.isLoading(); // Loading page
                 const formData = this.bindingData(certificates, files, form, addons);
                 let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                 this.ajax.upload(url, formData, response => {
@@ -270,14 +270,14 @@ export class Nrq02000Service {
                             success: true
                         };
                         this.modal.alert(modal);
-                        this.common.unblockui(); // Loading page
+                        this.common.isLoaded(); // Loading page
                         this.router.navigate(['/crs/crs01000'], {
                             queryParams: { codeStatus: addons.status }
                         });
                     } else {
                         if (response.json().data && response.json().data == "NEEDLOGIN") {
                             this.authForSubmit();
-                            this.common.unblockui(); // Loading page
+                            this.common.isLoaded(); // Loading page
                             return;
                         }
                         let msg = "";
@@ -291,7 +291,7 @@ export class Nrq02000Service {
                             success: false
                         };
                         this.modal.alert(modal);
-                        this.common.unblockui(); // Loading page
+                        this.common.isLoaded(); // Loading page
                     }
                 }, err => {
                     console.error(err)
@@ -301,29 +301,36 @@ export class Nrq02000Service {
             }
             this.modal.confirm((e) => {
                 if (e) {
-                    this.common.blockui(); // Loading page
+                    this.common.isLoading(); // Loading page
                     const formData = this.bindingData(certificates, files, form, addons);
                     let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                     this.ajax.upload(url, formData, response => {
-                        if (response.json().message == "SUCCESS") {
+                        let data: ResponseVo = {
+                            data: "",
+                            message: ""
+                        };
+                        if (response) {
+                            data = response.json() as ResponseVo;
+                        }
+                        if (data.message == "SUCCESS") {
                             const modal: Modal = {
                                 msg: "บันทึกข้อมูลสำเร็จ",
                                 // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
                                 success: true
                             };
                             this.modal.alert(modal);
-                            this.common.unblockui(); // Loading page
+                            this.common.isLoaded(); // Loading page
                             this.router.navigate(['/crs/crs01000'], {
                                 queryParams: { codeStatus: addons.status }
                             });
                         } else {
-                            if (response.json().data && response.json().data == "NEEDLOGIN") {
+                            if (data.data && data.data == "NEEDLOGIN") {
                                 this.authForSubmit();
-                                this.common.unblockui(); // Loading page
+                                this.common.isLoaded(); // Loading page
                                 return;
                             }
                             let msg = "";
-                            if (response.json().data && response.json().data == "HASMAKER") {
+                            if (data.data && data.data == "HASMAKER") {
                                 msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
                             } else {
                                 msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
@@ -333,10 +340,17 @@ export class Nrq02000Service {
                                 success: false
                             };
                             this.modal.alert(modal);
-                            this.common.unblockui(); // Loading page
+                            this.common.isLoaded(); // Loading page
                         }
                     }, err => {
                         console.error(err)
+                        let msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                        const modal: Modal = {
+                            msg: msg,
+                            success: false
+                        };
+                        this.modal.alert(modal);
+                        this.common.isLoaded(); // Loading page
                     });
                 }
             }, modalConf);
@@ -393,11 +407,11 @@ export class Nrq02000Service {
     }
 
     pdf(form, dt, reqTypeChanged, reqDate): boolean {
-        this.common.blockui(); // Loading page
+        this.common.isLoading(); // Loading page
         let chkMsg = this.chkCertsC(reqTypeChanged, form);
         if ("" != chkMsg) {
             this.modal.alertWithAct({ msg: chkMsg });
-            this.common.unblockui(); // UnLoading page
+            this.common.isLoaded(); // UnLoading page
             return;
         }
         let modalAler: Modal = { msg: "", success: false }
@@ -409,13 +423,13 @@ export class Nrq02000Service {
                             modalAler.msg = ValidatorMessages[enu];
                             modalAler.success = false;
                             this.modal.alert(modalAler);
-                            this.common.unblockui(); // UnLoading page
+                            this.common.isLoaded(); // UnLoading page
                             return;
                         }
                     }
                 }
                 if (key != "requestFile" && key != "copyFile") {
-                    this.common.unblockui(); // UnLoading page
+                    this.common.isLoaded(); // UnLoading page
                     return;
                 }
             }
@@ -441,7 +455,7 @@ export class Nrq02000Service {
                 "box4": false
             };
             reqTypeChanged.forEach((obj, index) => {
-                
+
                 if (index != 0 && controls[`chk${index}`].value) {
                     if (obj.children) {
                         d.box2 = index == 1 || index == 2;
@@ -502,21 +516,23 @@ export class Nrq02000Service {
             this.reqService.getPdf(URL.CREATE_FORM, data, error => {
                 this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
             });
-            this.common.unblockui(); // UnLoading page
+            this.common.isLoaded(); // UnLoading page
             return true;
         } else {
-            this.common.unblockui(); // UnLoading page
+            this.common.isLoaded(); // UnLoading page
             return;
         }
     }
 
-    cancel(): void {
+    cancel(hasId: boolean = false): void {
         const modal: Modal = {
             msg: "ท่านต้องการยกเลิกส่งคำขอหรือไม่?"
         }
         this.modal.confirm(e => {
             if (e) {
-                this.lock(0);
+                if (hasId) {
+                    this.lock(0);
+                }
                 this.router.navigate(['/home']);
             }
         }, modal);
@@ -695,7 +711,7 @@ export class Nrq02000Service {
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther,
             hasAuthed: this.hasAuthed,
-            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : "",
+            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : "REQUESTOR",
             lockFlag: 0
         };
         console.log("data", data);
@@ -739,26 +755,8 @@ export enum ValidatorMessages {
     totalCerts = "กรุณาระบุจำนวนเอกสารรับรอง ที่ทำการยื่นคำขอ",
     selectSomeCerts = "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ",
     reqTypeSelect = "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ",
-    // customSegSelect = "customSegSelect",
-    // payMethodSelect = "payMethodSelect",
-    // subAccMethodSelect = "subAccMethodSelect",
-    // accNo = "accNo",
-    // accName = "accName",
-    // corpNo = "corpNo",
-    // corpName = "corpName",
-    // corpName1 = "corpName1",
-    // acceptNo = "acceptNo",
-    // departmentName = "departmentName",
-    // telReq = "telReq",
-    // address = "address",
-    // note = "note",
     requestFile = "กรุณาอัพโหลดใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝากเข้าสู่ระบบ",
     copyFile = "กรุณาอัพโหลดสำเนาบัตรประชาชน",
-    // changeNameFile = "changeNameFile",
-    // ref1 = "ref1",
-    // ref2 = "ref2",
-    // amountDbd = "amountDbd",
-    // amountTmb = "amountTmb",
 }
 
 interface Pdf {

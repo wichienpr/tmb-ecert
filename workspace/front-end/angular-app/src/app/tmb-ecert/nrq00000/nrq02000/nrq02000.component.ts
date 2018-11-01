@@ -35,7 +35,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   reqDate: Date;
   dropdownObj: any;
   submitted: boolean = false;
-  loading: boolean = false;
   saving: boolean = false;
   isdownload: boolean = false;
   showChildren: boolean = false;
@@ -373,7 +372,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   cancel() {
-    this.service.cancel();
+    this.service.cancel(this.data.reqFormId != 0);
   }
 
   rejectModal() {
@@ -396,7 +395,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   async reqTypeChange(e) {
-    this.loading = true;
+    this.common.isLoading();
     if (e != "") {
       this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
@@ -540,7 +539,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.toggleChk(1);
       this.form.controls[`chk1`].setValue(true);
       this.form.controls[`cer1`].setValue(1);
-      this.loading = false;
+      this.common.isLoaded();
     }, 1700);
   }
 

@@ -11,3 +11,13 @@ export interface Rejected {
     rejectReasonOther: string;
     for: string;
 }
+
+export interface ResponseVo {
+    message: string;
+    data: ResponseData;
+}
+
+export interface ResponseData {
+    message: string;
+    status: string;
+}
