@@ -145,14 +145,13 @@ export class Crs02000Service {
           if (response) {
             data = response.json() as ResponseVo;
           }
-          console.log("RESPONSE => ", data);
           if (data.message == "SUCCESS") {
             this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             this.router.navigate(['/crs/crs01000'], {
               queryParams: { codeStatus: "10009" }
             });
           } else {
-            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ => " + JSON.stringify(data.data) });
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
             this.router.navigate(['/crs/crs01000'], {
               queryParams: { codeStatus: "10008" }
             });

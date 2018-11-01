@@ -13,6 +13,7 @@ import { ROLES, REQ_STATUS } from "app/baiwa/common/constants";
 declare var $: any;
 
 const URL = {
+    CONFIRM: "/api/nrq/confirm",
     LOV_BY_TYPE: "/api/lov/type",
     CER_BY_TYPE: "/api/cer/typeCode",
     CER_BY_CODE: "/api/crs/crs02000/cert/list",
@@ -325,8 +326,8 @@ export class Nrq02000Service {
                             });
                         } else {
                             if (data.data && data.data == "NEEDLOGIN") {
-                                this.authForSubmit();
                                 this.common.isLoaded(); // Loading page
+                                this.authForSubmit();
                                 return;
                             }
                             let msg = "";
@@ -357,9 +358,23 @@ export class Nrq02000Service {
         }
     }
 
-    toAuthed() {
-        this.hasAuthed = "true";
-        return true;
+    toAuthed(user: any) {
+        const data = {
+            username: user.authUsername,
+            password: user.authPassword
+        }
+        return new Promise( resolve => {
+            this.ajax.post(URL.CONFIRM, data, response => {
+                let state = false;
+                if (response) {
+                    state = response.json() as boolean;
+                }
+                if (state) {
+                    this.hasAuthed = "true";
+                }
+                resolve(state);
+            })
+        });
     }
 
     getAccordion() {

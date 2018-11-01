@@ -6,7 +6,7 @@ import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, 
 import { Acc, digit, DecimalFormat } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
-import { CommonService } from 'app/baiwa/common/services';
+import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 
 @Component({
@@ -66,7 +66,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     private service: Nrq02000Service,
     private cdRef: ChangeDetectorRef,
     private store: Store<{}>,
-    private common: CommonService
+    private common: CommonService,
+    private modal: ModalService
   ) {
     this.reqTypeChanged = [];
     this.files = {
@@ -326,12 +327,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
   }
 
-  auth(e) {
+  async auth(e) {
     e.preventDefault();
     this.authSubmitted = true;
     if (this.formAuth.valid) {
-      if (this.service.toAuthed()) {
+      if (await this.service.toAuthed(this.formAuth.value)) {
         this.formSubmit(this.form);
+      } else {
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
       }
     }
   }
@@ -675,7 +678,33 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   changeUpload(control: string, data: any) {
-    this.files[control] = data.target.files[0];
+    if (data.target.files && data.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const { name, type } = data.target.files[0];
+        const fileName = name;
+        const fileExtension = fileName.substr(fileName.length - 4);
+        if (control == 'requestFile') {
+          if (fileExtension != ".pdf") {
+            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF เท่านั้น" });
+            data.target.value = "";
+            this.form.get('requestFile').patchValue("");
+          }
+        } else {
+          if (fileExtension != ".pdf" && fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != "jpeg") {
+            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF, PNG, JPG, JPEG เท่านั้น" });
+            data.target.value = "";
+            this.form.get(control).patchValue("");
+          } else {
+            this.files[control] = data.target.files[0];
+          }
+        }
+        
+      }
+
+      reader.readAsDataURL(data.target.files[0]);
+    }
   }
 
   amountFocus(control: string): void {
