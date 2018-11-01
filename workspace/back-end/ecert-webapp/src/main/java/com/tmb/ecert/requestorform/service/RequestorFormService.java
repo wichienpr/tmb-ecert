@@ -119,7 +119,7 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
-		String branchCode = "BRANCH_CODE";
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		String folder = PATH;
 		Long nextId = form.getReqFormId();
 
@@ -252,7 +252,7 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
-		String branchCode = "BRANCH_CODE";
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		String folder = PATH;
 
 		String requestFileName = "";
@@ -372,7 +372,7 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
-		String branchCode = "BRANCH_CODE";
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		try {
 			RequestForm req = new RequestForm();
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
