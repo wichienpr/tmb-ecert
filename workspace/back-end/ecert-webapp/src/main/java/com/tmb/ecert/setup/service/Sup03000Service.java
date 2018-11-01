@@ -28,6 +28,8 @@ public class Sup03000Service {
 		DataTableResponse<Sup03000Vo> list  = new DataTableResponse<>();
 		List<Sup03000Vo> sup03000Vo = emailDao.getEmailTemplate(form);
 		list.setData(sup03000Vo);
+		int count = emailDao.countEmailTemplate(form);
+		list.setRecordsTotal(count);
 		return list;
 	}
 

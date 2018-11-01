@@ -1,6 +1,7 @@
 package com.tmb.ecert.checkrequeststatus.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,8 +65,7 @@ public class UploadCertificateService {
 	@Autowired
 	private EmailService emailservice;
 
-	@Async
-	public void uploadEcertificate(Long certificateID, String userid) {
+	public void uploadEcertificate(Long certificateID, String userid) throws Exception{
 		String channelid = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHANNELID);
 		String docTyep = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_DOCTYPE);
 		int countftp = 0;
@@ -74,8 +74,8 @@ public class UploadCertificateService {
 		boolean statusUpload = false;
 		boolean statusCheck = false;
 		RequestForm reqVo = null;
-		try {
-			log.info(" START PROCESS UPLOAD CERTIFIACTE... ");
+//		try {
+			log.info(" START PROCESS UPLOAD CERTIFIACTE BY CERTIFICATE ID "+Long.toString(certificateID));
 			int timesleep = Integer.parseInt(
 					ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_SLEEP));
 			int timeLoop = Integer.parseInt(
@@ -153,19 +153,14 @@ public class UploadCertificateService {
 							} else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 								statusUpload = false;
 //								statusUpload[i] = false;
-								countCheckStatus++;
 							}else {
 								wsErrorDesc = checkStatusVo.getStatusCode()+" "+checkStatusVo.getDescription();
 								statusUpload = false;
 //									statusUpload[i] = false;
-								countCheckStatus++;
 							}
+							countCheckStatus++;
 						}
 					}
-					if(statusUpload) {
-						break;
-					}
-					
 
 				} else {
 					wsErrorDesc = "FTP FILE IMPORT DOCUMENT FAIL";
@@ -180,14 +175,14 @@ public class UploadCertificateService {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
-//				log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
+				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
 				throw new Exception(wsErrorDesc);
 			}
 
-		} catch (Exception e) {
-			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
-			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
-		}
+//		} catch (Exception e) {
+//			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
+//			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
+//		}
 
 	}
 
@@ -256,7 +251,7 @@ public class UploadCertificateService {
 		String endPoint = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHECK_STATUS);
 		RestTemplate restTemplate = new RestTemplate();
 		CheckStatusDocumentRequest checkReq = new CheckStatusDocumentRequest();
-		checkReq.setReqId(null);
+		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
 		checkReq.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));
