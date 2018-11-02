@@ -694,15 +694,19 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             this.files[control] = data.target.files[0];
           }
         } else {
-          if (fileExtension != ".pdf" && fileExtension != ".png" && fileExtension != ".jpg" && fileExtension != "jpeg") {
-            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF, PNG, JPG, JPEG เท่านั้น" });
+          if (
+            fileExtension != ".pdf" && fileExtension != ".png" &&
+            fileExtension != ".jpg" && fileExtension != "jpeg" &&
+            fileExtension != ".doc" && fileExtension != "docx"
+          ) {
+            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF, PNG, JPG, JPEG, DOC, DOCX เท่านั้น" });
             data.target.value = "";
             this.form.get(control).patchValue("");
           } else {
             this.files[control] = data.target.files[0];
           }
         }
-        
+
       }
 
       reader.readAsDataURL(data.target.files[0]);

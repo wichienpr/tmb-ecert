@@ -515,7 +515,7 @@
             <label class="half blue">อื่นๆ (ถ้ามี)</label>
           </div>
           <div class="five wide field" [ngClass]="{ 'hidden': onlyMaker||onlyChecker }">
-            <input type="file" accept="application/pdf, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)"
+            <input type="file" accept="application/pdf, application/msword, image/png, image/jpeg" (change)="changeUpload('changeNameFile', $event)"
               formControlName="changeNameFile">
           </div>
           <div class="two wide field">
