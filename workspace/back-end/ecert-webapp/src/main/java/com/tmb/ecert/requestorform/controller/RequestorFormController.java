@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 import com.tmb.ecert.requestorform.service.RequestGenKeyService;
 import com.tmb.ecert.requestorform.service.RequestorFormService;
 
@@ -32,6 +33,12 @@ public class RequestorFormController {
 	@ResponseBody
 	public String gerenateKeys() {
 		return generateKey.getNextKey();
+	}
+	
+	@PostMapping("/confirm")
+	@ResponseBody
+	public boolean confirm(@RequestBody ReqUser user) {
+		return reqService.confirmAD(user);
 	}
 	
 	@PostMapping("/lock")

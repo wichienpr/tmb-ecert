@@ -1,5 +1,6 @@
 package com.tmb.ecert.setup.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup03000Vo;
 import com.tmb.ecert.setup.vo.Sup03100Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DatatableSort;
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 
 @Repository
@@ -46,12 +48,46 @@ public class EmailTemplateDao {
 			sql.append(" AND  STATUS =  ? ");
 			params.add(form.getStatus());
 		}
-		sql.append(" ORDER BY EMAILCONFIG_ID ");
 		
-//		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), sup03000RowMapper);
+		if(!form.getSort().isEmpty()) {
+			sql.append( "ORDER BY ");
+			List<String> orders = new ArrayList<>();
+			for(DatatableSort item : form.getSort()) {
+				orders.add( item.getColumn() + " " + item.getOrder());
+			}
+			sql.append(StringUtils.join(orders,", "));
+		}else {
+			// default order
+			sql.append(" ORDER BY EMAILCONFIG_ID ");		
+		}
 		
-		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03000RowMapper);
+//		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03000RowMapper);
+		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), sup03000RowMapper);
+		
 		return list;
+
+	}
+	
+	public int countEmailTemplate(Sup03000Vo form) {
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+
+		sql.append(SELECT_EMAILTEMPLATE);
+
+		if (StringUtils.isNotBlank(form.getName())) {
+			sql.append(" AND  NAME LIKE ? ");
+			params.add("%"+StringUtils.trim(form.getName())+"%");
+			
+		}
+		if (!(form.getStatus() == 2)) {
+			sql.append(" AND  STATUS =  ? ");
+			params.add(form.getStatus());
+		}
+		
+//		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup03000RowMapper);
+		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class, params.toArray());
+		
+		return rs.intValue();
 
 	}
 

@@ -18,6 +18,7 @@ import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000FormVo;
 import com.tmb.ecert.batchmonitor.persistence.vo.Btm01000Vo;
 import com.tmb.ecert.common.constant.DateConstant;
 
+import th.co.baiwa.buckwaframework.common.bean.DatatableSort;
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 
@@ -40,11 +41,11 @@ public class BatchMonitoringDao {
 				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON A.STATUS = C.CODE  WHERE 1=1  ");
 		
 		if(StringUtils.isNotBlank(form.getDateFrom())) {
-			sql.append(" AND CAST( A.START_DATE as DATE) >= ? ");
+			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
 			params.add(form.getDateFrom());
 		}
 		if(StringUtils.isNotBlank(form.getDateTo())) {
-			sql.append("  AND CAST( A.START_DATE as DATE) <= ? ");
+			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
 			params.add(form.getDateTo());
 		}
 		if (StringUtils.isNotBlank(form.getBatchType())) {
@@ -55,7 +56,25 @@ public class BatchMonitoringDao {
 			sql.append(" AND A.STATUS = ? ");
 			params.add(form.getOperationType());
 		}
-		sql.append(" ORDER BY A.START_DATE ");
+		
+		if(!form.getSort().isEmpty()) {
+			sql.append( "ORDER BY ");
+			List<String> orders = new ArrayList<>();
+			for(DatatableSort item : form.getSort()) {
+				if ("NAME".equals(item.getColumn())) {
+					orders.add("B." + item.getColumn() + " " + item.getOrder());
+				}else {
+					orders.add("A." + item.getColumn() + " " + item.getOrder());
+				}
+
+			}
+			sql.append(StringUtils.join(orders,", "));
+		}else {
+			// default order
+			sql.append(" ORDER BY A.START_DATE ");		
+		}
+		
+//		sql.append(" ORDER BY A.START_DATE ");
 		
 		list = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), form.getStart(), form.getLength()), params.toArray(), btm01000RowMapper);
 		
@@ -74,11 +93,11 @@ public class BatchMonitoringDao {
 				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON A.STATUS = C.CODE  WHERE 1=1  ");
 		
 		if(StringUtils.isNotBlank(form.getDateFrom())) {
-			sql.append(" AND CAST( A.START_DATE as DATE) >= ? ");
+			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
 			params.add(form.getDateFrom());
 		}
 		if(StringUtils.isNotBlank(form.getDateTo())) {
-			sql.append("  AND CAST( A.START_DATE as DATE) <= ? ");
+			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
 			params.add(form.getDateTo());
 		}
 		if (StringUtils.isNotBlank(form.getBatchType())) {
@@ -106,14 +125,14 @@ public class BatchMonitoringDao {
 //			vo.setStartDate(DateFormatUtils.format(rs.getTimestamp("START_DATE"), "dd/MM/yyyy HH:mm:SS"));
 //			vo.setStartDate(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("START_DATE")));
 			vo.setStartDate(EcerDateUtils.formatLogDate(rs.getTimestamp("START_DATE")));
-			vo.setStopDate(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("STOP_DATE")));
-			vo.setEndofdate(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("ENDOFDATE")));
+			vo.setStopDate(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getTimestamp("STOP_DATE")));
+			vo.setEndofdate(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getTimestamp("ENDOFDATE")));
 			vo.setStatus(rs.getString("STATUS"));
 			vo.setErrorDesc(rs.getString("ERROR_DESC"));
 			vo.setRerunNumber(rs.getInt("RERUN_NUMBER"));
 			vo.setRerunById(rs.getString("RERUN_BY_ID"));
 			vo.setRerunByName(rs.getString("RERUN_BY_NAME"));
-			vo.setRerunDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getDate("RERUN_DATETIME")));
+			vo.setRerunDatetime(DateConstant.convertDateToStrDDMMYYYYHHmm(rs.getTimestamp("RERUN_DATETIME")));
 			vo.setStatusDesc(rs.getString("STATUS_DESC"));
 			vo.setJobtypeName(rs.getString("JOBTYPE_NAME"));
 			

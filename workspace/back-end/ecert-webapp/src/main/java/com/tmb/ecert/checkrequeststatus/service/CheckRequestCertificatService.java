@@ -85,7 +85,8 @@ public class CheckRequestCertificatService {
 			}
 			return msg;
 		} catch (Exception e) {
-			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
+//			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_UPLOADCERTIFICATE, e.toString());
 			e.printStackTrace();
 			msg.setMessage("Error");
 		}finally {

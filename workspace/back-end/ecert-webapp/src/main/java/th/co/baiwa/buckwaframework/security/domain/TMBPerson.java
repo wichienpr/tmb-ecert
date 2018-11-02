@@ -11,6 +11,7 @@ public class TMBPerson implements Serializable {
     private String userid;
     private String name;
     private String group;
+	private String branchCode;
     private List<String> memberOfs;//memberO
 
     public String getUserid() {
@@ -73,6 +74,14 @@ public class TMBPerson implements Serializable {
 	public String toString() {
 		return "TMBPerson [useranme=" + useranme + ", password=" + password + ", tmbcn=" + tmbcn + ", userid=" + userid
 				+ ", name=" + name + ", group=" + group + ", memberOfs=" + memberOfs + "]";
+	}
+
+	public String getBranchCode() {
+		return branchCode;
+	}
+
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
 	}
     
     

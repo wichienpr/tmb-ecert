@@ -34,11 +34,8 @@ public class MailGatewayConfig {
 	public JavaMailSenderImpl mailGateWaySender(){
 		JavaMailSenderImpl m = new JavaMailSenderImpl();
 		
-		String appHost = ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_HOST);
-		String appport = ApplicationCache.getParamValueByName(ProjectConstant.EMAIL_SERVICE.EMAIL_GATEWAY_PORT);
-		
-		m.setHost(host);
-		m.setPort(pot);
+//		m.setHost(appHost);
+//		m.setPort(Integer.parseInt(appport));
 		m.setUsername(username);
 		m.setPassword(password);
 		m.setProtocol("smtp");

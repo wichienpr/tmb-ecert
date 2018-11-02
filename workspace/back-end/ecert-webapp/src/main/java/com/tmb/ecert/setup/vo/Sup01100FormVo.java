@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.tmb.ecert.common.domain.RoleVo;
 
-public class Sup01100FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Sup01100FormVo  extends DatatableRequest {
 	private Long roleId;
 	private String roleName;
 	private int status;

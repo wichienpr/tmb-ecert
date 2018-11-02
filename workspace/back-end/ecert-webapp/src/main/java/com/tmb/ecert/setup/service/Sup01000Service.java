@@ -167,6 +167,8 @@ public class Sup01000Service {
 		DataTableResponse<RoleVo> list  = new DataTableResponse<>();
 		List<RoleVo> sup01000Vo = userRoleDao.getRole(form);
 		list.setData(sup01000Vo);
+		int count = userRoleDao.countRole(form);
+		list.setRecordsTotal(count);
 		return list;
 
 	}
@@ -195,7 +197,7 @@ public class Sup01000Service {
 			form.setStatus(0);
 		}
 		
-		List<RoleVo> roleList = userRoleDao.getRole(form);
+		List<RoleVo> roleList = userRoleDao.getRoleForExport(form);
 		
 		XSSFWorkbook workbook = excalService.setUpExcel();
 		CellStyle thStyle = excalService.bgLightBule;

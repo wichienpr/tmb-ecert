@@ -37,6 +37,7 @@ import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
@@ -118,9 +119,10 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		String folder = PATH;
 		Long nextId = form.getReqFormId();
-
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		String requestFileName = form.getRequestFileName();
 		String copyFile = form.getCopyFileName();
 		String changeNameFile = form.getChangeNameFileName();
@@ -158,9 +160,8 @@ public class RequestorFormService {
 				req.setTmbRequestNo(form.getTmbReqFormNo());
 				req.setAccountType(form.getAccountType());
 				req.setAddress(form.getAddress());
-				req.setBranch("");
+				req.setPaymentBranchCode(branchCode);
 				req.setCaNumber(form.getAcceptNo());
-				req.setCertificateFile("");
 				req.setCerTypeCode(form.getReqTypeSelect());
 				req.setChangeNameFile(changeNameFile);
 				req.setStatus(form.getStatus());
@@ -176,6 +177,7 @@ public class RequestorFormService {
 				if ("MAKER".equals(form.getUserStatus())) {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
+					req.setPaymentDate(timestamp);
 				}
 				req.setUpdatedById(userId);
 				req.setUpdatedByName(userName);
@@ -251,6 +253,7 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		String folder = PATH;
 
 		String requestFileName = "";
@@ -286,9 +289,8 @@ public class RequestorFormService {
 				req.setTmbRequestNo(form.getTmbReqFormNo());
 				req.setAccountType(form.getAccountType());
 				req.setAddress(form.getAddress());
-				req.setBranch("");
+				req.setPaymentBranchCode(branchCode);
 				req.setCaNumber(form.getAcceptNo());
-				req.setCertificateFile("");
 				req.setCerTypeCode(form.getReqTypeSelect());
 				req.setChangeNameFile(BeanUtils.isNotEmpty(form.getChangeNameFile()) ? changeNameFile : null);
 				req.setTranCode(form.getTranCode());
@@ -303,8 +305,6 @@ public class RequestorFormService {
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
 				req.setIdCardFile(BeanUtils.isNotEmpty(form.getCopyFile()) ? copyFile : null);
-				req.setMakerById(userId);
-				req.setMakerByName(userName);
 				req.setOrganizeId(form.getCorpNo());
 				req.setPaidTypeCode(form.getPayMethodSelect());
 				req.setRequestDate(timestamp);
@@ -373,39 +373,17 @@ public class RequestorFormService {
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());
+		String branchCode = UserLoginUtils.getCurrentUserLogin().getBranchCode();
 		try {
 			RequestForm req = new RequestForm();
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			req.setAccountName(null);
-			req.setAccountNo(null);
 			req.setTmbRequestNo(reqTmbNo);
-			req.setAccountType(null);
-			req.setAddress(null);
-			req.setBranch(null);
-			req.setCaNumber(null);
-			req.setCertificateFile(null);
-			req.setCerTypeCode(null);
-			req.setChangeNameFile(null);
-			req.setCompanyName(null);
 			req.setCreatedById(userId);
 			req.setCreatedByName(userName);
 			req.setCreatedDateTime(timestamp);
-			req.setCustomerName(null);
-			req.setCustomerNameReceipt(null);
-			req.setCustsegmentCode(null);
-			req.setDebitAccountType(null);
-			req.setDepartment(null);
-			req.setGlType(null);
-			req.setIdCardFile(null);
-			req.setMakerById(null);
-			req.setMakerByName(null);
-			req.setOrganizeId(null);
-			req.setPaidTypeCode(null);
 			req.setRequestDate(timestamp);
-			req.setRequestFormFile(null);
+			req.setPaymentBranchCode(branchCode);
 			req.setStatus("10011");
-			req.setRemark(null);
-			req.setTelephone(null);
 			req.setLockFlag(0);
 			req.setDeleteFlag(0);
 			dao.save(req); // SAVE REQUEST FORM
@@ -428,6 +406,14 @@ public class RequestorFormService {
 		Long reqFormId = Long.valueOf(id);
 		RequestForm reqForm = daoCrs.findReqFormById(reqFormId);
 		return reqForm;
+	}
+	
+	public boolean confirmAD(ReqUser user) {
+		if ("admin".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

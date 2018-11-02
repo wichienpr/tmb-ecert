@@ -15,12 +15,14 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.tmb.ecert.batchjob.job.FeepaymentAutoRetryBatchJob;
+import com.tmb.ecert.batchjob.service.FeepaymentAutoRetryBatchService;
 
 @Configuration
 @ConditionalOnProperty(name="job.autoRetryFeePayment.cornexpression" , havingValue="" ,matchIfMissing=false)
@@ -29,8 +31,8 @@ public class FeepaymentAutoRetryBatchConfig {
 	
 	private static final Logger log = LoggerFactory.getLogger(FeepaymentAutoRetryBatchConfig.class);
 
-//	@Autowired
-//	private FeepaymentAutoRetryBatchConfig feepaymentAutoRetryBatchConfig;
+	@Autowired
+	private FeepaymentAutoRetryBatchService feepaymentAutoRetryBatchService;
 	
 	@Value("${job.autoRetryFeePayment.cornexpression}")
 	private String cronExpressions;
@@ -49,7 +51,7 @@ public class FeepaymentAutoRetryBatchConfig {
 	@Bean("feepaymentAutoRetryBatchConfigJobDetail")
 	public JobDetail feepaymentAutoRetryBatchConfigJobDetail() {
 		JobDataMap newJobDataMap = new JobDataMap();
-//		newJobDataMap.put("adjLogsJobService", adjLogsJobService);
+		newJobDataMap.put("feepaymentAutoRetryBatchService", feepaymentAutoRetryBatchService);
 		JobDetail job = JobBuilder.newJob(FeepaymentAutoRetryBatchJob.class)
 			      .withIdentity("backuplog", "group1") // name "myJob", group "group1"
 			      .usingJobData(newJobDataMap)

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ResponseVo;
 import com.tmb.ecert.checkrequeststatus.service.CheckRequestDetailService;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
@@ -66,7 +67,7 @@ public class CheckRequestDetailController {
 	
 	@GetMapping("cert/approve/{reqFormId}")
 	@ResponseBody
-	public CommonMessage<String> approve(@PathVariable("reqFormId") String reqFormId) {
+	public CommonMessage<ResponseVo> approve(@PathVariable("reqFormId") String reqFormId) {
 		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin());
 	}
 	

@@ -57,6 +57,7 @@ public class TmbAuthenticationProvider  implements AuthenticationProvider {
 			user = userDetailsService.loadUserByUsername(username, tmb);
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new BadCredentialsException(e.getMessage());
 		}
 		
