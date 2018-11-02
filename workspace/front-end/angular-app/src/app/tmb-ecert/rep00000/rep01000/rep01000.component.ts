@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AjaxService } from 'app/baiwa/common/services/ajax.service';
-import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Rep01000Service } from './rep01000.service';
 import { Certificate } from 'models/';
 import { isValid } from 'app/baiwa/common/helpers';
+
 declare var $: any;
+
 const URL = {
-  export:"/api/rep/rep01000/exportFile"
+  export: "/api/rep/rep01000/exportFile"
 }
+
 @Component({
   selector: 'app-rep01000',
   templateUrl: './rep01000.component.html',
@@ -17,14 +19,13 @@ const URL = {
   providers: [Rep01000Service]
 })
 export class Rep01000Component implements OnInit {
-  showData: boolean = false; 
-  dataT: any[]= [];
+  showData: boolean = false;
+  dataT: any[] = [];
   loading: boolean = false;
 
   dropdownObj: any;
   reqTypeChanged: Certificate[];
   paidTypeChanged: Certificate[];
-
 
   calendar1: Calendar;
   calendar2: Calendar;
@@ -33,7 +34,7 @@ export class Rep01000Component implements OnInit {
   constructor(
     private ajax: AjaxService,
     private service: Rep01000Service
-  ) { 
+  ) {
     this.dropdownObj = this.service.getDropdownObj();
     this.service.getForm().subscribe(form => {
       this.form = form
@@ -64,65 +65,57 @@ export class Rep01000Component implements OnInit {
     };
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
-  calendarValue(name,e) {
+  calendarValue(name, e) {
     this.form.controls[name].setValue(e);
     console.log(this.form);
     console.log(this.form.controls[name].value);
-    
   }
   reqTypeChange(e) {
-    console.log("requestTypeCode : ",e);
-      this.reqTypeChanged = e;
+    console.log("requestTypeCode : ", e);
+    this.reqTypeChanged = e;
   }
   paidTypeChange(e) {
-    console.log("requestTypeCode : ",e);
-      this.paidTypeChanged = e;
+    console.log("requestTypeCode : ", e);
+    this.paidTypeChanged = e;
   }
 
-
-  getData=()=>{
-    console.log(this.form);
+  getData() {
     this.loading = true;
-    this.dataT=[];
+    this.dataT = [];
     const URL = "/api/rep/rep01000/list";
-    this.ajax.post(URL,{
-      dateForm: this.form.controls.dateForm.value,
-      dateTo: this.form.controls.dateTo.value,
-      organizeId: this.form.controls.corpNo.value,
-      companyName: this.form.controls.corpName.value,
-      requestTypeCode:this.reqTypeChanged,
-      paidtypeCode:this.paidTypeChanged
-      
-    },async res => {
+    this.ajax.post(URL, {
+      dateForm: this.form.get('dateForm').value,
+      dateTo: this.form.get('dateTo').value,
+      organizeId: this.form.get('corpNo').value,
+      companyName: this.form.get('corpName').value,
+      requestTypeCode: this.reqTypeChanged,
+      paidtypeCode: this.paidTypeChanged
+    }, async res => {
       const data = await res.json();
-      
       setTimeout(() => {
         this.loading = false;
-      },200);
+      }, 200);
       data.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data s",this.dataT);
+      console.log("getData True : Data s", this.dataT);
     });
   }
 
-
   searchData(): void {
-    if(this.form.valid){
-    console.log("searchData True");
-        this.showData = true;
-        this.getData();
-    }else{
+    if (this.form.valid) {
+      console.log("searchData True");
+      this.showData = true;
+      this.getData();
+    } else {
       console.log("searchData False");
     }
-   
   }
-  
+
   clearData(): void {
     console.log("clearData");
     this.form.reset();
@@ -131,23 +124,22 @@ export class Rep01000Component implements OnInit {
     this.showData = false;
   }
 
-  exportFile=()=>{
+  exportFile = () => {
     console.log("exportFile");
     let param = "";
-    param+="?dateForm="+this.form.controls.dateForm.value;
-    param+="&dateTo="+this.form.controls.dateTo.value;
+    param += "?dateForm=" + this.form.controls.dateForm.value;
+    param += "&dateTo=" + this.form.controls.dateTo.value;
 
-    (this.form.controls.corpNo.value!=null)?param+="&organizeId="+this.form.controls.corpNo.value:"";
-    (this.form.controls.corpName.value!=null)?param+="&companyName="+this.form.controls.corpName.value:"";
+    (this.form.controls.corpNo.value != null) ? param += "&organizeId=" + this.form.controls.corpNo.value : "";
+    (this.form.controls.corpName.value != null) ? param += "&companyName=" + this.form.controls.corpName.value : "";
 
-    (this.reqTypeChanged!=null)?param+="&requestTypeCode="+this.reqTypeChanged:"";
-    (this.paidTypeChanged!=null)?param+="&paidtypeCode="+this.paidTypeChanged:"";
+    (this.reqTypeChanged != null) ? param += "&requestTypeCode=" + this.reqTypeChanged : "";
+    (this.paidTypeChanged != null) ? param += "&paidtypeCode=" + this.paidTypeChanged : "";
 
-    this.ajax.download(URL.export+param);
+    this.ajax.download(URL.export + param);
   }
 
-  validate(input: string, submitted: boolean) {
-    return isValid(this.form, input, submitted);
-  }
- 
+  invalid(input: string, submitted: boolean) { !isValid(this.form, input, submitted) }
+  onlyNumber(event) { event.charCode >= 48 && event.charCode <= 57 }
+
 }

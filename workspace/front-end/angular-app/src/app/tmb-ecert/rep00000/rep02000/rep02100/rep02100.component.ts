@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Rep02100Service } from 'app/tmb-ecert/rep00000/rep02000/rep02100/rep02100.service';
-import { NgForm, FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { AjaxService } from "services/";
+import { Rep02100 } from './rep02100.model';
 
-declare var $: any;
 @Component({
   selector: 'app-rep02100',
   templateUrl: './rep02100.component.html',
@@ -16,35 +15,33 @@ export class Rep02100Component implements OnInit {
 
   showData: boolean = false;
   form: FormGroup;
-  dataT: any[]= [];
+  dataT: Rep02100[] = [];
   loading: boolean = false;
 
-  constructor(  private route: ActivatedRoute,
-                private router: Router,
-                private service:Rep02100Service,
-                private ajax:AjaxService ) {
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private service: Rep02100Service,
+    private ajax: AjaxService) {
 
-                  this.service.getForm().subscribe(form => {
-                    this.form = form
-                  });
+    this.service.getForm().subscribe(form => {
+      this.form = form
+    });
 
-                 }
+  }
 
   ngOnInit() {
     let custsegmentCode = this.route.snapshot.queryParams["custsegmentCode"];
-      this.form.controls[`custsegmentCode`].setValue(custsegmentCode); 
-
+    this.form.controls[`custsegmentCode`].setValue(custsegmentCode);
     let dForm = this.route.snapshot.queryParams["dateForm"];
     let dTo = this.route.snapshot.queryParams["dateTo"];
-    if(dForm!=""||dTo!=""){
-      this.form.controls[`dateForm`].setValue(dForm); 
-      this.form.controls[`dateTo`].setValue(dTo); 
+    if (dForm != "" || dTo != "") {
+      this.form.controls[`dateForm`].setValue(dForm);
+      this.form.controls[`dateTo`].setValue(dTo);
       this.searchData();
     }
-
-    console.log("form : ",this.form);
     this.getData();
   }
+
   ngAfterViewInit() { }
 
   searchData(): void {
@@ -54,35 +51,33 @@ export class Rep02100Component implements OnInit {
   clearData(): void {
     this.showData = false;
   }
-  getData=()=>{
-    console.log(this.form); 
+
+  getData() {
     this.loading = true;
-    this.dataT=[];
+    this.dataT = [];
     const URL = "/api/rep/rep02100/list";
-    this.ajax.post(URL,{
+    this.ajax.post(URL, {
       custsegmentCode: this.form.controls.custsegmentCode.value,
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value
-     
-      
-    },async res => {
-      const data = await res.json();
-     
+    }, res => {
+      const data = res.json() as Rep02100[];
       setTimeout(() => {
         this.loading = false;
-      },200);
+      }, 200);
       data.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data s",this.dataT);
-    });
-  }
-  clickBack=()=>{
-    this.router.navigate(['/rep/rep02000'], {
-      queryParams: {  dateForm:this.form.controls.dateForm.value,
-                      dateTo:this.form.controls.dateTo.value}
     });
   }
 
+  clickBack() {
+    this.router.navigate(['/rep/rep02000'], {
+      queryParams: {
+        dateForm: this.form.controls.dateForm.value,
+        dateTo: this.form.controls.dateTo.value
+      }
+    });
+  }
 
 }

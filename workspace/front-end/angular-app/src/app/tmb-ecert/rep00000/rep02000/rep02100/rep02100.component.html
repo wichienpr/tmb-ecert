@@ -39,7 +39,8 @@
                             <td style="text-align: center !important;">{{data.organizeId}}</td>
                             <td style="text-align: left   !important;">{{data.companyName}}</td>
                             <td style="text-align: center !important;">{{data.status}}</td>
-                            <td style="text-align: center !important;">{{data.remark}}</td>
+                            <td style="text-align: center !important;">{{data.reason == 'อื่นๆ' ? data.reasonOther :
+                                data.reason}}</td>
                         </tr>
                     </tbody>
                 </table>
