@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.dao.FeepaymentAutoRetryBatchDao;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ResponseVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ApproveBeforePayResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FeePaymentResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.RealtimePaymentResponse;
@@ -31,7 +32,7 @@ public class FeepaymentAutoRetryBatchService {
 
 	@Autowired
 	private FeepaymentAutoRetryBatchDao dao;
-	
+
 	@Autowired
 	private RequestHistoryDao history;
 
@@ -42,24 +43,25 @@ public class FeepaymentAutoRetryBatchService {
 		}
 	}
 
-	public CommonMessage<String> retry(RequestForm newReq) {
-		CommonMessage<String> response = new CommonMessage<String>();
+	public CommonMessage<ResponseVo> retry(RequestForm newReq) {
+		CommonMessage<ResponseVo> response = new CommonMessage<ResponseVo>();
 		try {
 			if (newReq.getCountPayment() <= 3) {
 				response = switchPayment(response, newReq);
 			} else {
-				CommonMessage<FeePaymentResponse> tmbOnlyStep = paymentWs.feePaymentDBDBatch(newReq);
-				if (isSuccess(tmbOnlyStep.getMessage())) {
-					
+				CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
+				if (isSuccess(dbdStep.getMessage())) {
+
 					newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-					dao.updateRequesstForm(newReq);
+					dao.updateRequestForm(newReq);
 					history.save(newReq);
-					
+
 				} else {
 					newReq.setPaymentStatus("DBDF");
+					response.setData(new ResponseVo(dbdStep.getData().getDescription(),
+							dbdStep.getData().getStatusCode()));
 					response = handlerErrorReq(response, newReq);
-					response.setData(tmbOnlyStep.getData().getDescription());
 					throw new Exception("DBD => " + response.getData());
 				}
 			}
@@ -73,96 +75,49 @@ public class FeepaymentAutoRetryBatchService {
 		return response;
 	}
 
-	private CommonMessage<String> switchPayment(CommonMessage<String> response, RequestForm newReq) throws Exception {
-		switch (newReq.getPaidTypeCode()) {
-		case PAYMENT_STATUS.PAY_TMB_DBD: // 10001
-			CommonMessage<FeePaymentResponse> tmbStep = paymentWs.feePaymentTMBBatch(newReq);
-			if (isSuccess(tmbStep.getMessage())) {
-
-				CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePaymentBatch(newReq);
-				if (isSuccess(approveStep.getMessage())) {
-
-					CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBDBatch(newReq);
-					if (isSuccess(dbdStep.getMessage())) {
-
-						CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePaymentBatch(newReq);
-						if (isSuccess(realtimeStep.getMessage())) {
-
-							newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-							dao.updateRequesstForm(newReq);
-							history.save(newReq);
-
-						} else {
-							newReq.setPaymentStatus("DBDF");
-							response = handlerErrorReq(response, newReq);
-							response.setData(realtimeStep.getData().getDescription());
-							throw new Exception("REALTIME => " + response.getData());
-						}
-					} else {
-						response = handlerErrorReq(response, newReq);
-						response.setData(dbdStep.getData().getDescription());
-						throw new Exception("DBD => " + response.getData());
-					}
-				} else {
-					response = handlerErrorReq(response, newReq);
-					response.setData(approveStep.getData().getDescription());
-					throw new Exception("APPROVE => " + response.getData());
-				}
-			} else {
-				response = handlerErrorReq(response, newReq);
-				response.setData(tmbStep.getData().getDescription());
-				throw new Exception("TMB => " + response.getData());
-			}
-			break;
-		case PAYMENT_STATUS.PAY_DBD: // 10002
-			CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePaymentBatch(newReq);
+	private CommonMessage<ResponseVo> switchPayment(CommonMessage<ResponseVo> response, RequestForm newReq)
+			throws Exception {
+		if (PAYMENT_STATUS.PAY_NONE.equalsIgnoreCase(newReq.getPaidTypeCode())) {
+			newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
+			response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
+			dao.updateRequestForm(newReq);
+			history.save(newReq);
+		} else {
+			CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePayment(newReq);
 			if (isSuccess(approveStep.getMessage())) {
 
-				CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBDBatch(newReq);
+				CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
 				if (isSuccess(dbdStep.getMessage())) {
 
-					CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePaymentBatch(newReq);
+					// UUID => TransactionNo
+					newReq.setUuid(dbdStep.getData().getUuid());
+
+					CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
 					if (isSuccess(realtimeStep.getMessage())) {
 
 						newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 						response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-						dao.updateRequesstForm(newReq);
+						dao.updateRequestForm(newReq);
 						history.save(newReq);
 
 					} else {
-						newReq.setPaymentStatus("DBDF");
+						response.setData(new ResponseVo(realtimeStep.getData().getDescription(),
+								realtimeStep.getData().getStatusCode()));
 						response = handlerErrorReq(response, newReq);
-						response.setData(realtimeStep.getData().getDescription());
-						throw new Exception("REALTIME => " + response.getData());
+						throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 					}
 				} else {
+					response.setData(
+							new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
 					response = handlerErrorReq(response, newReq);
-					response.setData(dbdStep.getData().getDescription());
-					throw new Exception("DBD => " + response.getData());
+					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 			} else {
+				response.setData(
+						new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
 				response = handlerErrorReq(response, newReq);
-				response.setData(approveStep.getData().getDescription());
-				throw new Exception("APPROVE => " + response.getData());
+				throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 			}
-			break;
-		case PAYMENT_STATUS.PAY_TMB: // 10003
-			CommonMessage<FeePaymentResponse> tmbOnlyStep = paymentWs.feePaymentDBDBatch(newReq);
-			if (isSuccess(tmbOnlyStep.getMessage())) {
-
-				newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-				response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-				dao.updateRequesstForm(newReq);
-				history.save(newReq);
-				
-			} else {
-				newReq.setPaymentStatus("DBDF");
-				response = handlerErrorReq(response, newReq);
-				response.setData(tmbOnlyStep.getData().getDescription());
-				throw new Exception("DBD => " + response.getData());
-			}
-			break;
 		}
 		return response;
 	}
@@ -171,14 +126,14 @@ public class FeepaymentAutoRetryBatchService {
 		return PAYMENT_STATUS.SUCCESS_MSG.equals(value);
 	}
 
-	private CommonMessage<String> handlerErrorReq(CommonMessage<String> msg, RequestForm req) {
+	private CommonMessage<ResponseVo> handlerErrorReq(CommonMessage<ResponseVo> msg, RequestForm req) {
 		int count = 0;
 		if (req.getCountPayment() != null) {
 			count = req.getCountPayment();
 		}
-		req.setCountPayment(count+1);
+		req.setCountPayment(count + 1);
 		req.setStatus(StatusConstant.PAYMENT_FAILED);
-		dao.updateRequesstForm(req);
+		dao.updateRequestForm(req);
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
 		return msg;
 	}

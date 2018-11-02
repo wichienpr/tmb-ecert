@@ -27,7 +27,7 @@ public class FeepaymentAutoRetryBatchDao {
 		return jdbcTemplate.query(sql.toString(), new Object[]{ status }, formMapping);
 	}
 	
-	public void updateRequesstForm(RequestForm vo) {
+	public void updateRequestForm(RequestForm vo) {
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
 		sql.append(" CERTYPE_CODE=?,ORGANIZE_ID=?,CUSTOMER_NAME=?,COMPANY_NAME=?,");
 		sql.append("BRANCH=?,CUSTSEGMENT_CODE=?,CA_NUMBER=?,DEPARTMENT=?,PAIDTYPE_CODE=?,");
