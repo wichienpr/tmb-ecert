@@ -6,6 +6,16 @@ public class FeePaymentResponse {
 	private String postedTime;
 	private String statusCode;
 	private String description;
+	
+	private String uuid;
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 	public String getPostedDate() {
 		return postedDate;

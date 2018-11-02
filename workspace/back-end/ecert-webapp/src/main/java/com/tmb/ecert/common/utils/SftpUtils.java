@@ -153,4 +153,75 @@ public class SftpUtils {
 		return isSuccess;
 	}
 	
+	public static boolean putFile(SftpVo vo, String dir) {
+
+		Session session = null;
+		Channel channel = null;
+		ChannelSftp channelSftp = null;
+		OutputStream outputStream = null;
+		InputStream inputStream = null;
+		boolean isSuccess = true;
+		try {
+			Security.insertProviderAt(new BouncyCastleProvider(), 1);
+			
+			JSch jsch = new JSch();
+			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
+			session.setPassword(vo.getPassword());
+			Properties config = new Properties();
+			config.put("StrictHostKeyChecking", "no");
+			session.setConfig(config);
+			session.connect();
+			log.info("Host Session connected");
+			
+			channel = session.openChannel("sftp");
+			channel.connect();
+			log.info("Channel connected");
+			
+			channelSftp = (ChannelSftp) channel;
+			
+			channelSftp.mkdir(dir);
+			
+			for (SftpFileVo file : vo.getPutFiles()) {
+				channelSftp.cd(file.getPath());
+				inputStream = new FileInputStream(file.getFile());
+				channelSftp.put(inputStream, file.getFileName());
+				log.info("Put file FileName : {} Completed ", file.getFileName());
+			}
+		} catch (Exception e) {
+			log.error("exception in putFile : {}", e);
+			vo.setErrorMessage(e.getMessage());
+			isSuccess = false;
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					log.error("exception close inputStream ", e.getMessage());
+					isSuccess = false;
+				}
+			}
+			
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					log.error("exception close outputStream ", e.getMessage());
+					isSuccess = false;
+				}
+				
+			}
+			
+			if (channelSftp != null) {
+				channelSftp.exit();
+				log.debug("sftp Channel exited");
+				channel.disconnect();
+				log.info("Channel disconnected");
+				session.disconnect();
+				log.info("Host Session disconnected");
+			}
+		}
+
+		return isSuccess;
+	}
+	
 }

@@ -407,11 +407,13 @@ public class RepDao {
 				
 				    sql.append(" SELECT a.*,b.NAME AS CERTYPE_DESC, ");
 					sql.append(" c.NAME AS CUSTSEGMENT_DESC, ");  
-					sql.append(" d.NAME AS STATUS_DESC ");   
+					sql.append(" d.NAME AS STATUS_DESC, ");
+					sql.append(" e.NAME AS REASON_DESC ");
 					sql.append(" FROM ECERT_REQUEST_FORM a ");
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE ");
 					sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.STATUS = d.CODE "); 
+					sql.append(" LEFT JOIN ECERT_LISTOFVALUE e on a.REJECTREASON_CODE = e.CODE "); 
 					sql.append(" WHERE a.DELETE_FLAG = 0 and (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008') ");
 					
 				if (StringUtils.isNotBlank(formVo.getCustsegmentCode())) {
@@ -431,7 +433,6 @@ public class RepDao {
 					params.add(date);
 					params.add(date);
 				}
-				
 		
 				sql.append(" ORDER BY a.REQUEST_DATE DESC ");
 				
@@ -446,10 +447,8 @@ public class RepDao {
 			    	@Override
 			    	public Rep02100Vo mapRow(ResultSet rs, int arg1) throws SQLException {
 			    		Rep02100Vo vo = new Rep02100Vo();
-			    		
 			    		vo.setId(rs.getLong("REQFORM_ID"));
 			    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
-			    		
 			    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
 			    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));                 
 			    		vo.setRef1(rs.getString("REF1"));
@@ -458,8 +457,9 @@ public class RepDao {
 			    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
 			    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
 			    		vo.setCompanyName(rs.getString("COMPANY_NAME")); 
-			    		vo.setStatus(rs.getString("STATUS_DESC"));                   
-			    		vo.setRemark(rs.getString("REMARK"));                   
+			    		vo.setStatus(rs.getString("STATUS_DESC"));
+			    		vo.setReason(rs.getString("REASON_DESC"));
+			    		vo.setReasonOther(rs.getString("REJECTREASON_OTHER"));
 			    		return vo;                                                         
 			    	}
 			 };
@@ -559,7 +559,6 @@ public class RepDao {
 				    	public Rep03000Vo mapRow(ResultSet rs, int arg1) throws SQLException {
 				    		Rep03000Vo vo = new Rep03000Vo();
 				
-				    		
 				    		vo.setId(new Long(rs.getInt("REQFORM_ID")));
 				    		
 				    		vo.setReceiptNo(rs.getString("RECEIPT_NO")); 

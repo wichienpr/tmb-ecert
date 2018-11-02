@@ -8,6 +8,9 @@ import java.util.List;
 import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
 
 public class RequestForm extends DatatableRequest {
+
+	private static final long serialVersionUID = -5656949093847724841L;
+	
 	private Long reqFormId;
 	private Timestamp requestDate;
 	private String tmbRequestNo;
@@ -76,6 +79,17 @@ public class RequestForm extends DatatableRequest {
 	
 	private Integer lockFlag;
 	private Integer deleteFlag;
+	
+	// optional
+	private String uuid;
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 	public Integer getDeleteFlag() {
 		return deleteFlag;

@@ -164,52 +164,20 @@ public class CheckRequestDetailService {
 				newReq.setCheckerById(user.getUserId());
 				newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 			}
-			switch (newReq.getPaidTypeCode()) {
-			case PAYMENT_STATUS.PAY_TMB_DBD: // 10001
-				CommonMessage<FeePaymentResponse> tmbStep = paymentWs.feePaymentTMB(newReq);
-				if (isSuccess(tmbStep.getMessage())) {
-
-					CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePayment(newReq);
-					if (isSuccess(approveStep.getMessage())) {
-
-						CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBD(newReq);
-						if (isSuccess(dbdStep.getMessage())) {
-
-							CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
-							if (isSuccess(realtimeStep.getMessage())) {
-
-								newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-								updateForm(newReq, user);
-								response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-
-							} else {
-								response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
-								response = handlerErrorReq(response, newReq, user);
-								throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
-							}
-						} else {
-							response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
-							response = handlerErrorReq(response, newReq, user);
-							throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
-						}
-					} else {
-						response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
-						response = handlerErrorReq(response, newReq, user);
-						throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
-					}
-				} else {
-					response.setData(new ResponseVo(tmbStep.getData().getDescription(), tmbStep.getData().getStatusCode()));
-					response = handlerErrorReq(response, newReq, user);
-					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
-				}
-				break;
-			case PAYMENT_STATUS.PAY_DBD: // 10002
+			if (PAYMENT_STATUS.PAY_NONE.equalsIgnoreCase(newReq.getPaidTypeCode())) {
+				newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
+				updateForm(newReq, user);
+				response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
+			} else {
 				CommonMessage<ApproveBeforePayResponse> approveStep = paymentWs.approveBeforePayment(newReq);
 				if (isSuccess(approveStep.getMessage())) {
 
-					CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePaymentDBD(newReq);
+					CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
 					if (isSuccess(dbdStep.getMessage())) {
-
+						
+						// UUID => TransactionNo
+						newReq.setUuid(dbdStep.getData().getUuid());
+						
 						CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
 						if (isSuccess(realtimeStep.getMessage())) {
 
@@ -232,29 +200,9 @@ public class CheckRequestDetailService {
 					response = handlerErrorReq(response, newReq, user);
 					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
-				break;
-			case PAYMENT_STATUS.PAY_TMB: // 10003
-				CommonMessage<FeePaymentResponse> tmbOnlyStep = paymentWs.feePaymentDBD(newReq);
-				if (isSuccess(tmbOnlyStep.getMessage())) {
-					newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-					updateForm(newReq, user);
-					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-				} else {
-					response.setData(new ResponseVo(tmbOnlyStep.getData().getDescription(), tmbOnlyStep.getData().getStatusCode()));
-					response = handlerErrorReq(response, newReq, user);
-					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
-				}
-				break;
-			case PAYMENT_STATUS.PAY_NONE: // 10004
-				newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-				updateForm(newReq, user);
-				response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-				break;
 			}
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {
-//			emailService.sendEmailFailFeePayment(newReq, ApplicationCache.getParamValueByName("tmb.servicecode"),
-//					new Date(), e.toString());
 			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			reqDao.updateErrorDescription(e.getMessage(), newReq.getReqFormId());
 			logger.error(e.getMessage());

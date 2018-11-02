@@ -114,6 +114,11 @@ public class ProjectConstant {
 		public static final String FEE_BRANCH = "feepayment.branchIdent";
 		public static final String FEE_COMP_CODE = "feepayment.compcode";
 		
+		public static final String ECM_FTP_HOST = "ecm.ftp.host";
+		public static final String ECM_FTP_PATH = "ecm.ftp.path";
+		public static final String ECM_FTP_USERNAME = "ecm.ftp.user";
+		public static final String ECM_FTP_PASSWORD = "ecm.ftp.password";
+		
 		public static final String AMOUNT_LIMIT = "payment.amount.limit";
 	}
 	

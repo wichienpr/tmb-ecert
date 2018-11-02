@@ -26,6 +26,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentRes
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FileImportRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentResponse;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.IndexGuoupResponse;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -45,17 +46,17 @@ public class UploadCertificateService {
 	@Value("${app.datasource.path.upload}")
 	private String pathUploadfiel;
 
-	@Value("${app.datasource.ftp.path}")
-	private String ftpPath;
-
-	@Value("${app.datasource.ftp.url}")
-	private String ftpHost;
-
-	@Value("${app.datasource.ftp.username}")
-	private String ftpUsername;
-
-	@Value("${app.datasource.ftp.password}")
-	private String ftpPassword;
+//	@Value("${app.datasource.ftp.path}")
+//	private String ftpPath;
+//
+//	@Value("${app.datasource.ftp.url}")
+//	private String ftpHost;
+//
+//	@Value("${app.datasource.ftp.username}")
+//	private String ftpUsername;
+//
+//	@Value("${app.datasource.ftp.password}")
+//	private String ftpPassword;
 
 	private static String PATH_UPLOAD = "tmb-requestor/";
 
@@ -68,12 +69,18 @@ public class UploadCertificateService {
 	public void uploadEcertificate(Long certificateID, String userid) throws Exception{
 		String channelid = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHANNELID);
 		String docTyep = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_DOCTYPE);
+		String ftpPath = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PATH); 
+		String ftpHost= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_HOST);
+		String ftpUsername= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_USERNAME);
+		String ftpPassword= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PASSWORD);
+		
 		int countftp = 0;
 		String wsErrorDesc = "";
 //		boolean statusUpload[] = new boolean[3];
 		boolean statusUpload = false;
 		boolean statusCheck = false;
 		RequestForm reqVo = null;
+		CheckStatusDocumentResponse checkStatusVo = null;
 //		try {
 			log.info(" START PROCESS UPLOAD CERTIFIACTE BY CERTIFICATE ID "+Long.toString(certificateID));
 			int timesleep = Integer.parseInt(
@@ -86,6 +93,10 @@ public class UploadCertificateService {
 			Assert.isTrue(timeLoop > 0,
 					ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_TIME + " is greater than 0");
 			uploadEcerLoop: while (countftp < timeLoop) {
+				
+				String reqID = ramdomKey(channelid);
+				
+				ftpPath = ftpPath+ "/"+ reqID;
 
 				// STEP 1 : read 3 file from db
 				reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
@@ -93,28 +104,49 @@ public class UploadCertificateService {
 				String pathCer = pathUploadfiel + PATH_UPLOAD + reqVo.getCertificateFile();
 				String pathRec = pathUploadfiel + PATH_UPLOAD + reqVo.getReceiptFile();
 				
-				
-				
 				// STEP 1. SFTP File and save log fail or success !!
 				List<SftpFileVo> files = new ArrayList<>();
-				files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
-				files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
-				files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
-				
-				if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-					files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
-				}
-				if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-					files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+				if (checkStatusVo == null  ) {
+					
+					files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
+					files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
+					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
+					
+					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
+						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+					}
+					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+					}
+					
+				}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
+					
+					for (IndexGuoupResponse groupResp : checkStatusVo.getIndexGroups()) {
+						if ( ! StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(groupResp.getFileResCode()) ) {
+							files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
+						}
+					}
+					
+				}else if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())) {
+					
+					files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
+					files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
+					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
+					
+					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
+						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+					}
+					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+					}
 				}
 
 				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
-				boolean isSuccess = SftpUtils.putFile(sftpVo);
+				boolean isSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 				if (isSuccess) {
 					Thread.sleep(3000);
 					int countImport = 0;
 					int countCheckStatus = 0;
-					String reqID = ramdomKey(channelid);
 					log.info(" IMPORT DOCUMENT BY REQID {} ", reqID);
 //						call ws import document
 					while (countImport < timeLoop) {
@@ -141,7 +173,7 @@ public class UploadCertificateService {
 						while (countCheckStatus < timeLoop) {
 //							call ws checkstatus document
 							Thread.sleep(timesleep);
-							CheckStatusDocumentResponse checkStatusVo = CheckStatusWS(reqVo, reqID, channelid, userid,
+							checkStatusVo = CheckStatusWS(reqVo, reqID, channelid, userid,
 									docTyep);
 							log.info("CALL WS CHECK STATUS {}", checkStatusVo.getDescription());
 
