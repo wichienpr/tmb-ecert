@@ -123,7 +123,7 @@ export class Sup01000Component implements OnInit {
   ngOnInit() {
     this.roleDTConfig = {
       url: "/api/setup/sup01000/getRole",
-      serverSide: false,
+      serverSide: true,
       useBlockUi: true
     };
 

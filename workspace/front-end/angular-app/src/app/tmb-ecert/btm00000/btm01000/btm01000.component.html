@@ -118,16 +118,16 @@
 
             <br>
             <ng-datatable-search [ng-datatable]="batchMonitorDT" ></ng-datatable-search>
-            <table [ngDatatable]="batchMonitorConfig" #batchMonitorDT="ngDatatable" class="ui small celled table nowrap"
+            <table [ngDatatable]="batchMonitorConfig" #batchMonitorDT="ngDatatable" class="ui small celled table nowrap sortable"
                 id="table" style="width: 100%">
                 <thead>
                     <tr style="text-align: center;">
-                        <th style="background:#0079C0;color: #FFF">ลำดับ</th>
-                        <th style="background:#0079C0;color: #FFF">วันที่ดำเนินการ </th>
-                        <th style="background:#0079C0;color: #FFF">ประเภท</th>
-                        <th style="background:#0079C0;color: #FFF">สถานะการดำเนินการ </th>
-                        <th style="background:#0079C0;color: #FFF">สาเหตุ</th>
-                        <th style="background:#0079C0;color: #FFF">Rerun</th>
+                        <th >ลำดับ</th>
+                        <th [ngSort]="batchMonitorDT" columnName="START_DATE">วันที่ดำเนินการ </th>
+                        <th [ngSort]="batchMonitorDT" columnName="NAME" >ประเภท</th>
+                        <th [ngSort]="batchMonitorDT" columnName="STATUS" >สถานะการดำเนินการ </th>
+                        <th [ngSort]="batchMonitorDT" >สาเหตุ</th>
+                        <th >Rerun</th>
 
                     </tr>
                 </thead>

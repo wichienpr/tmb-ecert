@@ -1,13 +1,12 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { Modal } from 'models/';
-import * as UserActions from 'app/user.action';
 import { UserDetail } from 'app/user.model';
 import { AuthService, ModalService, CommonService } from 'services/';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -31,8 +30,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     private modal: ModalService,
     private loginsv: AuthService,
     private commonsv: CommonService
-  ) {
-  }
+  ) { }
   ngOnInit() {
     this.user = this.store.select('user');
     this.routes = [
@@ -45,7 +43,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
          * this.checkA(PAGE_AUTH.P0001501) 
          * this.checkRA(ROLES.ADMIN, PAGE_AUTH.P0001501)
          */
-        role: this.checkA(PAGE_AUTH.P0000600||PAGE_AUTH.P0000500),
+        role: this.checkA(PAGE_AUTH.P0000600 || PAGE_AUTH.P0000500),
         child: [ // Sub Menu 1.1 
           {
             label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
@@ -61,7 +59,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       { // Main Menu New
         label: "บันทึกข้อมูลจากเลขที่คำขอ (TMB Req No.)",
         url: "/srn/srn01000",
-        role:  this.checkA(PAGE_AUTH.P0001600),
+        role: this.checkA(PAGE_AUTH.P0001600),
       },
       { // Main Menu 2
         label: "ตรวจสอบสถานะคำขอ",
@@ -73,21 +71,27 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         url: null,
         role: this.checkA(PAGE_AUTH.P0000700 || PAGE_AUTH.P0000800 || PAGE_AUTH.P0000900),
         child: [ // Sub Menu 3.1
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day",
-           url: "/rep/rep01000",
-            role:  this.checkA(PAGE_AUTH.P0000700) },
-          { label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly",
-           url: "/rep/rep02000",
-            role:  this.checkA(PAGE_AUTH.P0000800) },
-          { label: "รายงาน Output VAT",
-           url: "/rep/rep03000", 
-           role: this.checkA(PAGE_AUTH.P0000900)  },
+          {
+            label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day",
+            url: "/rep/rep01000",
+            role: this.checkA(PAGE_AUTH.P0000700)
+          },
+          {
+            label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly",
+            url: "/rep/rep02000",
+            role: this.checkA(PAGE_AUTH.P0000800)
+          },
+          {
+            label: "รายงาน Output VAT",
+            url: "/rep/rep03000",
+            role: this.checkA(PAGE_AUTH.P0000900)
+          },
         ]
       },
       { // Main Menu 4
         label: "Batch Monitoring",
         url: "/btm/btm01000",
-        role:  this.checkA(PAGE_AUTH.P0001100)
+        role: this.checkA(PAGE_AUTH.P0001100)
       },
       { // Main Menu 5
         label: "Audit Log",
@@ -97,7 +101,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       { // Main Menu 6
         label: "Setup",
         url: null,
-        role: this.checkA(PAGE_AUTH.P0001300 || PAGE_AUTH.P0001400 || PAGE_AUTH.P0001500 ),
+        role: this.checkA(PAGE_AUTH.P0001300 || PAGE_AUTH.P0001400 || PAGE_AUTH.P0001500),
         child: [ // Sub Menu 6.1
           { label: "Role Management", url: "/sup/sup01000", role: this.checkA(PAGE_AUTH.P0001300) },
           { label: "Parameter Configuration", url: "/sup/sup02000", role: this.checkA(PAGE_AUTH.P0001400) },

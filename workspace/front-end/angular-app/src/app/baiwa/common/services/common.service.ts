@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { UserDetail } from 'app/user.model';
 import { PAGE_AUTH, ROLES } from 'app/baiwa/common/constants';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 declare var $;
 
 @Injectable({
@@ -10,6 +12,7 @@ declare var $;
 export class CommonService {
 
   private user: UserDetail;
+  private loading: boolean = false;
 
   constructor(private store: Store<{}>) {
     this.store.select('user').subscribe(user => this.user = user);
@@ -54,6 +57,22 @@ export class CommonService {
 
   toGetQuery(param:any){
     return $.param(param);
+  }
+
+  loadStatus(): Observable<boolean> {
+    return new Observable<boolean>( obs => {
+      setInterval(() => {
+        obs.next(this.loading);
+      }, 200);
+    });
+  }
+
+  isLoading() {
+    this.loading = true;
+  }
+
+  isLoaded() {
+    this.loading = false;
   }
 
 }

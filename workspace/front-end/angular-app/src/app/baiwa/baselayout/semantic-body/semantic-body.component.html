@@ -19,9 +19,9 @@
 
 <!-- body -->
 <div class="ui main container-fluid">
-  <!-- <div class="ui active dimmer" *ngIf="loading">
+  <div class="ui active dimmer" style="background:rgba(0, 0, 0, 0.5)" *ngIf="(loading|async)">
     <div class="ui text loader">กำลังโหลด</div>
-  </div> -->
+  </div>
   <router-outlet></router-outlet>
 </div>
 <!-- body -->

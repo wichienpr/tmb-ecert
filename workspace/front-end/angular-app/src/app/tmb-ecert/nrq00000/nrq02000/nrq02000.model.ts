@@ -24,3 +24,8 @@ export interface Nrq02000 {
     copyFileName?: string;
     changeNameFileName?: string;
 }
+
+export interface ResponseVo {
+    message: string;
+    data: string;
+}

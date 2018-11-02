@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { ModalService, AjaxService } from 'services/';
+import { ModalService, AjaxService, CommonService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CertFile, Rejected } from './crs02000.models';
+import { CertFile, Rejected, ResponseVo } from './crs02000.models';
 import { REQ_STATUS } from 'app/baiwa/common/constants';
 
 export const URL = {
@@ -31,7 +31,8 @@ export class Crs02000Service {
     private router: Router,
     private modal: ModalService,
     private ajax: AjaxService,
-    private location: Location
+    private location: Location,
+    private common: CommonService
   ) { }
 
   getId() {
@@ -131,18 +132,38 @@ export class Crs02000Service {
       title: "อนุมัติการชำระเงินค่าธรรมเนียม"
     };
     this.modal.confirm(e => {
+      this.common.isLoading();
       if (e) {
         this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
-          if (response.json().message == "SUCCESS") {
+          let data: ResponseVo = {
+            data: {
+              status: "",
+              message: ""
+            },
+            message: "",
+          };
+          if (response) {
+            data = response.json() as ResponseVo;
+          }
+          if (data.message == "SUCCESS") {
             this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             this.router.navigate(['/crs/crs01000'], {
               queryParams: { codeStatus: "10009" }
             });
           } else {
             this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+            this.router.navigate(['/crs/crs01000'], {
+              queryParams: { codeStatus: "10008" }
+            });
           }
+          this.common.isLoaded();
         }, error => {
+          console.log("ERROR => ", error);
           this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+          this.router.navigate(['/crs/crs01000'], {
+            queryParams: { codeStatus: "10008" }
+          });
+          this.common.isLoaded();
         });
       }
     }, modal);
@@ -194,6 +215,7 @@ export class Crs02000Service {
   }
 
   pdf(what: string, id: string, tmbNo: string = "") {
+    this.common.isLoading();
 
     const cover = "crsCover02000";
     const receipt = "crsReceipt02000";
@@ -201,6 +223,7 @@ export class Crs02000Service {
     if (what == cover) {
       this.ajax.post(URL.CREATE_COVER, { id: parseInt(id), tmpReqNo: tmbNo }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+        this.common.isLoaded();
       }, error => {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
@@ -209,6 +232,7 @@ export class Crs02000Service {
     if (what == receipt) {
       this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+        this.common.isLoaded();
       }, error => {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       });
@@ -217,13 +241,17 @@ export class Crs02000Service {
   }
 
   saveCertFile(data: CertFile) {
+    this.common.isLoading();
+    this.common.blockui();
     const formData: FormData =  new FormData();
     for(let key in data) {
       formData.append(key, data[key]);
     }
     this.ajax.upload(URL.UPLOAD, formData, response => {
+      this.common.isLoaded();
+      this.common.unblockui();
       const data = response.json();
-      if(data && data.message == "SUCCESS") {
+      if (data && data.message == "SUCCESS") {
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
         this.router.navigate(['/crs/crs01000'], {
           queryParams: { codeStatus: "10010" }
@@ -235,6 +263,9 @@ export class Crs02000Service {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
       }
     }, error => {
+      console.error(error);
+      this.common.isLoaded();
+      this.common.unblockui();
       this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
     });
   }
