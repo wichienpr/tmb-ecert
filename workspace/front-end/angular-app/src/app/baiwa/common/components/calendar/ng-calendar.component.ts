@@ -2,6 +2,7 @@ import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRe
 import { Calendar, CalendarType, CalendarFormatter, CalendarLocal } from "models/";
 import { dateLocale, digit } from "app/baiwa/common/helpers";
 import { NgControl, FormGroup, FormControl, AbstractControl } from "@angular/forms";
+import * as moment from 'moment';
 
 declare var $: any;
 
@@ -58,21 +59,18 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
             endCalendar: (endCalendar) ? $(`#${endCalendar}`) : null,
         })
         if (formControl.value) {
-            // console.log("formControl.value", formControl.value);
-            this.setValue(formControl.value);
+            this.setValue(new Date(moment(formControl.value, 'DD/MM/YYYY').format()));
         }
     }
 
     onChange = (date, text, mode) => {
-        // console.log("onChange ", text);
         const { formControl } = this.configObj;
         formControl.patchValue(text);
     }
 
-    setValue(inputDate: string) {
-        const { id , formControl} = this.configObj;
+    setValue(inputDate: Date) {
+        const { id } = this.configObj;
         $(`#${id}`).calendar('set date', inputDate);
-        formControl.patchValue(inputDate);
     }
 }
 
