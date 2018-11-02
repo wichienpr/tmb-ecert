@@ -49,7 +49,7 @@ public class EmailService {
 
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL PAYMENTORDER FAIL {}", e.toString());
 		}
 
 	}
@@ -67,7 +67,7 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL REJECTPAYMENT FAIL {}", e.toString());
 		}
 
 	}
@@ -85,7 +85,7 @@ public class EmailService {
 
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL SENDLINKFORDOWNLOAD FAIL {}", e.toString());
 		}
 	}
 
@@ -103,7 +103,7 @@ public class EmailService {
 
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL CANCLEREQUEST FAIL {}", e.toString());
 		}
 	}
 
@@ -125,7 +125,7 @@ public class EmailService {
 			
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL  FAILAPPROVEBEFOREPAY FAIL {}", e.toString());
 		}
 	}
 
@@ -147,7 +147,7 @@ public class EmailService {
 			
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL FAILREALTIMEPAYMENT FAIL {}", e.toString());
 		}
 	}
 
@@ -169,7 +169,7 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, bodyParam ,subjectParam);
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL FAILFEEPAYMENT FAIL {}", e.toString());
 		}
 
 	}
@@ -191,7 +191,7 @@ public class EmailService {
 			sendEmailToEmailGateWay(emailtemplate, bodyParam ,subjectParam);
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL FAILSENDDOC FAIL {}", e.toString());
 		}
 
 	}
@@ -214,7 +214,7 @@ public class EmailService {
 			
 		} catch (Exception e) {
 			sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_EMAIL, e.toString());
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL FAILPAYMENTORDER FAIL {}", e.toString());
 		}
 	}
 	
@@ -230,7 +230,7 @@ public class EmailService {
 			
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 		} catch (Exception e) {
-			log.error("SEND EMAIL FAIL {}", e.toString());
+			log.error("SEND EMAIL ABNORMAL FAIL {}", e.toString());
 		}
 	}
 	

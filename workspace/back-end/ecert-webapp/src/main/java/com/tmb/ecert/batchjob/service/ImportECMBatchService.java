@@ -30,7 +30,9 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentRes
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FileImportRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentResponse;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.IndexGuoupResponse;
 import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -60,7 +62,7 @@ public class ImportECMBatchService {
 	@Value("${app.datasource.ws.checkstatus}")
 	private String WSCHECKURL;
 
-	@Value("${app.datasource.ftp.path}")
+/*	@Value("${app.datasource.ftp.path}")
 	private String ftpPath;
 
 	@Value("${app.datasource.ftp.url}")
@@ -71,7 +73,7 @@ public class ImportECMBatchService {
 
 	@Value("${app.datasource.ftp.password}")
 	private String ftpPassword;
-
+*/
 	@Autowired
 	private ImportECMBatchDao importECMBatchDao;
 
@@ -103,6 +105,11 @@ public class ImportECMBatchService {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
 		Date current = new Date();
 		long start = System.currentTimeMillis();
+		
+		String ftpPath = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PATH); 
+		String ftpHost= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_HOST);
+		String ftpUsername= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_USERNAME);
+		String ftpPassword= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PASSWORD);
 
 		log.info("ImportECMBatchService is starting process...");
 		
@@ -126,37 +133,59 @@ public class ImportECMBatchService {
 				log.info(" BATCH REQUEST FROM SIZE  "+reqFormList.size());
 				
 				for (RequestForm requestForm : reqFormList) {
-//					String[] arrFile = new String[3];
-//					arrFile[0] =   pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile();
-//					arrFile[1]  =  pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile();
-//					arrFile[2]  =  pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile();
+
 					countftp = 0;
-					
+					CheckStatusDocumentResponse checkStatusVo = null;
+					String reqID ="";
 					while (countftp < timeLoop) {
-						
+						reqID = ramdomKey(channelid);
+						ftpPath = ftpPath+ "/"+ reqID;
 						List<SftpFileVo> files = new ArrayList<>();
-						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getCertificateFile()));
-						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getRequestFormFile()));
-						files.add(new SftpFileVo(new File( pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
-						
-						if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
-						}
-						if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+						if (checkStatusVo == null  ) {
+							
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							
+							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
+							}
+							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+							}
+							
+						}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
+							
+							for (IndexGuoupResponse groupResp : checkStatusVo.getIndexGroups()) {
+								if ( ! StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(groupResp.getFileResCode()) ) {
+									files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
+								}
+							}
+							
+						}else if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())) {
+							
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							
+							
+							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
+							}
+							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+							}
 						}
 
 						SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
-						boolean ftpSuccess = SftpUtils.putFile(sftpVo);
+						boolean ftpSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 						
 						if(ftpSuccess) {
-							String reqID ="";
 							countImport = 0;
 							countCheckstatus = 0;
 							while(countImport < timeLoop) {
 								
 								Thread.sleep(timesleep);
-								reqID = ramdomKey(channelid);
 								ImportDocumentResponse impResp = callImportWS(requestForm,reqID,channelid,"BATCH",files,docTyep);
 								
 								if (CODE_SUCCESS.equals(impResp.getResCode())) {
@@ -174,7 +203,7 @@ public class ImportECMBatchService {
 								while (countCheckstatus < timeLoop) {
 									
 									Thread.sleep(timesleep);
-									CheckStatusDocumentResponse checkStatusVo  = CheckStatusWS(requestForm,reqID,channelid,"BATCH",docTyep);
+									checkStatusVo  = CheckStatusWS(requestForm,reqID,channelid,"BATCH",docTyep);
 									
 									if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
 										log.info(" WS CHECK STATUS SUCCESS ");
@@ -183,11 +212,12 @@ public class ImportECMBatchService {
 										
 									}else if (CODE_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 										statusUpload = false;
-										countCheckstatus++;
+										
 									}else {
 										statusUpload = false;
-										countCheckstatus++;
+										
 									}
+									countCheckstatus++;
 									log.info(" WS CHECK STATUS FAIL "+checkStatusVo.getStatusCode() +" Des" + checkStatusVo.getDescription() );
 								}		
 							}
@@ -197,7 +227,6 @@ public class ImportECMBatchService {
 							
 				
 						} else {
-							emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP , "FTP FILE IMPORT DOCUMENT FAIL");
 							statusUpload = false;
 							break;
 						}
@@ -215,6 +244,7 @@ public class ImportECMBatchService {
 
 		} catch (Exception ex) {
 			log.error("ImportECMBatchService Error = ", ex);
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP , "FTP FILE IMPORT DOCUMENT FAIL");
 			jobMonitoring.setErrorDesc(ex.getMessage());
 		} finally {
 			long end = System.currentTimeMillis();

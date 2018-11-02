@@ -86,6 +86,7 @@ public class Btm01000Service {
 				logger.info("rerun BATCH_ONDEMAND.");
 				paymentOndemandService.paymentOnDemandSummary(EcerDateUtils.parseDateEN(form.getEndofdate()));
 			}else if (StatusConstant.JOBMONITORING.BATCH_GL.equals(form.getJobtypeCode())) {
+				paymentGLService.reRunBatchJob(EcerDateUtils.parseDateEN(form.getStartDate()),EcerDateUtils.parseDateEN(form.getStopDate()));
 				logger.info("rerun BATCH_GL.");
 			}
 			batchDao.updateRerunJobById(form, fullName, userid);

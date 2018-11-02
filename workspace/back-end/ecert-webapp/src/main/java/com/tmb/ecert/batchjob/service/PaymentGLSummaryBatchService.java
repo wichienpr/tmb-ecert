@@ -118,6 +118,60 @@ public class PaymentGLSummaryBatchService {
 		log.info("End PaymentGLSummaryBatch Process... ");
 	}
 	
+	public void reRunBatchJob(Date fromDate,Date toDate) {
+		Date runDate = new Date();
+		long start = System.currentTimeMillis();
+		log.info(" Start PaymentGLSummaryBatch Process... ");
+		String errorDesc = null;
+		Date requestDate = runDate;
+		try {
+			
+			List<RequestForm> requestForms = paymentGLSummaryBatchDao.queryReqGlSummaryProcessByFromToDate(fromDate,toDate);
+						
+			log.info(" PaymentGLSummaryBatch find process ==> {}", requestForms.size());
+			
+			List<String> contents = this.createContentFile(requestForms);
+			contents.add(this.createTrailer(requestForms));
+			
+			String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, requestDate);
+			String achiveFilePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH) + "/" + fileName;
+			
+			File file = this.writeFile(contents, StandardCharsets.UTF_8.name(), achiveFilePath);
+			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PATH);
+			String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_IP);
+			String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
+			String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PASSWORD);
+			
+			
+			List<SftpFileVo> files = new ArrayList<>();
+			files.add(new SftpFileVo(file, path, fileName));
+			SftpVo sftpVo = new SftpVo(files, host, username, password);
+			boolean isSuccess = SftpUtils.putFile(sftpVo);
+			
+			if (!isSuccess) {
+				errorDesc = sftpVo.getErrorMessage();
+				log.error("error PaymentGLSummaryBatch sftp file : {} ", errorDesc);
+			} else {
+				paymentGLSummaryBatchDao.deleteEcertJobGLFailed(requestForms);
+			}
+		} catch (Exception e) {
+			errorDesc = e.getMessage();
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, errorDesc);
+			log.error("exception in PaymentGLSummaryBatch : ", e);
+		} finally {
+			
+			if(errorDesc!=null)
+				this.saveEcertJobGLFailed(requestDate);
+			
+			this.saveEcertJobMonitoring(requestDate, runDate, BatchJobConstant.RERUN_DEFAULT, 
+					errorDesc==null ? JOBMONITORING.SUCCESS : JOBMONITORING.FAILED, StringUtils.defaultString(errorDesc));
+			
+			long end = System.currentTimeMillis();
+			log.info("PaymentGLSummaryBatch is working Time : {} ms", (end - start));
+		}
+		log.info("End PaymentGLSummaryBatch Process... ");
+	}
+	
 	private Long saveEcertJobMonitoring(Date requestDate, Date runDate, Integer rerunNumber, String status, String errorDesc) {
 		EcertJobMonitoring ecertJobMonitoring = new EcertJobMonitoring();
 		Date nowDate = new Date();
