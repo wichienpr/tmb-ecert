@@ -114,7 +114,11 @@ public class ReportPdfService {
 		try {
 			// Folder Exist ??
 			initialService();
-			DecimalFormat formatNumber = new DecimalFormat("#,###.00");
+			DecimalFormat formatNumber = new DecimalFormat("#,##0.00");
+			Double oneHundred = new Double(100);
+			Double  feeAmount = new Double(0);
+			Double vatAmount = new Double(0);
+			
 			req = checkReqDetailDao.findReqFormById(vo.getId(), false);
 			RpVatVo vat = reportPdfDao.vat().get(0);
 			if (StringUtils.isEmpty(req.getReceiptNo())) {
@@ -135,18 +139,24 @@ public class ReportPdfService {
 			params01.put("address", req.getAddress());
 
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
-				params01.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
-				params01.put("amountTmb", req.getAmountTmb());
+				//vat
+				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params01.put("amountTmb", formatNumber.format(req.getAmountTmb()));
+				
 				/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
-				params01.put("feeAmount", formatNumber.format(
-						req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
-				/* vatAmount = (vat*feeAmount) */
-				params01.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
-						* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
+				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+				params01.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/* vatAmount = (feeAmount*(vat/100)) */
+				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
+				params01.put("vatAmount",formatNumber.format(vatAmount));
+				
+				/*thaiBath*/
 				params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
 			} else {
 				params01.put("vat", "0.00");
-				params01.put("amountTmb", new BigDecimal("0.00"));
+				params01.put("amountTmb", "0.00");
 				params01.put("feeAmount", "0.00");
 				params01.put("vatAmount", "0.00");
 				params01.put("thaiBath", "ศูนย์บาทถ้วน");
@@ -169,21 +179,27 @@ public class ReportPdfService {
 			params02.put("address", req.getAddress());
 
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
-				params02.put("vat", formatNumber.format(new BigDecimal(vat.getVat())));
-				params02.put("amountTmb", req.getAmountTmb());
+				//vat
+				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params01.put("amountTmb", formatNumber.format(req.getAmountTmb()));
+				
 				/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
-				params02.put("feeAmount", formatNumber.format(
-						req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue()))));
-				/* vatAmount = (vat*feeAmount) */
-				params02.put("vatAmount", formatNumber.format((new BigDecimal(vat.getVat()).doubleValue() / 100)
-						* (req.getAmountTmb().doubleValue() * (100 / (100 + new BigDecimal(vat.getVat()).doubleValue())))));
-				params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+				params01.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/* vatAmount = (feeAmount*(vat/100)) */
+				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
+				params01.put("vatAmount",formatNumber.format(vatAmount));
+				
+				/*thaiBath*/
+				params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
 			} else {
-				params02.put("vat", "0.00");
-				params02.put("amountTmb", new BigDecimal("0.00"));
-				params02.put("feeAmount", "0.00");
-				params02.put("vatAmount", "0.00");
-				params02.put("thaiBath", "ศูนย์บาทถ้วน");
+				params01.put("vat", "0.00");
+				params01.put("amountTmb", "0.00");
+				params01.put("feeAmount", "0.00");
+				params01.put("vatAmount", "0.00");
+				params01.put("thaiBath", "ศูนย์บาทถ้วน");
 			}
 
 			params02.put("tmbRequestNo", req.getTmbRequestNo());
