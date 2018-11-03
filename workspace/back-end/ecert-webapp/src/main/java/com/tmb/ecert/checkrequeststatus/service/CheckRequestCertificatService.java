@@ -72,11 +72,11 @@ public class CheckRequestCertificatService {
 			req.setReqFormId(certificateVo.getId());
 			req.setStatus(StatusConstant.SUCCEED);
 			if (certificateDao.upDateCertificateByCk(req) == true) {
-				historyDao.save(req);
 //				call webservice
 				if (StringUtils.isNotBlank(req.getCaNumber())) {
 					uploadCerService.uploadEcertificate(certificateVo.getId(),user.getUserId());
 				}
+				historyDao.save(req);
 //				SEND EMAIL 
 				emailService.sendEmailSendLinkForDownload(req.getCompanyName(), req.getCustomerName(), req.getTmbRequestNo());
 				msg.setMessage("SUCCESS");
@@ -87,6 +87,7 @@ public class CheckRequestCertificatService {
 		} catch (Exception e) {
 //			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_UPLOADCERTIFICATE, e.toString());
+			
 			e.printStackTrace();
 			msg.setMessage("Error");
 		}finally {
