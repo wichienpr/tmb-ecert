@@ -110,11 +110,11 @@ export class Sup03100Component implements OnInit {
       if (this.emailForm.valid) {
         this.modal.confirm((e) => {
           if (e) {
-            this.commonsvr.blockui;
+            this.commonsvr.blockui();
             this.service.callSaveEmailDetailAPI(this.requestObj).subscribe(res => {
               console.debug("seve email success.", res);
               this.response = res;
-              this.commonsvr.unblockui;
+              this.commonsvr.unblockui();
               if (this.response.message == null) {
                 this.modal.alert({ msg: "ทำรายการล้มเหลว" });
               } else {
@@ -133,7 +133,7 @@ export class Sup03100Component implements OnInit {
                 }, modalresp);
               }
             }, error => {
-              this.commonsvr.unblockui;
+              this.commonsvr.unblockui();
             });
           }
         }, modalConf);

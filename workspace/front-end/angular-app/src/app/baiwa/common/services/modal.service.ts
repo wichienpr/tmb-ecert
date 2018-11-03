@@ -26,31 +26,29 @@ export class ModalService {
         $(`#${id}`).addClass(obj.size || 'small');
         // active
         $(`#${id}`).modal({ centered: false, autofocus: false }).modal('show');
-    }
+    } z
 
-    alertWithAct(obj: Modal) {
-        return new Promise(resolve => {
-            const id = "alert-func";
-            // message
-            $(`#${id} .header`).html(obj.title || "แจ้งเตือน");
-            $(`#${id} .content`).html(obj.msg || "");
-            // color
-            $(`#${id} .header`).removeClass('notification');
-            $(`#${id} .header`).addClass(obj.color || '');
-            // size
-            $(`#${id}`).removeClass('small');
-            $(`#${id}`).addClass(obj.size || 'small');
-            // active
-            $(`#${id}`)
-                .modal({
-                    centered: false,
-                    autofocus: false,
-                    onApprove: (element) => {
-                        resolve(true)
-                    },
-                })
-                .modal('show');
-        });
+    alertWithAct(obj: Modal, func?: Function) {
+        const id = "alert-func";
+        // message
+        $(`#${id} .header`).html(obj.title || "แจ้งเตือน");
+        $(`#${id} .content`).html(obj.msg || "");
+        // color
+        $(`#${id} .header`).removeClass('notification');
+        $(`#${id} .header`).addClass(obj.color || '');
+        // size
+        $(`#${id}`).removeClass('small');
+        $(`#${id}`).addClass(obj.size || 'small');
+        // active
+        $(`#${id}`)
+            .modal({
+                centered: false,
+                autofocus: false,
+                onApprove: (element) => {
+                    func(true)
+                },
+            })
+            .modal('show');
     }
 
     confirm(func: Function, obj: Modal) {

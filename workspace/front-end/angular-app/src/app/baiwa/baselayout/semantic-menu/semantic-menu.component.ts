@@ -7,6 +7,7 @@ import { UserDetail } from 'app/user.model';
 import { AuthService, ModalService, CommonService } from 'services/';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { Observable } from 'rxjs';
+import { digit } from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -157,7 +158,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     let h = d.getHours();
     let m = d.getMinutes();
     let s = d.getSeconds();
-    this.clockdisplay.text = (h + ":" + m);
+    this.clockdisplay.text = (digit(h) + ":" + digit(m));
     // console.log(this.clockdisplay);
   }
 

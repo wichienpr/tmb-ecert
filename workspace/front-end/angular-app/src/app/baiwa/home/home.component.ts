@@ -6,7 +6,7 @@ import { EcerDashBoard } from 'app/dash-board.reducer';
 import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import * as DashboardAction from 'app/dash-board.action';
 import { Router } from "@angular/router";
-import { CommonService } from '../common/services';
+import { CommonService, ModalService } from '../common/services';
 import { ROLES } from '../common/constants';
 
 @Component({
@@ -20,12 +20,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   dashboard: Observable<EcerDashBoard>;
 
   constructor(private store: Store<AppState>, private dashboardService: DashboardService,
-    private router: Router, private commonserv: CommonService) {
+    private router: Router, private commonserv: CommonService, private modal: ModalService) {
     this.userdetail = this.store.select("user");
     this.dashboard = this.store.select("ecerdashboard");
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.dashboardService.reloadCache().subscribe();  
+  }
 
   ngAfterViewInit(): void {
     this.dashboardService.getDashBoard().subscribe(
@@ -47,7 +49,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       },
       error => {
         console.log("error");
-        alert("ไม่สามารถทำรายการได้.")
+        // alert("ไม่สามารถทำรายการได้.") 
+        this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" }, clicked => {
+          if (clicked) {
+            this.router.navigate(['/login']);
+          }
+        })
       }
     );
   }

@@ -16,5 +16,10 @@ export class DashboardService {
    return this.httpclient.post(url,{}); 
   }
 
+  reloadCache() {
+    let url = this.contextPath + "/api/cache/reload";
+    return this.httpclient.get(url);
+  }
+
 
 }
