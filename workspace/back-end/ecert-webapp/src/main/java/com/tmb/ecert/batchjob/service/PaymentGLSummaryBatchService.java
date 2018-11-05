@@ -16,9 +16,11 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.ECERT_CUSTSEGMENT_CODE;
@@ -58,6 +60,9 @@ public class PaymentGLSummaryBatchService {
 	@Autowired
 	private EmailService emailService;
 	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
+	
 	private String DATE_FORMAT_DDMMYYYY = "ddMMyyyy";
 	private String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
 	private final String CONST_PIPE = "|";
@@ -91,7 +96,7 @@ public class PaymentGLSummaryBatchService {
 			
 			List<SftpFileVo> files = new ArrayList<>();
 			files.add(new SftpFileVo(file, path, fileName));
-			SftpVo sftpVo = new SftpVo(files, host, username, password);
+			SftpVo sftpVo = new SftpVo(files, host, username,  TmbAesUtil.decrypt(keystorePath, password));
 			boolean isSuccess = SftpUtils.putFile(sftpVo);
 			
 			if (!isSuccess) {
