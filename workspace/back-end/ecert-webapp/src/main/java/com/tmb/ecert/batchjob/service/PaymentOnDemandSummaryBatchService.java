@@ -13,9 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.ONDEMAND;
@@ -53,6 +55,10 @@ public class PaymentOnDemandSummaryBatchService {
 	
 	@Autowired 
 	private EmailService  emailService;
+	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
+
 
 	/**
 	 * 
@@ -96,7 +102,7 @@ public class PaymentOnDemandSummaryBatchService {
 					// Step 2. SFTP File and save log fail or success !!
 					List<SftpFileVo> files = new ArrayList<>();
 					files.add(new SftpFileVo(new File(fullFileName), path, fileName));
-					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
+					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername,  TmbAesUtil.decrypt(keystorePath, ftpPassword));
 					isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
 						log.error("PaymentOnDemandSummaryBatchService FTP Error: {} ",sftpVo.getErrorMessage());

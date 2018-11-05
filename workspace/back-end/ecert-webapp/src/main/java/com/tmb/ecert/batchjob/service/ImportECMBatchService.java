@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.JOBMONITORING_TYPE;
 import com.tmb.ecert.batchjob.dao.ImportECMBatchDao;
@@ -85,6 +86,9 @@ public class ImportECMBatchService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
 	
 	private static String PATH_UPLOAD = "tmb-requestor/";
 	private static String SEGMENTCODE_1 = "20005";
@@ -177,7 +181,7 @@ public class ImportECMBatchService {
 							}
 						}
 
-						SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
+						SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
 						boolean ftpSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 						
 						if(ftpSuccess) {

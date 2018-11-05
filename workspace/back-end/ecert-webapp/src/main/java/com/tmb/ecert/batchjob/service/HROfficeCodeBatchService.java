@@ -74,7 +74,7 @@ public class HROfficeCodeBatchService {
 			String achiveFilePath = String.format("%s%s%s", ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH), 
 					DateFormatUtils.format(runDate, DATE_FILE_NAME), fileType);
 			
-			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, TmbAesUtil.encrypt(keystorePath, password), achiveFilePath);
+			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, TmbAesUtil.decrypt(keystorePath, password), achiveFilePath);
 			File file = SftpUtils.getFile(sftpVo);
 			if (this.validateContentFile(errorDesc, file)) {
 				List<EcertHROfficeCode> ecertHROfficeCodes = this.readFile(file);

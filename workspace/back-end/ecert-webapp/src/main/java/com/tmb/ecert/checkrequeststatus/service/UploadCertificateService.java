@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.CheckStatusDocumentResponse;
@@ -59,6 +60,10 @@ public class UploadCertificateService {
 //	private String ftpPassword;
 
 	private static String PATH_UPLOAD = "tmb-requestor/";
+	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
+
 
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
@@ -141,7 +146,7 @@ public class UploadCertificateService {
 					}
 				}
 
-				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
+				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
 				boolean isSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 				if (isSuccess) {
 					Thread.sleep(3000);

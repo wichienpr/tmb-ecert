@@ -82,7 +82,7 @@ public class AuditLogBatchService {
 				if(isSuccess){
 					List<SftpFileVo> files = new ArrayList<>();
 					files.add(new SftpFileVo(new File(fileNameFull), ftpPath, fileName));
-					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.encrypt(keystorePath, ftpPassword));
+					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
 				    isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
 						log.error("AuditLogBatchService FTP Error: {} ",sftpVo.getErrorMessage());
