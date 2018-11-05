@@ -223,7 +223,7 @@
                       <label></label>
                     </div>
                   </td>
-                  <td>{{ chk.certificate }}</td>
+                  <td><label>{{ chk.certificate }}</label></td>
                   <td>{{ chk.feeTmb }}</td>
                   <td>{{ chk.feeTmb }}</td>
                   <td class="center aligned">
@@ -242,7 +242,7 @@
                       <label></label>
                     </div>
                   </td>
-                  <td colspan="4">{{ chk.certificate }}</td>
+                  <td colspan="4"><label>{{ chk.certificate }}</label></td>
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>
                 <ng-container *ngFor="let db of chk.children; let j = index">

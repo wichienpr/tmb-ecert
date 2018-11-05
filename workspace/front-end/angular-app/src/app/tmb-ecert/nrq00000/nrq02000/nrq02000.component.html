@@ -173,7 +173,7 @@
                         </div>
                       </div>
                     </td>
-                    <td>{{ req.certificate }}</td>
+                    <td><label>{{ req.certificate }}</label></td>
                     <td>{{ req.feeDbd }}</td>
                     <td>{{ req.feeTmb }}</td>
                     <td class="center aligned">
@@ -219,7 +219,7 @@
                           </div>
                         </div>
                       </td>
-                      <td colspan="6">{{ req.certificate }}</td>
+                      <td colspan="6"><label>{{ req.certificate }}</label></td>
                     </tr>
                   </ng-container>
                   <ng-container *ngFor="let item of req.children; let j = index">
@@ -393,12 +393,6 @@
         <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
-        <!-- <div class="two wide field" [ngClass]="{'error': invalid(form.controls.tmbReceiptChk) }">
-          <div class="ui checkbox" style="width: 100%">
-            <input type="checkbox" #tmbReceiptChk (change)="toggleDataCorp($event)" formControlName="tmbReceiptChk">
-            <label class="custom-rt">ชื่อนิติบุคคล</label>
-          </div>
-        </div> -->
         <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
           <input type="text" class="txt-red" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
@@ -426,9 +420,6 @@
             #ref1 maxlength="50" name="ref1" formControlName="ref1">
         </div>
         <div class="three wide field barcode" (click)="focusOn('ref1')" *ngIf="btnMaker">
-          <!-- <button class="ui icon primary button" type="button" (click)="focusOn('ref1')" style="padding:3px 6px;">
-            <img src="assets/image/barcode.png" style="height:28px;width:74px;filter:invert(100%);margin-top:2px;" alt="">
-          </button> -->
           <i class="barcode icon"></i>
           <span>สแกนบาร์โค้ด</span>
         </div>
@@ -540,7 +531,7 @@
                 <i class="print icon"></i>
                 พิมพ์ใบคำขอ
               </button>
-              <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnRequestor" [ngClass]="{ 'disabled': !isdownload }"
+              <button (click)="formSubmit(form)" class="ui blue basic button" *ngIf="btnRequestor" [ngClass]="{ 'disabled': !canRequest }"
                 type="button">
                 <i class="file alternate outline icon" *ngIf="btnRequestor"></i>
                 ยื่นใบคำขอ

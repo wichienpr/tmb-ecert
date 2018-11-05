@@ -14,6 +14,7 @@ import { AjaxService, DropdownService, ModalService } from 'services/';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { ecerdashBoardReducer } from 'app/dash-board.reducer';
+import { CanDeactivateGuard } from './baiwa/baselayout/deactivate.guard';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ecerdashBoardReducer } from 'app/dash-board.reducer';
   providers: [
     AjaxService,
     DropdownService,
-    ModalService
+    ModalService,
+    CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 })
