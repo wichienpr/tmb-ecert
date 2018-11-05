@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Modal } from 'models/';
 import { Nrq01000Service } from './nrq01000.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -11,10 +12,12 @@ declare var $: any;
   templateUrl: './nrq01000.component.html',
   styleUrls: ['./nrq01000.component.css']
 })
-export class Nrq01000Component implements OnInit {
+export class Nrq01000Component implements OnInit, OnDestroy {
 
   nrq01000: Modal;
   tmbReqNum: string = "";
+
+  canMove: boolean = false;
 
   constructor(
     private service: Nrq01000Service,
@@ -26,10 +29,26 @@ export class Nrq01000Component implements OnInit {
       title: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
       msg: "TMB Req. No:  - "
     };
+    window.addEventListener("beforeunload", (e) => {
+      const confirmationMessage = "\o/";
+      if (true) {
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+      }
+    });
   }
 
   ngOnInit() {
     this.confirm();
+  }
+
+  ngOnDestroy() {
+    $("#nrq01000").modal('hidden');
+  }
+
+  canDeactivate(): Observable<boolean> | boolean {
+      // Not Allow Redirect
+      return this.canMove;
   }
 
   confirm = async () => {
@@ -49,6 +68,7 @@ export class Nrq01000Component implements OnInit {
   }
 
   requestPage() {
+    this.canMove = true;
     setTimeout(() => {
       this.router.navigate(['crs/crs01000'], {
         queryParams: { codeStatus: "10011" }

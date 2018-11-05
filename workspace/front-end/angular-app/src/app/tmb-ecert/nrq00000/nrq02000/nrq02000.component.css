@@ -76,6 +76,14 @@ h3.header.space {
     color: red !important;
 }
 
+td > label {
+    font-size: 1.1em !important;
+}
+
+.ui.checkbox > label {
+    font-size: .85em !important;
+}
+
 @media only screen and (max-width: 1251px) {
     .ui-table {
         margin: 2em 0 !important;

@@ -46,3 +46,11 @@
 .bg-pink {
     background: #ff66a3;
 }
+
+td>label {
+    font-size: 1.1em !important;
+}
+
+.ui.checkbox>label {
+    font-size: .85em !important;
+}

@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-nrq02000',
@@ -61,6 +62,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   allowedModal: Modal;
   authForSubmit: Modal;
   firstEnter: boolean = true;
+  canMove: boolean = false;
 
   constructor(
     private service: Nrq02000Service,
@@ -99,6 +101,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.store.select("user").subscribe(user => {
       this.user = user
     });
+
+    window.addEventListener("beforeunload", (e) => {
+      const confirmationMessage = "\o/";
+      if (true) {
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+      }
+    });
   }
 
   ngOnInit() {
@@ -113,6 +123,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
     this.form.controls.reqTypeSelect.setValue(code);
     this.reqTypeChange(code);
+  }
+
+  canDeactivate(): Observable<boolean> | boolean {
+    // Not Allow Redirect
+    return this.canMove;
   }
 
   /**
@@ -249,6 +264,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get allowedSelect() { return this.formReject.controls.allowedSelect }
   get otherReason() { return this.formReject.controls.otherReason }
   get reqTypeIsNull() { return !this.reqTypeChanged || this.reqTypeChanged.length == 0 || this.form.controls.reqTypeSelect.value == '' }
+  get canRequest() { return this.isdownload || this.data.reqFormId != 0 }
   get btnRequestor() { return this.roles(ROLES.REQUESTOR) }
   get btnChecker() { return this.roles(ROLES.CHECKER) }
   get btnMaker() { return this.roles(ROLES.MAKER) }
@@ -375,6 +391,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   cancel() {
+    this.canMove = true;
     this.service.cancel(this.data.reqFormId != 0);
   }
 
