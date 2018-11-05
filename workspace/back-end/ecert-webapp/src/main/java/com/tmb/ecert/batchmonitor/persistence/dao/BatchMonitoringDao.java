@@ -41,12 +41,16 @@ public class BatchMonitoringDao {
 				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON A.STATUS = C.CODE  WHERE 1=1  ");
 		
 		if(StringUtils.isNotBlank(form.getDateFrom())) {
-			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
-			params.add(form.getDateFrom());
+//			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
+			sql.append(" AND CAST(A.START_DATE as DATE) >= ? "); 
+			Date date = DateConstant.convertStrDDMMYYYYToDate(form.getDateFrom());
+			params.add(date);
 		}
 		if(StringUtils.isNotBlank(form.getDateTo())) {
-			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
-			params.add(form.getDateTo());
+//			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
+			sql.append(" AND CAST(A.START_DATE as DATE) <= ? "); 
+			Date date = DateConstant.convertStrDDMMYYYYToDate(form.getDateTo());
+			params.add(date);
 		}
 		if (StringUtils.isNotBlank(form.getBatchType())) {
 			sql.append(" AND A.JOBTYPE_CODE = ? ");
@@ -93,12 +97,16 @@ public class BatchMonitoringDao {
 				+ "   	LEFT JOIN ECERT_LISTOFVALUE C ON A.STATUS = C.CODE  WHERE 1=1  ");
 		
 		if(StringUtils.isNotBlank(form.getDateFrom())) {
-			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
-			params.add(form.getDateFrom());
+//			sql.append(" AND CONVERT(NVARCHAR, A.START_DATE, 103) >= ? ");
+			sql.append(" AND CAST(A.START_DATE as DATE) >= ? "); 
+			Date date = DateConstant.convertStrDDMMYYYYToDate(form.getDateFrom());
+			params.add(date);
 		}
 		if(StringUtils.isNotBlank(form.getDateTo())) {
-			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
-			params.add(form.getDateTo());
+//			sql.append("  AND CONVERT(NVARCHAR, A.START_DATE, 103) <= ? ");
+			sql.append(" AND CAST(A.START_DATE as DATE) <= ? "); 
+			Date date = DateConstant.convertStrDDMMYYYYToDate(form.getDateTo());
+			params.add(date);
 		}
 		if (StringUtils.isNotBlank(form.getBatchType())) {
 			sql.append(" AND A.JOBTYPE_CODE = ? ");

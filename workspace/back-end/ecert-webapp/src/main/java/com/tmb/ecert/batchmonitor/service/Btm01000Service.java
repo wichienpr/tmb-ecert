@@ -72,7 +72,7 @@ public class Btm01000Service {
 			if(StatusConstant.JOBMONITORING.BATCH_AUDILOG.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_AUDILOG.");
 				auditlogBatchService.transferAuditLogByActionCode(ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_AUDITLOG_ACTIONCODE),
-						EcerDateUtils.parseDateEN(form.getEndofdate()));
+						EcerDateUtils.parseDateEN(form.getStartDate()));
 			}else if (StatusConstant.JOBMONITORING.BATCH_HOUSEKEEP.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_HOUSEKEEP.");
 				houseKeepingBatchService.archiveAuditLog();
@@ -81,10 +81,10 @@ public class Btm01000Service {
 				hrBatchService.runBatchJob();
 			}else if (StatusConstant.JOBMONITORING.BATCH_DBD.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_DBD.");
-				dbdBatchService.paymentDBDSummary(EcerDateUtils.parseDateEN(form.getEndofdate()));
+				dbdBatchService.paymentDBDSummary(EcerDateUtils.parseDateEN(form.getStartDate()));
 			}else if (StatusConstant.JOBMONITORING.BATCH_ONDEMAND.equals(form.getJobtypeCode())) {
 				logger.info("rerun BATCH_ONDEMAND.");
-				paymentOndemandService.paymentOnDemandSummary(EcerDateUtils.parseDateEN(form.getEndofdate()));
+				paymentOndemandService.paymentOnDemandSummary(EcerDateUtils.parseDateEN(form.getStartDate()));
 			}else if (StatusConstant.JOBMONITORING.BATCH_GL.equals(form.getJobtypeCode())) {
 				paymentGLService.reRunBatchJob(EcerDateUtils.parseDateEN(form.getStartDate()),EcerDateUtils.parseDateEN(form.getStopDate()));
 				logger.info("rerun BATCH_GL.");
