@@ -101,13 +101,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.user = user
     });
 
-    window.addEventListener("beforeunload", (e) => {
-      const confirmationMessage = "\o/";
-      if (true) {
-        (e || window.event).returnValue = confirmationMessage;
-        return confirmationMessage;
-      }
-    });
   }
 
   ngOnInit() {
@@ -122,11 +115,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
     this.form.controls.reqTypeSelect.setValue(code);
     this.reqTypeChange(code);
-  }
-
-  canDeactivate(): Observable<boolean> | boolean {
-    // Not Allow Redirect
-    return window.confirm("ระบบอาจไม่ได้บันทึกการเปลี่ยนแปลงของคุณ");
   }
 
   /**
@@ -554,9 +542,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
     }, 1500);
     setTimeout(() => {
-      this.toggleChk(1);
-      this.form.controls[`chk1`].setValue(true);
-      this.form.controls[`cer1`].setValue(1);
+      if (this.form.get('cer1').value == "") {
+        this.toggleChk(1);
+        this.form.controls[`chk1`].setValue(true);
+        this.form.controls[`cer1`].setValue(1);
+      }
       this.common.isLoaded();
     }, 1700);
   }
