@@ -72,23 +72,23 @@ public class UserDetailsService implements org.springframework.security.core.use
 			userDetails.setUserId("0003");
 			userDetails.setBranchCode("001");
 		}
-		if("REQUESTOR".equalsIgnoreCase(username)) {
+		if("REQUESTER".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
-			userDetails.setFirstName("Requestor");
+			userDetails.setFirstName("Requester");
 			userDetails.setLastName("RM");
 			userDetails.setUserId("0004");
 			userDetails.setBranchCode("001");
 		}
-		if("REQUESTOR_QA1".equalsIgnoreCase(username)) {
+		if("REQUESTER_QA1".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
-			userDetails.setFirstName("Requestor");
+			userDetails.setFirstName("Requester");
 			userDetails.setLastName("QA1");
 			userDetails.setUserId("0009");
 			userDetails.setBranchCode("001");
 		}
-		if("REQUESTOR_QA2".equalsIgnoreCase(username)) {
+		if("REQUESTER_QA2".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
-			userDetails.setFirstName("Requestor");
+			userDetails.setFirstName("Requester");
 			userDetails.setLastName("QA2");
 			userDetails.setUserId("0010");
 			userDetails.setBranchCode("001");
