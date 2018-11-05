@@ -726,7 +726,7 @@ export class Nrq02000Service {
             rejectReasonCode: addons.rejectReasonCode,
             rejectReasonOther: addons.rejectReasonOther,
             hasAuthed: this.hasAuthed,
-            userStatus: this.common.isRole(ROLES.MAKER) ? "MAKER" : "REQUESTOR",
+            userStatus: this.common.isRole(ROLES.MAKER) ? ROLES.MAKER : ROLES.REQUESTOR,
             lockFlag: 0
         };
         console.log("data", data);
