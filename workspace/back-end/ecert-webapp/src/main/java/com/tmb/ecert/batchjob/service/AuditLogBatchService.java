@@ -14,6 +14,7 @@ import java.util.StringJoiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import com.tmb.ecert.batchjob.dao.AuditLogDao;
 import com.tmb.ecert.batchjob.dao.JobMonitoringDao;
 import com.tmb.ecert.batchjob.domain.AuditLog;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
@@ -48,6 +50,9 @@ public class AuditLogBatchService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
 
 	public void transferAuditLogByActionCode(String actionCode,Date runDate) {
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
@@ -77,7 +82,7 @@ public class AuditLogBatchService {
 				if(isSuccess){
 					List<SftpFileVo> files = new ArrayList<>();
 					files.add(new SftpFileVo(new File(fileNameFull), ftpPath, fileName));
-					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, ftpPassword);
+					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.encrypt(keystorePath, ftpPassword));
 				    isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){
 						log.error("AuditLogBatchService FTP Error: {} ",sftpVo.getErrorMessage());

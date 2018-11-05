@@ -12,8 +12,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.BACHJOB_LOG_NAME;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.HROFFICE_CODE;
@@ -48,6 +50,9 @@ public class HROfficeCodeBatchService {
 	@Autowired
 	private EmailService emailService;
 	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
+	
 	private final String DATE_FORMAT = "YYYYMMDD";
 	private String DATE_FILE_NAME = "yyyyMMddHHmmss";
 	
@@ -69,7 +74,7 @@ public class HROfficeCodeBatchService {
 			String achiveFilePath = String.format("%s%s%s", ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH), 
 					DateFormatUtils.format(runDate, DATE_FILE_NAME), fileType);
 			
-			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, password, achiveFilePath);
+			SftpVo sftpVo = new SftpVo(new SftpFileVo(path, fileName), host, username, TmbAesUtil.encrypt(keystorePath, password), achiveFilePath);
 			File file = SftpUtils.getFile(sftpVo);
 			if (this.validateContentFile(errorDesc, file)) {
 				List<EcertHROfficeCode> ecertHROfficeCodes = this.readFile(file);

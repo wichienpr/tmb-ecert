@@ -28,9 +28,6 @@ public class SftpUtils {
 	
 	public static final int SFTP_PORT = 22;
 	
-	@Value("${aes256.keystore.path}")
-	private static String keystorePath;
-	
 	public static File getFile(SftpVo vo) {
 		Session session = null;
 		Channel channel = null;
@@ -102,8 +99,8 @@ public class SftpUtils {
 			
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
-			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
-//			session.setPassword(vo.getPassword());
+//			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
+			session.setPassword(vo.getPassword());
 			Properties config = new Properties();
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);
@@ -172,7 +169,8 @@ public class SftpUtils {
 			
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
-			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
+//			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
+			session.setPassword(vo.getPassword());
 			Properties config = new Properties();
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);
