@@ -1,6 +1,5 @@
 package com.tmb.ecert.setup.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,14 +10,13 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.ParameterConfig;
-import com.tmb.ecert.common.domain.RoleVo;
 import com.tmb.ecert.setup.dao.ParameterConfigurationDao;
-import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup02000FormVo;
 
 import th.co.baiwa.buckwaframework.preferences.constant.MessageConstants.MESSAGE_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class Sup02000Service {
@@ -39,6 +37,7 @@ public class Sup02000Service {
 		String fullName = user.getFirstName() + " " + user.getLastName();
 		try {
 			paramDao.updateParameterConfig(listParam,fullName,user.getUserId());
+			// ReloadCache
 			logger.info("update parameter success.");
 			message.setData(MESSAGE_STATUS.SUCCEED);
 			message.setMessage(MESSAGE_STATUS.SUCCEED);

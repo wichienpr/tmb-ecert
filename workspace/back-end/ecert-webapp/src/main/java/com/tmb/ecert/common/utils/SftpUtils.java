@@ -12,11 +12,13 @@ import java.util.Properties;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+import com.tmb.aes256.TmbAesUtil;
 import com.tmb.ecert.common.domain.SftpFileVo;
 import com.tmb.ecert.common.domain.SftpVo;
 
@@ -25,6 +27,9 @@ public class SftpUtils {
 	private static final Logger log = LoggerFactory.getLogger(SftpUtils.class);
 	
 	public static final int SFTP_PORT = 22;
+	
+	@Value("${aes256.keystore.path}")
+	private static String keystorePath;
 	
 	public static File getFile(SftpVo vo) {
 		Session session = null;
@@ -97,7 +102,8 @@ public class SftpUtils {
 			
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
-			session.setPassword(vo.getPassword());
+			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
+//			session.setPassword(vo.getPassword());
 			Properties config = new Properties();
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);
@@ -166,7 +172,7 @@ public class SftpUtils {
 			
 			JSch jsch = new JSch();
 			session = jsch.getSession(vo.getUsername(), vo.getHost(), SFTP_PORT);
-			session.setPassword(vo.getPassword());
+			session.setPassword(TmbAesUtil.decrypt(keystorePath,vo.getPassword()));
 			Properties config = new Properties();
 			config.put("StrictHostKeyChecking", "no");
 			session.setConfig(config);

@@ -37,10 +37,10 @@ public class ApplicationCache {
 	private static final List<RoleVo> ROLE_GROUP_VALUE = new ArrayList<RoleVo>();
 
 	// DAO
-	private final ListOfValueDao lovDao;
-	private final CertificateDao cerDao;
-	private final ParameterConfigDao paramDao;
-	private final RoleDao roleDao;
+	private static ListOfValueDao lovDao;
+	private static CertificateDao cerDao;
+	private static ParameterConfigDao paramDao;
+	private static RoleDao roleDao;
 
 	@Autowired
 	public ApplicationCache(CertificateDao cerDao, ListOfValueDao lovDao, ParameterConfigDao paramDao,
@@ -161,8 +161,44 @@ public class ApplicationCache {
 		loadRole();
 		logger.info("ApplicationCache Reloaded");
 	}
+	
+	public static void reloadCacheNow() {
+		logger.info("ApplicationCache Reloading...");
+//		LOV_GROUP_VALUE.clear();
+//		List<ListOfValue> lovsTypes = lovDao.lovAllType();
+//		List<ListOfValue> lovs = new ArrayList<>();
+//		for (ListOfValue type : lovsTypes) {
+//			lovs = lovDao.lovByType(type.getType());
+//			LOV_TYPE_VALUE.add(type);
+//			LOV_GROUP_VALUE.put(type.getType(), lovs);
+//		}
+//		CER_GROUP_VALUE.clear();
+//		List<Certificate> cersTypes = cerDao.findAllTypeCode();
+//		List<Certificate> cers = new ArrayList<>();
+//		for (Certificate type : cersTypes) {
+//			cers = cerDao.findByTypeCode(type.getTypeCode());
+//			CER_TYPE_VALUE.add(type);
+//			CER_GROUP_VALUE.put(type.getTypeCode(), cers);
+//		}
+//		PARAM_GROUP_VALUE.clear();
+//		List<ParameterConfig> params = paramDao.findAll();
+//		for (ParameterConfig item : params) {
+//			PARAM_GROUP_VALUE.add(item);
+//		}
+//		ROLE_GROUP_VALUE.clear();
+//		List<RoleVo> roles = roleDao.findRoleJoinRolePermission();
+//		for (RoleVo item : roles) {
+//			ROLE_GROUP_VALUE.add(item);
+//		}
+		loadLov();
+		loadCer();
+		loadParam();
+		loadRole();
+		logger.info("ApplicationCache Reloaded");
+	}
 
-	private void loadCer() {
+
+	private static void loadCer() {
 		logger.info("load `Certificate` loading...");
 		CER_GROUP_VALUE.clear();
 		List<Certificate> types = cerDao.findAllTypeCode();
@@ -174,7 +210,7 @@ public class ApplicationCache {
 		}
 	}
 
-	private void loadLov() {
+	private static void loadLov() {
 		logger.info("load `ListOfValue` loading...");
 		LOV_GROUP_VALUE.clear();
 		List<ListOfValue> types = lovDao.lovAllType();
@@ -186,7 +222,7 @@ public class ApplicationCache {
 		}
 	}
 
-	private void loadParam() {
+	private static void loadParam() {
 		logger.info("load `ParameterConfig` loading...");
 		PARAM_GROUP_VALUE.clear();
 		List<ParameterConfig> items = paramDao.findAll();
@@ -195,7 +231,7 @@ public class ApplicationCache {
 		}
 	}
 
-	private void loadRole() {
+	private static void loadRole() {
 		logger.info("load `RoleVo` loading...");
 		ROLE_GROUP_VALUE.clear();
 		List<RoleVo> items = roleDao.findRoleJoinRolePermission();
