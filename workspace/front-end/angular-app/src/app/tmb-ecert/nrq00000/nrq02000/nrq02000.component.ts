@@ -684,29 +684,18 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       reader.onload = (e: any) => {
         const { name, type } = data.target.files[0];
         const fileName = name;
-        const fileExtension = fileName.substr(fileName.length - 4);
-        if (control == 'requestFile') {
-          if (fileExtension != ".pdf") {
-            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF เท่านั้น" });
-            data.target.value = "";
-            this.form.get('requestFile').patchValue("");
-          } else {
-            this.files[control] = data.target.files[0];
-          }
+        const fileExtension = fileName.substr(fileName.length - 4).toLowerCase();
+        if (
+          fileExtension != ".pdf" && fileExtension != ".png" &&
+          fileExtension != ".jpg" && fileExtension != "jpeg" &&
+          fileExtension != ".doc" && fileExtension != "docx"
+        ) {
+          this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF, PNG, JPG, JPEG, DOC, DOCX เท่านั้น" });
+          data.target.value = "";
+          this.form.get(control).patchValue("");
         } else {
-          if (
-            fileExtension != ".pdf" && fileExtension != ".png" &&
-            fileExtension != ".jpg" && fileExtension != "jpeg" &&
-            fileExtension != ".doc" && fileExtension != "docx"
-          ) {
-            this.modal.alert({ msg: "กรุณาเลือกไฟล์ที่เป็น PDF, PNG, JPG, JPEG, DOC, DOCX เท่านั้น" });
-            data.target.value = "";
-            this.form.get(control).patchValue("");
-          } else {
-            this.files[control] = data.target.files[0];
-          }
+          this.files[control] = data.target.files[0];
         }
-
       }
 
       reader.readAsDataURL(data.target.files[0]);
