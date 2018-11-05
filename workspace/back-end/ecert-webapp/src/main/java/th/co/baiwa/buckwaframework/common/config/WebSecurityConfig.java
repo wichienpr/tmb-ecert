@@ -38,16 +38,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		
 		auth.inMemoryAuthentication().withUser("admin").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("admin2").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("admin3").password("password").roles("USER");
+		
 		auth.inMemoryAuthentication().withUser("requestor").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("requestor_qa1").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("requestor_qa2").password("password").roles("USER");
 
 		auth.inMemoryAuthentication().withUser("maker").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("maker_qa1").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("maker_qa2").password("password").roles("USER");
 
 		auth.inMemoryAuthentication().withUser("checker").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("checker_qa1").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("checker_qa2").password("password").roles("USER");
 
 		auth.inMemoryAuthentication().withUser("isa").password("password").roles("USER");
 
 		auth.inMemoryAuthentication().withUser("it").password("password").roles("USER");
+		
 	}
 
 	@Override
