@@ -62,7 +62,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   allowedModal: Modal;
   authForSubmit: Modal;
   firstEnter: boolean = true;
-  canMove: boolean = false;
 
   constructor(
     private service: Nrq02000Service,
@@ -127,7 +126,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   canDeactivate(): Observable<boolean> | boolean {
     // Not Allow Redirect
-    return this.canMove;
+    return window.confirm("ระบบอาจไม่ได้บันทึกการเปลี่ยนแปลงของคุณ");
   }
 
   /**
@@ -391,7 +390,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   cancel() {
-    this.canMove = true;
     this.service.cancel(this.data.reqFormId != 0);
   }
 
