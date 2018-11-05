@@ -140,7 +140,7 @@ export class Btm01000Component implements OnInit {
     this.calendarreRunTo = {
       id: "reRunDateTo",
       formControl: this.reRunForm.get("reRunDateTo"),
-      endCalendar: "reRunDateForm",
+      startCalendar: "reRunDateForm",
       formatter: "dd/mm/yyyy"
     };
 
@@ -153,7 +153,7 @@ export class Btm01000Component implements OnInit {
     this.calendarToConig = {
       id: "dateTo",
       formControl: this.serchForm.get("dateTo"),
-      endCalendar: "dateFrom",
+      startCalendar: "dateFrom",
       formatter: "dd/mm/yyyy"
     };
 
@@ -177,6 +177,7 @@ export class Btm01000Component implements OnInit {
   // }
 
   doSearch() {
+    console.log("search data ",this.serchForm.value.dateFrom," to ", this.serchForm.value.dateTo )
     if (!this.serchForm.touched) {
       Object.keys(this.serchForm.value).forEach(element => {
         let fc = this.serchForm.get(element);
@@ -239,11 +240,17 @@ export class Btm01000Component implements OnInit {
     this.typeDropDown.clear();
   }
   continueRerun() {
-    this.tempItem.endofdate = this.reRunForm.get("reRunDateForm").value
+    this.tempItem.startDate = this.reRunForm.get("reRunDateForm").value
+    this.tempItem.stopDate = this.reRunForm.get("reRunDateTo").value
     this.callRerunJobAPI(this.tempItem)
 
   }
   callRerunJobAPI(itme) {
+    // const req = {
+    //   startDate:itme.startDate,
+    //   stopDate:itme.stopDate,
+    //   jobtypeCode:itme.jobtypeCode
+    // }
     this.service.callRerunJobService(itme).subscribe(res => {
       this.messageRes = res;
       if (this.messageRes.message == MESSAGE_STATUS.SUCCEED) {
