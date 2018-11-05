@@ -7,7 +7,7 @@ import { CanDeactivateGuard } from 'app/baiwa/baselayout/deactivate.guard';
 const routes: Routes = [
 
   { path: 'nrq01000', component: Nrq01000Component, canDeactivate: [CanDeactivateGuard] },
-  { path: 'nrq02000', component: Nrq02000Component, canDeactivate: [CanDeactivateGuard] }
+  { path: 'nrq02000', component: Nrq02000Component }
 
 ];
 @NgModule({
