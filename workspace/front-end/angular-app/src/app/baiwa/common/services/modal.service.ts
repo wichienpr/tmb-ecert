@@ -45,7 +45,9 @@ export class ModalService {
                 centered: false,
                 autofocus: false,
                 onApprove: (element) => {
-                    func(true)
+                    if (func) {
+                        func(true)
+                    }
                 },
             })
             .modal('show');
