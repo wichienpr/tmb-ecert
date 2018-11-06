@@ -63,15 +63,20 @@ export class CommonService {
     return new Observable<boolean>( obs => {
       setInterval(() => {
         obs.next(this.loading);
-      }, 200);
+      }, 500);
     });
   }
 
   isLoading() {
+    $.blockUI({
+      css: { border: 0 },
+      message: `<div class="ui active dimmer" style="background:transparent"><div class="ui text loader">กำลังโหลด</div></div>`
+    });
     this.loading = true;
   }
 
   isLoaded() {
+    $.unblockUI()
     this.loading = false;
   }
 

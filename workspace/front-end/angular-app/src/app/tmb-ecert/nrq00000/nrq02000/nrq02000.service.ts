@@ -120,8 +120,8 @@ export class Nrq02000Service {
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
     }
 
-    async getRejectReason() {
-        return await this.dropdown.getRejectReason().toPromise();
+    getRejectReason() {
+        return this.dropdown.getRejectReason().toPromise();
     }
 
 
@@ -230,7 +230,8 @@ export class Nrq02000Service {
      */
     save(form: FormGroup, files: any, _certificates: Certificate[], addons: any, what: string = "save") {
         let certificates = new Assigned().getValue(_certificates);
-        let chkMsg = this.chkCertsC(_certificates, form);
+        const { chkMsg, forms } = this.chkCertsC(_certificates, form);
+        form = forms;
         if ("" != chkMsg) {
             this.modal.alertWithAct({ msg: chkMsg });
             return;
@@ -246,6 +247,7 @@ export class Nrq02000Service {
                         return;
                     }
                 }
+                console.log(key);
             }
         }
         if (form.valid) {
@@ -356,6 +358,7 @@ export class Nrq02000Service {
                 }
             }, modalConf);
         }
+        return;
     }
 
     toAuthed(user: any) {
@@ -363,7 +366,7 @@ export class Nrq02000Service {
             username: user.authUsername,
             password: user.authPassword
         }
-        return new Promise( resolve => {
+        return new Promise(resolve => {
             this.ajax.post(URL.CONFIRM, data, response => {
                 let state = false;
                 if (response) {
@@ -392,7 +395,7 @@ export class Nrq02000Service {
                 hasFinished++;
             } else {
                 if (form.get('cal' + i) && form.get('cal' + i).invalid) {
-                    return "กรุณากรอกวันที่เอกสารรับรอง";
+                    return { chkMsg: "กรุณากรอกวันที่เอกสารรับรอง", forms: form };
                 }
                 let hasChildFinished = 0;
                 if (form.get('chk' + i).value == true && certificates[i].children) {
@@ -401,29 +404,36 @@ export class Nrq02000Service {
                             hasChildFinished++;
                         } else {
                             if (form.get('cal' + i + 'Child' + j) && form.get('cal' + i + 'Child' + j).invalid) {
-                                return "กรุณากรอกวันที่เอกสารรับรอง";
+                                return { chkMsg: "กรุณากรอกวันที่เอกสารรับรอง", forms: form };
                             }
                             if (form.get('etc' + i + 'Child' + j) && form.get('etc' + i + 'Child' + j).invalid) {
-                                return "กรุณากรอกข้อความอื่นๆ";
+                                return { chkMsg: "กรุณากรอกข้อความอื่นๆ", forms: form };
                             }
                         }
                     }
                     if (hasChildFinished == certificates[i].children.length - 1) {
-                        return "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ";
+                        return { chkMsg: "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ", forms: form };
+                    }
+                }
+                if (form.get('chk' + i).value == false && certificates[i].children) {
+                    for (let j = 1; j < certificates[i].children.length; j++) {
+                        form.get('chk' + i + 'Child' + j).clearValidators();
+                        form.get('chk' + i + 'Child' + j).updateValueAndValidity();
                     }
                 }
             }
         }
+        console.log(form);
         if (hasFinished == certificates.length - 1) {
-            return "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ";
+            return { chkMsg: "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ", forms: form };
         } else {
-            return "";
+            return { chkMsg: "", forms: form };
         }
     }
 
     pdf(form, dt, reqTypeChanged, reqDate): boolean {
         this.common.isLoading(); // Loading page
-        let chkMsg = this.chkCertsC(reqTypeChanged, form);
+        const { chkMsg } = this.chkCertsC(reqTypeChanged, form);
         if ("" != chkMsg) {
             this.modal.alertWithAct({ msg: chkMsg });
             this.common.isLoaded(); // UnLoading page

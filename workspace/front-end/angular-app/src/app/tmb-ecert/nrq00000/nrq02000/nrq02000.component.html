@@ -168,7 +168,7 @@
                     <td class="center aligned">
                       <div class="field" [ngClass]="{'error': invalid('chk'+i) }">
                         <div class="ui checkbox">
-                          <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
+                          <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
                           <label></label>
                         </div>
                       </div>
@@ -214,7 +214,7 @@
                       <td>
                         <div class="center aligned field" [ngClass]="{'error': invalid('chk'+i) }">
                           <div class="ui checkbox">
-                            <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (click)="toggleChk(i)">
+                            <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
                             <label></label>
                           </div>
                         </div>
@@ -228,7 +228,7 @@
                       <td class="left aligned">
                         <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j) }">
                           <div class="ui checkbox">
-                            <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (click)="toggleChkChild(i, j)"
+                            <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j)"
                               formControlName="chk{{i}}Child{{j}}">
                             <label>{{ item.certificate }}</label>
                           </div>
@@ -288,7 +288,7 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName') }">
-          <input type="text" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
+          <input type="text" (keypress)="noSymbol($event)" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
             placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
@@ -316,7 +316,7 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" maxlength="255" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
+          <input type="text" maxlength="255" (keypress)="noSymbol($event)" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
       <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
@@ -386,7 +386,7 @@
           <label>ชื่อเจ้าของบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accName') }">
-          <input type="text" maxlength="255" #accName formControlName="accName" placeholder="ชื่อบัญชี">
+          <input type="text" (keypress)="noSymbol($event)" maxlength="255" #accName formControlName="accName" placeholder="ชื่อบัญชี">
         </div>
       </div>
       <div class="inline fields">
@@ -394,7 +394,7 @@
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
-          <input type="text" class="txt-red" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
+          <input type="text" (keypress)="noSymbol($event)" class="txt-red" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
@@ -521,7 +521,7 @@
             <label>หมายเหตุ</label>
           </div>
           <div class="five wide field">
-            <textarea rows="2" maxlength="4000" formControlName="note"></textarea>
+            <textarea rows="2" maxlength="4000" (keypress)="noSymbol($event)" formControlName="note"></textarea>
           </div>
         </div>
         <div class="inline field">
