@@ -95,9 +95,16 @@ public class UserDetailsService implements org.springframework.security.core.use
 		}
 		if("MAKER".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
-			userDetails.setFirstName("Maker");
-			userDetails.setLastName("TMB Center");
-			userDetails.setUserId("0005");
+			userDetails.setFirstName("Warunyoo");
+			userDetails.setLastName("Petchthai");
+			userDetails.setUserId("47186");
+			userDetails.setBranchCode("001");
+		}
+		if("MAKER2".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			userDetails.setFirstName("Adjima");
+			userDetails.setLastName("Thongjinda");
+			userDetails.setUserId("49419");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER_QA1".equalsIgnoreCase(username)) {
@@ -114,11 +121,19 @@ public class UserDetailsService implements org.springframework.security.core.use
 			userDetails.setUserId("0012");
 			userDetails.setBranchCode("001");
 		}
+		if("MAKER_CHECKER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			userDetails.setFirstName("Suradej");
+			userDetails.setLastName("Sansomboonsuk");
+			userDetails.setUserId("42307");
+			userDetails.setBranchCode("001");
+		}
 		if("CHECKER".equalsIgnoreCase(username)) {
 			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
-			userDetails.setFirstName("Checker");
-			userDetails.setLastName("TMB Center");
-			userDetails.setUserId("0006");
+			userDetails.setFirstName("Nantiya");
+			userDetails.setLastName("Detjaitud");
+			userDetails.setUserId("42309");
 			userDetails.setBranchCode("001");
 		}
 		if("CHECKER_QA1".equalsIgnoreCase(username)) {

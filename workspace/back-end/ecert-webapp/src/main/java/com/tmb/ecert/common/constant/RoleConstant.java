@@ -6,9 +6,9 @@ public class RoleConstant {
 		public final static String ADMIN = "ADMIN";
 		public final static String IT ="IT";
 		public final static String ISA ="ISA";
-		public final static String REQUESTOR = "REQUESTOR";
-		public final static String MAKER = "MAKER";
-		public final static String CHECKER ="CHECKER";
+		public final static String REQUESTOR = "REQUESTER";
+		public final static String MAKER = "REVIEWER";
+		public final static String CHECKER ="APPROVER";
 	}
 	
 	public static enum ROLES {
