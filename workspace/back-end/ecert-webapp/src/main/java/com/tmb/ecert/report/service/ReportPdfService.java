@@ -73,7 +73,7 @@ public class ReportPdfService {
 	@Autowired
 	private UploadService upload;
 
-	private static String SUB_PATH_UPLOAD = "tmb-requestor/";
+	private static String SUB_PATH_UPLOAD = "";
 
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;

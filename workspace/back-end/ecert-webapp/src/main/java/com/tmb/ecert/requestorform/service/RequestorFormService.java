@@ -49,7 +49,7 @@ public class RequestorFormService {
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_REQFORM);
 
-	private static String PATH = "tmb-requestor/";
+	private static String PATH = "";
 
 	@Autowired
 	private UploadService upload;
@@ -131,7 +131,7 @@ public class RequestorFormService {
 		try {
 			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
 				String ext = FilenameUtils.getExtension(form.getRequestFile().getOriginalFilename());
-				requestFileName = "RECEIPT_" + form.getTmbReqFormNo() + "." + ext;
+				requestFileName = "REQFORM_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
 			}
 			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
@@ -264,7 +264,7 @@ public class RequestorFormService {
 		try {
 			if (BeanUtils.isNotEmpty(form.getRequestFile())) {
 				String ext = FilenameUtils.getExtension(form.getRequestFile().getOriginalFilename());
-				requestFileName = "RECEIPT_" + form.getTmbReqFormNo() + "." + ext;
+				requestFileName = "REQFORM_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getRequestFile().getBytes(), folder, requestFileName);
 			}
 			if (BeanUtils.isNotEmpty(form.getCopyFile())) {
@@ -359,12 +359,12 @@ public class RequestorFormService {
 	}
 
 	public void download(String fileName, HttpServletResponse response) {
-		String pathName = PATH + fileName;
+		String pathName = fileName;
 		download.download(pathName, response);
 	}
 
 	public void pdf(String name, HttpServletResponse response) {
-		String pathName = PATH + name;
+		String pathName = name;
 		download.pdf(pathName, response);
 	}
 

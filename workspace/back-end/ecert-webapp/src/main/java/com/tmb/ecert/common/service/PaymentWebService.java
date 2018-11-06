@@ -139,7 +139,12 @@ public class PaymentWebService {
 		CommonMessage<RealtimePaymentResponse> commonMsg = new CommonMessage<RealtimePaymentResponse>();
 		RealtimePaymentRequest req = new RealtimePaymentRequest();
 		req.setServiceCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE));
-		req.setTransactionNo(reqF.getUuid());
+		String tranactionNo = "TRAN" + System.currentTimeMillis();
+		if (tranactionNo.length() > 20) {
+			req.setTransactionNo(tranactionNo.substring(0, 20));
+		} else {
+			req.setTransactionNo(tranactionNo);
+		}
 		req.setRef1(reqF.getRef1());
 		req.setRef2(reqF.getRef2());
 		req.setBankCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_BANKCODE));

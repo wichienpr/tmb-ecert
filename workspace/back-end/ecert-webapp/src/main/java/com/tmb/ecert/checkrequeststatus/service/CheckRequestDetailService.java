@@ -43,7 +43,7 @@ import th.co.baiwa.buckwaframework.support.ApplicationCache;
 @Service
 public class CheckRequestDetailService {
 
-	private static String PATH = "tmb-requestor/";
+	private static String PATH = "";
 
 	private static Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_SEARCH_REQFORM);
 
@@ -205,6 +205,7 @@ public class CheckRequestDetailService {
 		} catch (Exception e) {
 			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
 			reqDao.updateErrorDescription(e.getMessage(), newReq.getReqFormId());
+			response = handlerErrorReq(response, newReq, user);
 			logger.error(e.getMessage());
 		} finally {
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.APPROVE_PAYMENT_CODE, ACTION_AUDITLOG_DESC.APPROVE_PAYMENT,
