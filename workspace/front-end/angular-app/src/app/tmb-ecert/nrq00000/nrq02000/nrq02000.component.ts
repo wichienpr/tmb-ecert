@@ -8,7 +8,6 @@ import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
-import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -196,13 +195,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                 if (this.chkList[i].feeDbd == "" && i != 0) {
                   this.service.getChkListMore(this.chkList[i].code).then(children => {
                     this.chkList[i].children = children;
+                    if (this.chkList && this.chkList.length > 0) {
+                      this.service.matchChkList(this.chkList, this.cert).then(result => {
+                        this.chkList = result;
+                      });
+                    }
                   });
                 }
-              }
-              if (this.chkList && this.chkList.length > 0) {
-                this.service.matchChkList(this.chkList, this.cert).then(result => {
-                  this.chkList = result;
-                });
               }
             });
           });
@@ -301,6 +300,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, _data?) {
     event.preventDefault();
+    console.log('submitted');
     this.submitted = true;
     const data = _data ? _data : {
       glType: this.glType,
