@@ -10,6 +10,8 @@ import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { Observable } from 'rxjs';
 
+declare var $: any;
+
 @Component({
   selector: 'app-nrq02000',
   templateUrl: './nrq02000.component.html',
@@ -122,83 +124,96 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
    * @ `dropdownObj` ข้อมูล dropdown {`reqType`,`customSeg`,`payMethod`,`subAccMethod`}.
    * @ `form` ข้อมูลแบบฟอร์มคำขอ
    */
-  async init() {
+  init() {
     this.service.lock();
 
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
     this.checkRoles();
-    this.allowed.values = await this.service.getRejectReason();
-    this.data = await this.service.getData();
-    if (this.data && this.data.tmbRequestNo) {
-      this.isdownload = true;
-      const {
-        accNo, accName, corpName, corpName1, corpNo, address,
-        acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-        departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
-      } = this.form.controls;
-      const {
-        accountNo, accountName, tmbRequestNo, requestDate,
-        glType, tranCode, accountType, status, companyName,
-        caNumber, organizeId, customerName, telephone, remark,
-        requestFormFile, idCardFile, department
-      } = this.data;
-      const id = this.data.reqFormId.toString();
-      this.reqDate = requestDate;
-      this.glType = glType;
-      this.tranCode = tranCode;
-      this.accType = accountType;
-      this.status = status;
-      this.statusMsg = status;
-      this.tmbReqFormId = tmbRequestNo;
-      this.accNo = Acc.convertAccNo(accountNo);
-
-      this.cert = await this.service.getCert(id);
-      this.chkList = await this.service.getChkList(id);
-      for (let i = 0; i < this.chkList.length; i++) {
-        if (this.chkList[i].feeDbd == "" && i != 0) {
-          this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+    this.service.getRejectReason().then(value => {
+      this.allowed.values = value;
+      this.service.getData().then(data => {
+        this.data = data;
+        if (this.data && this.data.tmbRequestNo) {
+          this.isdownload = true;
+          const {
+            accNo, accName, corpName, corpName1, corpNo, address,
+            acceptNo, telReq, reqFormId, note, requestFile, copyFile,
+            departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
+          } = this.form.controls;
+          const {
+            accountNo, accountName, tmbRequestNo, requestDate,
+            glType, tranCode, accountType, status, companyName,
+            caNumber, organizeId, customerName, telephone, remark,
+            requestFormFile, idCardFile, department
+          } = this.data;
+          const id = this.data.reqFormId.toString();
+          this.reqDate = requestDate;
+          this.glType = glType;
+          this.tranCode = tranCode;
+          this.accType = accountType;
+          this.status = status;
+          this.statusMsg = status;
+          this.tmbReqFormId = tmbRequestNo;
+          this.accNo = Acc.convertAccNo(accountNo);
+          accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+          accNo.setValue(Acc.convertAccNo(accountNo));
+          address.setValue(this.data.address);
+          accName.setValue(accountName);
+          acceptNo.setValue(caNumber);
+          corpName1.setValue(companyName);
+          corpName.setValue(customerName);
+          corpNo.setValue(organizeId);
+          departmentName.setValue(department);
+          note.setValue(remark);
+          telReq.setValue(telephone);
+          reqFormId.setValue(this.data.reqFormId);
+          ref1.setValue(this.data.ref1);
+          ref2.setValue(this.data.ref2);
+          amountDbd.setValue(this.data.amountDbd);
+          amountTmb.setValue(this.data.amountTmb);
+          this.amountBlur('amountDbd');
+          this.amountBlur('amountTmb');
+          if (this.user.segment) {
+            customSegSelect.patchValue(this.user.segment);
+          } else {
+            this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
+            customSegSelect.patchValue(this.custsegmentCode);
+          }
+          if (requestFormFile) {
+            requestFile.clearValidators();
+            requestFile.updateValueAndValidity();
+          }
+          if (idCardFile) {
+            copyFile.clearValidators();
+            copyFile.updateValueAndValidity();
+          }
+          this.service.getCert(id).then(cert => {
+            this.cert = cert;
+            this.service.getChkList(id).then(chkList => {
+              this.chkList = chkList;
+              for (let i = 0; i < this.chkList.length; i++) {
+                if (this.chkList[i].feeDbd == "" && i != 0) {
+                  this.service.getChkListMore(this.chkList[i].code).then(children => {
+                    this.chkList[i].children = children;
+                  });
+                }
+              }
+              if (this.chkList && this.chkList.length > 0) {
+                this.service.matchChkList(this.chkList, this.cert).then(result => {
+                  this.chkList = result;
+                });
+              }
+            });
+          });
+        } else {
+          this.reqDate = this.service.getReqDate();
+          this.service.getTmbReqFormId().then(id => {
+            this.tmbReqFormId = id;
+          })
         }
-      }
-      if (this.chkList && this.chkList.length > 0) {
-        this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-      }
-      if (this.user.segment) {
-        customSegSelect.setValue(this.user.segment);
-      } else {
-        this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
-        customSegSelect.setValue(this.custsegmentCode);
-      }
-      accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
-      accNo.setValue(Acc.convertAccNo(accountNo));
-      address.setValue(this.data.address);
-      accName.setValue(accountName);
-      acceptNo.setValue(caNumber);
-      corpName1.setValue(companyName);
-      corpName.setValue(customerName);
-      corpNo.setValue(organizeId);
-      departmentName.setValue(department);
-      note.setValue(remark);
-      telReq.setValue(telephone);
-      reqFormId.setValue(this.data.reqFormId);
-      ref1.setValue(this.data.ref1);
-      ref2.setValue(this.data.ref2);
-      amountDbd.setValue(this.data.amountDbd);
-      amountTmb.setValue(this.data.amountTmb);
-      this.amountBlur('amountDbd');
-      this.amountBlur('amountTmb');
-      if (requestFormFile) {
-        requestFile.clearValidators();
-        requestFile.updateValueAndValidity();
-      }
-      if (idCardFile) {
-        copyFile.clearValidators();
-        copyFile.updateValueAndValidity();
-      }
-    } else {
-      this.reqDate = this.service.getReqDate();
-      this.tmbReqFormId = await this.service.getTmbReqFormId();
-    }
+      });
+    });
   }
 
   checkRoles() {
@@ -330,15 +345,17 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls[control].setValue(parseInt(this.form.controls[control].value) - 1);
   }
 
-  async auth(e) {
+  auth(e) {
     e.preventDefault();
     this.authSubmitted = true;
     if (this.formAuth.valid) {
-      if (await this.service.toAuthed(this.formAuth.value)) {
-        this.formSubmit(this.form);
-      } else {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
-      }
+      this.service.toAuthed(this.formAuth.value).then(result => {
+        if (result) {
+          this.formSubmit(this.form);
+        } else {
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+        }
+      })
     }
   }
 
@@ -400,88 +417,94 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  async reqTypeChange(e) {
+  reqTypeChange(e) {
     this.common.isLoading();
     if (e != "") {
-      this.reqTypeChanged = await this.service.reqTypeChange(e);
-      this.reqTypeChanged.forEach(async (obj, index) => {
-        if (index != 0) {
-          let value = '';
-          if (this.form.controls[`chk${index}`]) {
-            this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
-          } else {
-            this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-            this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
+      this.service.reqTypeChange(e).then(reqTypeChanged => {
+        this.reqTypeChanged = reqTypeChanged;
+        this.reqTypeChanged.forEach((obj, index) => {
+          if (index != 0) {
+            let value = '';
+            if (this.form.controls[`chk${index}`]) {
+              this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
+              this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
+            } else {
+              this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
+              this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
+            }
+            if (!obj.feeDbd) {
+              this.service.reqTypeChange(obj.code).then(children => {
+                obj.children = children;
+                obj.children.forEach((ob, idx) => {
+                  if (idx != 0) {
+                    if (this.calendar.length !== obj.children.length && idx != 1) {
+                      this.calendar[idx] = {
+                        calendarId: `cal${index}Child${idx}`,
+                        calendarName: `cal${index}Child${idx}`,
+                        formGroup: this.form,
+                        formControlName: `cal${index}Child${idx}`,
+                        type: CalendarType.DATE,
+                        formatter: CalendarFormatter.DEFAULT,
+                        local: CalendarLocal.EN,
+                        icon: 'calendar'
+                      };
+                      if (ob.code == '10007') {
+                        this.calendar[idx] = {
+                          calendarId: `cal${index}Child${idx}`,
+                          calendarName: `cal${index}Child${idx}`,
+                          formGroup: this.form,
+                          formControlName: `cal${index}Child${idx}`,
+                          type: CalendarType.DATE,
+                          formatter: CalendarFormatter.DEFAULT,
+                          local: CalendarLocal.EN,
+                          icon: 'calendar'
+                        };
+                      }
+                      if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
+                        this.calendar[idx] = {
+                          calendarId: `cal${index}Child${idx}`,
+                          calendarName: `cal${index}Child${idx}`,
+                          formGroup: this.form,
+                          formControlName: `cal${index}Child${idx}`,
+                          type: CalendarType.YEAR,
+                          formatter: CalendarFormatter.yyyy,
+                          local: CalendarLocal.EN,
+                          icon: 'calendar'
+                        };
+                      }
+                    }
+                    if (idx === obj.children.length - 1) {
+                      if (this.form.controls[`etc${index}Child${idx}`]) {
+                        this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                      } else {
+                        this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                      }
+                    }
+                    if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
+                      this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                      this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                      if (idx != 1) {
+                        this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                      }
+                    } else {
+                      this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                      this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                      if (idx != 1) {
+                        this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                      }
+                    }
+                  }
+                });
+              });
+
+            }
           }
-          if (!obj.feeDbd) {
-            obj.children = await this.service.reqTypeChange(obj.code);
-            obj.children.forEach((ob, idx) => {
-              if (idx != 0) {
-                if (this.calendar.length !== obj.children.length && idx != 1) {
-                  this.calendar[idx] = {
-                    calendarId: `cal${index}Child${idx}`,
-                    calendarName: `cal${index}Child${idx}`,
-                    formGroup: this.form,
-                    formControlName: `cal${index}Child${idx}`,
-                    type: CalendarType.DATE,
-                    formatter: CalendarFormatter.DEFAULT,
-                    local: CalendarLocal.EN,
-                    icon: 'calendar'
-                  };
-                  if (ob.code == '10007') {
-                    this.calendar[idx] = {
-                      calendarId: `cal${index}Child${idx}`,
-                      calendarName: `cal${index}Child${idx}`,
-                      formGroup: this.form,
-                      formControlName: `cal${index}Child${idx}`,
-                      type: CalendarType.DATE,
-                      formatter: CalendarFormatter.DEFAULT,
-                      local: CalendarLocal.EN,
-                      icon: 'calendar'
-                    };
-                  }
-                  if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
-                    this.calendar[idx] = {
-                      calendarId: `cal${index}Child${idx}`,
-                      calendarName: `cal${index}Child${idx}`,
-                      formGroup: this.form,
-                      formControlName: `cal${index}Child${idx}`,
-                      type: CalendarType.YEAR,
-                      formatter: CalendarFormatter.yyyy,
-                      local: CalendarLocal.EN,
-                      icon: 'calendar'
-                    };
-                  }
-                }
-                if (idx === obj.children.length - 1) {
-                  if (this.form.controls[`etc${index}Child${idx}`]) {
-                    this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-                  } else {
-                    this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-                  }
-                }
-                if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
-                  this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                  this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                  if (idx != 1) {
-                    this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-                  }
-                } else {
-                  this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                  this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                  if (idx != 1) {
-                    this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-                  }
-                }
-              }
-            });
+          if (index == this.reqTypeChanged.length - 1) {
+            return;
           }
-        }
-        if (index == this.reqTypeChanged.length - 1) {
-          return;
-        }
+        });
       });
+
     }
     setTimeout(() => {
       const controls = this.form.controls;
@@ -543,9 +566,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }, 1500);
     setTimeout(() => {
       if (this.form.get('cer1').value == "") {
-        this.toggleChk(1);
         this.form.controls[`chk1`].setValue(true);
         this.form.controls[`cer1`].setValue(1);
+        this.toggleChk(1);
       }
       this.common.isLoaded();
     }, 1700);
@@ -569,13 +592,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   toggleChk(index) {
-    if (!this.form.controls[`chk${index}`].value) {
+    if (this.form.controls[`chk${index}`].value) {
       this.form.controls[`cer${index}`].setValue(1);
     } else {
       this.form.controls[`cer${index}`].setValue('');
     }
     if (this.reqTypeChanged[index].children) {
-      this.showChildren = !this.form.controls[`chk${index}`].value;
+      this.showChildren = this.form.controls[`chk${index}`].value;
       this.form.get(`chk${index}`).setValue(this.showChildren);
       if (this.showChildren) {
         for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
@@ -604,7 +627,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   toggleChkChild(parent, child) {
-    if (this.form.controls[`chk${parent}Child${child}`].value) {
+    if (!this.form.controls[`chk${parent}Child${child}`].value) {
       this.reqTypeChanged.forEach((obj, index) => {
         if (obj.children) {
           obj.children.forEach((ob, idx) => {
@@ -623,7 +646,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.form.controls[`etc${parent}Child${child}`]) {
       this.form.controls[`etc${parent}Child${child}`].setValue('');
     }
-    if (!this.form.controls[`chk${parent}Child${child}`].value) {
+    if (this.form.controls[`chk${parent}Child${child}`].value) {
       this.form.controls[`cer${parent}Child${child}`].setValue(1);
     }
   }
@@ -748,6 +771,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   download(fileName: string) {
     this.service.download(fileName);
+  }
+
+  noSymbol(e) {
+    var txt = String.fromCharCode(e.which);
+    if (!txt.toString().match(/[A-Za-z0-9ก-๙ ]/) || e.charCode == 3647) {
+      return false;
+    }
   }
 
 }

@@ -120,8 +120,8 @@ export class Nrq02000Service {
         this.dropdown.getsubAccMethod().subscribe((obj: Lov[]) => this.dropdownObj.subAccMethod.values = obj);
     }
 
-    async getRejectReason() {
-        return await this.dropdown.getRejectReason().toPromise();
+    getRejectReason() {
+        return this.dropdown.getRejectReason().toPromise();
     }
 
 

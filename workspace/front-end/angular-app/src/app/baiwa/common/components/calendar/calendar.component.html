@@ -3,7 +3,7 @@
         <div class="ui input {{ calendar.icon ? 'left icon' : '' }}" width="100%">
             <i class="{{ calendar.icon ? calendar.icon : 'calendar' }} icon" *ngIf="calendar.icon"></i>
             <input type="text" width="100%" [formControlName]="calendar.formControlName" name="{{calendar.calendarName}}"
-                placeholder="{{calendar.placeholder}}" [disableControl]="disableCalendar" autocomplete="off">
+                placeholder="{{calendar.placeholder}}" readonly="" [disableControl]="disableCalendar" autocomplete="off">
         </div>
     </div>
 </ng-container>

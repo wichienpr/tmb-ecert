@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       let result: AjaxLoginVo = resp as AjaxLoginVo;
       console.log("ACTION : LOGIN", result);
       this.loading = false;
-      if (result.status == "SUCCESS") {
+      if (result.status == "SUCCESS" && result.userId) {
         const INIT_USER_DETAIL: UserDetail = {
           roles: result.roles,
           userId: result.userId,
@@ -84,6 +84,9 @@ export class LoginComponent implements OnInit {
         }, modal);
       } else if (result.status == "OUTOFF_SERVICE") {
         this.loginMessage = "ไม่สามารถดำเนินการต่อได้ในขณะนี้เนื่องจากปิดระบบตั้งแต่เวลา " + result.discription; //........ถึงเวลา........";
+        this.showLoginMessage = true;
+      } else {
+        this.loginMessage = "ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
         this.showLoginMessage = true;
       }
 

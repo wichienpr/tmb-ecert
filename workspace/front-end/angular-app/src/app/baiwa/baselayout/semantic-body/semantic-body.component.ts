@@ -51,21 +51,9 @@ export class SemanticBodyComponent implements OnInit {
       title: "การยืนยัน",
       type: "confirm"
     };
-
-    // this.router.events.subscribe(event => {
-    //   if (event instanceof NavigationStart) {
-    //     this.loading = true;
-    //   } else if (
-    //     event instanceof NavigationEnd ||
-    //     event instanceof NavigationCancel
-    //   ) {
-    //     this.loading = false;
-    //   }
-    // });
+    
   }
 
-  ngOnInit() {
-    this.loading = this.common.loadStatus();
-  }
+  ngOnInit() { }
 
 }

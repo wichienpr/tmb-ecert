@@ -47,6 +47,15 @@ tr:nth-child(even) {
     top: 0 !important;
 }
 
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .modal {
+        position: absolute !important;
+        margin: 5vh auto !important;
+        margin-left: -360px !important;
+        top: 0 !important;
+    }
+}
+
 .label.grey {
     color: #767676 !important;
 }
