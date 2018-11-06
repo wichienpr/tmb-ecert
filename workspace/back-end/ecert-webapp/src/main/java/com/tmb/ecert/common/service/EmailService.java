@@ -138,10 +138,13 @@ public class EmailService {
 			Date reqDate = new Date(reqF.getRequestDate().getTime());
 			Date now = new Date();
 			
-			Object[] param = { EcerDateUtils.formatDDMMYYYYDate(reqDate), EcerDateUtils.formatHHMM(reqDate),
-					serviceName, reqF.getTmbRequestNo(), reqF.getRef1(), reqF.getRef2(),
-					EcerDateUtils.formatDDMMYYYYDate(new Date(reqF.getPaymentDate().getTime())), reqF.getAmount(),
-					EcerDateUtils.formatDDMMYYYYDate(now), EcerDateUtils.formatHHMM(now), rootCase };
+			Object[] param = { 
+					EcerDateUtils.formatDDMMYYYYDate(reqDate), 
+					EcerDateUtils.formatHHMM(reqDate),
+					reqF.getTmbRequestNo(),
+					EcerDateUtils.formatDDMMYYYYDate(now), 
+					EcerDateUtils.formatHHMM(now), 
+					rootCase };
 			Object[] subjectParam = {};
 			sendEmailToEmailGateWay(emailtemplate, param ,subjectParam);
 			
