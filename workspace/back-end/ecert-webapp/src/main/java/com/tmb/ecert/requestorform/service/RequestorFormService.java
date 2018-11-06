@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -174,7 +175,7 @@ public class RequestorFormService {
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
 				req.setIdCardFile(copyFile);
-				if ("MAKER".equals(form.getUserStatus())) {
+				if (RoleConstant.ROLE.MAKER.equals(form.getUserStatus())) {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
 					req.setPaymentDate(timestamp);
