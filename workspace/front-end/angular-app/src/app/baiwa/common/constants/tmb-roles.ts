@@ -1,8 +1,8 @@
 export enum ROLES {
     ADMIN = "ADMIN",
-    CHECKER = "CHECKER",
+    CHECKER = "APPROVER",
     IT = "IT",
     ISA = "ISA",
-    MAKER = "MAKER",
-    REQUESTOR = "REQUESTOR",
+    MAKER = "REVIEWER",
+    REQUESTOR = "REQUESTER",
 }
