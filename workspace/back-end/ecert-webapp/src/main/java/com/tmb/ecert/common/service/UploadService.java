@@ -35,7 +35,7 @@ public class UploadService {
 	public void createFile(byte[] file, String pathName, String fileName) throws IOException {
 		byte[] data = file; // get data
 		// set path
-		String path = pathed + pathName + fileName;
+		String path = pathed + fileName;
 		OutputStream stream = new FileOutputStream(path);
 		stream.write(data);
 		logger.info("Created file: " + path);
