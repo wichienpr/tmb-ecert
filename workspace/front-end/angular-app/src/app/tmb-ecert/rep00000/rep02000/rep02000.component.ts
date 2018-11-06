@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AjaxService, ModalService, DropdownService } from "services/";
+import { AjaxService, ModalService } from "services/";
 import { Modal } from "models/";
-import { forEach } from '@angular/router/src/utils/collection';
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { isValid } from 'app/baiwa/common/helpers';
 
 import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
-declare var $: any;
 const URL = {
-  export:"/api/rep/rep02000/exportFile"
+  export: "/api/rep/rep02000/exportFile"
 }
 @Component({
   selector: 'app-rep02000',
@@ -21,8 +19,8 @@ const URL = {
   providers: [Rep02000Service]
 })
 export class Rep02000Component implements OnInit {
-  showData: boolean = false; 
-  dataT: any[]= [];
+  showData: boolean = false;
+  dataT: any[] = [];
   loading: boolean = false;
 
   calendar1: Calendar;
@@ -30,6 +28,7 @@ export class Rep02000Component implements OnInit {
   form: FormGroup;
   dropdownObj: any;
   paidTypeChanged: Certificate[];
+  paidTypeClear: boolean = false;
 
   constructor(
     private ajax: AjaxService,
@@ -71,107 +70,116 @@ export class Rep02000Component implements OnInit {
   ngOnInit() {
     let dForm = this.route.snapshot.queryParams["dateForm"];
     let dTo = this.route.snapshot.queryParams["dateTo"];
-    if(dForm!=""||dTo!=""){
-      this.form.controls[`dateForm`].setValue(dForm); 
-      this.form.controls[`dateTo`].setValue(dTo); 
+    if (dForm != "" || dTo != "") {
+      this.form.controls[`dateForm`].setValue(dForm);
+      this.form.controls[`dateTo`].setValue(dTo);
       this.searchData();
     }
-    console.log("form : ",this.form);
+    console.log("form : ", this.form);
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
-  calendarValue(name,e) {
+  calendarValue(name, e) {
     this.form.controls[name].setValue(e);
     // console.log(this.form);
     // console.log(this.form.controls[name].value);
-    
+
   }
+
   paidTypeChange(e) {
-    console.log("requestTypeCode : ",e);
-      this.paidTypeChanged = e;
+    console.log("requestTypeCode : ", e);
+    this.paidTypeChanged = e;
   }
 
 
-  getData=()=>{
+  getData = () => {
     console.log(this.form);
     this.loading = true;
-    this.dataT=[];
+    this.dataT = [];
     const URL = "/api/rep/rep02000/list";
-    this.ajax.post(URL,{
+    this.ajax.post(URL, {
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value,
-      paidtypeCode:this.paidTypeChanged
-      
-    },async res => {
+      paidtypeCode: this.paidTypeChanged
+
+    }, async res => {
       const data = await res.json();
-      
+
       setTimeout(() => {
         this.loading = false;
-      },200);
+      }, 200);
 
       data.forEach(element => {
         this.dataT.push(element);
       });
-    console.log("getData True : Data length",this.dataT.length);
-    console.log("getData True : Data ",this.dataT);
+      console.log("getData True : Data length", this.dataT.length);
+      console.log("getData True : Data ", this.dataT);
     });
-    
+
   }
 
   searchData(): void {
-    if(this.form.valid){
+    if (this.form.valid) {
       console.log("searchData True");
-          this.showData = true;
-          this.getData();
-      }else{
-        console.log("searchData False");
-      }
+      this.showData = true;
+      this.getData();
+    } else {
+      console.log("searchData False");
+    }
   }
-  
+
   clearData(): void {
     console.log("clearData");
     this.form.reset();
+    this.paidTypeClear = true;
     this.showData = false;
+    setTimeout(() => {
+      this.paidTypeClear = false;
+    }, 500);
   }
 
-  exportFile=()=>{
+  exportFile = () => {
     console.log("exportFile");
     let param = "";
-    param+="?dateForm="+this.form.controls.dateForm.value;
-    param+="&dateTo="+this.form.controls.dateTo.value;
-    
-    (this.paidTypeChanged!=null)?param+="&paidtypeCode="+this.paidTypeChanged:"";
+    param += "?dateForm=" + this.form.controls.dateForm.value;
+    param += "&dateTo=" + this.form.controls.dateTo.value;
 
-    this.ajax.download(URL.export+param);
+    (this.paidTypeChanged != null) ? param += "&paidtypeCode=" + this.paidTypeChanged : "";
+
+    this.ajax.download(URL.export + param);
   }
-  remark=custsegmentCode=>{
+  remark = custsegmentCode => {
     this.router.navigate(['/rep/rep02100'], {
-      queryParams: {  custsegmentCode:custsegmentCode,
-                      dateForm:this.form.controls.dateForm.value,
-                      dateTo:this.form.controls.dateTo.value}
+      queryParams: {
+        custsegmentCode: custsegmentCode,
+        dateForm: this.form.controls.dateForm.value,
+        dateTo: this.form.controls.dateTo.value
+      }
     });
   }
-  departmentDetails=custsegmentCode=>{
+  departmentDetails = custsegmentCode => {
     this.router.navigate(['/rep/rep02200'], {
-      queryParams: {  custsegmentCode:custsegmentCode,
-                      dateForm:this.form.controls.dateForm.value,
-                      dateTo:this.form.controls.dateTo.value}
+      queryParams: {
+        custsegmentCode: custsegmentCode,
+        dateForm: this.form.controls.dateForm.value,
+        dateTo: this.form.controls.dateTo.value
+      }
     });
   }
-  openModalDetails=department=>{
+  openModalDetails = department => {
     const modal: Modal = {
-      title:"รายละเอียด",
-      msg: "ชื่อหน่อยงาน : "+department,
+      title: "รายละเอียด",
+      msg: "ชื่อหน่อยงาน : " + department,
       success: false
-  };
-  this.modal.alert(modal);
+    };
+    this.modal.alert(modal);
   }
   validate(input: string, submitted: boolean) {
     return isValid(this.form, input, submitted);
   }
 
-  stringBr=s=> {
+  stringBr = s => {
     return 'AAAAAAA';
   }
 }

@@ -139,7 +139,10 @@ export class Rep01000Component implements OnInit {
     this.ajax.download(URL.export + param);
   }
 
-  invalid(input: string, submitted: boolean) { !isValid(this.form, input, submitted) }
+  invalid(input: string, submitted: boolean) {
+    const control = this.form.get(input);
+    return control.invalid && submitted;
+  }
   onlyNumber(event) { event.charCode >= 48 && event.charCode <= 57 }
 
 }

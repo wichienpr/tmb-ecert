@@ -15,12 +15,13 @@ declare var $: any;
     host: {
         "[style.width.%]": "100"
     },
-    exportAs : "ui-dropdown"
+    exportAs: "ui-dropdown"
 })
 export class DropdownComponent implements AfterViewInit, OnChanges {
 
     @Input() dropdown: Dropdown;
     @Input() selected: string;
+    @Input() reset: boolean;
     @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() { }
@@ -33,15 +34,20 @@ export class DropdownComponent implements AfterViewInit, OnChanges {
         if (changes.selected) {
             $(`#${this.dropdown.dropdownId}`).dropdown('set selected', changes.selected.currentValue);
         }
+        if (changes.reset) {
+            if (changes.reset.currentValue == true) {
+                $(`#${this.dropdown.dropdownId}`).dropdown('restore defaults');
+            }
+        }
     }
 
     onChange(e) {
         this.valueChange.emit(e.target.value);
     }
 
-    clear(){
-      let  f = this.dropdown.formGroup.get(this.dropdown.formControlName);
-      f.patchValue("");
-      $(`#${this.dropdown.dropdownId}`).dropdown('clear');
+    clear() {
+        let f = this.dropdown.formGroup.get(this.dropdown.formControlName);
+        f.patchValue("");
+        $(`#${this.dropdown.dropdownId}`).dropdown('clear');
     }
 }
