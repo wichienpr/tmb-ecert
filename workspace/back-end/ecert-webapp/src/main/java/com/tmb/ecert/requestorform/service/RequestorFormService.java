@@ -410,7 +410,7 @@ public class RequestorFormService {
 	}
 	
 	public boolean confirmAD(ReqUser user) {
-		if ("admin".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
 			return true;
 		} else {
 			return false;
