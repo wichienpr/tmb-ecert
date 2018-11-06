@@ -32,7 +32,7 @@
                         <label>ประเภทการชำระเงิน</label>
                     </div>
                     <div class="five wide field ">
-                        <ui-dropdown [dropdown]="dropdownObj.paidType" (valueChange)="paidTypeChange($event)"></ui-dropdown>
+                        <ui-dropdown [dropdown]="dropdownObj.paidType" [reset]="paidTypeClear" (valueChange)="paidTypeChange($event)"></ui-dropdown>
                     </div>
                 </div>
 

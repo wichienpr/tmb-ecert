@@ -89,6 +89,9 @@ export class Rep03000Component implements OnInit {
       this.addressHead = addressHead;
 
       rep03000VoList.forEach(element => {
+        if (element.address != "") {
+          this.addressHead = element.address;
+        }
         this.dataT.push(element);
       });
     });

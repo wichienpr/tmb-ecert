@@ -51,8 +51,20 @@ tr:nth-child(even) {
     .modal {
         position: absolute !important;
         margin: 5vh auto !important;
-        margin-left: -360px !important;
+        margin-left: -450px !important;
         top: 0 !important;
+    }
+    .modal.mini {
+        margin-left: -180px !important;
+    }
+    .modal.tiny {
+        margin-left: -270px !important;
+    }
+    .modal.small {
+        margin-left: -360px !important;
+    }
+    .modal.large {
+        margin-left: -540px !important;
     }
 }
 
