@@ -25,9 +25,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.dashboard = this.store.select("ecerdashboard");
   }
 
-  ngOnInit() {
-    this.dashboardService.reloadCache().subscribe();  
-  }
+  ngOnInit() { }
 
   ngAfterViewInit(): void {
     this.dashboardService.getDashBoard().subscribe(
