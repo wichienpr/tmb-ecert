@@ -21,6 +21,7 @@ import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.RoleConstant.ROLE;
 import com.tmb.ecert.common.constant.RoleConstant.ROLES;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
@@ -116,13 +117,15 @@ public class CheckRequestDetailService {
 			if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
-				if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
+				if (UserLoginUtils.ishasRoleName(user, ROLE.CHECKER)) {
+					// UserLoginUtils.ishasRole(user, ROLES.APPROVER)
 					newReq.setCheckerById(user.getUserId());
 					newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 				}
 				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
 			} else if (StatusConstant.NEW_REQUEST.equals(newReq.getStatus())
-					&& UserLoginUtils.ishasRole(user, ROLES.REQUESTOR)) {
+					&& UserLoginUtils.ishasRoleName(user, ROLE.REQUESTOR)) {
+				// UserLoginUtils.ishasRole(user, ROLES.REQUESTER)
 				rejectStatusAction = ACTION_AUDITLOG.CANCEL_REQ_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.CANCEL_REQ;
 				newReq.setStatus(StatusConstant.CANCEL_REQUEST);
@@ -140,7 +143,8 @@ public class CheckRequestDetailService {
 			commonMsg.setMessage("SUCCESS");
 			logger.info("CheckRequestDetailService::reject finished...");
 		} catch (Exception e) {
-			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS,
+					e.toString());
 			commonMsg.setMessage("ERROR");
 			logger.error("CheckRequestDetailService::reject ERROR => {}", e);
 			reqDao.updateErrorDescription("REJECT:" + e.getMessage(), newReq.getReqFormId());
@@ -160,7 +164,8 @@ public class CheckRequestDetailService {
 		try {
 			newReq = dao.findReqFormById(id, false);
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
-			if (UserLoginUtils.ishasRole(user, ROLES.CHECKER)) {
+			if (UserLoginUtils.ishasRoleName(user, ROLE.CHECKER)) {
+				// UserLoginUtils.ishasRole(user, ROLES.CHECKER)
 				newReq.setCheckerById(user.getUserId());
 				newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 			}
@@ -174,10 +179,10 @@ public class CheckRequestDetailService {
 
 					CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
 					if (isSuccess(dbdStep.getMessage())) {
-						
+
 						// UUID => TransactionNo
 						newReq.setUuid(dbdStep.getData().getUuid());
-						
+
 						CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
 						if (isSuccess(realtimeStep.getMessage())) {
 
@@ -186,24 +191,29 @@ public class CheckRequestDetailService {
 							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 
 						} else {
-							response.setData(new ResponseVo(realtimeStep.getData().getDescription(), realtimeStep.getData().getStatusCode()));
+							response.setData(new ResponseVo(realtimeStep.getData().getDescription(),
+									realtimeStep.getData().getStatusCode()));
 							response = handlerErrorReq(response, newReq, user);
-							throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
+							throw new Exception(
+									response.getData().getStatus() + " : " + response.getData().getMessage());
 						}
 					} else {
-						response.setData(new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
+						response.setData(
+								new ResponseVo(dbdStep.getData().getDescription(), dbdStep.getData().getStatusCode()));
 						response = handlerErrorReq(response, newReq, user);
 						throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 					}
 				} else {
-					response.setData(new ResponseVo(approveStep.getData().getDescription(), approveStep.getData().getStatusCode()));
+					response.setData(new ResponseVo(approveStep.getData().getDescription(),
+							approveStep.getData().getStatusCode()));
 					response = handlerErrorReq(response, newReq, user);
 					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 			}
 			logger.info("CheckRequestDetailService::approve finished...");
 		} catch (Exception e) {
-			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS, e.toString());
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_UPDATE_STATUS,
+					e.toString());
 			reqDao.updateErrorDescription(e.getMessage(), newReq.getReqFormId());
 			response = handlerErrorReq(response, newReq, user);
 			logger.error(e.getMessage());
@@ -226,7 +236,8 @@ public class CheckRequestDetailService {
 		hstDao.save(req);
 	}
 
-	private CommonMessage<ResponseVo> handlerErrorReq(CommonMessage<ResponseVo> msg, RequestForm req, UserDetails user) {
+	private CommonMessage<ResponseVo> handlerErrorReq(CommonMessage<ResponseVo> msg, RequestForm req,
+			UserDetails user) {
 		req.setStatus(StatusConstant.PAYMENT_FAILED);
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
 		updateForm(req, user);

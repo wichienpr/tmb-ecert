@@ -20,4 +20,13 @@ public class RoleConstant {
 		CHECKER
 	}
 	
+	/*public static enum ROLES {
+		ADMIN,
+		IT,
+		ISA,
+		REQUESTER,
+		REVIEWER,
+		APPROVER
+	}*/
+	
 }
