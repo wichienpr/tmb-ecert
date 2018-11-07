@@ -18,10 +18,12 @@ export class Rep02100Component implements OnInit {
   dataT: Rep02100[] = [];
   loading: boolean = false;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private service: Rep02100Service,
-    private ajax: AjaxService) {
+    private ajax: AjaxService
+  ) {
 
     this.service.getForm().subscribe(form => {
       this.form = form

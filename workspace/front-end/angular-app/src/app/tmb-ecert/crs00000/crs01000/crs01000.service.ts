@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AjaxService, DropdownService, CommonService, ModalService } from 'app/baiwa/common/services';
+import { DropdownService, CommonService, ModalService } from 'app/baiwa/common/services';
 import { dateLocale } from "helpers/";
 import { Router } from '@angular/router';
 import { ROLES } from 'app/baiwa/common/constants';

@@ -82,16 +82,12 @@ export class Rep02000Component implements OnInit {
 
   calendarValue(name, e) {
     this.form.controls[name].setValue(e);
-    // console.log(this.form);
-    // console.log(this.form.controls[name].value);
-
   }
 
   paidTypeChange(e) {
     console.log("requestTypeCode : ", e);
     this.paidTypeChanged = e;
   }
-
 
   getData = () => {
     console.log(this.form);
@@ -102,9 +98,8 @@ export class Rep02000Component implements OnInit {
       dateForm: this.form.controls.dateForm.value,
       dateTo: this.form.controls.dateTo.value,
       paidtypeCode: this.paidTypeChanged
-
-    }, async res => {
-      const data = await res.json();
+    }, res => {
+      const data = res.json();
 
       setTimeout(() => {
         this.loading = false;
@@ -149,6 +144,7 @@ export class Rep02000Component implements OnInit {
 
     this.ajax.download(URL.export + param);
   }
+
   remark = custsegmentCode => {
     this.router.navigate(['/rep/rep02100'], {
       queryParams: {
@@ -158,6 +154,7 @@ export class Rep02000Component implements OnInit {
       }
     });
   }
+
   departmentDetails = custsegmentCode => {
     this.router.navigate(['/rep/rep02200'], {
       queryParams: {
@@ -167,6 +164,7 @@ export class Rep02000Component implements OnInit {
       }
     });
   }
+
   openModalDetails = department => {
     const modal: Modal = {
       title: "รายละเอียด",
@@ -175,11 +173,9 @@ export class Rep02000Component implements OnInit {
     };
     this.modal.alert(modal);
   }
+
   validate(input: string, submitted: boolean) {
     return isValid(this.form, input, submitted);
   }
 
-  stringBr = s => {
-    return 'AAAAAAA';
-  }
 }

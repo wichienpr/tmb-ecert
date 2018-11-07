@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { AjaxService, ModalService } from "services/";
 import { dateLocale } from "helpers/";
 
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -15,7 +14,7 @@ export class Rep02100Service {
     });
 
     constructor() {
-        
+
     }
 
     /**
@@ -31,6 +30,5 @@ export class Rep02100Service {
         let date = new Date();
         return dateLocale(date);
     }
-
 
 }
