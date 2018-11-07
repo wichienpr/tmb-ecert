@@ -9,6 +9,7 @@ public class RoleConstant {
 		public final static String REQUESTOR = "REQUESTER";
 		public final static String MAKER = "REVIEWER";
 		public final static String CHECKER ="APPROVER";
+		public final static String SUPERCHECKER ="SUPERCHECKER";
 	}
 	
 	public static enum ROLES {

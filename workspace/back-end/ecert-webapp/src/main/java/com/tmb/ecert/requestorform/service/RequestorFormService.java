@@ -40,6 +40,7 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.provider.TMBLDAPManager;
@@ -426,7 +427,7 @@ public class RequestorFormService {
 		boolean isLogged = false;
 		try {
 			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
-			if (BeanUtils.isNotEmpty(tmb.getUserid())) {
+			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
 				isLogged = true;
 			}
 		} catch (Exception e) {
