@@ -7,10 +7,8 @@ import { Rep02000Component } from 'app/tmb-ecert/rep00000/rep02000/rep02000.comp
 import { Rep02100Component } from 'app/tmb-ecert/rep00000/rep02000/rep02100/rep02100.component';
 import { Rep02200Component } from 'app/tmb-ecert/rep00000/rep02000/rep02200/rep02200.component';
 import { Rep03000Component } from 'app/tmb-ecert/rep00000/rep03000/rep03000.component';
-import { StoreModule } from '@ngrx/store';
-import { ModalModule, CalendarModule, DropdownModule }from 'components/';
+import { ModalModule, CalendarModule, DropdownModule } from 'components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmptyStringPipe, AccountNumberPipe, DecimalFormatPipe } from 'pipes/';
 import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
 @NgModule({
@@ -25,12 +23,11 @@ import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
     CalendarModule,
     // PipesModule
     PipesModule
-    // StoreModule.forRoot({ rep01000: repReducer })
   ],
   declarations: [
-    Rep01000Component, 
-    Rep02000Component, 
-    Rep02100Component, 
+    Rep01000Component,
+    Rep02000Component,
+    Rep02100Component,
     Rep02200Component,
     Rep03000Component
   ]

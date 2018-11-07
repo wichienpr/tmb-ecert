@@ -94,8 +94,8 @@ export class Rep01000Component implements OnInit {
       companyName: this.form.get('corpName').value,
       requestTypeCode: this.reqTypeChanged,
       paidtypeCode: this.paidTypeChanged
-    }, async res => {
-      const data = await res.json();
+    }, res => {
+      const data = res.json();
       setTimeout(() => {
         this.loading = false;
       }, 200);

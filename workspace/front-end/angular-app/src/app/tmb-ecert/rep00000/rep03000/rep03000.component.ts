@@ -108,6 +108,7 @@ export class Rep03000Component implements OnInit {
     this.form.reset();
     this.showData = false;
   }
+
   exportFile = () => {
     let param = "";
     param += "?paymentDate=" + this.form.get('dateVat').value;
