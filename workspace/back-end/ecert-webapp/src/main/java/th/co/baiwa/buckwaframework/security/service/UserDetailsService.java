@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.dao.UserProfileDao;
 
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
@@ -38,21 +39,21 @@ public class UserDetailsService implements org.springframework.security.core.use
 //		passwordEncoder.encode("password")
 		UserDetails userDetails = new UserDetails(username,"",grantedAuthorityList);
 		if("ADMIN".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_ADMIN));
 			userDetails.setFirstName("ผู้ดูแลระบบ");
 			userDetails.setLastName("ธนาคารทหารไทย");
 			userDetails.setUserId("0001");
 			userDetails.setBranchCode("001");
 		}
 		if("ADMIN2".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_ADMIN));
 			userDetails.setFirstName("ผู้ดูแลระบบ 2");
 			userDetails.setLastName("ธนาคารทหารไทย");
 			userDetails.setUserId("0007");
 			userDetails.setBranchCode("001");
 		}
 		if("ADMIN3".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.ADMIN));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_ADMIN));
 			userDetails.setFirstName("ผู้ดูแลระบบ 3");
 			userDetails.setLastName("ธนาคารทหารไทย");
 			userDetails.setUserId("0008");
@@ -73,81 +74,95 @@ public class UserDetailsService implements org.springframework.security.core.use
 			userDetails.setBranchCode("001");
 		}
 		if("REQUESTER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_REQUESTER));
 			userDetails.setFirstName("Requester");
 			userDetails.setLastName("RM");
 			userDetails.setUserId("0004");
 			userDetails.setBranchCode("001");
 		}
 		if("REQUESTER_QA1".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_REQUESTER));
 			userDetails.setFirstName("Requester");
 			userDetails.setLastName("QA1");
 			userDetails.setUserId("0009");
 			userDetails.setBranchCode("001");
 		}
 		if("REQUESTER_QA2".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.REQUESTOR));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_REQUESTER));
 			userDetails.setFirstName("Requester");
 			userDetails.setLastName("QA2");
 			userDetails.setUserId("0010");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_MAKER));
 			userDetails.setFirstName("Warunyoo");
 			userDetails.setLastName("Petchthai");
 			userDetails.setUserId("47186");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER2".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_MAKER));
 			userDetails.setFirstName("Adjima");
 			userDetails.setLastName("Thongjinda");
 			userDetails.setUserId("49419");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER_QA1".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_MAKER));
 			userDetails.setFirstName("Maker");
 			userDetails.setLastName("QA1");
 			userDetails.setUserId("0011");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER_QA2".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_MAKER));
 			userDetails.setFirstName("Maker");
 			userDetails.setLastName("QA2");
 			userDetails.setUserId("0012");
 			userDetails.setBranchCode("001");
 		}
 		if("MAKER_CHECKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.MAKER));
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_MAKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_CHECKER));
 			userDetails.setFirstName("Suradej");
 			userDetails.setLastName("Sansomboonsuk");
 			userDetails.setUserId("42307");
 			userDetails.setBranchCode("001");
 		}
 		if("CHECKER".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_CHECKER));
 			userDetails.setFirstName("Nantiya");
 			userDetails.setLastName("Detjaitud");
 			userDetails.setUserId("42309");
 			userDetails.setBranchCode("001");
 		}
 		if("CHECKER_QA1".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_CHECKER));
 			userDetails.setFirstName("Checker");
 			userDetails.setLastName("QA1");
 			userDetails.setUserId("0013");
 			userDetails.setBranchCode("001");
 		}
 		if("CHECKER_QA2".equalsIgnoreCase(username)) {
-			grantedAuthorityList.add(new SimpleGrantedAuthority(RoleConstant.ROLE.CHECKER));
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_CHECKER));
 			userDetails.setFirstName("Checker");
 			userDetails.setLastName("QA2");
 			userDetails.setUserId("0014");
+			userDetails.setBranchCode("001");
+		}
+		if("BATCHOPER".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_BATCH));
+			userDetails.setFirstName("Batch Operator");
+			userDetails.setLastName("TMB");
+			userDetails.setUserId("0015");
+			userDetails.setBranchCode("001");
+		}
+		if("ACCOUNT".equalsIgnoreCase(username)) {
+			grantedAuthorityList.add(new SimpleGrantedAuthority(ADConstant.ROLE_ACCM));
+			userDetails.setFirstName("Account Management");
+			userDetails.setLastName("TMB");
+			userDetails.setUserId("0016");
 			userDetails.setBranchCode("001");
 		}
 		UserDetails rs = new UserDetails(username, passwordEncoder.encode("password"),grantedAuthorityList	);
