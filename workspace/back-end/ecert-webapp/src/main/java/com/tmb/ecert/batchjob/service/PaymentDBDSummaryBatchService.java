@@ -71,7 +71,7 @@ public class PaymentDBDSummaryBatchService {
 		log.info("PaymentDBDSummaryBatchService is starting process...");
 		StringBuilder metaData = new StringBuilder();
 		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy", new Locale("th", "TH"));
-		SimpleDateFormat formatterDD = new SimpleDateFormat("dd");
+		SimpleDateFormat formatterDD = new SimpleDateFormat("d");
 		
 		String path =  ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_FTPPATH);
 		String archivePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_DBDSUMMARY_ARCHIVEPATH);

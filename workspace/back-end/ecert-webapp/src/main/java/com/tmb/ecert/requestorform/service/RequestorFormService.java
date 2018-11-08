@@ -20,11 +20,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant;
-import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
+import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -40,7 +40,10 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000CerVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
+import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.provider.TMBLDAPManager;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
@@ -74,6 +77,9 @@ public class RequestorFormService {
 
 	@Autowired
 	private EmailService emailSerivce;
+	
+	@Autowired
+	private TMBLDAPManager ldap;
 
 	public CommonMessage<String> pageActive(RequestForm vo) {
 		CommonMessage<String> msg = new CommonMessage<String>();
@@ -409,12 +415,26 @@ public class RequestorFormService {
 		return reqForm;
 	}
 	
+//	public boolean confirmAD(ReqUser user) {
+//		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+	
 	public boolean confirmAD(ReqUser user) {
-		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
-			return true;
-		} else {
-			return false;
+		boolean isLogged = false;
+		try {
+			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
+			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
+				isLogged = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			isLogged = false;
 		}
+		return isLogged;
 	}
 
 }

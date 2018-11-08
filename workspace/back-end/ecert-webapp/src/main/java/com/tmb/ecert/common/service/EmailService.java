@@ -141,7 +141,7 @@ public class EmailService {
 			Object[] param = { 
 					EcerDateUtils.formatDDMMYYYYDate(reqDate), 
 					EcerDateUtils.formatHHMM(reqDate),
-					reqF.getTmbRequestNo(),
+					reqF.getRef1(),
 					EcerDateUtils.formatDDMMYYYYDate(now), 
 					EcerDateUtils.formatHHMM(now), 
 					rootCase };

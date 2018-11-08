@@ -18,6 +18,8 @@ import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.RoleConstant;
+
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 
@@ -43,6 +45,7 @@ public class TMBLDAPManager {
 		contextSource.afterPropertiesSet();
 		LdapTemplate ldapTemplate = new LdapTemplate(contextSource);
 		ldapTemplate.afterPropertiesSet();
+		ldapTemplate.setIgnorePartialResultException(true);
 
 		LdapQuery query = query().where("objectclass").is("organizationalPerson").and("sAMAccountName").is(username);
 		
@@ -64,22 +67,51 @@ public class TMBLDAPManager {
 						for (int i = 0; i < memberOf.size(); i++) {
 							Object str = memberOf.get(i);
 							//check NSLL Project
-							if(str.toString().indexOf(ADConstant.AD_PROJECT) != -1){
-								memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);							
-							}
+							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);
+							
 						}
 					}else {
 						//Not have role in AD
 					}
-					
 					//branchCode
 					Attribute branchCode = attrs.get("extensionAttribute11");
 					if(branchCode != null) {
 						String[] branch = StringUtils.split( branchCode.get().toString(), "|");
 						tmbPerson.setBranchCode(StringUtils.trim(branch[1]));
 					}
-									
-					tmbPerson.setMemberOfs(memberOfs);
+					
+					Attribute group = attrs.get("extensionAttribute6");
+					if(group != null) {
+						String[] grouparr = StringUtils.split( group.get().toString(), "|");
+						tmbPerson.setGroup(StringUtils.trim(grouparr[1]));
+					}
+					
+					Attribute position = attrs.get("extensionAttribute1");
+					if(position != null) {
+						String[] positionarr = StringUtils.split( position.get().toString(), "|");
+						tmbPerson.setPosition(StringUtils.trim(positionarr[0]));
+					}
+					
+					// check role name for return only role
+					int value= 0;
+					String roleName = "";
+					if (memberOfs != null) {
+						for (int i = 0; i < memberOfs.size(); i++) {
+							if(getValueRoleByRoleName(memberOfs.get(i).toString())> value) {
+								value = getValueRoleByRoleName(memberOfs.get(i).toString());
+							}
+						}
+						
+						if (value == 0) {
+							roleName = memberOfs.get(0).toString();
+						}else {
+							roleName = getRoleNameByValue(value);
+						}
+					}
+
+					List<String> listOfRole = new ArrayList<>();
+					listOfRole.add(roleName);
+					tmbPerson.setMemberOfs(listOfRole);
 					return tmbPerson;
 				}
 			});
@@ -102,6 +134,32 @@ public class TMBLDAPManager {
 //		tmbPerson.setTmbcn("cn");
 //		tmbPerson.setUserid("1234");
 //		return tmbPerson;
+	}
+	
+	public int  getValueRoleByRoleName(String roleName) {
+		if(ADConstant.ROLE_SUPER.equals(roleName)) {
+			return 4;
+		}else if (ADConstant.ROLE_CHECKER.equals(roleName)) {
+			return 3;
+		}else if (ADConstant.ROLE_MAKER.equals(roleName)) {
+			return 2;
+		}else if(ADConstant.ROLE_REQUESTER.equals(roleName)) {
+			return 1;
+		}
+		return 0;
+	}
+	
+	public String  getRoleNameByValue(int value) {
+		if(value == 4 ) {
+			return ADConstant.ROLE_SUPER ;
+		}else if (value == 3 ) {
+			return ADConstant.ROLE_CHECKER;
+		}else if (value == 2 ) {
+			return ADConstant.ROLE_MAKER;
+		}else if(value == 1 ) {
+			return ADConstant.ROLE_REQUESTER;
+		}
+		return null;
 	}
 	
 }
