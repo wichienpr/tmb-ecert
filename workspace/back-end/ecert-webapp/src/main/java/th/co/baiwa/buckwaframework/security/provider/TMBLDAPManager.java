@@ -66,13 +66,8 @@ public class TMBLDAPManager {
 					if(memberOf != null) {
 						for (int i = 0; i < memberOf.size(); i++) {
 							Object str = memberOf.get(i);
-//							System.out.println("AD roel "+ str.toString());
 							//check NSLL Project
-							if(str.toString().indexOf(ADConstant.AD_PROJECT) != -1){
-								memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);							
-							}
-//							System.out.println(" AD ECERT ROEL "+ str.toString().split("CN=")[1].split(",")[0]);
-//							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);
+							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);
 							
 						}
 					}else {
@@ -113,10 +108,9 @@ public class TMBLDAPManager {
 							roleName = getRoleNameByValue(value);
 						}
 					}
+
 					List<String> listOfRole = new ArrayList<>();
 					listOfRole.add(roleName);
-
-					
 					tmbPerson.setMemberOfs(listOfRole);
 					return tmbPerson;
 				}
