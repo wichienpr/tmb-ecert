@@ -3,13 +3,13 @@ package com.tmb.ecert.common.constant;
 public class RoleConstant {
 	
 	public static class ROLE {
-		public final static String ADMIN = "ADMIN";
+		public final static String ADMIN = "DBDS_SysAdmin";
 		public final static String IT ="IT";
 		public final static String ISA ="ISA";
-		public final static String REQUESTOR = "REQUESTER";
-		public final static String MAKER = "REVIEWER";
-		public final static String CHECKER ="APPROVER";
-		public final static String SUPERCHECKER ="SUPERCHECKER";
+		public final static String REQUESTOR = "DBDS_Requester";
+		public final static String MAKER = "DBDS_Checker";
+		public final static String CHECKER ="DBDS_Maker";
+		public final static String SUPERCHECKER ="DBDS_Super_Checker";
 	}
 	
 	public static enum ROLES {
