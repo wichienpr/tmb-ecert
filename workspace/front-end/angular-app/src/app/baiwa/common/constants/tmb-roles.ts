@@ -1,5 +1,5 @@
 export enum ROLES {
-    ADMIN = "ADMIN",
+    ADMIN = "DBDS_SysAdmin",
     MAKER = "DBDS_Maker",
     CHECKER = "DBDS_Checker",
     IT = "IT",
