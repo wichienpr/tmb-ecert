@@ -229,10 +229,11 @@ export class Sup01000Component implements OnInit {
       this.service.callExportTemplateAPI();
     }
     uploadRole() {
-      this.loadingUpload = true;
+      this.loadingUpload = false;
       this.onSubmitUpload = true;
       console.log(this.uploadForm.valid);
       if (this.uploadForm.valid) {
+        this.loadingUpload = true;
         this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
           this.responseObj = src;
           if (this.responseObj.message == MESSAGE_STATUS.SUCCEED) {

@@ -1,8 +1,8 @@
 export enum ROLES {
     ADMIN = "ADMIN",
-    CHECKER = "APPROVER",
+    MAKER = "DBDS_Maker",
+    CHECKER = "DBDS_Checker",
     IT = "IT",
     ISA = "ISA",
-    MAKER = "REVIEWER",
-    REQUESTOR = "REQUESTER",
+    REQUESTOR = "DBDS_Requester",
 }

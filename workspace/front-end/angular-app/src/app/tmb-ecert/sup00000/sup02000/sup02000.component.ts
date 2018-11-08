@@ -7,6 +7,7 @@ import { Modal } from 'app/baiwa/common/models';
 import { UserDetail } from 'app/user.model';
 import { Store } from '@ngrx/store';
 import { PAGE_AUTH, MESSAGE_STATUS } from 'app/baiwa/common/constants';
+import { DashboardService } from 'app/baiwa/home/dashboard.service';
 
 @Component({
   selector: 'app-sup02000',
@@ -23,7 +24,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
   user: UserDetail;
 
   constructor(private store: Store<AppState>, private service: Sup02000Service, private fb: FormBuilder
-    , private modal: ModalService, private commonService: CommonService) {
+    , private modal: ModalService, private commonService: CommonService, private dashboardService: DashboardService) {
 
     this.paramResult = [{
       parameterconfigId: "",
@@ -96,18 +97,28 @@ export class Sup02000Component implements OnInit, AfterViewInit {
       color: "notification"
     }
     this.modal.confirm((e) => {
+      this.commonService.isLoading();
       if (e) {
         this.service.callSaveParameterAPI(listParameter).subscribe(res => {
           this.responseObj = res;
           if (this.responseObj.message == MESSAGE_STATUS.FAILED) {
-            this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+            this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+            this.commonService.isLoaded();
           } else {
-            this.modal.alert({ msg: "ทำรายการสำเร็จ" });
-            this.callSearchAPI();
+            setTimeout(() => {
+              this.dashboardService.reloadCache().subscribe(() => {
+                this.callSearchAPI();
+                this.commonService.isLoaded();
+                this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+              });
+            }, 1000);
           }
         }, err => {
-          this.modal.alert({ msg: "ทำรายการล้มเหลว" })
+          this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+          this.commonService.isLoaded();
         });
+      } else {
+        this.commonService.isLoaded();
       }
     }, modalConf);
   }
