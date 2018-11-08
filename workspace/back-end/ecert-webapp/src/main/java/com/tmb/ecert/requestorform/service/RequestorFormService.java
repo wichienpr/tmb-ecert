@@ -415,26 +415,26 @@ public class RequestorFormService {
 		return reqForm;
 	}
 	
-//	public boolean confirmAD(ReqUser user) {
-//		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-	
 	public boolean confirmAD(ReqUser user) {
-		boolean isLogged = false;
-		try {
-			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
-			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
-				isLogged = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			isLogged = false;
+		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+			return true;
+		} else {
+			return false;
 		}
-		return isLogged;
 	}
+	
+//	public boolean confirmAD(ReqUser user) {
+//		boolean isLogged = false;
+//		try {
+//			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
+//			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
+//				isLogged = true;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			isLogged = false;
+//		}
+//		return isLogged;
+//	}
 
 }
