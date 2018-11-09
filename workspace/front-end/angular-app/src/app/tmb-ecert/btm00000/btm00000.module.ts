@@ -6,6 +6,8 @@ import { Btm01000Component } from './btm01000/btm01000.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, DropdownModule, CalendarModule } from 'app/baiwa/common/components';
 import { DatatableModule } from 'app/baiwa/common/directives';
+import { pipe } from 'rxjs';
+import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -17,6 +19,7 @@ import { DatatableModule } from 'app/baiwa/common/directives';
     ,DropdownModule
     ,CalendarModule
     ,DatatableModule
+    ,PipesModule
   ],
   declarations: [Btm01000Component]
 })
