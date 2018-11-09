@@ -164,7 +164,7 @@ export class sup01100Component implements OnInit {
         fuctioncode: PAGE_AUTH.P0000900,
 
         chliddata: [{
-          rolename: "Export to Exce",
+          rolename: "Export to Excel",
           status: 0,
           fuctioncode: PAGE_AUTH.P0000901
         }]
@@ -194,7 +194,7 @@ export class sup01100Component implements OnInit {
       }
       ,
       {
-        rolename: "UI-00013 - Role Manamen",
+        rolename: "UI-00013 - Role Management",
         status: 0,
         fuctioncode: PAGE_AUTH.P0001300,
         chliddata: [{
