@@ -5,6 +5,7 @@ import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile, Rejected, ResponseVo } from './crs02000.models';
 import { REQ_STATUS } from 'app/baiwa/common/constants';
+import { EnYearToThYear } from 'app/baiwa/common/helpers';
 
 export const URL = {
   REQUEST_FORM: "/api/crs/crs02000/data",
@@ -188,7 +189,8 @@ export class Crs02000Service {
               if (ob.code == o.certificateCode) {
                 ob.registeredDate = o.registeredDate;
                 ob.acceptedDate = o.acceptedDate;
-                ob.statementYear = o.statementYear;
+                // ob.statementYear = o.statementYear;
+                ob.statementYear = parseInt(EnYearToThYear(o.statementYear.toString()));
                 ob.other = o.other;
                 ob.check = true;
                 ob.value = o.totalNumber;
@@ -244,8 +246,8 @@ export class Crs02000Service {
 
   saveCertFile(data: CertFile) {
     this.common.isLoading();
-    const formData: FormData =  new FormData();
-    for(let key in data) {
+    const formData: FormData = new FormData();
+    for (let key in data) {
       formData.append(key, data[key]);
     }
     this.ajax.upload(URL.UPLOAD, formData, response => {

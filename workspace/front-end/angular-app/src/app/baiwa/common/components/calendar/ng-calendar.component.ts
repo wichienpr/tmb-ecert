@@ -25,13 +25,13 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
         this.configObj = Object.assign({
             type: CalendarType.DATE,
             formatter: CalendarFormatter.DEFAULT,
-            local: CalendarLocal.EN,
+            local: CalendarLocal.TH, // CalendarLocal.EN
             placeholder: "กรุณาเลือก"
         }, this.config);
 
         // console.log("config", this.configObj);
-        
-        if (this.config.formControl == null){
+
+        if (this.config.formControl == null) {
             throw new Error("ระบุ formcontrol ไม่ถูกต้อง กรุณาตรวจสอบ formcontrol")
         }
     }
@@ -39,17 +39,17 @@ export class NgCalendarComponent implements AfterViewInit, OnInit {
     ngAfterViewInit() {
         // console.log("ngAfterViewInit" , new Date().getTime());
 
-      this.refresh();
+        this.refresh();
 
     }
 
-    refresh(){
+    refresh() {
         const { id, type, formatter, local, startCalendar, endCalendar, formControl } = this.configObj;
 
         $(`#${id}`).calendar({
             type: type || 'date',
             text: DateConstant.text,
-            formatter: DateConstant.formatter(formatter || '', local || 'en'),
+            formatter: DateConstant.formatter(formatter || '', 'th'), // local || 'en'
             onChange: this.onChange,
             touchReadonly: true,
             initialDate: null,
@@ -115,11 +115,17 @@ class DateConstant {
     };
 
     public static formatter = (txt: string = '', local: string = 'en') => {
+        local = 'th';
         switch (txt) {
             case 'mmmm yyyy':
                 return {
                     header: (date, mode, settings) => {
                         return DateConstant[`${local}Date`](date).split("/")[2];
+                    },
+                    cell: (cell, date, cellOptions) => {
+                        if (cellOptions.mode == "year") {
+                            cell[0].innerText = DateConstant[`${local}Date`](date).split("/")[2];
+                        }
                     },
                     date: (date, mode, settings) => {
                         let month = date.getMonth();
@@ -132,6 +138,11 @@ class DateConstant {
                     header: (date, mode, settings) => {
                         return DateConstant[`${local}Date`](date).split("/")[2];
                     },
+                    cell: (cell, date, cellOptions) => {
+                        if (cellOptions.mode == "year") {
+                            cell[0].innerText = DateConstant[`${local}Date`](date).split("/")[2];
+                        }
+                    },
                     date: (date, mode, settings) => {
                         return DateConstant[`${local}Date`](date).split("/")[1] + "/" + DateConstant[`${local}Date`](date).split("/")[2];
                     }
@@ -143,6 +154,11 @@ class DateConstant {
                         let _year = DateConstant[`${local}Date`](date).split("/")[2];
                         return DateConstant.text.months[month] + " " + _year;
                     },
+                    cell: (cell, date, cellOptions) => {
+                        if (cellOptions.mode == "year") {
+                            cell[0].innerText = DateConstant[`${local}Date`](date).split("/")[2];
+                        }
+                    },
                     date: (date, settings) => {
                         return DateConstant[`${local}Date`](date);
                     }
@@ -151,6 +167,9 @@ class DateConstant {
                 return {
                     header: (date, mode, settings) => {
                         return DateConstant[`${local}Date`](date).split("/")[2];
+                    },
+                    cell: function (cell, date, cellOptions) {
+                        cell[0].innerText = DateConstant[`${local}Date`](date).split("/")[2];
                     },
                     date: (date, mode, settings) => {
                         return DateConstant[`${local}Date`](date).split("/")[2];
@@ -162,6 +181,11 @@ class DateConstant {
                         let month = date.getMonth();
                         let _year = DateConstant[`${local}Date`](date).split("/")[2];
                         return DateConstant.text.months[month] + " " + _year;
+                    },
+                    cell: (cell, date, cellOptions) => {
+                        if (cellOptions.mode == "year") {
+                            cell[0].innerText = DateConstant[`${local}Date`](date).split("/")[2];
+                        }
                     },
                     date: (date, settings) => {
                         return DateConstant[`${local}Date`](date);
@@ -192,5 +216,5 @@ export interface NgCalendarConfig {
     startCalendar?: string
     endCalendar?: string,
     placeholder?: string,
-    formatter?:string
+    formatter?: string
 }
