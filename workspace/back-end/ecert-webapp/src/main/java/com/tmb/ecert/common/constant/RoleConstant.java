@@ -7,8 +7,8 @@ public class RoleConstant {
 		public final static String IT ="IT";
 		public final static String ISA ="ISA";
 		public final static String REQUESTOR = "DBDS_Requester";
-		public final static String MAKER = "DBDS_Checker";
-		public final static String CHECKER ="DBDS_Maker";
+		public final static String MAKER = "DBDS_Maker";
+		public final static String CHECKER ="DBDS_Checker";
 		public final static String SUPERCHECKER ="DBDS_Super_Checker";
 	}
 	
@@ -20,14 +20,5 @@ public class RoleConstant {
 		MAKER,
 		CHECKER
 	}
-	
-	/*public static enum ROLES {
-		ADMIN,
-		IT,
-		ISA,
-		REQUESTER,
-		REVIEWER,
-		APPROVER
-	}*/
 	
 }

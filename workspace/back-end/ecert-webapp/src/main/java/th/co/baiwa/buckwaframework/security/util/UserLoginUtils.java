@@ -2,12 +2,10 @@ package th.co.baiwa.buckwaframework.security.util;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import com.tmb.ecert.common.constant.AuthConstant.AUTHS;
-import com.tmb.ecert.common.constant.RoleConstant.ROLE;
 import com.tmb.ecert.common.constant.RoleConstant.ROLES;
 
 import th.co.baiwa.buckwaframework.security.domain.UserBean;

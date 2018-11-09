@@ -24,7 +24,6 @@ import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
-import com.tmb.ecert.common.constant.RoleConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -41,7 +40,6 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
-import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.provider.TMBLDAPManager;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
@@ -181,7 +179,7 @@ public class RequestorFormService {
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
 				req.setIdCardFile(copyFile);
-				if (RoleConstant.ROLE.MAKER.equals(form.getUserStatus())) {
+				if (ADConstant.ROLE_MAKER.equals(form.getUserStatus())) {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
 					req.setPaymentDate(timestamp);
