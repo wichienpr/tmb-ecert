@@ -18,8 +18,6 @@ import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.stereotype.Service;
 
-import com.tmb.ecert.common.constant.RoleConstant;
-
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 

@@ -21,8 +21,6 @@ import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
-import com.tmb.ecert.common.constant.RoleConstant.ROLE;
-import com.tmb.ecert.common.constant.RoleConstant.ROLES;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.Certificate;
@@ -37,6 +35,7 @@ import com.tmb.ecert.common.service.PaymentWebService;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
@@ -117,14 +116,14 @@ public class CheckRequestDetailService {
 			if (StatusConstant.WAIT_PAYMENT_APPROVAL.equals(newReq.getStatus())) {
 				rejectStatusAction = ACTION_AUDITLOG.REJECT_PAYMENT_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.REJECT_PAYMENT;
-				if (UserLoginUtils.ishasRoleName(user, ROLE.CHECKER)) {
+				if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_CHECKER)) {
 					// UserLoginUtils.ishasRole(user, ROLES.APPROVER)
 					newReq.setCheckerById(user.getUserId());
 					newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
 				}
 				newReq.setStatus(StatusConstant.REJECT_PAYMENT);
 			} else if (StatusConstant.NEW_REQUEST.equals(newReq.getStatus())
-					&& UserLoginUtils.ishasRoleName(user, ROLE.REQUESTOR)) {
+					&& UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_REQUESTER)) {
 				// UserLoginUtils.ishasRole(user, ROLES.REQUESTER)
 				rejectStatusAction = ACTION_AUDITLOG.CANCEL_REQ_CODE;
 				rejectDesAction = ACTION_AUDITLOG_DESC.CANCEL_REQ;
@@ -164,7 +163,7 @@ public class CheckRequestDetailService {
 		try {
 			newReq = dao.findReqFormById(id, false);
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
-			if (UserLoginUtils.ishasRoleName(user, ROLE.CHECKER)) {
+			if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_CHECKER)) {
 				// UserLoginUtils.ishasRole(user, ROLES.CHECKER)
 				newReq.setCheckerById(user.getUserId());
 				newReq.setCheckerByName(user.getFirstName().concat(" " + user.getLastName()));
