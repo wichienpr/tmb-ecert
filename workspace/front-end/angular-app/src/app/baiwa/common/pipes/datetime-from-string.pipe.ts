@@ -1,13 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
 
-@Pipe({ name: 'datetimeString' })
-export class DatetimeStringPipe implements PipeTransform {
-    transform(value: Date, local: string = "en"): string {
-        console.log(value);
-        // return moment(value).format('DD/MM/YYYY HH:mm');
+@Pipe({ name: 'datetimeFromString' })
+export class DatetimeFromStringPipe implements PipeTransform {
+    transform(value: string, local: string = "en"): string {
         if (value) {
-            const dateStr = moment(value).format('DD/MM/YYYY HH:mm');
+            const dateStr = value;
             const _dd = dateStr.split(' ')[0].split('/')[0];
             const _MM =dateStr.split(' ')[0].split('/')[1];
             const _yyyy = this.getYearTH(new Date(value));
