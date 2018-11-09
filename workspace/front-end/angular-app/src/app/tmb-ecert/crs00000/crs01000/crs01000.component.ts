@@ -10,6 +10,7 @@ import { ROLES } from 'app/baiwa/common/constants';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import * as moment from 'moment';
+import { ThDateToEnDate } from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -123,14 +124,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   searchData() {
-    this.form.setValue({
-      status: "",
-      reqDate: this.form.value.reqDate,
-      toReqDate: this.form.value.toReqDate,
-      organizeId: this.form.value.organizeId,
-      companyName: this.form.value.companyName,
-      tmbReqNo: this.form.value.tmbReqNo
-    });
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
         let fc = this.form.get(element);
@@ -140,7 +133,15 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       return false;
     }
-    this.dataDt.searchParams(this.form.value);
+    const data = {
+      status: "",
+      reqDate: ThDateToEnDate(this.form.value.reqDate),
+      toReqDate: ThDateToEnDate(this.form.value.toReqDate),
+      organizeId: this.form.value.organizeId,
+      companyName: this.form.value.companyName,
+      tmbReqNo: this.form.value.tmbReqNo
+    };
+    this.dataDt.searchParams(data);
     this.dataDt.search();
   }
 

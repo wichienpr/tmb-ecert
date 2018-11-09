@@ -21,11 +21,6 @@ export class Crs01000Service {
     return this.dropdown.getaction();
   }
 
-  getReqDate(): string {
-    let date = new Date();
-    return dateLocale(date);
-  }
-
   redirectFor(idReq: number, status: string, lockFlag: number, userId: string) {
     if (lockFlag == 1 && !this.common.isUser(userId)) {
       this.modal.confirm(

@@ -120,7 +120,7 @@
                             </tr>
                             <tr class="text-center" *ngFor="let data of dataT; let i=index">
                                 <td style="text-align: center !important;">{{i+1}}</td>
-                                <td style="text-align: center !important;">{{data.requestDate}}</td>
+                                <td style="text-align: center !important;">{{data.requestDate | dateString}}</td>
                                 <td style="text-align: center !important;">{{data.tmbRequestno}}</td>
                                 <td style="text-align: center !important;">{{data.organizeId}}</td>
                                 <td style="text-align: left   !important;">{{data.companyName}}</td>

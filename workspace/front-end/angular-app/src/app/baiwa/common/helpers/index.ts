@@ -1,8 +1,8 @@
 export { digit } from './digit';
 export {
     dateLocale, dateLocaleEN, strToDate,
-    ThDateToEnDate,ThYearToEnYear,
-    EnDateToThDate, EnYearToThYear
+    ThDateToEnDate,ThYearToEnYear, ThMonthYearToEnMonthYear,
+    EnDateToThDate, EnYearToThYear, EnMonthYearToThMonthYear
 } from './date';
 export { Acc } from './acc-number';
 export { isValid } from './validator';

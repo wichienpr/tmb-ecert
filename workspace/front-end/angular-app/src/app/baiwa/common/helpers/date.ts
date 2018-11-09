@@ -20,6 +20,14 @@ export function EnDateToThDate(dateStr: string) {
         });
 }
 
+export function EnMonthYearToThMonthYear(dateStr: string) {
+    const DATE_REGEXP: RegExp = new RegExp('^(0?[1-9]|1[0-2])/([0-9]{4})$', 'gi');
+    return dateStr.replace(DATE_REGEXP,
+        (str: string, month: string, year: string) => {
+            return `${month}/${parseInt(year, 10) + 543}`;
+        });
+}
+
 export function EnYearToThYear(dateStr: string) {
     const DATE_REGEXP: RegExp = new RegExp('^([0-9]{4})$', 'gi');
     return dateStr.replace(DATE_REGEXP,
@@ -34,6 +42,14 @@ export function ThDateToEnDate(dateStr: string) {
     return dateStr.replace(DATE_REGEXP,
         (str: string, day: string, month: string, year: string) => {
             return `${day}/${month}/${parseInt(year, 10) - 543}`;
+        });
+}
+
+export function ThMonthYearToEnMonthYear(dateStr: string) {
+    const DATE_REGEXP: RegExp = new RegExp('^(0?[1-9]|1[0-2])/([0-9]{4})$', 'gi');
+    return dateStr.replace(DATE_REGEXP,
+        (str: string, month: string, year: string) => {
+            return `${month}/${parseInt(year, 10) - 543}`;
         });
 }
 
