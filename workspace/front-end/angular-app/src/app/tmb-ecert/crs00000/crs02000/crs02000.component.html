@@ -122,7 +122,7 @@
             <i class="check circle outline icon"></i>
             ตกลง
           </button>
-          <button type="button" class="ui grey negative basic button">
+          <button type="button" class="ui grey positive basic button">
             <i class="times circle outline icon"></i>
             ยกเลิก
           </button>
@@ -342,7 +342,7 @@
             <label>วิธีการรับชำระ</label>
           </div>
           <div class="eleven wide field ">
-            {{ data.paidTypeCode | emptyString }}
+            {{ paidTypeString | emptyString }}
           </div>
         </div>
         <div class="inline fields" *ngIf="data.debitAccountType">
@@ -438,7 +438,7 @@
           </div>
         </div>
 
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.ref2">
+        <div class="inline fields" *ngIf="(onlyMaker||onlyChecker||data.ref2)&&data.paidTypeCode!='10004'">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>เลขที่ตรวจสอบ (Ref.2)</label>
@@ -447,7 +447,7 @@
             {{ data.ref2 | emptyString }}
           </div>
         </div>
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountDbd">
+        <div class="inline fields" *ngIf="(onlyMaker||onlyChecker||data.amountDbd)&&data.paidTypeCode!='10004'">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน DBD (บาท)</label>
@@ -456,7 +456,7 @@
             {{ (data.amountDbd||0) | decimalFormat: "###,###.00" }} บาท
           </div>
         </div>
-        <div class="inline fields" *ngIf="onlyMaker||onlyChecker||data.amountTmb">
+        <div class="inline fields" *ngIf="(onlyMaker||onlyChecker||data.amountTmb)&&data.paidTypeCode!='10004'">
           <div class="one wide field "></div>
           <div class="three wide field ">
             <label>จำนวนเงิน TMB (บาท)</label>

@@ -491,7 +491,7 @@ export class Nrq02000Service {
                                     d.other = controls[`etc${index}Child${idx}`].value;
                                     d.numOtherCc = controls[`cer${index}Child${idx}`].value;
                                     if (idx != 1) {
-                                        d.dateOtherReg = controls[`cal${index}Child${idx}`].value;
+                                        d.dateOtherReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
                                     }
                                 } else if (!controls[`cal${index}Child${idx}`]) {
                                     d.numSetCc = controls[`cer${index}Child${idx}`].value;
@@ -505,13 +505,13 @@ export class Nrq02000Service {
                                         let id = 1;
                                         if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length == 4) {
                                             year = controls[`cal${index}Child${idx}`].value;
-                                            d.statementYear = year;
+                                            d.statementYear = ThYearToEnYear(year);
                                             id = 3;
                                             d.box3 = true;
                                         }
                                         if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length > 4) {
                                             date = controls[`cal${index}Child${idx}`].value;
-                                            d.dateAccepted = date;
+                                            d.dateAccepted = ThDateToEnDate(date);
                                             id = 4;
                                             d.box4 = true;
                                         }
@@ -802,6 +802,7 @@ export enum ValidatorMessages {
     ref2 = "กรุณากรอกข้อมูลให้ครบ",
     amountDbd = "กรุณากรอกข้อมูลให้ครบ",
     amountTmb = "กรุณากรอกข้อมูลให้ครบ",
+    acceptNo = "กรุณากรอกข้อมูลให้ครบ",
 }
 
 interface Pdf {

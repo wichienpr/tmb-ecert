@@ -131,88 +131,84 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.checkRoles();
     this.service.getRejectReason().then(value => {
       this.allowed.values = value;
-      this.service.getData().then(data => {
-        this.data = data;
-        if (this.data && this.data.tmbRequestNo) {
-          this.isdownload = true;
-          const {
-            accNo, accName, corpName, corpName1, corpNo, address,
-            acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-            departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
-          } = this.form.controls;
-          const {
-            accountNo, accountName, tmbRequestNo, requestDate,
-            glType, tranCode, accountType, status, companyName,
-            caNumber, organizeId, customerName, telephone, remark,
-            requestFormFile, idCardFile, department
-          } = this.data;
-          const id = this.data.reqFormId.toString();
-          this.reqDate = requestDate;
-          this.glType = glType;
-          this.tranCode = tranCode;
-          this.accType = accountType;
-          this.status = status;
-          this.statusMsg = status;
-          this.tmbReqFormId = tmbRequestNo;
-          this.accNo = Acc.convertAccNo(accountNo);
-          accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
-          accNo.setValue(Acc.convertAccNo(accountNo));
-          address.setValue(this.data.address);
-          accName.setValue(accountName);
-          acceptNo.setValue(caNumber);
-          corpName1.setValue(companyName);
-          corpName.setValue(customerName);
-          corpNo.setValue(organizeId);
-          departmentName.setValue(department);
-          note.setValue(remark);
-          telReq.setValue(telephone);
-          reqFormId.setValue(this.data.reqFormId);
-          ref1.setValue(this.data.ref1);
-          ref2.setValue(this.data.ref2);
-          amountDbd.setValue(this.data.amountDbd);
-          amountTmb.setValue(this.data.amountTmb);
-          this.amountBlur('amountDbd');
-          this.amountBlur('amountTmb');
-          if (this.user.segment) {
-            customSegSelect.patchValue(this.user.segment);
-          } else {
-            this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
-            customSegSelect.patchValue(this.custsegmentCode);
-          }
-          if (requestFormFile) {
-            requestFile.clearValidators();
-            requestFile.updateValueAndValidity();
-          }
-          if (idCardFile) {
-            copyFile.clearValidators();
-            copyFile.updateValueAndValidity();
-          }
-          this.service.getCert(id).then(cert => {
-            this.cert = cert;
-            this.service.getChkList(id).then(chkList => {
-              this.chkList = chkList;
-              for (let i = 0; i < this.chkList.length; i++) {
-                if (this.chkList[i].feeDbd == "" && i != 0) {
-                  this.service.getChkListMore(this.chkList[i].code).then(children => {
-                    this.chkList[i].children = children;
-                    if (this.chkList && this.chkList.length > 0) {
-                      this.service.matchChkList(this.chkList, this.cert).then(result => {
-                        this.chkList = result;
-                      });
-                    }
-                  });
-                }
-              }
-            });
-          });
-        } else {
-          this.reqDate = this.service.getReqDate();
-          this.service.getTmbReqFormId().then(id => {
-            this.tmbReqFormId = id;
-          })
-        }
-      });
     });
+    this.service.getData().then(data => {
+      this.data = data;
+      if (this.data && this.data.tmbRequestNo) {
+        this.isdownload = true;
+        const {
+          accNo, accName, corpName, corpName1, corpNo, address,
+          acceptNo, telReq, reqFormId, note, requestFile, copyFile,
+          departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
+        } = this.form.controls;
+        const {
+          accountNo, accountName, tmbRequestNo, requestDate,
+          glType, tranCode, accountType, status, companyName,
+          caNumber, organizeId, customerName, telephone, remark,
+          requestFormFile, idCardFile, department
+        } = this.data;
+        const id = this.data.reqFormId.toString();
+        this.reqDate = requestDate;
+        this.glType = glType;
+        this.tranCode = tranCode;
+        this.accType = accountType;
+        this.status = status;
+        this.statusMsg = status;
+        this.tmbReqFormId = tmbRequestNo;
+        this.accNo = Acc.convertAccNo(accountNo);
+        accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+        accNo.setValue(Acc.convertAccNo(accountNo));
+        address.setValue(this.data.address);
+        accName.setValue(accountName);
+        acceptNo.setValue(caNumber);
+        corpName1.setValue(companyName);
+        corpName.setValue(customerName);
+        corpNo.setValue(organizeId);
+        departmentName.setValue(department);
+        note.setValue(remark);
+        telReq.setValue(telephone);
+        reqFormId.setValue(this.data.reqFormId);
+        ref1.setValue(this.data.ref1);
+        ref2.setValue(this.data.ref2);
+        amountDbd.setValue(this.data.amountDbd);
+        amountTmb.setValue(this.data.amountTmb);
+        this.amountBlur('amountDbd');
+        this.amountBlur('amountTmb');
+        if (this.user.segment) {
+          customSegSelect.patchValue(this.user.segment);
+        } else {
+          this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
+          customSegSelect.patchValue(this.custsegmentCode);
+        }
+        if (requestFormFile) {
+          requestFile.clearValidators();
+          requestFile.updateValueAndValidity();
+        }
+        if (idCardFile) {
+          copyFile.clearValidators();
+          copyFile.updateValueAndValidity();
+        }
+        this.checkBox(id);
+      } else {
+        this.reqDate = this.service.getReqDate();
+        this.service.getTmbReqFormId().then(id => {
+          this.tmbReqFormId = id;
+        })
+      }
+    });
+  }
+
+  async checkBox(id) {
+    this.cert = await this.service.getCert(id);
+    this.chkList = await this.service.getChkList(id);
+    for (let i = 0; i < this.chkList.length; i++) {
+      if (this.chkList[i].feeDbd == "" && i != 0) {
+        this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+        if (this.chkList && this.chkList.length > 0) {
+          this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+        }
+      }
+    }
   }
 
   checkRoles() {
@@ -237,7 +233,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       } else {
         this.hiddenReceipt4 = true;
       }
-      this.form.controls.acceptNo.clearValidators();
+      // this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue('');
       this.form.controls.payMethodSelect.setValue('30001');
@@ -293,8 +289,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.common.isRole(ROLES.REQUESTOR)) {
       return "10001";
     }
-    if (this.common.isRole(ROLES.MAKER)) {
+    if (this.common.isRole(ROLES.MAKER) && this.form.get('payMethodSelect').value != "30004") {
       return "10005"; // "10005"
+    }
+    if (this.common.isRole(ROLES.MAKER) && this.form.get('payMethodSelect').value == "30004") {
+      return "10009"; // "10009"
     }
   }
 
