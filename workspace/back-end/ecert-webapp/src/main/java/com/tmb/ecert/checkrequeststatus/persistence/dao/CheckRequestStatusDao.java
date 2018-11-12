@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.checkrequeststatus.persistence.vo.CountStatusVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000FormVo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.StatusVo;
@@ -38,7 +39,7 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID, H.UPDATED_BY_NAME, H.CREATED_BY_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -84,7 +85,7 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID, H.UPDATED_BY_NAME, H.CREATED_BY_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -132,7 +133,7 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID, H.UPDATED_BY_NAME, H.CREATED_BY_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -143,6 +144,10 @@ public class CheckRequestStatusDao {
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");
 			valueList.add(formVo.getStatus());
+		}
+		if (StringUtils.isNoneBlank(formVo.getUserId())) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(formVo.getUserId());
 		}
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 		crs01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
@@ -155,7 +160,7 @@ public class CheckRequestStatusDao {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(
-				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID ");
+				" SELECT  H.REQFORM_ID ,H.REQUEST_DATE,TMB_REQUESTNO,H.REF1,H.REF2,H.AMOUNT,H.STATUS ,H.ORGANIZE_ID,H.COMPANY_NAME ,C.NAME AS TYPE_DESC,L.NAME AS STATUS_NAME, H.LOCK_FLAG, H.UPDATED_BY_ID, H.MAKER_BY_ID, H.CREATED_BY_ID, H.UPDATED_BY_NAME, H.CREATED_BY_NAME ");
 		sql.append(" FROM ECERT_REQUEST_FORM H ");
 		sql.append(" INNER JOIN ECERT_LISTOFVALUE L ");
 		sql.append(" ON H.STATUS = L.CODE ");
@@ -166,6 +171,10 @@ public class CheckRequestStatusDao {
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			sql.append(" AND H.STATUS = ? ");
 			valueList.add(formVo.getStatus());
+		}
+		if (StringUtils.isNoneBlank(formVo.getUserId())) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(formVo.getUserId());
 		}
 
 		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
@@ -196,21 +205,28 @@ public class CheckRequestStatusDao {
 			vo.setCreatedById(rs.getString("CREATED_BY_ID"));
 			vo.setUpdatedById(rs.getString("UPDATED_BY_ID"));
 			vo.setMakerById(rs.getString("MAKER_BY_ID"));
+			vo.setUpdatedByName(rs.getString("UPDATED_BY_NAME"));
+			vo.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 			return vo;
 		}
 
 	};
 
-	public List<StatusVo> countStatus() {
+	public List<StatusVo> countStatus(CountStatusVo countStatusVo) {
 		logger.info("CountStatus_Dao");
 		List<StatusVo> statusVoList = new ArrayList<StatusVo>();
+		List<Object> valueList = new ArrayList<Object>();
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT COUNT(*) AS COUNT_STATUS, H.STATUS ");
 		sql.append(" FROM ECERT_REQUEST_FORM H WHERE H.DELETE_FLAG=0 ");
+		if (StringUtils.isNoneBlank(countStatusVo.getUserId())) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(countStatusVo.getUserId());
+		}
 		sql.append(" GROUP BY H.STATUS ");
 		sql.append(" ORDER BY H.STATUS ASC ");
 
-		statusVoList = jdbcTemplate.query(sql.toString(), countStatusMapping);
+		statusVoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), countStatusMapping);
 
 		return statusVoList;
 	}

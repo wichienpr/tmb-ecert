@@ -7,7 +7,16 @@ public class CertificateVo {
 	private Long id;
 	private String status;
 	private String certificates;
+	private String ignoreReceipt;
 	private MultipartFile certificatesFile;
+	
+	public String getIgnoreReceipt() {
+		return ignoreReceipt;
+	}
+
+	public void setIgnoreReceipt(String ignoreReceipt) {
+		this.ignoreReceipt = ignoreReceipt;
+	}
 
 	public Long getId() {
 		return id;

@@ -19,8 +19,26 @@ public class Crs01000Vo {
 	private String statusCode;
 	private Integer lockFlag;
 	private String updatedById;
+	private String updatedByName;
 	private String makerById;
 	private String createdById;
+	private String createdByName;
+	
+	public String getCreatedByName() {
+		return createdByName;
+	}
+
+	public void setCreatedByName(String createdByName) {
+		this.createdByName = createdByName;
+	}
+
+	public String getUpdatedByName() {
+		return updatedByName;
+	}
+
+	public void setUpdatedByName(String updatedByName) {
+		this.updatedByName = updatedByName;
+	}
 
 	public String getCreatedById() {
 		return createdById;
