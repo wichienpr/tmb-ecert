@@ -9,7 +9,8 @@ import {
     ThaiMoneyString,
     DatetimeStringPipe,
     TmbReqNumberPipe,
-    DatetimeFromStringPipe
+    DatetimeFromStringPipe,
+    DateFromStringPipe,
 } from "pipes/";
 
 @NgModule({
@@ -24,7 +25,8 @@ import {
         ThaiMoneyString,
         DatetimeStringPipe,
         TmbReqNumberPipe,
-        DatetimeFromStringPipe
+        DatetimeFromStringPipe,
+        DateFromStringPipe
     ],
     exports: [
         AccountNumberPipe,
@@ -36,7 +38,8 @@ import {
         ThaiMoneyString,
         DatetimeStringPipe,
         TmbReqNumberPipe,
-        DatetimeFromStringPipe
+        DatetimeFromStringPipe,
+        DateFromStringPipe
     ]
 })
 export class PipesModule { }
