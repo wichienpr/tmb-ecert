@@ -272,7 +272,7 @@ public class ReportPdfService {
 			params01.put("createdByTel", receiver.getCreatedByTel());
 			params01.put("createdByEmail", receiver.getCreatedByEmail());
 						
-			params01.put("date", DateFormatUtils.format(new java.util.Date(),"dd/MM/yyyy"));
+			params01.put("date", DateFormatUtils.format(new java.util.Date(),"dd/MM/yyyy",new Locale("th", "TH")));
 			params01.put("time", DateFormatUtils.format(new java.util.Date(),"HH.mm",new Locale("th", "TH")));
 			
 			List<RpCertificateVo> rpCertificateList = new ArrayList<>();
