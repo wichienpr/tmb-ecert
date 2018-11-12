@@ -32,6 +32,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.FileImportRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentRequest;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ImportDocumentResponse;
 import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.IndexGuoupResponse;
+import com.tmb.ecert.checkrequeststatus.service.ReqidGenKeyService;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
@@ -63,18 +64,6 @@ public class ImportECMBatchService {
 	@Value("${app.datasource.ws.checkstatus}")
 	private String WSCHECKURL;
 
-/*	@Value("${app.datasource.ftp.path}")
-	private String ftpPath;
-
-	@Value("${app.datasource.ftp.url}")
-	private String ftpHost;
-
-	@Value("${app.datasource.ftp.username}")
-	private String ftpUsername;
-
-	@Value("${app.datasource.ftp.password}")
-	private String ftpPassword;
-*/
 	@Autowired
 	private ImportECMBatchDao importECMBatchDao;
 
@@ -86,6 +75,9 @@ public class ImportECMBatchService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private ReqidGenKeyService reqidGenKeyService;
 	
 	@Value("${aes256.keystore.path}")
 	private String keystorePath;
@@ -341,9 +333,7 @@ public class ImportECMBatchService {
 	}
 
 	private String ramdomKey(String chanel) {
-		int random = new Random().nextInt(999999);
-		String str = chanel + EcerDateUtils.formatYYMMDDDate(new Date())
-				+ StringUtils.leftPad(Integer.toString(random), 6, "0");
+		String str = chanel + reqidGenKeyService.getNextKey();
 		return str;
 
 	}

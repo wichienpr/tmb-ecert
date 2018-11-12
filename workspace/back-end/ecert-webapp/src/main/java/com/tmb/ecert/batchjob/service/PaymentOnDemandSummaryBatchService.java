@@ -70,6 +70,7 @@ public class PaymentOnDemandSummaryBatchService {
 		long start = System.currentTimeMillis();
 		log.info("PaymentOnDemandSummaryBatchService is starting process...");
 		SimpleDateFormat ddMMyyyy = new SimpleDateFormat("ddMMyyyy", Locale.US);
+		SimpleDateFormat formatterDD = new SimpleDateFormat("d");
 		
 		
 		String path =  ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_ONDEMANDSUMMARY_FTPPATH);
@@ -95,13 +96,15 @@ public class PaymentOnDemandSummaryBatchService {
 										
 					String fullFileName = archivePath + File.separator + File.separator+fileName;
 					
+					String fullPath = path + "/" + formatterDD.format(current);
+					
 					File file = new File(fullFileName);
 															
 					FileUtils.writeByteArrayToFile(file, onDemandSummaryTransactionFile.getPage().getDetails().toString().getBytes("TIS-620"));
 										
 					// Step 2. SFTP File and save log fail or success !!
 					List<SftpFileVo> files = new ArrayList<>();
-					files.add(new SftpFileVo(new File(fullFileName), path, fileName));
+					files.add(new SftpFileVo(new File(fullFileName), fullPath , fileName));
 					SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername,  TmbAesUtil.decrypt(keystorePath, ftpPassword));
 					isSuccess = SftpUtils.putFile(sftpVo);
 					if(!isSuccess){

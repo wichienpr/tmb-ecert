@@ -47,18 +47,6 @@ public class UploadCertificateService {
 	@Value("${app.datasource.path.upload}")
 	private String pathUploadfiel;
 
-//	@Value("${app.datasource.ftp.path}")
-//	private String ftpPath;
-//
-//	@Value("${app.datasource.ftp.url}")
-//	private String ftpHost;
-//
-//	@Value("${app.datasource.ftp.username}")
-//	private String ftpUsername;
-//
-//	@Value("${app.datasource.ftp.password}")
-//	private String ftpPassword;
-
 	private static String PATH_UPLOAD = "tmb-requestor/";
 	
 	@Value("${aes256.keystore.path}")
@@ -70,6 +58,9 @@ public class UploadCertificateService {
 	
 	@Autowired
 	private EmailService emailservice;
+	
+	@Autowired
+	private ReqidGenKeyService reqidGenKeyService;
 
 	public void uploadEcertificate(Long certificateID, String userid) throws Exception{
 		String channelid = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CHANNELID);
@@ -239,9 +230,7 @@ public class UploadCertificateService {
 	}
 
 	private String ramdomKey(String chanel) {
-		int random = new Random().nextInt(999999);
-		String str = chanel + EcerDateUtils.formatYYMMDDDate(new Date())
-				+ StringUtils.leftPad(Integer.toString(random), 6, "0");
+		String str = chanel + reqidGenKeyService.getNextKey();
 		return str;
 
 	}
