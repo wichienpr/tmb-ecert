@@ -5,10 +5,11 @@ import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
 import { AjaxService, ModalService, DropdownService, RequestFormService, CommonService } from "services/";
-import { Acc, Assigned, dateLocaleEN } from "helpers/";
+import { Acc, Assigned, dateLocaleEN, ThDateToEnDate, ThYearToEnYear, dateLocale, EnYearToThYear } from "helpers/";
 
 import { Nrq02000, ResponseVo } from "./nrq02000.model";
 import { ROLES, REQ_STATUS } from "app/baiwa/common/constants";
+import * as moment from "moment";
 
 declare var $: any;
 
@@ -617,7 +618,8 @@ export class Nrq02000Service {
                                 ob.reqcertificateId = o.reqCertificateId;
                                 ob.registeredDate = o.registeredDate;
                                 ob.acceptedDate = o.acceptedDate;
-                                ob.statementYear = o.statementYear;
+                                // ob.statementYear = o.statementYear;
+                                ob.statementYear = parseInt(EnYearToThYear(o.statementYear.toString()));
                                 ob.other = o.other;
                                 ob.check = true;
                                 ob.value = o.totalNumber;
@@ -659,22 +661,31 @@ export class Nrq02000Service {
                                 ob.registeredDate = null;
                             }
                             if (idx == 2) {
-                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
+                                // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
+                                let str = form.controls['cal' + index + 'Child' + idx].value;
+                                str = ThDateToEnDate(str);
+                                ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                             }
                             if (idx > 2 && idx < obj.children.length - 1) {
                                 if (ob.code == '10007') {
-                                    let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                    ob.acceptedDate = new Date(str[2], str[1], str[0]);
+                                    // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                    // ob.acceptedDate = new Date(str[2], str[1], str[0]);
+                                    let str = form.controls['cal' + index + 'Child' + idx].value;
+                                    str = ThDateToEnDate(str);
+                                    ob.acceptedDate = moment(str, "DD/MM/YYYY").toDate();
                                 }
                                 if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
                                     let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
-                                    ob.statementYear = value;
+                                    ob.statementYear = parseInt(ThYearToEnYear(value.toString()));
                                 }
                             }
                             if (idx == obj.children.length - 1) {
-                                let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
+                                // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
+                                // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
+                                let str = form.controls['cal' + index + 'Child' + idx].value;
+                                str = ThDateToEnDate(str);
+                                ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }
                             if (ob.check == "" && ob.value == "") {

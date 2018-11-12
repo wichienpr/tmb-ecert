@@ -94,7 +94,7 @@
                     </tr>
                     <tr class="text-center" *ngFor="let data of auditDt.datas; let i=index">
                         <td style="text-align: center !important;">{{ auditDt.rownum + (i+1) }}</td>
-                        <td style="text-align: center !important;">{{data.createdDatetime}}</td>
+                        <td style="text-align: center !important;">{{data.createdDatetime | datetimeFromString }}</td>
                         <td style="text-align: center !important;">{{data.createdById}}</td>
                         <td style="text-align: left   !important; white-space: pre-wrap; ">{{data.actionDesc}}</td>
                         <td style="text-align: left   !important; white-space: pre-wrap; ">{{data.description}}</td>

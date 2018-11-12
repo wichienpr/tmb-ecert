@@ -9,7 +9,7 @@ import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives
 import { CommonService } from 'app/baiwa/common/services';
 import * as moment from 'moment';
 import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
-
+import {  dateLocaleEN, ThDateToEnDate, ThYearToEnYear, dateLocale, EnYearToThYear,EnDateToThDate } from "helpers/";
 
 @Component({
   selector: 'app-adl01000',
@@ -97,14 +97,25 @@ export class Adl01000Component implements OnInit {
       // console.log("form invalid");
       return false;
     }
+    let strFrom = this.formadl.get("dateForm").value;
+    let strTo = this.formadl.get("dateTo").value;
+    let type = this.formadl.get("createdById").value;
+    let oper = this.formadl.get("actionCode").value
+    let param = {
+      dateForm: ThDateToEnDate(strFrom),  
+      dateTo: ThDateToEnDate(strTo),             
+      createdById: type,    
+      actionCode:oper,   
+    }
+     
     // console.log("searchData False", this.formadl.value);
-    this.auditDt.searchParams(this.formadl.value);
+    this.auditDt.searchParams(param);
     this.auditDt.search();
   }
 
   clearData(): void {
     // this.formadl.reset();
-    let now = moment().format('DD/MM/YYYY');
+    let now =  EnDateToThDate(moment().format('DD/MM/YYYY'));
     this.formadl.setValue({dateForm:now,dateTo:now,createdById:'',actionCode:""});
     this.auditDt.clear();
     this.statusDropDown.clear();

@@ -10,6 +10,8 @@ import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/componen
 import { Btm01000 } from './btm01000.model';
 import * as moment from 'moment';
 import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
+import {  dateLocaleEN, ThDateToEnDate, ThYearToEnYear, dateLocale, EnYearToThYear,EnDateToThDate } from "helpers/";
+import { initChangeDetectorIfExisting } from '@angular/core/src/render3/instructions';
 @Component({
   selector: 'app-btm01000',
   templateUrl: './btm01000.component.html',
@@ -185,7 +187,18 @@ export class Btm01000Component implements OnInit {
       });
     }
     if (this.serchForm.valid) {
-      this.batchMonitorDT.searchParams(this.serchForm.value)
+      let strFrom = this.serchForm.get("dateFrom").value;
+      let strTo = this.serchForm.get("dateTo").value;
+      let type = this.serchForm.get("batchType").value;
+      let oper = this.serchForm.get("operationType").value
+      const formsearch ={
+        dateFrom:ThDateToEnDate(strFrom),
+        dateTo:ThDateToEnDate(strTo),
+        batchType:type,
+        operationType:oper
+
+      }
+      this.batchMonitorDT.searchParams(formsearch)
       this.batchMonitorDT.search();
     }
   }
@@ -198,7 +211,8 @@ export class Btm01000Component implements OnInit {
   }
 
   showModalreRun(item) {
-    let dateF: string = item.endofdate;
+    let btmTemp: Btm01000 = Object.assign({},item) ;
+    let dateF :string = btmTemp.endofdate;
     this.touchedreRun = true;
     // console.log("date format", dateF.substr(0, 10))
     if (item.jobtypeCode == 60003 || item.jobtypeCode == 60002 || item.jobtypeCode == 60001) {
@@ -233,25 +247,29 @@ export class Btm01000Component implements OnInit {
 
   clearSearchData() {
     console.log("clear search");
-    let now = moment().format('DD/MM/YYYY');
+    let now = EnDateToThDate(moment().format('DD/MM/YYYY'));
     this.serchForm.setValue({ dateFrom: now, dateTo: now, batchType: '', operationType: '' });
     this.batchMonitorDT.clear();
     this.statusDropDown.clear();
     this.typeDropDown.clear();
   }
   continueRerun() {
-    this.tempItem.startDate = this.reRunForm.get("reRunDateForm").value
-    this.tempItem.stopDate = this.reRunForm.get("reRunDateTo").value
+    let startD = this.reRunForm.get("reRunDateForm").value;
+    let endD = this.reRunForm.get("reRunDateTo").value;
+    this.tempItem.startDate = ThDateToEnDate(startD);
+    if (endD != null){
+      this.tempItem.stopDate = ThDateToEnDate(endD);
+    }
     this.callRerunJobAPI(this.tempItem)
 
   }
   callRerunJobAPI(itme) {
-    // const req = {
-    //   startDate:itme.startDate,
-    //   stopDate:itme.stopDate,
-    //   jobtypeCode:itme.jobtypeCode
-    // }
-    this.service.callRerunJobService(itme).subscribe(res => {
+    const req = {
+      startDate:itme.startDate.substr(0, 10),
+      stopDate:itme.stopDate,
+      jobtypeCode:itme.jobtypeCode
+    }
+    this.service.callRerunJobService(req).subscribe(res => {
       this.messageRes = res;
       if (this.messageRes.message == MESSAGE_STATUS.SUCCEED) {
         // this.modalService.alert(this.messageRes.message);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AjaxService } from "services/";
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { FormGroup } from '@angular/forms';
-import { isValid } from 'app/baiwa/common/helpers';
+import { isValid, ThMonthYearToEnMonthYear } from 'app/baiwa/common/helpers';
 import { Rep03000Service } from 'app/tmb-ecert/rep00000/rep03000/rep03000.service';
 
 const URL = {
@@ -65,7 +65,7 @@ export class Rep03000Component implements OnInit {
       this.form.get('customerName').patchValue(customerName.trim());
     }
     this.ajax.post(URL, {
-      paymentDate: this.form.get('dateVat').value,
+      paymentDate: ThMonthYearToEnMonthYear(this.form.get('dateVat').value),
       organizeId: this.form.get('organizeId').value,
       customerName: this.form.get('customerName').value
     }, res => {
@@ -111,7 +111,7 @@ export class Rep03000Component implements OnInit {
 
   exportFile = () => {
     let param = "";
-    param += "?paymentDate=" + this.form.get('dateVat').value;
+    param += "?paymentDate=" + ThMonthYearToEnMonthYear(this.form.get('dateVat').value);
     param += "&organizeId=" + this.form.get('organizeId').value;
     let customerName = this.form.get('customerName').value;
     if (customerName != null) {

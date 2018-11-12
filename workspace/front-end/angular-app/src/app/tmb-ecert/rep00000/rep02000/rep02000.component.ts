@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AjaxService, ModalService } from "services/";
 import { Modal } from "models/";
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { FormGroup } from '@angular/forms';
-import { isValid } from 'app/baiwa/common/helpers';
+import { isValid, ThMonthYearToEnMonthYear } from 'app/baiwa/common/helpers';
 
 import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
@@ -35,7 +35,8 @@ export class Rep02000Component implements OnInit {
     private modal: ModalService,
     private service: Rep02000Service,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.dropdownObj = this.service.getDropdownObj();
     this.service.getForm().subscribe(form => {
@@ -77,6 +78,10 @@ export class Rep02000Component implements OnInit {
     }
     console.log("form : ", this.form);
   }
+  
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+  }
 
   ngAfterViewInit() { }
 
@@ -95,8 +100,8 @@ export class Rep02000Component implements OnInit {
     this.dataT = [];
     const URL = "/api/rep/rep02000/list";
     this.ajax.post(URL, {
-      dateForm: this.form.controls.dateForm.value,
-      dateTo: this.form.controls.dateTo.value,
+      dateForm: ThMonthYearToEnMonthYear(this.form.controls.dateForm.value),
+      dateTo: ThMonthYearToEnMonthYear(this.form.controls.dateTo.value),
       paidtypeCode: this.paidTypeChanged
     }, res => {
       const data = res.json();
@@ -137,8 +142,8 @@ export class Rep02000Component implements OnInit {
   exportFile = () => {
     console.log("exportFile");
     let param = "";
-    param += "?dateForm=" + this.form.controls.dateForm.value;
-    param += "&dateTo=" + this.form.controls.dateTo.value;
+    param += "?dateForm=" + ThMonthYearToEnMonthYear(this.form.controls.dateForm.value);
+    param += "&dateTo=" + ThMonthYearToEnMonthYear(this.form.controls.dateTo.value);
 
     (this.paidTypeChanged != null) ? param += "&paidtypeCode=" + this.paidTypeChanged : "";
 
