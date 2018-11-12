@@ -498,7 +498,7 @@ export class Nrq02000Service {
                                 } else {
                                     d.numEditCc = controls[`cer${index}Child${idx}`].value;
                                     if (idx == 2) {
-                                        d.dateEditReg = controls[`cal${index}Child${idx}`].value;
+                                        d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
                                     } else if (idx > 2 && idx < obj.children.length - 1) {
                                         let year = null;
                                         let date = null;

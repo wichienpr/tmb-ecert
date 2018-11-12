@@ -163,7 +163,7 @@
                   </tr>
                   <tr class="text-center" *ngFor="let data of dataDt.datas; let i=index" [ngStyle]="{'color': getFontStyeColor(data.statusCode, data.lockFlag, data.makerById)}">
                     <td style="text-align: center !important;">{{ i+1}}</td>
-                    <td style="text-align: center !important;">{{ data.reqDateStr | dateString }}</td>
+                    <td style="text-align: center !important;">{{ data.reqDateStr | dateFromString }}</td>
                     <td style="text-align: center !important;">{{ data.tmbReqNo | tmbReqNo }}</td>
                     <td style="text-align: center !important;">{{ data.ref1 | emptyString }}</td>
                     <td style="text-align: center !important;">{{ data.ref2 | emptyString }}</td>
