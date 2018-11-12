@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,6 +76,7 @@ public class PaymentGLSummaryBatchService {
 		log.info(" Start PaymentGLSummaryBatch Process... ");
 		String errorDesc = null;
 		Date requestDate = runDate;
+		SimpleDateFormat formatterDD = new SimpleDateFormat("d");
 		try {
 			
 			List<RequestForm> requestForms = paymentGLSummaryBatchDao.queryReqGlSummaryProcess(runDate);
@@ -93,10 +95,13 @@ public class PaymentGLSummaryBatchService {
 			String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_USERNAME);
 			String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_SUMMARY_PASSWORD);
 			
+			String fullPath = path + "/" + formatterDD.format(runDate);
+			
 			
 			List<SftpFileVo> files = new ArrayList<>();
-			files.add(new SftpFileVo(file, path, fileName));
-			SftpVo sftpVo = new SftpVo(files, host, username,  TmbAesUtil.decrypt(keystorePath, password));
+			files.add(new SftpFileVo(file, fullPath , fileName));
+//			SftpVo sftpVo = new SftpVo(files, host, username,  TmbAesUtil.decrypt(keystorePath, password));
+			SftpVo sftpVo = new SftpVo(files, host, username,  "sfc_s123");
 			boolean isSuccess = SftpUtils.putFile(sftpVo);
 			
 			if (!isSuccess) {
@@ -150,7 +155,7 @@ public class PaymentGLSummaryBatchService {
 			
 			List<SftpFileVo> files = new ArrayList<>();
 			files.add(new SftpFileVo(file, path, fileName));
-			SftpVo sftpVo = new SftpVo(files, host, username, password);
+			SftpVo sftpVo = new SftpVo(files, host, username, TmbAesUtil.decrypt(keystorePath, password));
 			boolean isSuccess = SftpUtils.putFile(sftpVo);
 			
 			if (!isSuccess) {

@@ -16,6 +16,15 @@ public class Crs01000FormVo extends DatatableRequest {
 	private Integer lockFlag;
 	private String createdById;
 	private String updatedById;
+	private String userId;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getCreatedById() {
 		return createdById;

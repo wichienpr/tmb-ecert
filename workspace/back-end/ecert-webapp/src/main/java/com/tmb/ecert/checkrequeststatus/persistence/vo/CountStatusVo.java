@@ -12,6 +12,15 @@ public class CountStatusVo {
 	private int waitUploadCertificate;
 	private int succeed;
 	private int waitSaveRequest;
+	private String userId;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public int getNewrequest() {
 		return newrequest;

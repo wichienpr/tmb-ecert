@@ -17,7 +17,10 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.StatusVo;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.StatusConstant;
 
-import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;;
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;;
 
 @Service
 public class CheckRequestStatusService {
@@ -32,26 +35,30 @@ public class CheckRequestStatusService {
 
 		DataTableResponse<Crs01000Vo> dt = new DataTableResponse<>();
 		List<Crs01000Vo> crs01000VoList = new ArrayList<Crs01000Vo>();
-
+		UserDetails user = UserLoginUtils.getCurrentUserLogin();
+		int count = 0;
+		if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_REQUESTER)) {
+			formVo.setUserId(user.getUserId());
+		}
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			crs01000VoList = crs01000Dao.findReqByStatus(formVo);
-			dt.setData(crs01000VoList);
-			int count = crs01000Dao.countFindReqByStatusDataTable(formVo);
-			dt.setRecordsTotal(count);
+			count = crs01000Dao.countFindReqByStatusDataTable(formVo);
 		} else if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
 			crs01000VoList = crs01000Dao.findReq(formVo);
-			dt.setData(crs01000VoList);
-			int count = crs01000Dao.countFindReqDataTable(formVo);
-			dt.setRecordsTotal(count);
+			count = crs01000Dao.countFindReqDataTable(formVo);
 		}
-
+		dt.setData(crs01000VoList);
+		dt.setRecordsTotal(count);
 		return dt;
 	}
 
 	public CountStatusVo countStatus(CountStatusVo countStatusVo) {
 		logger.info("countStatus_Service");
-		List<StatusVo> statusVoList = crs01000Dao.countStatus();
-
+		UserDetails user = UserLoginUtils.getCurrentUserLogin();
+		if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_REQUESTER)) {
+			countStatusVo.setUserId(user.getUserId());
+		}
+		List<StatusVo> statusVoList = crs01000Dao.countStatus(countStatusVo);
 		for (StatusVo data : statusVoList) {
 			if (StatusConstant.NEW_REQUEST.equals(data.getStatus())) {
 				countStatusVo.setNewrequest(data.getCount());

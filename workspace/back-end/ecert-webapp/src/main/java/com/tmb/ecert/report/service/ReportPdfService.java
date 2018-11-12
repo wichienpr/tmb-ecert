@@ -180,26 +180,26 @@ public class ReportPdfService {
 
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 				//vat
-				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
 				//amountTmb
-				params01.put("amountTmb", formatNumber.format(req.getAmountTmb()));
+				params02.put("amountTmb", formatNumber.format(req.getAmountTmb()));
 				
 				/* feeAmount = Amount_tmb * (100/ (100+ vat) ) */
 				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
-				params01.put("feeAmount",formatNumber.format(feeAmount));
+				params02.put("feeAmount",formatNumber.format(feeAmount));
 				
 				/* vatAmount = (feeAmount*(vat/100)) */
 				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
-				params01.put("vatAmount",formatNumber.format(vatAmount));
+				params02.put("vatAmount",formatNumber.format(vatAmount));
 				
 				/*thaiBath*/
-				params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
+				params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
 			} else {
-				params01.put("vat", "0.00");
-				params01.put("amountTmb", "0.00");
-				params01.put("feeAmount", "0.00");
-				params01.put("vatAmount", "0.00");
-				params01.put("thaiBath", "ศูนย์บาทถ้วน");
+				params02.put("vat", "0.00");
+				params02.put("amountTmb", "0.00");
+				params02.put("feeAmount", "0.00");
+				params02.put("vatAmount", "0.00");
+				params02.put("thaiBath", "ศูนย์บาทถ้วน");
 			}
 
 			params02.put("tmbRequestNo", req.getTmbRequestNo());
