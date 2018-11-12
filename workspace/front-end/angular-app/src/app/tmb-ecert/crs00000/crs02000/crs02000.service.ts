@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { ModalService, AjaxService, CommonService } from 'services/';
+import { ModalService, AjaxService, CommonService, DropdownService } from 'services/';
 import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } from 'models/';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile, Rejected, ResponseVo } from './crs02000.models';
@@ -33,7 +33,8 @@ export class Crs02000Service {
     private modal: ModalService,
     private ajax: AjaxService,
     private location: Location,
-    private common: CommonService
+    private common: CommonService,
+    private dropdown: DropdownService
   ) { }
 
   getId() {
@@ -49,6 +50,10 @@ export class Crs02000Service {
       let data: RequestForm[] = response.json() as RequestForm[];
       return data;
     });
+  }
+
+  getPaidType() {
+    return this.dropdown.getpayMethod();
   }
 
   getChkList(id: string) {

@@ -3,6 +3,7 @@ export interface CertFile {
     status: string;
     certificates: string;
     certificatesFile: FormData;
+    ignoreReceipt: string;
 }
 
 export interface Rejected {

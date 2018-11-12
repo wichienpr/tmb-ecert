@@ -301,7 +301,7 @@
         <div #customSegSelect class="five wide field" [ngClass]="{'error': invalid('customSegSelect'), 'disabled': roles(_roles.REQUESTOR) }">
           <ui-dropdown [selected]="custsegmentCode" [dropdown]="dropdownObj.customSeg" (valueChange)="customSegChange($event)"></ui-dropdown>
         </div>
-        <div class="two wide field" [ngClass]="{'required': !roles(_roles.MAKER)}">
+        <div class="two wide field" [ngClass]="{'required': roles(_roles.MAKER)}">
           <label>เลขที่ CA/มติอนุมัติ
           </label>
         </div>

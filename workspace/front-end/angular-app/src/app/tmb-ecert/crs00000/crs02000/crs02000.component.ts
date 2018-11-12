@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown } from 'models/';
+import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate, Dropdown, Lov } from 'models/';
 import { Crs02000Service, URL } from './crs02000.service';
 import { ROLES, PAGE_AUTH, REQ_STATUS } from 'app/baiwa/common/constants';
-import { CommonService, DropdownService } from 'app/baiwa/common/services';
+import { CommonService, DropdownService, ModalService } from 'app/baiwa/common/services';
 import { FormGroup, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CertFile, Rejected } from './crs02000.models';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
@@ -34,6 +34,8 @@ export class Crs02000Component implements OnInit {
   documentModal: Modal;
   allowed: Dropdown;
   tab: any;
+  paidTypeString: string = "";
+  paidType: Lov[] = [];
 
   toggleDoc: string = "content";
   toggleTitle: string = "title";
@@ -48,7 +50,8 @@ export class Crs02000Component implements OnInit {
     private service: Crs02000Service,
     private common: CommonService,
     private formBuilder: FormBuilder,
-    private dropdown: DropdownService
+    private dropdown: DropdownService,
+    private modal: ModalService
   ) {
     this.init();
     this.paidModal = { modalId: "desp", type: "custom" };
@@ -102,8 +105,10 @@ export class Crs02000Component implements OnInit {
       this.dataLoading = true;
       this.data = await this.service.getData(this.id);
       this.cert = await this.service.getCert(this.id);
+      this.paidType = await this.service.getPaidType().toPromise();
       this.history = await this.service.getHistory(this.id);
       this.chkList = await this.service.getChkList(this.id);
+      this.paidTypeString = this.paidType.find(obj => obj.code == this.data.paidTypeCode).name;
       for (let i = 0; i < this.chkList.length; i++) {
         if (this.chkList[i].feeDbd == "" && i != 0) {
           this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
@@ -133,7 +138,17 @@ export class Crs02000Component implements OnInit {
   }
 
   modalToggle(name: string) {
-    $(`#${name}`).modal('show');
+    if (name == 'document' && this.data.paidTypeCode == "30004") {
+      this.modal.confirm(e => {
+        if (e) {
+          setTimeout(() => {
+            $(`#${name}`).modal('show');
+          }, 400);
+        }
+      }, { msg: "Request นี้ยังไม่ได้ชำระเงินผ่าน E-Payment คุณยืนยันที่จะ upload file นี้หรือไม่ ?" });
+    } else {
+      $(`#${name}`).modal('show');
+    }
   }
 
   download(fileName: string) {
@@ -162,13 +177,25 @@ export class Crs02000Component implements OnInit {
   saveCertFile() {
     this.certSubmitted = true;
     if (this.formCert.valid) {
-      const data: CertFile = {
-        id: parseInt(this.id),
-        status: "",
-        certificates: "",
-        certificatesFile: this.files.certFile
-      };
-      this.service.saveCertFile(data);
+      if (this.data.paidTypeCode == "30004") {
+        const data: CertFile = {
+          id: parseInt(this.id),
+          status: "",
+          certificates: "",
+          certificatesFile: this.files.certFile,
+          ignoreReceipt: "true"
+        };
+        this.service.saveCertFile(data);
+      } else if (this.chkStatus(REQ_STATUS.ST10009)) {
+        const data: CertFile = {
+          id: parseInt(this.id),
+          status: "",
+          certificates: "",
+          certificatesFile: this.files.certFile,
+          ignoreReceipt: "false"
+        };
+        this.service.saveCertFile(data);
+      }
     }
   }
 
@@ -212,7 +239,7 @@ export class Crs02000Component implements OnInit {
         return ''
     }
   }
-  
+
   get documentMsg() {
     if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
       return 'รายละเอียดเอกสาร';
@@ -239,6 +266,14 @@ export class Crs02000Component implements OnInit {
   }
   get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) }
   get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
-  get btnUpload() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000406) }
+  get btnUpload() {
+    return (this.roles(ROLES.MAKER)
+      && this.chkStatus(REQ_STATUS.ST10009)
+      && this.common.isAuth(PAGE_AUTH.P0000406));
+    // (this.roles(ROLES.MAKER)
+    // && this.chkStatus(REQ_STATUS.ST10005)
+    // && this.common.isAuth(PAGE_AUTH.P0000406))
+    // || 
+  }
 
 }
