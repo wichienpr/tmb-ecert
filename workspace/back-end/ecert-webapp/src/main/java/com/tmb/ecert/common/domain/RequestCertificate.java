@@ -15,7 +15,7 @@ public class RequestCertificate {
 	private String updateByName;
 	private Timestamp updateDateTime;
 	private Date registeredDate;
-	private Integer statementYear;
+	private String statementYear;
 	private Date acceptedDate;
 	private String other;
 	private Certificate certificate;
@@ -108,11 +108,11 @@ public class RequestCertificate {
 		this.registeredDate = registeredDate;
 	}
 
-	public Integer getStatementYear() {
+	public String getStatementYear() {
 		return statementYear;
 	}
 
-	public void setStatementYear(Integer statementYear) {
+	public void setStatementYear(String statementYear) {
 		this.statementYear = statementYear;
 	}
 

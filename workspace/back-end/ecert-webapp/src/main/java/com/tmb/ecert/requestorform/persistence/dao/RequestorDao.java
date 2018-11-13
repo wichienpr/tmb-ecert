@@ -64,7 +64,7 @@ public class RequestorDao {
 				}
 				ps.setTimestamp(7, timestamp);
 				if (vo.getStatementYear() != null) {
-					ps.setInt(8, vo.getStatementYear());
+					ps.setString(8, vo.getStatementYear());
 				} else {
 					ps.setNull(8, Types.SMALLINT);
 				}

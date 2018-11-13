@@ -451,7 +451,7 @@ public class ReportPdfService {
 					rpReqFormListVo.setOther(data.getOther());
 				}
 				if (BeanUtils.isNotEmpty(data.getStatementYear())) {
-					rpReqFormListVo.setStatementYear(String.valueOf(Integer.parseInt(data.getStatementYear()) + 543));
+					rpReqFormListVo.setStatementYear(data.getStatementYear());
 				}
 				if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
 					Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
