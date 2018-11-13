@@ -10,7 +10,7 @@ public class Nrq02000CerVo extends Certificate {
 	private Boolean check;
 	private Integer value;
 	private Date registeredDate;
-	private Integer statementYear;
+	private String statementYear;
 	private Date acceptedDate;
 	private String other;
 	private List<Object> children;
@@ -47,11 +47,11 @@ public class Nrq02000CerVo extends Certificate {
 		this.registeredDate = registeredDate;
 	}
 
-	public Integer getStatementYear() {
+	public String getStatementYear() {
 		return statementYear;
 	}
 
-	public void setStatementYear(Integer statementYear) {
+	public void setStatementYear(String statementYear) {
 		this.statementYear = statementYear;
 	}
 

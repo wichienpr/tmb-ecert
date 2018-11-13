@@ -171,7 +171,7 @@ public class CheckRequestDetailDao {
 			row.setAcceptedDate(rs.getDate("ACCEPTED_DATE"));
 			row.setOther(rs.getString("OTHER"));
 			row.setRegisteredDate(rs.getDate("REGISTERED_DATE"));
-			row.setStatementYear(rs.getInt("STATEMENT_YEAR"));
+			row.setStatementYear(rs.getString("STATEMENT_YEAR"));
 			return row;
 		}
 	};
