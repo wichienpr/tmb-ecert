@@ -196,6 +196,20 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     return this.crs01000Service.redirectFor(idReq, status, lockFlag, updatedById);
   }
 
+  noSymbol(e) {
+    var txt = String.fromCharCode(e.which);
+    if (!txt.toString().match(/[A-Za-z0-9ก-๙ ]/) || e.charCode == 3647) {
+      return false;
+    }
+  }
+
+  numberOnly(e, hasDot?: boolean) {
+    if (hasDot) {
+      return e.charCode == 46 || e.charCode >= 48 && e.charCode <= 57;
+    }
+    return e.charCode >= 48 && e.charCode <= 57;
+  }
+
   roles(role: ROLES) {
     return this.common.isRole(role);
   }

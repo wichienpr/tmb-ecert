@@ -92,6 +92,8 @@ export class Rep01000Component implements OnInit, AfterViewInit {
     this.loading = true;
     this.dataT = [];
     const URL = "/api/rep/rep01000/list";
+    console.log(typeof ThDateToEnDate(this.form.get('dateForm').value));
+    console.log("ON SEARCH REP01000 => FROM " + ThDateToEnDate(this.form.get('dateForm').value) + " TO " + ThDateToEnDate(this.form.get('dateTo').value));
     this.ajax.post(URL, {
       dateForm: ThDateToEnDate(this.form.get('dateForm').value),
       dateTo: ThDateToEnDate(this.form.get('dateTo').value),

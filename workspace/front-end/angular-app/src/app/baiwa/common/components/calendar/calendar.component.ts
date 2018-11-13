@@ -1,7 +1,8 @@
 import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit, SimpleChanges } from "@angular/core";
-import { Calendar } from "models/";
-import { dateLocale, digit } from "app/baiwa/common/helpers";
-import { NgControl, FormGroup, FormControl } from "@angular/forms";
+import { Calendar, CalendarFormatter } from "models/";
+import { digit, EnDateToThDate } from "app/baiwa/common/helpers";
+import { NgControl } from "@angular/forms";
+import * as moment from 'moment';
 
 declare var $: any;
 
@@ -23,9 +24,6 @@ export class CalendarComponent implements AfterViewInit, OnInit {
 
     ngOnInit() {
         // console.log(this.calendar);
-    }
-
-    ngAfterViewInit() {
         const { type, formatter, local, initial, minDate, maxDate, startId, endId } = this.calendar;
         $(`#${this.calendar.calendarId}`).calendar({
             type: type || 'date',
@@ -43,6 +41,9 @@ export class CalendarComponent implements AfterViewInit, OnInit {
             const init = new Date(Date.UTC(initial.getFullYear(), initial.getMonth(), initial.getDate()));
             $(`#${this.calendar.calendarId}`).calendar('set date', init);
         }
+    }
+
+    ngAfterViewInit() {
         this.cdRef.detectChanges();
     }
 
@@ -71,7 +72,7 @@ export class CalendarComponent implements AfterViewInit, OnInit {
     }
 }
 
-class DateConstant {
+export class DateConstant {
     public static text: any = {
         days: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
         months: [

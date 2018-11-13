@@ -228,8 +228,7 @@
                   <td>{{ chk.feeTmb }}</td>
                   <td class="center aligned">
                     {{ chk.code == '10007' ? (chk.acceptedDate|dateString) : '' }}
-                    {{ chk.code=='10006'||chk.code=='20006'||chk.code=='30005' ? (chk.statementYear == 0 ? '2018' :
-                    chk.statementYear) : '' }}
+                    {{ chk.code=='10006'||chk.code=='20006'||chk.code=='30005' ? chk.statementYear : '' }}
                   </td>
                   <td class="right aligned">{{ chk.value == 0 ? '-' : chk.value | emptyString }} ชุด</td>
                 </tr>

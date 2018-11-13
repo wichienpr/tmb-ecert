@@ -194,8 +194,7 @@ export class Crs02000Service {
               if (ob.code == o.certificateCode) {
                 ob.registeredDate = o.registeredDate;
                 ob.acceptedDate = o.acceptedDate;
-                // ob.statementYear = o.statementYear;
-                ob.statementYear = parseInt(EnYearToThYear(o.statementYear.toString()));
+                ob.statementYear = o.statementYear;
                 ob.other = o.other;
                 ob.check = true;
                 ob.value = o.totalNumber;
