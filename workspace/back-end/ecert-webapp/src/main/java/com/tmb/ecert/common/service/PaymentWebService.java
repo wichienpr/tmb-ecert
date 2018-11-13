@@ -66,7 +66,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailApproveBeforePay(reqF, ApplicationCache.getParamValueByName("tmb.servicecode"), new Date(), e.toString());
+			emailService.sendEmailFailApproveBeforePay(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
@@ -125,7 +125,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailFeePayment(reqF, ApplicationCache.getParamValueByName("tmb.servicecode"),
+			emailService.sendEmailFailFeePayment(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE),
 					new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
@@ -170,7 +170,7 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailRealtimePayment(reqF, ApplicationCache.getParamValueByName("tmb.servicecode"),
+			emailService.sendEmailFailRealtimePayment(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE),
 					new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());

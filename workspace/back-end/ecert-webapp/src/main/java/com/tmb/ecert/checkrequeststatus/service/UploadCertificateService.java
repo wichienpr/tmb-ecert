@@ -136,8 +136,12 @@ public class UploadCertificateService {
 						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
 					}
 				}
+				String passwordEncrypt = TmbAesUtil.decrypt(keystorePath, ftpPassword);
+				log.info(" ecm ftp path {}", ftpPath);
+				log.info(" ecm ftp username {}", ftpUsername);
+				log.info(" ecm ftp path {}",passwordEncrypt );
 
-				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
+				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, passwordEncrypt);
 				boolean isSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 				if (isSuccess) {
 					Thread.sleep(3000);

@@ -55,14 +55,14 @@ public class ImportECMBatchService {
 	@Value("${app.datasource.path.upload}")
 	private String pathUploadfile;
 	
-	@Value("${app.datasource.ws.url}")
+/*	@Value("${app.datasource.ws.url}")
 	private String WSROOT;
 	
 	@Value("${app.datasource.ws.importdoc}")
 	private String WSIMPORTURL;
 
 	@Value("${app.datasource.ws.checkstatus}")
-	private String WSCHECKURL;
+	private String WSCHECKURL;*/
 
 	@Autowired
 	private ImportECMBatchDao importECMBatchDao;
