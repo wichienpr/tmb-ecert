@@ -10,7 +10,7 @@ export interface RequestCertificate {
 	updateByName: string
 	updateDateTime: Date
 	registeredDate?: Date
-	statementYear?: number
+	statementYear?: string
 	acceptedDate?: Date
 	other?: string
 }

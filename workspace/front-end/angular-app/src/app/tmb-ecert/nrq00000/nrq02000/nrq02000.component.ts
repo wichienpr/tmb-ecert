@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
+import { DateConstant } from 'app/baiwa/common/components/calendar/calendar.component';
 
 declare var $: any;
 
@@ -26,7 +27,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   @ViewChild("tmb") tmb: ElementRef;
 
   _roles = ROLES;
-
+  list: string[] = [];
+  isMaker: boolean = false;
   data: RequestForm = initRequestForm;
   tmbReqFormId: String = "";
   custsegmentCode: string = "";
@@ -101,101 +103,100 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.store.select("user").subscribe(user => {
       this.user = user
     });
-
   }
 
-  ngOnInit() {
-    this.init();
+  async ngOnInit() {
+    await this.init();
+    if (this.roles(this._roles.MAKER)) {
+      setTimeout(() => {
+        this.isMaker = true;
+      }, 2250);
+    }
   }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
   }
 
-  ngAfterViewInit() {
-    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
-    this.form.controls.reqTypeSelect.setValue(code);
-    this.reqTypeChange(code);
-  }
+  ngAfterViewInit() { }
 
   /**
    * โหลดข้อมูล
    * @ `dropdownObj` ข้อมูล dropdown {`reqType`,`customSeg`,`payMethod`,`subAccMethod`}.
    * @ `form` ข้อมูลแบบฟอร์มคำขอ
    */
-  init() {
+  async init() {
     this.service.lock();
 
     this.dropdownObj = this.service.getDropdownObj();
     this.form = this.service.getForm();
     this.checkRoles();
-    this.service.getRejectReason().then(value => {
-      this.allowed.values = value;
-    });
-    this.service.getData().then(data => {
-      this.data = data;
-      if (this.data && this.data.tmbRequestNo) {
-        this.isdownload = true;
-        const {
-          accNo, accName, corpName, corpName1, corpNo, address,
-          acceptNo, telReq, reqFormId, note, requestFile, copyFile,
-          departmentName, ref1, ref2, amountDbd, amountTmb, customSegSelect
-        } = this.form.controls;
-        const {
-          accountNo, accountName, tmbRequestNo, requestDate,
-          glType, tranCode, accountType, status, companyName,
-          caNumber, organizeId, customerName, telephone, remark,
-          requestFormFile, idCardFile, department
-        } = this.data;
-        const id = this.data.reqFormId.toString();
-        this.reqDate = requestDate;
-        this.glType = glType;
-        this.tranCode = tranCode;
-        this.accType = accountType;
-        this.status = status;
-        this.statusMsg = status;
-        this.tmbReqFormId = tmbRequestNo;
-        this.accNo = Acc.convertAccNo(accountNo);
-        accNo.setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
-        accNo.setValue(Acc.convertAccNo(accountNo));
-        address.setValue(this.data.address);
-        accName.setValue(accountName);
-        acceptNo.setValue(caNumber);
-        corpName1.setValue(companyName);
-        corpName.setValue(customerName);
-        corpNo.setValue(organizeId);
-        departmentName.setValue(department);
-        note.setValue(remark);
-        telReq.setValue(telephone);
-        reqFormId.setValue(this.data.reqFormId);
-        ref1.setValue(this.data.ref1);
-        ref2.setValue(this.data.ref2);
-        amountDbd.setValue(this.data.amountDbd);
-        amountTmb.setValue(this.data.amountTmb);
-        this.amountBlur('amountDbd');
-        this.amountBlur('amountTmb');
-        if (this.user.segment) {
-          customSegSelect.patchValue(this.user.segment);
-        } else {
-          this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
-          customSegSelect.patchValue(this.custsegmentCode);
-        }
-        if (requestFormFile) {
-          requestFile.clearValidators();
-          requestFile.updateValueAndValidity();
-        }
-        if (idCardFile) {
-          copyFile.clearValidators();
-          copyFile.updateValueAndValidity();
-        }
-        this.checkBox(id);
-      } else {
-        this.reqDate = this.service.getReqDate();
-        this.service.getTmbReqFormId().then(id => {
-          this.tmbReqFormId = id;
-        })
+    this.allowed.values = await this.service.getRejectReason();
+    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
+    this.form.controls.reqTypeSelect.setValue(code);
+    this.reqTypeChange(code);
+    this.data = await this.service.getData();
+    if (this.data && this.data.tmbRequestNo) {
+      this.isdownload = true;
+      const { requestFile, copyFile, customSegSelect } = this.form.controls;
+      const {
+        accountNo, accountName, tmbRequestNo, requestDate,
+        glType, tranCode, accountType, status, companyName,
+        caNumber, organizeId, customerName, telephone, remark,
+        requestFormFile, idCardFile, department, reqFormId, address,
+        ref1, ref2, amountTmb, amountDbd
+      } = this.data;
+      if (requestFormFile) {
+        requestFile.clearValidators();
+        requestFile.updateValueAndValidity();
       }
-    });
+      if (idCardFile) {
+        copyFile.clearValidators();
+        copyFile.updateValueAndValidity();
+      }
+      if (this.user.segment) {
+        customSegSelect.patchValue(this.user.segment);
+      } else {
+        this.custsegmentCode = this.dropdownObj.customSeg.values[0].code
+        customSegSelect.patchValue(this.custsegmentCode);
+      }
+      this.form.get('accNo').setValidators([Validators.required, Validators.minLength(13), Validators.maxLength(13)]);
+      this.form.get('accNo').updateValueAndValidity();
+      this.form.patchValue({
+        accNo: Acc.convertAccNo(accountNo),
+        accName: accountName,
+        corpName: customerName,
+        corpName1: companyName,
+        corpNo: organizeId,
+        address: address,
+        acceptNo: caNumber,
+        telReq: telephone,
+        reqFormId: reqFormId,
+        note: remark,
+        departmentName: department,
+        ref1: ref1,
+        ref2: ref2,
+        amountDbd: amountDbd,
+        amountTmb: amountTmb,
+        customSegSelect: this.user.segment || this.dropdownObj.customSeg.values[0].code
+      });
+      const id = this.data.reqFormId.toString();
+      this.reqDate = requestDate;
+      this.glType = glType;
+      this.tranCode = tranCode;
+      this.accType = accountType;
+      this.status = status;
+      this.statusMsg = status;
+      this.tmbReqFormId = tmbRequestNo;
+      this.accNo = Acc.convertAccNo(accountNo);
+      this.amountBlur('amountDbd');
+      this.amountBlur('amountTmb');
+      this.checkBox(id);
+    } else {
+      this.reqDate = this.service.getReqDate();
+      this.tmbReqFormId = await this.service.getTmbReqFormId();
+    }
+    this.dropdownActive();
   }
 
   async checkBox(id) {
@@ -299,9 +300,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, _data?) {
     event.preventDefault();
-    console.log('submitted');
+    console.log('submitted', this.data.reqFormId);
     this.submitted = true;
     const data = _data ? _data : {
+      id: this.data.reqFormId || null,
       glType: this.glType,
       tranCode: this.tranCode,
       accType: this.accType,
@@ -356,6 +358,48 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         }
       })
     }
+  }
+
+  dropdownActive() {
+    setTimeout(() => {
+      $('#multi-calendar').calendar({
+        type: CalendarType.YEAR,
+        formatter: DateConstant.formatter(CalendarFormatter.yyyy),
+        onChange: (date, text) => {
+          const form = this.form.get($('#multi-select').attr('name'));
+          let data = form.value;
+          if (data.length == 0) {
+            data = [];
+            form.setValue(data);
+          }
+          if (data.findIndex(obj => obj == text) == -1) {
+            this.list.push(text);
+            data.push(text);
+            form.setValue(data);
+            setTimeout(() => {
+              $('#multi-select').dropdown('set selected', data);
+            }, 150);
+          }
+        }
+      });
+      $('.ui.multiple.selection.dropdown').dropdown({
+        onChange: (value, text, $selectedItem) => {
+          this.list = this.list.filter(val => {
+            for (let key in value) {
+              let data = value[key].split(": ");
+              data[1] = data[1].replace(/'/g, "");
+              if (data[1] == val) {
+                return true;
+              }
+            }
+            return false;
+          });
+        }
+      }).css({ "max-width": "220px", "padding": ".25em" });
+      // setTimeout(() => {
+      //   $('.ui.multiple.selection.dropdown').children()[1].remove();
+      // }, 400);
+    }, 800);
   }
 
   ref1Focus() {
@@ -416,94 +460,76 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  reqTypeChange(e) {
+  async reqTypeChange(e) {
     this.common.isLoading();
     if (e != "") {
-      this.service.reqTypeChange(e).then(reqTypeChanged => {
-        this.reqTypeChanged = reqTypeChanged;
-        this.reqTypeChanged.forEach((obj, index) => {
-          if (index != 0) {
-            let value = '';
-            if (this.form.controls[`chk${index}`]) {
-              this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-              this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
-            } else {
-              this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
-              this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
-            }
-            if (!obj.feeDbd) {
-              this.service.reqTypeChange(obj.code).then(children => {
-                obj.children = children;
-                obj.children.forEach((ob, idx) => {
-                  if (idx != 0) {
-                    if (this.calendar.length !== obj.children.length && idx != 1) {
-                      this.calendar[idx] = {
-                        calendarId: `cal${index}Child${idx}`,
-                        calendarName: `cal${index}Child${idx}`,
-                        formGroup: this.form,
-                        formControlName: `cal${index}Child${idx}`,
-                        type: CalendarType.DATE,
-                        formatter: CalendarFormatter.DEFAULT,
-                        local: CalendarLocal.EN,
-                        icon: 'calendar'
-                      };
-                      if (ob.code == '10007') {
-                        this.calendar[idx] = {
-                          calendarId: `cal${index}Child${idx}`,
-                          calendarName: `cal${index}Child${idx}`,
-                          formGroup: this.form,
-                          formControlName: `cal${index}Child${idx}`,
-                          type: CalendarType.DATE,
-                          formatter: CalendarFormatter.DEFAULT,
-                          local: CalendarLocal.EN,
-                          icon: 'calendar'
-                        };
-                      }
-                      if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
-                        this.calendar[idx] = {
-                          calendarId: `cal${index}Child${idx}`,
-                          calendarName: `cal${index}Child${idx}`,
-                          formGroup: this.form,
-                          formControlName: `cal${index}Child${idx}`,
-                          type: CalendarType.YEAR,
-                          formatter: CalendarFormatter.yyyy,
-                          local: CalendarLocal.EN,
-                          icon: 'calendar'
-                        };
-                      }
-                    }
-                    if (idx === obj.children.length - 1) {
-                      if (this.form.controls[`etc${index}Child${idx}`]) {
-                        this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-                      } else {
-                        this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
-                      }
-                    }
-                    if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
-                      this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                      this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                      if (idx != 1) {
-                        this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-                      }
-                    } else {
-                      this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
-                      this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
-                      if (idx != 1) {
-                        this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
-                      }
-                    }
+      this.reqTypeChanged = await this.service.reqTypeChange(e)
+      this.reqTypeChanged.forEach(async (obj, index) => {
+        if (index != 0) {
+          let value = '';
+          if (this.form.controls[`chk${index}`]) {
+            this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
+            this.form.setControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
+          } else {
+            this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
+            this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
+          }
+          if (!obj.feeDbd) {
+            obj.children = await this.service.reqTypeChange(obj.code);
+            obj.children.forEach((ob, idx) => {
+              if (idx != 0) {
+                if (this.calendar.length !== obj.children.length && idx != 1) {
+                  this.calendar[idx] = {
+                    calendarId: `cal${index}Child${idx}`,
+                    calendarName: `cal${index}Child${idx}`,
+                    formGroup: this.form,
+                    formControlName: `cal${index}Child${idx}`,
+                    type: CalendarType.DATE,
+                    formatter: CalendarFormatter.DEFAULT,
+                    local: CalendarLocal.EN,
+                    icon: 'calendar'
+                  };
+                  if (ob.code == '10007') {
+                    this.calendar[idx] = {
+                      calendarId: `cal${index}Child${idx}`,
+                      calendarName: `cal${index}Child${idx}`,
+                      formGroup: this.form,
+                      formControlName: `cal${index}Child${idx}`,
+                      type: CalendarType.DATE,
+                      formatter: CalendarFormatter.DEFAULT,
+                      local: CalendarLocal.EN,
+                      icon: 'calendar'
+                    };
                   }
-                });
-              });
-
-            }
+                }
+                if (idx === obj.children.length - 1) {
+                  if (this.form.controls[`etc${index}Child${idx}`]) {
+                    this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                  } else {
+                    this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
+                }
+                if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
+                  this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                  this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                  if (idx != 1) {
+                    this.form.setControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
+                } else {
+                  this.form.addControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
+                  this.form.addControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
+                  if (idx != 1) {
+                    this.form.addControl(`cal${index}Child${idx}`, new FormControl('', Validators.required));
+                  }
+                }
+              }
+            });
           }
-          if (index == this.reqTypeChanged.length - 1) {
-            return;
-          }
-        });
+        }
+        if (index == this.reqTypeChanged.length - 1) {
+          return;
+        }
       });
-
     }
     setTimeout(() => {
       const controls = this.form.controls;
@@ -539,7 +565,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                       controls[`etc${index}Child${idx}`].setValue(ob.other);
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
-                      controls[`cal${index}Child${idx}`].setValue(ob.statementYear);
+                      const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : [];
+                      for (let key in years) {
+                        years[key] = years[key];
+                      }
+                      controls[`cal${index}Child${idx}`].setValue(years); this.list = years;
+                      setTimeout(() => {
+                        $('#multi-select').dropdown('set selected', years);
+                      }, 150);
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
                       var d = new Date(ob.acceptedDate),

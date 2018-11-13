@@ -94,13 +94,13 @@
                 </label>
               </div>
               <div class="five wide field">
-                <input type="text" formControlName="organizeId" placeholder="เลขที่นิติบุคคล">
+                <input type="text" formControlName="organizeId" (keypress)="numberOnly($event)" placeholder="เลขที่นิติบุคคล">
               </div>
               <div class="two wide field ">
                 <label>ชื่อนิติบุคคล</label>
               </div>
               <div class="five wide field">
-                <input type="text" formControlName="companyName" placeholder="ชื่อนิติบุคคล">
+                <input type="text" formControlName="companyName" (keypress)="noSymbol($event)" placeholder="ชื่อนิติบุคคล">
               </div>
             </div>
 
@@ -109,7 +109,7 @@
                 <label>TMB Req. No. </label>
               </div>
               <div class="five wide field">
-                <input type="text" formControlName="tmbReqNo" placeholder="TMB Req. No.">
+                <input type="text" formControlName="tmbReqNo" (keypress)="noSymbol($event)" placeholder="TMB Req. No.">
               </div>
             </div>
 

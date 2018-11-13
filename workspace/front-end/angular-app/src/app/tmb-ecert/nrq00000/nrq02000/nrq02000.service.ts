@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 
 import { Certificate, Lov, RequestForm, initRequestForm, Modal, RequestCertificate } from "models/";
 import { AjaxService, ModalService, DropdownService, RequestFormService, CommonService } from "services/";
-import { Acc, Assigned, dateLocaleEN, ThDateToEnDate, ThYearToEnYear, dateLocale, EnYearToThYear } from "helpers/";
+import { Acc, Assigned, dateLocaleEN, ThDateToEnDate } from "helpers/";
 
 import { Nrq02000, ResponseVo } from "./nrq02000.model";
 import { ROLES, REQ_STATUS } from "app/baiwa/common/constants";
@@ -500,16 +500,25 @@ export class Nrq02000Service {
                                     if (idx == 2) {
                                         d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
                                     } else if (idx > 2 && idx < obj.children.length - 1) {
-                                        let year = null;
+                                        // let year = null;
+                                        let years: Array<string> = [];
                                         let date = null;
                                         let id = 1;
-                                        if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length == 4) {
-                                            year = controls[`cal${index}Child${idx}`].value;
-                                            d.statementYear = ThYearToEnYear(year);
+                                        if (controls[`cal${index}Child${idx}`]
+                                            && controls[`cal${index}Child${idx}`].value.length > 0
+                                            && typeof controls[`cal${index}Child${idx}`].value == 'object') {
+                                            years = controls[`cal${index}Child${idx}`].value as Array<string>;
+                                            for (let key in years) {
+                                                years[key] = years[key];
+                                            }
+                                            years.sort();
+                                            d.statementYear = years.join(",");
                                             id = 3;
                                             d.box3 = true;
                                         }
-                                        if (controls[`cal${index}Child${idx}`] && controls[`cal${index}Child${idx}`].value.length > 4) {
+                                        if (controls[`cal${index}Child${idx}`]
+                                            && controls[`cal${index}Child${idx}`].value.length > 0
+                                            && typeof controls[`cal${index}Child${idx}`].value == 'string') {
                                             date = controls[`cal${index}Child${idx}`].value;
                                             d.dateAccepted = ThDateToEnDate(date);
                                             id = 4;
@@ -564,7 +573,7 @@ export class Nrq02000Service {
         }, modal);
     }
 
-    reqTypeChange(e): Promise<any> {
+    reqTypeChange(e): Promise<Certificate[]> {
         return this.ajax.post(URL.CER_BY_TYPE, { typeCode: e }, response => {
             if (response) {
                 let lists = response.json();
@@ -615,11 +624,24 @@ export class Nrq02000Service {
                         ob.value = 0;
                         cert.forEach((o, id) => {
                             if (ob.code == o.certificateCode) {
+                                console.log(o);
                                 ob.reqcertificateId = o.reqCertificateId;
                                 ob.registeredDate = o.registeredDate;
                                 ob.acceptedDate = o.acceptedDate;
                                 // ob.statementYear = o.statementYear;
-                                ob.statementYear = parseInt(EnYearToThYear(o.statementYear.toString()));
+                                let years = [];
+                                if (typeof o.statementYear == 'string') {
+                                    if (o.statementYear.search(",") == -1) {
+                                        years[0] = o.statementYear;
+                                    }
+                                    else {
+                                        years = o.statementYear.split(",");
+                                    }
+                                }
+                                for (let key in years) {
+                                    years[key] = years[key];
+                                }
+                                ob.statementYear = years.join(",");// parseInt(EnYearToThYear(o.statementYear.toString()));
                                 ob.other = o.other;
                                 ob.check = true;
                                 ob.value = o.totalNumber;
@@ -664,7 +686,9 @@ export class Nrq02000Service {
                                 // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                 // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                                 let str = form.controls['cal' + index + 'Child' + idx].value;
-                                str = ThDateToEnDate(str);
+                                if (addons.id == null) {
+                                    str = ThDateToEnDate(str);
+                                }
                                 ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                             }
                             if (idx > 2 && idx < obj.children.length - 1) {
@@ -672,19 +696,27 @@ export class Nrq02000Service {
                                     // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                     // ob.acceptedDate = new Date(str[2], str[1], str[0]);
                                     let str = form.controls['cal' + index + 'Child' + idx].value;
-                                    str = ThDateToEnDate(str);
+                                    if (addons.id == null) {
+                                        str = ThDateToEnDate(str);
+                                    }
                                     ob.acceptedDate = moment(str, "DD/MM/YYYY").toDate();
                                 }
                                 if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
-                                    let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
-                                    ob.statementYear = parseInt(ThYearToEnYear(value.toString()));
+                                    // let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
+                                    let years = form.controls['cal' + index + 'Child' + idx].value;
+                                    for (let key in years) {
+                                        years[key] = years[key];
+                                    }
+                                    ob.statementYear = years.join(",");// parseInt(ThYearToEnYear(value.toString()));
                                 }
                             }
                             if (idx == obj.children.length - 1) {
                                 // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
                                 // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                                 let str = form.controls['cal' + index + 'Child' + idx].value;
-                                str = ThDateToEnDate(str);
+                                if (addons.id == null) {
+                                    str = ThDateToEnDate(str);
+                                }
                                 ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }

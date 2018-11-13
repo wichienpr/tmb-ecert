@@ -132,7 +132,7 @@
         </div>
       </div>
       <!-- scrollable -->
-      <div class="inline field ui-table"> 
+      <div class="inline field ui-table">
         <table class="ui segment unstackable small celled table nowrap" style="width: 100%">
           <thead>
             <tr style="text-align: center;">
@@ -157,6 +157,7 @@
             </ng-container>
             <ng-container *ngIf="!reqTypeIsNull">
               <ng-container *ngFor="let req of reqTypeChanged; let i = index">
+                <!-- header -->
                 <ng-container *ngIf="!req.code">
                   <tr [className]="classByCode(req.typeCode)">
                     <td colspan="6">
@@ -164,10 +165,12 @@
                     </td>
                   </tr>
                 </ng-container>
+
+                <!-- row 1 -->
                 <ng-container *ngIf="req.code&&req.feeDbd">
                   <tr>
                     <td class="center aligned">
-                      <div class="field" [ngClass]="{'error': invalid('chk'+i) }">
+                      <div class="field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                         <div class="ui checkbox">
                           <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
                           <label></label>
@@ -180,13 +183,13 @@
                     <td class="center aligned">
                       <div class="field" *ngIf="req.code=='10006'||req.code=='20006'||req.code=='30005'" [ngClass]="{'error': invalid('cal'+i)}">
                         <div class="ui input" style="width: 100%">
-                          <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value"
+                          <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value || isMaker"
                             (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>
                         </div>
                       </div>
                       <div class="field" *ngIf="req.code=='10007'" [ngClass]="{'error': invalid('cal'+i)}">
                         <div class="ui input" style="width: 100%">
-                          <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value"
+                          <ui-calendar style="width: 100%" #cal [calendar]="calend[i]" [disableCalendar]="!form.controls['chk'+i].value || isMaker"
                             (calendarValue)="calendarValue('cal'+i,$event)"></ui-calendar>
                         </div>
                       </div>
@@ -195,13 +198,13 @@
                       <div class="field" [ngClass]="{'error': invalid('cer'+i) }">
                         <div class="ui left right labeled input" style="width: 166px">
                           <div (click)="minus('cer'+i)" class="ui red icon button label" style="width: 32.5px"
-                            [ngClass]="{'disabled': !form.controls['chk'+i].value||form.controls['cer'+i].value == 1 }">
+                            [ngClass]="{'disabled': !form.controls['chk'+i].value||form.controls['cer'+i].value == 1 || isMaker}">
                             <i class="minus icon"></i>
                           </div>
-                          <input (keypress)="accNoPress($event)" #cer type="text" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value"
+                          <input (keypress)="accNoPress($event)" #cer type="text" name="cer{{i}}" [disableControl]="!form.controls['chk'+i].value || isMaker"
                             formControlName="cer{{i}}" min="1" style="width: 75px;text-align: right !important">
                           <div (click)="plus('cer'+i)" class="ui green icon button label" style="width: 32.5px"
-                            [ngClass]="{'disabled': !form.controls['chk'+i].value }">
+                            [ngClass]="{'disabled': !form.controls['chk'+i].value || isMaker}">
                             <i class="plus icon"></i>
                           </div>
                         </div>
@@ -209,11 +212,14 @@
                     </td>
                   </tr>
                 </ng-container>
+
+                <!-- row 1 or row 2 on some condition -->
                 <ng-container *ngIf="req.code&&!req.feeDbd&&req.children">
+                  <!-- parent -->
                   <ng-container>
                     <tr>
                       <td>
-                        <div class="center aligned field" [ngClass]="{'error': invalid('chk'+i) }">
+                        <div class="center aligned field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                           <div class="ui checkbox">
                             <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
                             <label></label>
@@ -223,11 +229,13 @@
                       <td colspan="6"><label>{{ req.certificate }}</label></td>
                     </tr>
                   </ng-container>
+
+                  <!-- children -->
                   <ng-container *ngFor="let item of req.children; let j = index">
                     <tr *ngIf="j>0" [ngClass]="{ 'hidden': !showChildren }">
                       <td></td>
                       <td class="left aligned">
-                        <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j) }">
+                        <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j), 'disabled': isMaker}">
                           <div class="ui checkbox">
                             <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j)"
                               formControlName="chk{{i}}Child{{j}}">
@@ -235,7 +243,7 @@
                           </div>
                           <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
                             <input #etcChild maxlength="255" type="text" formControlName="etc{{i}}Child{{j}}"
-                              [disableControl]="!form.controls['chk'+i+'Child'+j].value">
+                              [disableControl]="!form.controls['chk'+i+'Child'+j].value || isMaker">
                           </div>
                         </div>
                       </td>
@@ -244,9 +252,18 @@
                       <td>
                         <div *ngIf="!(item.code == '10003' || item.code == '20003' || item.code == '30002')" class="center aligned field"
                           [ngClass]="{'error': invalid('cal'+i+'Child'+j)}">
-                          <div class="ui input">
-                            <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value"
+                          <div class="ui input" *ngIf="j!=3">
+                            <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value || isMaker"
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
+                          </div>
+                          <div class="ui actions input" [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value || isMaker}" *ngIf="j==3">
+                            <select class="ui multiple selection dropdown" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
+                              <!-- <option value="">เลือกปี</option> -->
+                              <option value="{{item}}" *ngFor="let item of list">{{item}}</option>
+                            </select>
+                            <div class="ui calendar" id="multi-calendar">
+                              <button type="button" class="ui icon button" [disabled]="!form.controls['chk'+i+'Child'+j].value || isMaker"><i class="calendar icon"></i></button>
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -254,14 +271,14 @@
                         <div class="field" [ngClass]="{'error': invalid('cer'+i+'Child'+j) }">
                           <div class="ui left right labeled input" style="width: 166px">
                             <div (click)="minus('cer'+i+'Child'+j)" class="ui red icon button label" style="width: 32.5px"
-                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value||form.controls['cer'+i+'Child'+j].value == 1 }">
+                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value||form.controls['cer'+i+'Child'+j].value == 1 || isMaker}">
                               <i class="minus icon"></i>
                             </div>
                             <input (keypress)="accNoPress($event)" #cerChild type="text" name="cer{{i}}Child{{j}}"
-                              [disableControl]="!form.controls['chk'+i+'Child'+j].value" formControlName="cer{{i}}Child{{j}}"
+                              [disableControl]="!form.controls['chk'+i+'Child'+j].value || isMaker" formControlName="cer{{i}}Child{{j}}"
                               min="1" style="width: 75px; text-align: right !important">
                             <div (click)="plus('cer'+i+'Child'+j)" class="ui green icon button label" style="width: 32.5px"
-                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value }">
+                              [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value || isMaker}">
                               <i class="plus icon"></i>
                             </div>
                           </div>
@@ -317,7 +334,8 @@
           </label>
         </div>
         <div class="five wide field">
-          <input type="text" maxlength="255" (keypress)="noSymbol($event)" #departmentName formControlName="departmentName" placeholder="ชื่อหน่วยงาน">
+          <input type="text" maxlength="255" (keypress)="noSymbol($event)" #departmentName formControlName="departmentName"
+            placeholder="ชื่อหน่วยงาน">
         </div>
       </div>
       <div class="inline fields" [ngClass]="{'hidden': roles(_roles.REQUESTOR)}">
@@ -387,7 +405,8 @@
           <label>ชื่อเจ้าของบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accName') }">
-          <input type="text" (keypress)="noSymbol($event)" maxlength="255" #accName formControlName="accName" placeholder="ชื่อบัญชี">
+          <input type="text" (keypress)="noSymbol($event)" maxlength="255" #accName formControlName="accName"
+            placeholder="ชื่อบัญชี">
         </div>
       </div>
       <div class="inline fields">
@@ -395,7 +414,8 @@
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
-          <input type="text" (keypress)="noSymbol($event)" class="txt-red" #corpName1 formControlName="corpName1" placeholder="ชื่อนิติบุคคล">
+          <input type="text" (keypress)="noSymbol($event)" class="txt-red" #corpName1 formControlName="corpName1"
+            placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>

@@ -8,7 +8,7 @@ export interface Certificate {
     feeDbd: string;
     feeTmb: string;
     registeredDate?: Date;
-    statementYear?: number;
+    statementYear?: string;
     acceptedDate?: Date;
     other?: string;
 }
