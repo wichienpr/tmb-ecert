@@ -46,8 +46,6 @@ public class UploadCertificateService {
 
 	@Value("${app.datasource.path.upload}")
 	private String pathUploadfiel;
-
-	private static String PATH_UPLOAD = "tmb-requestor/";
 	
 	@Value("${aes256.keystore.path}")
 	private String keystorePath;
@@ -96,9 +94,9 @@ public class UploadCertificateService {
 
 				// STEP 1 : read 3 file from db
 				reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
-				String pathReq = pathUploadfiel + PATH_UPLOAD + reqVo.getRequestFormFile();
-				String pathCer = pathUploadfiel + PATH_UPLOAD + reqVo.getCertificateFile();
-				String pathRec = pathUploadfiel + PATH_UPLOAD + reqVo.getReceiptFile();
+				String pathReq = pathUploadfiel +"/" + reqVo.getRequestFormFile();
+				String pathCer = pathUploadfiel +"/" + reqVo.getCertificateFile();
+				String pathRec = pathUploadfiel +"/" + reqVo.getReceiptFile();
 				
 				// STEP 1. SFTP File and save log fail or success !!
 				List<SftpFileVo> files = new ArrayList<>();
@@ -109,17 +107,17 @@ public class UploadCertificateService {
 					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
 					}
 					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
 					}
 					
 				}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 					
 					for (IndexGuoupResponse groupResp : checkStatusVo.getIndexGroups()) {
 						if ( ! StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(groupResp.getFileResCode()) ) {
-							files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
+							files.add(new SftpFileVo(new File(pathUploadfiel +"/" + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
 						}
 					}
 					
@@ -130,18 +128,14 @@ public class UploadCertificateService {
 					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
 					}
 					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel + PATH_UPLOAD + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
 					}
 				}
-				String passwordEncrypt = TmbAesUtil.decrypt(keystorePath, ftpPassword);
-				log.info(" ecm ftp path {}", ftpPath);
-				log.info(" ecm ftp username {}", ftpUsername);
-				log.info(" ecm ftp path {}",passwordEncrypt );
 
-				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, passwordEncrypt);
+				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
 				boolean isSuccess = SftpUtils.putFile(sftpVo,ftpPath);
 				if (isSuccess) {
 					Thread.sleep(3000);
