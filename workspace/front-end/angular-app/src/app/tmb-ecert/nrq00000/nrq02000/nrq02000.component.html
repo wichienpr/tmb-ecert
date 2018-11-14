@@ -237,7 +237,7 @@
                       <td class="left aligned">
                         <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j), 'disabled': isMaker}">
                           <div class="ui checkbox">
-                            <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j)"
+                            <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j,item)"
                               formControlName="chk{{i}}Child{{j}}">
                             <label>{{ item.certificate }}</label>
                           </div>
