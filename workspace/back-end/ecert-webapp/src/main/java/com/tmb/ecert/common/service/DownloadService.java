@@ -37,7 +37,7 @@ public class DownloadService {
 		try {
 			FileInputStream results = null;
 			try {
-				File file = new File(PATH_UPLOAD + name);
+				File file = new File(PATH_UPLOAD+"/" + name);
 				results = new FileInputStream(file);
 				response.setContentType("application/octet-stream");
 				response.addHeader("Content-Disposition", "attachment;filename=" + name);

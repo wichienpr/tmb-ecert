@@ -22,7 +22,7 @@ import org.springframework.context.annotation.PropertySource;
 	}
 )
 
-//@PropertySource("file:${tmb.ws.config.location}/application.properties")
+@PropertySource("file:${ecert.config.location}/application.properties")
 public class Application extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) throws Exception {

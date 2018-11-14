@@ -22,7 +22,7 @@ public class UploadService {
 	private String pathed;
 
 	public void createFolder(String folder) {
-		File f = new File(pathed + folder); // initial file (folder)
+		File f = new File(pathed +"/" + folder); // initial file (folder)
 		if (!f.exists()) { // check folder exists
 			if (f.mkdirs()) {
 				logger.info("Directory is created!");
