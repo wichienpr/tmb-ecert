@@ -216,5 +216,6 @@ export interface NgCalendarConfig {
     startCalendar?: string
     endCalendar?: string,
     placeholder?: string,
-    formatter?: string
+    formatter?: string,
+    type?: string
 }

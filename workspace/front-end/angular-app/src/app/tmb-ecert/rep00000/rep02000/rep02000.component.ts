@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { AjaxService, ModalService } from "services/";
 import { Modal } from "models/";
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
@@ -8,6 +8,7 @@ import { isValid, ThMonthYearToEnMonthYear } from 'app/baiwa/common/helpers';
 import { Certificate } from 'models/';
 import { Rep02000Service } from 'app/tmb-ecert/rep00000/rep02000/rep02000.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 
 const URL = {
   export: "/api/rep/rep02000/exportFile"
@@ -19,6 +20,13 @@ const URL = {
   providers: [Rep02000Service]
 })
 export class Rep02000Component implements OnInit {
+
+  @ViewChild("calendarFrom")
+  calendarFrom: NgCalendarComponent;
+
+  @ViewChild("calendarTo")
+  calendarTo: NgCalendarComponent;
+  
   showData: boolean = false;
   dataT: any[] = [];
   loading: boolean = false;
@@ -29,6 +37,9 @@ export class Rep02000Component implements OnInit {
   dropdownObj: any;
   paidTypeChanged: Certificate[];
   paidTypeClear: boolean = false;
+
+  calendarFromConig: NgCalendarConfig;
+  calendarToConig: NgCalendarConfig;
 
   constructor(
     private ajax: AjaxService,
@@ -42,30 +53,45 @@ export class Rep02000Component implements OnInit {
     this.service.getForm().subscribe(form => {
       this.form = form
     });
-    this.calendar1 = {
-      calendarId: "cal1",
-      calendarName: "cal1",
-      formGroup: this.form,
-      formControlName: "dateForm",
+
+    this.calendarFromConig = {
+      id: "dateForm",
+      formControl: this.form.get("dateForm"),
+      endCalendar: "dateTo",
       type: CalendarType.MONTH,
-      formatter: CalendarFormatter.MMyyyy,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      endId: "cal2",
-      initial: new Date
+      formatter: CalendarFormatter.MMyyyy
     };
-    this.calendar2 = {
-      calendarId: "cal2",
-      calendarName: "cal2",
-      formGroup: this.form,
-      formControlName: "dateTo",
+    this.calendarToConig = {
+      id: "dateTo",
+      formControl: this.form.get("dateTo"),
+      startCalendar: "dateForm",
       type: CalendarType.MONTH,
-      formatter: CalendarFormatter.MMyyyy,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      startId: "cal1",
-      initial: new Date
+      formatter: CalendarFormatter.MMyyyy
     };
+    // this.calendar1 = {
+    //   calendarId: "cal1",
+    //   calendarName: "cal1",
+    //   formGroup: this.form,
+    //   formControlName: "dateForm",
+    //   type: CalendarType.MONTH,
+    //   formatter: CalendarFormatter.MMyyyy,
+    //   local: CalendarLocal.EN,
+    //   icon: "time icon",
+    //   endId: "cal2",
+    //   initial: new Date
+    // };
+    // this.calendar2 = {
+    //   calendarId: "cal2",
+    //   calendarName: "cal2",
+    //   formGroup: this.form,
+    //   formControlName: "dateTo",
+    //   type: CalendarType.MONTH,
+    //   formatter: CalendarFormatter.MMyyyy,
+    //   local: CalendarLocal.EN,
+    //   icon: "time icon",
+    //   startId: "cal1",
+    //   initial: new Date
+    // };
   }
 
   ngOnInit() {
