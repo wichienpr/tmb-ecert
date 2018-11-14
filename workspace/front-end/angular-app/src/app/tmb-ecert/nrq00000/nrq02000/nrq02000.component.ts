@@ -658,7 +658,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  toggleChkChild(parent, child) {
+  toggleChkChild(parent, child ,item:any) {
     if (!this.form.controls[`chk${parent}Child${child}`].value) {
       this.reqTypeChanged.forEach((obj, index) => {
         if (obj.children) {
@@ -681,6 +681,18 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.form.controls[`chk${parent}Child${child}`].value) {
       this.form.controls[`cer${parent}Child${child}`].setValue(1);
     }
+
+  // for change muti calendar
+    if(item.code == "20006" && item.typeCode == "20002"  ){
+      this.dropdownActive();
+    }else if(item.code == "0006" && item.typeCode == "10002"  ){
+      this.dropdownActive();
+    }else if(item.code == "30005" && item.typeCode == "30001"  ){
+      this.dropdownActive();
+    }
+
+
+
   }
 
   customSegChange(e) {
