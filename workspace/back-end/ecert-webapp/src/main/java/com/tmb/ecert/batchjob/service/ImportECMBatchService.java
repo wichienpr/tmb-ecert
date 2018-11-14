@@ -139,37 +139,37 @@ public class ImportECMBatchService {
 						List<SftpFileVo> files = new ArrayList<>();
 						if (checkStatusVo == null  ) {
 							
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile +"/" + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
 							
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
 							}
 							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
 							}
 							
 						}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 							
 							for (IndexGuoupResponse groupResp : checkStatusVo.getIndexGroups()) {
 								if ( ! StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(groupResp.getFileResCode()) ) {
-									files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
+									files.add(new SftpFileVo(new File(pathUploadfile  +"/" + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
 								}
 							}
 							
 						}else if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())) {
 							
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
+							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
 							
 							
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
 							}
 							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile + PATH_UPLOAD + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
 							}
 						}
 
