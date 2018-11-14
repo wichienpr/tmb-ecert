@@ -29,6 +29,8 @@ import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
 import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
+import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
+
 @Service
 public class Rep01000tService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -175,17 +177,24 @@ public class Rep01000tService {
 			log.info(fileName);
 			
 			/* write it as an excel attachment */
-			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
-			workbook.write(outByteStream);
-			byte [] outArray = outByteStream.toByteArray();
-			response.setContentType("application/vnd.ms-excel");
-			response.setContentLength(outArray.length);
-			response.setHeader("Expires:", "0"); // eliminates browser caching
-			response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
-			OutputStream outStream = response.getOutputStream();
-			outStream.write(outArray);
-			outStream.flush();
-			outStream.close();
+			ByteArrayOutputStream outByteStream = null;
+			OutputStream outStream = null;
+			try {
+				outByteStream = new ByteArrayOutputStream();
+				workbook.write(outByteStream);
+				byte [] outArray = outByteStream.toByteArray();
+				response.setContentType("application/vnd.ms-excel");
+				response.setContentLength(outArray.length);
+				response.setHeader("Expires:", "0"); // eliminates browser caching
+				response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+				outStream = response.getOutputStream();
+				outStream.write(outArray);
+				outStream.flush();
+
+			} finally {
+				EcertFileUtils.closeStream(outByteStream);
+				EcertFileUtils.closeStream(outStream);
+			}
 			
 			log.info("Done");
 		}
