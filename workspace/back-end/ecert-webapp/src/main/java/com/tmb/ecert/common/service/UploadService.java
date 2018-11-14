@@ -39,7 +39,7 @@ public class UploadService {
 		// set path
 		OutputStream stream = null;
 		try {
-			String path = pathed + fileName;
+			String path = pathed +"/"+ fileName;
 			stream = new FileOutputStream(path);
 			stream.write(data);
 			logger.info("Created file: " + path);
