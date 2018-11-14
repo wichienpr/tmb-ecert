@@ -349,11 +349,18 @@
 			<version>${jsch.version}</version>
 		</dependency>
 
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.bouncycastle</groupId> -->
+<!-- 			<artifactId>bcprov-jdk15on</artifactId> -->
+<!-- 			<version>1.60</version> -->
+<!-- 		</dependency> -->
+<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16 -->
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.54</version>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk16</artifactId>
+		    <version>1.46</version>
 		</dependency>
+
 		<dependency>
 		   <groupId>commons-codec</groupId>
 		   <artifactId>commons-codec</artifactId>
@@ -365,6 +372,12 @@
             <artifactId>spring-ldap-core</artifactId>
 <!--             <version>${spring.ldap.version}</version> -->
         </dependency>
+
+		<dependency>
+			<groupId>net.sf.expectit</groupId>
+			<artifactId>expectit-core</artifactId>
+			<version>0.9.0</version>
+		</dependency>
         
 	</dependencies>
 

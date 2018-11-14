@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
+
 @Service
 public class UploadService {
 
@@ -35,10 +37,17 @@ public class UploadService {
 	public void createFile(byte[] file, String pathName, String fileName) throws IOException {
 		byte[] data = file; // get data
 		// set path
-		String path = pathed + fileName;
-		OutputStream stream = new FileOutputStream(path);
-		stream.write(data);
-		logger.info("Created file: " + path);
-		stream.close();
+		OutputStream stream = null;
+		try {
+			String path = pathed + fileName;
+			stream = new FileOutputStream(path);
+			stream.write(data);
+			logger.info("Created file: " + path);
+
+			
+		} finally {
+			EcertFileUtils.closeStream(stream);
+		}
+
 	}
 }
