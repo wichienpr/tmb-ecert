@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AjaxService } from "services/";
 import { Calendar, CalendarFormatter, CalendarLocal, CalendarType } from 'models/';
 import { FormGroup } from '@angular/forms';
 import { isValid, ThMonthYearToEnMonthYear } from 'app/baiwa/common/helpers';
 import { Rep03000Service } from 'app/tmb-ecert/rep00000/rep03000/rep03000.service';
+import { NgCalendarComponent, NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 
 const URL = {
   export: "/api/rep/rep03000/exportFile"
@@ -18,6 +19,9 @@ const URL = {
 export class Rep03000Component implements OnInit {
   showData: boolean = false;
 
+  @ViewChild("calendar")
+  calendar: NgCalendarComponent;
+
   customerNameHead: String;
   organizeIdHead: String;
   companyNameHead: String;
@@ -27,6 +31,7 @@ export class Rep03000Component implements OnInit {
   dataT: any[] = [];
   loading: boolean = false;
 
+  calendarConig: NgCalendarConfig;
   calendar1: Calendar;
   form: FormGroup;
 
@@ -37,17 +42,24 @@ export class Rep03000Component implements OnInit {
     this.service.getForm().subscribe(form => {
       this.form = form
     });
-    this.calendar1 = {
-      calendarId: "cal1",
-      calendarName: "cal1",
-      formGroup: this.form,
-      formControlName: "dateVat",
+    this.calendarConig = {
+      id: "cal1",
+      formControl: this.form.get("dateVat"),
+      startCalendar: "dateForm",
       type: CalendarType.MONTH,
-      formatter: CalendarFormatter.MMyyyy,
-      local: CalendarLocal.EN,
-      icon: "time icon",
-      initial: new Date
+      formatter:  CalendarFormatter.MMyyyy
     };
+    // this.calendar1 = {
+    //   calendarId: "cal1",
+    //   calendarName: "cal1",
+    //   formGroup: this.form,
+    //   formControlName: "dateVat",
+    //   type: CalendarType.MONTH,
+    //   formatter: CalendarFormatter.MMyyyy,
+    //   local: CalendarLocal.EN,
+    //   icon: "time icon",
+    //   initial: new Date
+    // };
   }
 
   ngOnInit() { }

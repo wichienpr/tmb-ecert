@@ -17,8 +17,10 @@
                                 <label class="full-width text-right">เดือนปีภาษี</label>
                             </div>
                             <div class="five wide field" [ngClass]="validate('dateVat', ngForm.submitted) ? '' : 'error'">
-                                <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateVat',$event)"
-                                    style="width:100%"></ui-calendar>
+                                <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateVat',$event)"
+                                    style="width:100%"></ui-calendar> -->
+
+                                <ng-calendar [config]="calendarConig" #calendar="ng-calendar"  style="width:100%"></ng-calendar>
                             </div>
                             <div class="three wide field required">
                                 <label class="full-width text-right">เลขประจำตัวผู้เสียภาษีอากร</label>

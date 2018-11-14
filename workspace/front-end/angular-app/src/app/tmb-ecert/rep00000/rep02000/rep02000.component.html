@@ -17,13 +17,15 @@
                         <label>ตั้งแต่เดือน<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
-                        <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar>
+                        <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar> -->
+                        <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar"  style="width:100%"></ng-calendar>
                     </div>
                     <div class="two wide field">
                         <label>ถึงเดือน<span style="color: red"> * </span></label>
                     </div>
                     <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
-                        <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar>
+                        <!-- <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar> -->
+                        <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar"  style="width:100%"></ng-calendar>
                     </div>
                 </div>
                 <div class="inline fields">
