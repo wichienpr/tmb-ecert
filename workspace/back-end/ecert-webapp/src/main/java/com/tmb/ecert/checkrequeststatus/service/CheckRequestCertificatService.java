@@ -70,24 +70,32 @@ public class CheckRequestCertificatService {
 			req.setCertificateFile(certificates);
 			req.setReqFormId(certificateVo.getId());
 			req.setStatus(StatusConstant.SUCCEED);
-			if ("true".equalsIgnoreCase(certificateVo.getIgnoreReceipt())) {
-				// call webservice
-				if (StringUtils.isNotBlank(req.getCaNumber())) {
-					preUploadCertificate(certificateVo, req, folder, certificates, user);
-					msg.setMessage("SUCCESS");
+			if (BeanUtils.isNotEmpty(certificateVo.getCertificatesFile())) {
+				// set_name
+				certificates = "CERTIFICATE_" + req.getTmbRequestNo() + ".pdf";
+				upload.createFile(certificateVo.getCertificatesFile().getBytes(), folder, certificates);
+				req.setCertificateFile(certificates);
+				
+				if ("true".equalsIgnoreCase(certificateVo.getIgnoreReceipt())) {
+					// call webservice
+					if (StringUtils.isNotBlank(req.getCaNumber())) {
+						preUploadCertificate(certificateVo, req, folder, certificates, user);
+						msg.setMessage("SUCCESS");
+					} else {
+						msg.setMessage("ERROR");
+					}
+				} else if (certificateDao.upDateCertificateByCk(req) == true) {
+					// call webservice
+					if (StringUtils.isNotBlank(req.getCaNumber())) {
+						preUploadCertificate(certificateVo, req, folder, certificates, user);
+						msg.setMessage("SUCCESS");
+					} else {
+						msg.setMessage("ERROR");
+					}
 				} else {
-					msg.setMessage("ERROR");
+					msg.setMessage("PRESS_UPLOAD_RECIEPTTAX");
 				}
-			} else if (certificateDao.upDateCertificateByCk(req) == true) {
-				// call webservice
-				if (StringUtils.isNotBlank(req.getCaNumber())) {
-					preUploadCertificate(certificateVo, req, folder, certificates, user);
-					msg.setMessage("SUCCESS");
-				} else {
-					msg.setMessage("ERROR");
-				}
-			} else {
-				msg.setMessage("PRESS_UPLOAD_RECIEPTTAX");
+				
 			}
 			return msg;
 		} catch (Exception e) {
@@ -110,16 +118,20 @@ public class CheckRequestCertificatService {
 
 	private void preUploadCertificate(CertificateVo certificateVo, RequestForm req, String folder, String certificates,
 			UserDetails user) throws Exception {
-		if (BeanUtils.isNotEmpty(certificateVo.getCertificatesFile())) {
-			// set_name
-			certificates = "CERTIFICATE_" + req.getTmbRequestNo() + ".pdf";
-			upload.createFile(certificateVo.getCertificatesFile().getBytes(), folder, certificates);
+		
+		try {
+			
+			uploadCerService.uploadEcertificate(certificateVo.getId(), user.getUserId());
+			requesterDao.update(req);
+			historyDao.save(req);
+			// SEND EMAIL
+			emailService.sendEmailSendLinkForDownload(req.getCompanyName(), req.getCustomerName(), req.getTmbRequestNo());
+		} catch (Exception e) {
+//			e.printStackTrace();
+			throw new Exception(e);
+			
 		}
-		uploadCerService.uploadEcertificate(certificateVo.getId(), user.getUserId());
-		requesterDao.update(req);
-		historyDao.save(req);
-		// SEND EMAIL
-		emailService.sendEmailSendLinkForDownload(req.getCompanyName(), req.getCustomerName(), req.getTmbRequestNo());
+
 	}
 
 }

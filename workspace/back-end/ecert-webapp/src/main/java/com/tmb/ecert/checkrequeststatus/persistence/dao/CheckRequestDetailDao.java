@@ -3,6 +3,7 @@ package com.tmb.ecert.checkrequeststatus.persistence.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
+
+import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 
 @Repository
 public class CheckRequestDetailDao {
@@ -236,5 +240,18 @@ public class CheckRequestDetailDao {
 			return row;
 		}
 	};
+	
+	public int checkDuplicate(Nrq02000FormVo form) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  SELECT COUNT(*) FROM ECERT_REQUEST_FORM WHERE ORGANIZE_ID = ?  AND CAST(REQUEST_DATE AS DATE)  =  ? AND CERTYPE_CODE = ? ");
+		List<Object> params = new ArrayList<>(); 
+		params.add(form.getCorpNo());
+		params.add( EcerDateUtils.formatDDMMYYYYDate(new Date()));
+		params.add(form.getReqTypeSelect());
+
+		int result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
+
+		return result;
+	}
 
 }

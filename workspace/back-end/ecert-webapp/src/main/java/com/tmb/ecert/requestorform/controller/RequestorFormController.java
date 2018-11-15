@@ -82,4 +82,10 @@ public class RequestorFormController {
 	public void pdf(@PathVariable("name") String name, HttpServletResponse response) {
 		reqService.pdf(name, response);
 	}
+	
+	@PostMapping("/validateDuplicate")
+	@ResponseBody
+	public CommonMessage<String> validate(@ModelAttribute Nrq02000FormVo form) {
+		return reqService.validate(form);
+	}
 }

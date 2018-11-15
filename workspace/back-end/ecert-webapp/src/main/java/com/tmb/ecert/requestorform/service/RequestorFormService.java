@@ -420,6 +420,16 @@ public class RequestorFormService {
 			return false;
 		}
 	}
+	public CommonMessage<String> validate( Nrq02000FormVo form) {
+		CommonMessage<String> msg = new CommonMessage<String>();
+		int result = daoCrs.checkDuplicate(form);
+		if (result > 0) {
+			msg.setMessage("DUPLICATE");
+		}else {
+			msg.setMessage("SUCCESS");
+		}
+		return msg;
+	}
 	
 //	public boolean confirmAD(ReqUser user) {
 //		boolean isLogged = false;
