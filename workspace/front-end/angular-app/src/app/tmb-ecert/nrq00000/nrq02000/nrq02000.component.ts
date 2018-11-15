@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
-import { Acc, digit, DecimalFormat, Assigned } from 'helpers/';
+import { Acc, digit, DecimalFormat, Assigned, EnDateToThDate } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
@@ -602,7 +602,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                         month = '' + (d.getMonth() + 1),
                         day = '' + d.getDate(),
                         year = d.getFullYear();
-                      this.calendar[idx].initial = ob.acceptedDate;
+                      this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();;
                       controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
@@ -610,7 +610,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                         month = '' + (d.getMonth() + 1),
                         day = '' + d.getDate(),
                         year = d.getFullYear();
-                      this.calendar[idx].initial = ob.registeredDate;
+                      this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();;
                       controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
                     }
                   }

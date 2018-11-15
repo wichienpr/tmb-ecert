@@ -135,3 +135,7 @@ tr:nth-child(even) {
         text-align: left !important;
     }
 }
+
+.disabled {
+    pointer-events: none !important;
+}
