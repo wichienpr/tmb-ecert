@@ -409,7 +409,7 @@ public class RequestorFormService {
 
 	public RequestForm findReqFormById(String id) {
 		Long reqFormId = Long.valueOf(id);
-		RequestForm reqForm = daoCrs.findReqFormById(reqFormId);
+		RequestForm reqForm = daoCrs.findReqFormById(reqFormId, false);
 		return reqForm;
 	}
 	
