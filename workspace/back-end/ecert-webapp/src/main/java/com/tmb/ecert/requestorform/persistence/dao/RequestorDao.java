@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -198,7 +202,8 @@ public class RequestorDao {
 				vo.getMakerByName(), UserLoginUtils.getCurrentUserLogin().getUserId(),
 				UserLoginUtils.getCurrentUserLogin().getFirstName()
 						.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName()),
-				new java.util.Date(), vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
+				new java.util.Date(),
+				vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 				vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
 				vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(),
 				vo.getPaymentBranchCode(), vo.getPaymentDate(),
@@ -206,6 +211,27 @@ public class RequestorDao {
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
 	}
+	
+	public void updateAfterPrint(RequestForm vo) {
+
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		List<Object> params = new ArrayList<>();
+		if (StringUtils.isNoneBlank(vo.getReceiptNo())) {
+			sql.append(" RECEIPT_NO = ?   ,  ");
+			params.add( vo.getReceiptNo());
+		}
+		sql.append(" RECEIPT_DATE = ? , ");
+		sql.append(" RECEIPT_FILE = ? ");
+		sql.append(" WHERE REQFORM_ID = ?");
+		params.add( vo.getReceiptDate());
+		params.add( vo.getReceiptFile());
+		params.add(vo.getReqFormId());
+		
+		int row = jdbcTemplate.update(sql.toString(), params.toArray());
+
+		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+
 
 	public void updateLockStatus(RequestForm vo) { // ON
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);

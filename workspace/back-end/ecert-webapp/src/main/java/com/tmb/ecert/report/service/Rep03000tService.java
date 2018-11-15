@@ -127,7 +127,7 @@ public class Rep03000tService {
 			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
 			rowNum++;
 			
-			row = sheet.createRow(rowNum);
+/*			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
 			cell.setCellValue("สำนักงานใหญ่/สาขา");
 			cell.setCellStyle(fontHeader);
@@ -135,7 +135,7 @@ public class Rep03000tService {
 			cell = row.createCell(3);
 			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getBranch());
 			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
-			rowNum++;
+			rowNum++;*/
 			
 			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
