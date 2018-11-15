@@ -56,7 +56,10 @@ public class CheckRequestDetailDao {
 			sql.append(" ,F.CERTYPE_CODE");
 //			sql.append(" ,F.PAIDTYPE_CODE");
 			sql.append(" ,F.REJECTREASON_CODE");
-			sql.append(" ,F.STATUS");
+//			sql.append(" ,F.STATUS");
+			
+			// optional
+			sql.append(" ,S.NAME AS STATUS");
 		}
 		sql.append(" FROM ECERT_REQUEST_FORM F");
 		if (code) {
@@ -65,6 +68,9 @@ public class CheckRequestDetailDao {
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE C ON F.CERTYPE_CODE = C.CODE ");
 //			sql.append(" LEFT JOIN ECERT_LISTOFVALUE P ON F.PAIDTYPE_CODE = P.CODE ");
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE R ON F.REJECTREASON_CODE = R.CODE ");
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE S ON F.STATUS = S.CODE ");
+		} else {
+			// optional
 			sql.append(" LEFT JOIN ECERT_LISTOFVALUE S ON F.STATUS = S.CODE ");
 		}
 		sql.append(" WHERE F.REQFORM_ID = ? AND F.DELETE_FLAG = 0 ");
