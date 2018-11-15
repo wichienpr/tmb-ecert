@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { Nrq02000Service } from './nrq02000.service';
 import { Certificate, Calendar, CalendarType, CalendarFormatter, CalendarLocal, RequestForm, initRequestForm, RequestCertificate, Modal, Dropdown } from 'models/';
-import { Acc, digit, DecimalFormat } from 'helpers/';
+import { Acc, digit, DecimalFormat, Assigned } from 'helpers/';
 import { Store } from '@ngrx/store';
 import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
@@ -110,7 +110,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.roles(this._roles.MAKER)) {
       setTimeout(() => {
         this.isMaker = true;
-      }, 2250);
+      }, 2000);
     }
   }
 
@@ -132,9 +132,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form = this.service.getForm();
     this.checkRoles();
     this.allowed.values = await this.service.getRejectReason();
+
+    // First Load
     const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
     this.form.controls.reqTypeSelect.setValue(code);
     this.reqTypeChange(code);
+
     this.data = await this.service.getData();
     if (this.data && this.data.tmbRequestNo) {
       this.isdownload = true;
@@ -196,6 +199,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
+    // Second load
+    this.form.controls.reqTypeSelect.setValue(code);
+    await this.reqTypeChange(code);
+
     this.dropdownActive();
   }
 
@@ -362,24 +369,25 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   dropdownActive() {
     setTimeout(() => {
+      this.list = [];
+      const form = this.form.get($('#multi-select').attr('name'));
+      let data = form ? form.value : [];
+      if (typeof data == "object" && data.length > 0) {
+        this.list = data;
+        form.setValue(data);
+      }
       $('#multi-calendar').calendar({
         type: CalendarType.YEAR,
         formatter: DateConstant.formatter(CalendarFormatter.yyyy),
         onChange: (date, text) => {
           const form = this.form.get($('#multi-select').attr('name'));
-          let data = form.value;
-          if (data.length == 0) {
-            data = [];
-            form.setValue(data);
-          }
-          if (data.findIndex(obj => obj == text) == -1) {
+          if (this.list.findIndex(obj => obj == text) == -1) {
             this.list.push(text);
-            data.push(text);
-            form.setValue(data);
-            setTimeout(() => {
-              $('#multi-select').dropdown('set selected', data);
-            }, 150);
           }
+          form.setValue(this.list);
+          setTimeout(() => {
+            $('#multi-select').dropdown('set selected', this.list);
+          }, 150);
         }
       });
       $('.ui.multiple.selection.dropdown').dropdown({
@@ -396,9 +404,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           });
         }
       }).css({ "max-width": "220px", "padding": ".25em" });
-      // setTimeout(() => {
-      //   $('.ui.multiple.selection.dropdown').children()[1].remove();
-      // }, 400);
     }, 800);
   }
 
@@ -414,7 +419,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.get('ref1').patchValue('');
       this.form.get('ref2').patchValue('');
       this.form.get('amountDbd').patchValue('');
-      // this.form.get('amountTmb').patchValue('');
+      if (this.form.get('amountTmb')) {
+        this.form.get('amountTmb').patchValue('');
+      }
       this.firstEnter = false;
       return;
     } else {
@@ -462,7 +469,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   async reqTypeChange(e) {
     this.common.isLoading();
+    this.dropdownActive();
     if (e != "") {
+      this.reqTypeChanged = new Assigned().getValue([]);
       this.reqTypeChanged = await this.service.reqTypeChange(e)
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
@@ -600,6 +609,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       if (this.form.get('cer1').value == "") {
         this.form.controls[`chk1`].setValue(true);
         this.form.controls[`cer1`].setValue(1);
+        this.form.controls[`chk2Child1`].setValue(false);
+        this.form.controls[`cer2Child1`].setValue('');
         this.toggleChk(1);
       }
       this.common.isLoaded();
@@ -658,7 +669,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  toggleChkChild(parent, child ,item:any) {
+  toggleChkChild(parent, child, item: any) {
     if (!this.form.controls[`chk${parent}Child${child}`].value) {
       this.reqTypeChanged.forEach((obj, index) => {
         if (obj.children) {
@@ -682,17 +693,26 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls[`cer${parent}Child${child}`].setValue(1);
     }
 
-  // for change muti calendar
-    if(item.code == "20006" && item.typeCode == "20002"  ){
-      this.dropdownActive();
-    }else if(item.code == "0006" && item.typeCode == "10002"  ){
-      this.dropdownActive();
-    }else if(item.code == "30005" && item.typeCode == "30001"  ){
-      this.dropdownActive();
+    // for change muti calendar
+    if (item.code == "20006" && item.typeCode == "20002") {
+      this.dropdownDeactive();
+    } else if (item.code == "10006" && item.typeCode == "10002") {
+      this.dropdownDeactive();
+    } else if (item.code == "30005" && item.typeCode == "30001") {
+      this.dropdownDeactive();
     }
 
+  }
 
-
+  dropdownDeactive() {
+    this.list = [];
+    const form = this.form.get($('#multi-select').attr('name'));
+    let data = form ? form.value : [];
+    if (typeof data == "object" && data.length > 0) {
+      this.list = data;
+      form.setValue(data);
+    }
+    $('#multi-select').dropdown('restore defaults');
   }
 
   customSegChange(e) {
@@ -709,8 +729,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       if (e != "30002" && e != "30003") {
         this.hiddenReceipt3 = false;
         this.form.controls.amountTmb.setValidators([Validators.required]);
+        this.form.controls.subAccMethodSelect.clearValidators();
       } else {
         this.hiddenReceipt3 = true;
+        this.form.controls.subAccMethodSelect.setValidators([Validators.required]);
         this.form.controls.amountTmb.patchValue('');
         this.form.controls.amountTmb.clearValidators();
       }
@@ -729,6 +751,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls.ref2.updateValueAndValidity();
     this.form.controls.amountDbd.updateValueAndValidity();
     this.form.controls.amountTmb.updateValueAndValidity();
+    this.form.controls.subAccMethodSelect.updateValueAndValidity();
   }
 
   subAccMethodChange(e) {

@@ -15,7 +15,7 @@ export function dateLocaleEN(date) {
 }
 
 export function EnDateToThDate(dateStr: string) {
-    console.log("EN DATE", dateStr);
+    // console.log("EN DATE", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {
@@ -36,7 +36,7 @@ export function EnDateToThDate(dateStr: string) {
 }
 
 export function EnMonthYearToThMonthYear(dateStr: string) {
-    console.log("EN MY", dateStr);
+    // console.log("EN MY", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {
@@ -56,7 +56,7 @@ export function EnMonthYearToThMonthYear(dateStr: string) {
 }
 
 export function EnYearToThYear(dateStr: string) {
-    console.log("EN Y", dateStr);
+    // console.log("EN Y", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {
@@ -75,7 +75,7 @@ export function EnYearToThYear(dateStr: string) {
 }
 
 export function ThDateToEnDate(dateStr: string) {
-    console.log("TH DATE", dateStr);
+    // console.log("TH DATE", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {
@@ -96,7 +96,7 @@ export function ThDateToEnDate(dateStr: string) {
 }
 
 export function ThMonthYearToEnMonthYear(dateStr: string) {
-    console.log("TH MY", dateStr);
+    // console.log("TH MY", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {
@@ -116,7 +116,7 @@ export function ThMonthYearToEnMonthYear(dateStr: string) {
 }
 
 export function ThYearToEnYear(dateStr: string) {
-    console.log("TH Y", dateStr);
+    // console.log("TH Y", dateStr);
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
     if (isIEOrEdge) {
         if (!dateStr) {

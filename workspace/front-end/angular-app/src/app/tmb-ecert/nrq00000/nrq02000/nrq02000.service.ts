@@ -239,6 +239,7 @@ export class Nrq02000Service {
             return;
         }
         let modalAler: Modal = { msg: "", success: false }
+        let clearValidate = [];
         for (let key in form.controls) {
             if (form.controls[key].invalid) {
                 for (let enu in ValidatorMessages) {
@@ -249,8 +250,15 @@ export class Nrq02000Service {
                         return;
                     }
                 }
-                console.log(key);
+                if (key.toUpperCase().search("CHILD") != -1) {
+                    console.error("required* ", key);
+                    clearValidate.push(key);
+                }
             }
+        }
+        for(let i=0; i<clearValidate.length; i++) {
+            form.controls[clearValidate[i]].clearValidators();
+            form.controls[clearValidate[i]].updateValueAndValidity();
         }
 
         console.log("submit")
@@ -632,10 +640,12 @@ export class Nrq02000Service {
 
     matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
         return new Promise<Certificate[]>(resolve => {
-            chkList.forEach((obj, index) => {
+            let _chkList = new Assigned().getValue(chkList);
+            let _cert = new Assigned().getValue(cert);
+            _chkList.forEach((obj, index) => {
                 obj.value = 0;
                 obj.check = false;
-                cert.forEach((ob, idx) => {
+                _cert.forEach((ob, idx) => {
                     if (obj.code == ob.certificateCode) {
                         obj.reqcertificateId = ob.reqCertificateId;
                         obj.check = true;
@@ -646,13 +656,11 @@ export class Nrq02000Service {
                     obj.children.forEach((ob, idx) => {
                         ob.check = false;
                         ob.value = 0;
-                        cert.forEach((o, id) => {
+                        _cert.forEach((o, id) => {
                             if (ob.code == o.certificateCode) {
-                                console.log(o);
                                 ob.reqcertificateId = o.reqCertificateId;
                                 ob.registeredDate = o.registeredDate;
                                 ob.acceptedDate = o.acceptedDate;
-                                // ob.statementYear = o.statementYear;
                                 let years = [];
                                 if (typeof o.statementYear == 'string') {
                                     if (o.statementYear.search(",") == -1) {
@@ -665,7 +673,7 @@ export class Nrq02000Service {
                                 for (let key in years) {
                                     years[key] = years[key];
                                 }
-                                ob.statementYear = years.join(",");// parseInt(EnYearToThYear(o.statementYear.toString()));
+                                ob.statementYear = years.join(",");
                                 ob.other = o.other;
                                 ob.check = true;
                                 ob.value = o.totalNumber;
@@ -676,7 +684,7 @@ export class Nrq02000Service {
                     });
                 }
             });
-            resolve(chkList);
+            resolve(_chkList);
         });
     }
 
@@ -690,7 +698,8 @@ export class Nrq02000Service {
     bindingData(certificates: Certificate[], files: any, form: FormGroup, addons: any): FormData {
         let formData = new FormData();
         let _data = [];
-        certificates.forEach((obj, index) => {
+        let _certificates = new Assigned().getValue(certificates);
+        _certificates.forEach((obj, index) => {
             if (index != 0) {
                 obj.check = form.controls['chk' + index].value;
                 obj.value = form.controls['cer' + index].value;
@@ -728,10 +737,14 @@ export class Nrq02000Service {
                                 if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
                                     // let value = parseInt(form.controls['cal' + index + 'Child' + idx].value);
                                     let years = form.controls['cal' + index + 'Child' + idx].value;
-                                    for (let key in years) {
-                                        years[key] = years[key];
+                                    if (years && years.length > 0) {
+                                        for (let key in years) {
+                                            years[key] = years[key];
+                                        }
+                                        ob.statementYear = years.join(",");// parseInt(ThYearToEnYear(value.toString()));
+                                    } else {
+                                        ob.statementYear = null;
                                     }
-                                    ob.statementYear = years.join(",");// parseInt(ThYearToEnYear(value.toString()));
                                 }
                             }
                             if (idx == obj.children.length - 1) {
@@ -859,6 +872,7 @@ export enum ValidatorMessages {
     amountDbd = "กรุณากรอกข้อมูลให้ครบ",
     amountTmb = "กรุณากรอกข้อมูลให้ครบ",
     acceptNo = "กรุณากรอกข้อมูลให้ครบ",
+    subAccMethodSelect = "กรุณากรอกข้อมูลให้ครบ",
 }
 
 interface Pdf {
