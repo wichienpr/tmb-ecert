@@ -29,7 +29,8 @@ const URL = {
     REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
     DOWNLOAD: "/api/crs/crs02000/download/",
     CER_REJECT: "/api/crs/crs02000/cert/reject",
-    LOCK: "/api/nrq/lock"
+    LOCK: "/api/nrq/lock",
+    CHECKDUP:"/api/nrq/validateDuplicate"
 }
 
 @Injectable()
@@ -251,72 +252,44 @@ export class Nrq02000Service {
                 console.log(key);
             }
         }
+
+        console.log("submit")
         if (form.valid) {
-            const modalConf: Modal = {
-                msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
-                title: "ยืนยันการทำรายการ"
-                // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-                //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-                //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-                // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-                // approveMsg: "ดำเนินการต่อ",
-                // color: "notification"
-            }
-            if (this.hasAuthed == "true") {
-                this.common.isLoading(); // Loading page
-                const formData = this.bindingData(certificates, files, form, addons);
-                let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
-                this.ajax.upload(url, formData, response => {
-                    if (response.json().message == "SUCCESS") {
-                        const modal: Modal = {
-                            msg: "บันทึกข้อมูลสำเร็จ",
-                            // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
-                            success: true
-                        };
-                        this.modal.alert(modal);
-                        this.common.isLoaded(); // Loading page
-                        this.router.navigate(['/crs/crs01000'], {
-                            queryParams: { codeStatus: addons.status }
-                        });
-                    } else {
-                        if (response.json().data && response.json().data == "NEEDLOGIN") {
-                            this.authForSubmit();
-                            this.common.isLoaded(); // Loading page
-                            return;
-                        }
-                        let msg = "";
-                        if (response.json().data && response.json().data == "HASMAKER") {
-                            msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
-                        } else {
-                            msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
-                        }
-                        const modal: Modal = {
-                            msg: msg,
-                            success: false
-                        };
-                        this.modal.alert(modal);
-                        this.common.isLoaded(); // Loading page
+            // add for check duplicate
+            const formData = this.bindingData(certificates, files, form, addons);
+            this.ajax.upload(URL.CHECKDUP, formData, response => {
+                // console.log("Duplicate resp",response.json().message );
+                let modalConf: Modal = null;
+                if (response.json().message == "DUPLICATE"){
+                    modalConf = {
+                        // msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
+                        // title: "ยืนยันการทำรายการ"
+                        msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+                            <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+                            <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+                        title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+                        approveMsg: "ดำเนินการต่อ",
+                        color: "notification"
                     }
-                }, err => {
-                    console.error(err)
-                });
-                this.hasAuthed = "false";
-                return;
-            }
-            this.modal.confirm((e) => {
-                if (e) {
+                }else {
+                     modalConf = {
+                        msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
+                        title: "ยืนยันการทำรายการ"
+                        // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+                        //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+                        //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+                        // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+                        // approveMsg: "ดำเนินการต่อ",
+                        // color: "notification"
+                    }
+                }
+
+                if (this.hasAuthed == "true") {
                     this.common.isLoading(); // Loading page
                     const formData = this.bindingData(certificates, files, form, addons);
                     let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
                     this.ajax.upload(url, formData, response => {
-                        let data: ResponseVo = {
-                            data: "",
-                            message: ""
-                        };
-                        if (response) {
-                            data = response.json() as ResponseVo;
-                        }
-                        if (data.message == "SUCCESS") {
+                        if (response.json().message == "SUCCESS") {
                             const modal: Modal = {
                                 msg: "บันทึกข้อมูลสำเร็จ",
                                 // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
@@ -328,13 +301,13 @@ export class Nrq02000Service {
                                 queryParams: { codeStatus: addons.status }
                             });
                         } else {
-                            if (data.data && data.data == "NEEDLOGIN") {
-                                this.common.isLoaded(); // Loading page
+                            if (response.json().data && response.json().data == "NEEDLOGIN") {
                                 this.authForSubmit();
+                                this.common.isLoaded(); // Loading page
                                 return;
                             }
                             let msg = "";
-                            if (data.data && data.data == "HASMAKER") {
+                            if (response.json().data && response.json().data == "HASMAKER") {
                                 msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
                             } else {
                                 msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
@@ -348,16 +321,67 @@ export class Nrq02000Service {
                         }
                     }, err => {
                         console.error(err)
-                        let msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
-                        const modal: Modal = {
-                            msg: msg,
-                            success: false
-                        };
-                        this.modal.alert(modal);
-                        this.common.isLoaded(); // Loading page
                     });
+                    this.hasAuthed = "false";
+                    return;
                 }
-            }, modalConf);
+                this.modal.confirm((e) => {
+                    if (e) {
+                        this.common.isLoading(); // Loading page
+                        const formData = this.bindingData(certificates, files, form, addons);
+                        let url = what == "save" ? URL.NRQ_SAVE : URL.NRQ_UPDATE;
+                        this.ajax.upload(url, formData, response => {
+                            let data: ResponseVo = {
+                                data: "",
+                                message: ""
+                            };
+                            if (response) {
+                                data = response.json() as ResponseVo;
+                            }
+                            if (data.message == "SUCCESS") {
+                                const modal: Modal = {
+                                    msg: "บันทึกข้อมูลสำเร็จ",
+                                    // msg: "ระบบบันทึกข้อมูล Request Form สำหรับทำรายการให้ลูกค้าลงนามเข้าสู่ระบบ e-Certificate พร้อมสถานะการทำงานเป็น “คำขอใหม่” จากนั้นระบบแสดงหน้าจอรายละเอียดบันทึกคำขอและพิมพ์แบบฟอร์มให้ลูกค้าลงนาม",
+                                    success: true
+                                };
+                                this.modal.alert(modal);
+                                this.common.isLoaded(); // Loading page
+                                this.router.navigate(['/crs/crs01000'], {
+                                    queryParams: { codeStatus: addons.status }
+                                });
+                            } else {
+                                if (data.data && data.data == "NEEDLOGIN") {
+                                    this.common.isLoaded(); // Loading page
+                                    this.authForSubmit();
+                                    return;
+                                }
+                                let msg = "";
+                                if (data.data && data.data == "HASMAKER") {
+                                    msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
+                                } else {
+                                    msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                                }
+                                const modal: Modal = {
+                                    msg: msg,
+                                    success: false
+                                };
+                                this.modal.alert(modal);
+                                this.common.isLoaded(); // Loading page
+                            }
+                        }, err => {
+                            console.error(err)
+                            let msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                            const modal: Modal = {
+                                msg: msg,
+                                success: false
+                            };
+                            this.modal.alert(modal);
+                            this.common.isLoaded(); // Loading page
+                        });
+                    }
+                }, modalConf);
+            })
+
         }
         return;
     }
