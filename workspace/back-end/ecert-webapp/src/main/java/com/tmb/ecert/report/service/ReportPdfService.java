@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ import com.tmb.ecert.report.persistence.vo.RpReceiverVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormListVo;
 import com.tmb.ecert.report.persistence.vo.RpReqFormVo;
 import com.tmb.ecert.report.persistence.vo.RpVatVo;
-import com.tmb.ecert.requestorform.persistence.dao.ReceiptGenKeyDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
@@ -61,6 +59,7 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleExporterInputItem;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import th.co.baiwa.buckwaframework.common.constant.ReportConstants.PATH;
+import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 import th.co.baiwa.buckwaframework.common.util.ReportUtils;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
@@ -111,6 +110,7 @@ public class ReportPdfService {
 	public String receiptTaxToPdf(RpReceiptTaxVo vo) throws IOException, JRException {
 		Date currentDate = new Date();
 		RequestForm req = null;
+		ByteArrayOutputStream os =null;
 		try {
 			// Folder Exist ??
 			initialService();
@@ -213,7 +213,7 @@ public class ReportPdfService {
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setExporterInput(new SimpleExporterInput(itemList));
 
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			os = new ByteArrayOutputStream();
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
 			exporter.exportReport();
 
@@ -226,10 +226,11 @@ public class ReportPdfService {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			req.setReceiptFile(name);
 			req.setReceiptDate(timestamp);
-			upDateReqDetailDao.update(req);
-
+//			upDateReqDetailDao.update(req);
+			upDateReqDetailDao.updateAfterPrint(req);
+			
 			// สร้าง ที่ พาท REPORT
-			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
 			// สร้าง ที่ พาท upload
 			String folder = SUB_PATH_UPLOAD;
 			upload.createFile(reportFile, folder, name);
@@ -238,6 +239,7 @@ public class ReportPdfService {
 		}catch(Exception ex) {
 			logger.error("ReportPdfService Error: {} ", ex);
 		}finally {
+			EcertFileUtils.closeStream( os );
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.RECEIPT_CODE, ACTION_AUDITLOG_DESC.RECEIPT,
 					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
 					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
@@ -299,7 +301,7 @@ public class ReportPdfService {
 
 			byte[] reportFile = JasperExportManager.exportReportToPdf(jasperPrint01);
 
-			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
 			ReportUtils.closeResourceFileInputStream(params01);
 		}catch(Exception  e) {
 			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_COVERSHEET, e.toString());
@@ -317,7 +319,7 @@ public class ReportPdfService {
 	public String reqFormOriginalToPdf(RpReqFormVo vo) throws IOException, JRException {
 		
 		Date currentDate = new Date();
-		
+		ByteArrayOutputStream os = null;
 		try {
 
 			initialService();
@@ -362,18 +364,19 @@ public class ReportPdfService {
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setExporterInput(new SimpleExporterInput(itemList));
 
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			os = new ByteArrayOutputStream();
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
 			exporter.exportReport();
 
 			byte[] reportFile = os.toByteArray();
 
 			String name = "REQFORM_" + vo.getTmpReqNo() + ".pdf";
-			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
 			ReportUtils.closeResourceFileInputStream(params02);
 		}catch(Exception e) {
 			logger.error("ReportPdfService Error: ", e);
 		}finally {
+			EcertFileUtils.closeStream( os );
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.PRINT_FORM_CODE, ACTION_AUDITLOG_DESC.PRINT_FORM,
 					(vo!=null ? vo.getTmpReqNo() : StringUtils.EMPTY),
 					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
@@ -386,7 +389,7 @@ public class ReportPdfService {
 	public String reqFormToPdf(RpReqFormVo vo) throws IOException, JRException {
 		
 		Date currentDate = new Date();
-		
+		ByteArrayOutputStream os = null;
 		try{
 			initialService();
 			// RP001
@@ -497,19 +500,20 @@ public class ReportPdfService {
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setExporterInput(new SimpleExporterInput(itemList));
 
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			os = new ByteArrayOutputStream();
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
 			exporter.exportReport();
 
 			byte[] reportFile = os.toByteArray();
 
 			String name = "REQFORM_" + vo.getTmpReqNo() + ".pdf";
-			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT + name)));
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
 			ReportUtils.closeResourceFileInputStream(params02);
 		}catch(Exception e) {
 			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_RECEIPT, e.toString());
 			logger.error("ReportPdfService Error: ", e);
 		}finally {
+			EcertFileUtils.closeStream( os );
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.PRINT_FORMREQ_CODE, ACTION_AUDITLOG_DESC.PRINT_FORMREQ,
 					 (vo!=null ? vo.getTmpReqNo() : StringUtils.EMPTY),
 					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
@@ -522,7 +526,7 @@ public class ReportPdfService {
 	public void viewPdfToData(String name, HttpServletResponse response) throws Exception {
 		FileInputStream reportFile = null;
 		try {
-			File file = new File(PATH_REPORT + name + ".pdf");
+			File file = new File(PATH_REPORT+"/" + name + ".pdf");
 			reportFile = new FileInputStream(file);
 			response.setContentType("application/pdf");
 			response.addHeader("Content-Disposition", "attachment;filename=" + name + ".pdf");
