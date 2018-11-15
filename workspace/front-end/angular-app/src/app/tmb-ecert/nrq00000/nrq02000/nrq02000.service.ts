@@ -30,7 +30,7 @@ const URL = {
     DOWNLOAD: "/api/crs/crs02000/download/",
     CER_REJECT: "/api/crs/crs02000/cert/reject",
     LOCK: "/api/nrq/lock",
-    CHECKDUP:"/api/nrq/validateDuplicate"
+    CHECKDUP: "/api/nrq/validateDuplicate"
 }
 
 @Injectable()
@@ -256,7 +256,7 @@ export class Nrq02000Service {
                 }
             }
         }
-        for(let i=0; i<clearValidate.length; i++) {
+        for (let i = 0; i < clearValidate.length; i++) {
             form.controls[clearValidate[i]].clearValidators();
             form.controls[clearValidate[i]].updateValueAndValidity();
         }
@@ -268,27 +268,26 @@ export class Nrq02000Service {
             this.ajax.upload(URL.CHECKDUP, formData, response => {
                 // console.log("Duplicate resp",response.json().message );
                 let modalConf: Modal = null;
-                if (response.json().message == "DUPLICATE"){
-                    modalConf = {
-                        // msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
-                        // title: "ยืนยันการทำรายการ"
-                        msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-                            <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-                            <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-                        title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-                        approveMsg: "ดำเนินการต่อ",
-                        color: "notification"
+                if (!this.common.isRole(ROLES.MAKER)) {
+                    if (response.json().message == "DUPLICATE") {
+                        modalConf = {
+                            msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
+                                <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
+                                <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
+                            title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
+                            approveMsg: "ดำเนินการต่อ",
+                            color: "notification"
+                        }
+                    } else {
+                        modalConf = {
+                            msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
+                            title: "ยืนยันการทำรายการ"
+                        }
                     }
-                }else {
-                     modalConf = {
+                } else {
+                    modalConf = {
                         msg: `ต้องการดำเนินการบันทึกหรือไม่ ?`,
                         title: "ยืนยันการทำรายการ"
-                        // msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
-                        //     <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
-                        //     <br> หากไม่ต้องการกรุณากดปุ่ม "ยกเลิก"</label>`,
-                        // title: "แจ้งเตือนยื่นใบคำขอเอกสารรับรองซ้ำ",
-                        // approveMsg: "ดำเนินการต่อ",
-                        // color: "notification"
                     }
                 }
 

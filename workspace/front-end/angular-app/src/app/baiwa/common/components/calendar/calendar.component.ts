@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit, SimpleChanges } from "@angular/core";
 import { Calendar, CalendarFormatter } from "models/";
-import { digit, EnDateToThDate } from "app/baiwa/common/helpers";
+import { digit, EnDateToThDate, ThDateToEnDate, EnYearToThYear } from "app/baiwa/common/helpers";
 import { NgControl } from "@angular/forms";
 import * as moment from 'moment';
 
@@ -38,9 +38,10 @@ export class CalendarComponent implements AfterViewInit, OnInit {
             endCalendar: $(`#${endId}`) || null,
         })
         if (initial) {
-            const init = new Date(Date.UTC(initial.getFullYear(), initial.getMonth(), initial.getDate()));
-            $(`#${this.calendar.calendarId}`).calendar('set date', init);
+            const init = moment(initial).format('DD/MM/YYYY');
+            $(`#${this.calendar.calendarId}`).calendar('set date', moment(ThDateToEnDate(init), 'DD/MM/YYYY').toDate());
         }
+  
     }
 
     ngAfterViewInit() {
@@ -62,8 +63,8 @@ export class CalendarComponent implements AfterViewInit, OnInit {
             endCalendar: $(`#${endId}`) || null,
         })
         if (initial) {
-            const init = new Date(Date.UTC(initial.getFullYear(), initial.getMonth(), initial.getDate()));
-            $(`#${this.calendar.calendarId}`).calendar('set date', init);
+            const init = moment(initial).format('DD/MM/YYYY');
+            $(`#${this.calendar.calendarId}`).calendar('set date', moment(ThDateToEnDate(init), 'DD/MM/YYYY').toDate());
         }
     }
 
@@ -110,7 +111,7 @@ export class DateConstant {
     };
 
     public static formatter = (txt: string = '', local: string = 'en') => {
-        local = 'th';
+        // local = 'th';
         switch (txt) {
             case 'mmmm yyyy':
                 return {
@@ -201,6 +202,6 @@ export class DateConstant {
     }
 
     public static enDate = (date: Date) => {
-        return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`;
+        return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${EnYearToThYear(date.getFullYear().toString())}`;
     }
 }

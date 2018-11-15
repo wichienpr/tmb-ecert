@@ -9,6 +9,7 @@ import { UserDetail } from 'app/user.model';
 import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { DateConstant } from 'app/baiwa/common/components/calendar/calendar.component';
+import * as moment from 'moment';
 
 declare var $: any;
 
@@ -138,6 +139,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.form.controls.reqTypeSelect.setValue(code);
     this.reqTypeChange(code);
 
+    this.common.isLoading();
     this.data = await this.service.getData();
     if (this.data && this.data.tmbRequestNo) {
       this.isdownload = true;
@@ -194,29 +196,41 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.accNo = Acc.convertAccNo(accountNo);
       this.amountBlur('amountDbd');
       this.amountBlur('amountTmb');
-      this.checkBox(id);
+      await this.checkBox(id);
     } else {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
+    this.common.isLoaded();
+
     // Second load
-    this.form.controls.reqTypeSelect.setValue(code);
-    await this.reqTypeChange(code);
+    // setTimeout(() => {
+    //   if (this.chkList.length == 0) {
+    //     this.reqTypeChange(code);
+    //   }
+    // }, 2000);
+
+    // Third load
+    // setTimeout(() => {
+    //   if (this.chkList.length == 0) {
+    //     this.reqTypeChange(code);
+    //   }
+    // }, 3000);
 
     this.dropdownActive();
   }
 
   async checkBox(id) {
+    this.common.isLoading();
     this.cert = await this.service.getCert(id);
     this.chkList = await this.service.getChkList(id);
     for (let i = 0; i < this.chkList.length; i++) {
-      if (this.chkList[i].feeDbd == "" && i != 0) {
+      if (this.chkList[i].feeDbd == "" && i != 0 || this.chkList[i].typeCode == "50003") {
         this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
-        if (this.chkList && this.chkList.length > 0) {
-          this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-        }
       }
     }
+    this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+    this.common.isLoaded();
   }
 
   checkRoles() {
@@ -472,7 +486,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.dropdownActive();
     if (e != "") {
       this.reqTypeChanged = new Assigned().getValue([]);
-      this.reqTypeChanged = await this.service.reqTypeChange(e)
+      this.reqTypeChanged = await this.service.reqTypeChange(e);
       this.reqTypeChanged.forEach(async (obj, index) => {
         if (index != 0) {
           let value = '';
@@ -584,17 +598,19 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                       }, 150);
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
-                      var d = new Date(ob.acceptedDate),
+                      let d = new Date(ob.acceptedDate),
                         month = '' + (d.getMonth() + 1),
                         day = '' + d.getDate(),
                         year = d.getFullYear();
+                      this.calendar[idx].initial = ob.acceptedDate;
                       controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                      var d = new Date(ob.registeredDate),
+                      let d = new Date(ob.registeredDate),
                         month = '' + (d.getMonth() + 1),
                         day = '' + d.getDate(),
                         year = d.getFullYear();
+                      this.calendar[idx].initial = ob.registeredDate;
                       controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
                     }
                   }
@@ -640,7 +656,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     } else {
       this.form.controls[`cer${index}`].setValue('');
     }
-    if (this.reqTypeChanged[index].children) {
+    if (this.reqTypeChanged[index] && this.reqTypeChanged[index].children) {
       this.showChildren = this.form.controls[`chk${index}`].value;
       this.form.get(`chk${index}`).setValue(this.showChildren);
       if (this.showChildren) {
