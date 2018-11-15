@@ -90,3 +90,7 @@ td > label {
         overflow: auto;
     }
 }
+
+.disabled {
+    pointer-events: none !important;
+}

@@ -202,6 +202,6 @@ export class DateConstant {
     }
 
     public static enDate = (date: Date) => {
-        return `${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${EnYearToThYear(date.getFullYear().toString())}`;
+        return EnDateToThDate(`${digit(date.getDate())}/${digit(date.getMonth() + 1)}/${date.getFullYear()}`);
     }
 }

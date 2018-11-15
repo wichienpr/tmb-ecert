@@ -256,9 +256,8 @@
                             <ui-calendar #calChild [calendar]="calendar[j]" [disableCalendar]="!form.controls['chk'+i+'Child'+j].value || isMaker"
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
                           </div>
-                          <div class="ui actions input" [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value || isMaker}" *ngIf="j==3">
-                            <select class="ui multiple selection dropdown" [disableControl]="!form.controls['chk'+i+'Child'+j].value || isMaker" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
-                              <!-- <option value="">เลือกปี</option> -->
+                          <div class="ui actions input" *ngIf="j==3" [ngClass]="{'disabled': isMaker || !form.controls['chk'+i+'Child'+j].value}">
+                            <select class="ui multiple selection dropdown" [ngClass]="{'disabled': isMaker}" [disableControl]="isMaker" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
                               <option value="{{item}}" *ngFor="let item of list">{{item}}</option>
                             </select>
                             <div class="ui calendar" id="multi-calendar">
