@@ -127,7 +127,7 @@
         <div class="required two wide field">
           <label>ประเภทคำขอ</label>
         </div>
-        <div #reqTypeSelect class="five wide field" [ngClass]="{'error': invalid('reqTypeSelect') }">
+        <div #reqTypeSelect class="five wide field" [ngClass]="{'error': invalid('reqTypeSelect'), 'disabled': isMaker }">
           <ui-dropdown [selected]="data.cerTypeCode" [dropdown]="dropdownObj.reqType" (valueChange)="reqTypeChange($event)"></ui-dropdown>
         </div>
       </div>
@@ -172,7 +172,7 @@
                     <td class="center aligned">
                       <div class="field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                         <div class="ui checkbox">
-                          <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
+                          <input #chk type="checkbox" name="chk{{i}}" [disableControl]="isMaker" formControlName="chk{{i}}" (change)="toggleChk(i)">
                           <label></label>
                         </div>
                       </div>
@@ -221,7 +221,7 @@
                       <td>
                         <div class="center aligned field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                           <div class="ui checkbox">
-                            <input #chk type="checkbox" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
+                            <input #chk type="checkbox" [disableControl]="isMaker" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
                             <label></label>
                           </div>
                         </div>
@@ -237,7 +237,7 @@
                       <td class="left aligned">
                         <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j), 'disabled': isMaker}">
                           <div class="ui checkbox">
-                            <input #chkChild type="checkbox" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j,item)"
+                            <input #chkChild type="checkbox" [disableControl]="isMaker" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j,item)"
                               formControlName="chk{{i}}Child{{j}}">
                             <label>{{ item.certificate }}</label>
                           </div>
@@ -257,7 +257,7 @@
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
                           </div>
                           <div class="ui actions input" [ngClass]="{'disabled': !form.controls['chk'+i+'Child'+j].value || isMaker}" *ngIf="j==3">
-                            <select class="ui multiple selection dropdown" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
+                            <select class="ui multiple selection dropdown" [disableControl]="!form.controls['chk'+i+'Child'+j].value || isMaker" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
                               <!-- <option value="">เลือกปี</option> -->
                               <option value="{{item}}" *ngFor="let item of list">{{item}}</option>
                             </select>
@@ -355,7 +355,7 @@
       </div>
 
       <div class="inline fields" [ngClass]="{ 'hidden': form.controls.payMethodSelect.value != '30003' }">
-        <div class="four wide field">
+        <div class="four wide field required">
           <label>วิธีหักบัญชีจาก</label>
         </div>
         <div #subAccMethodSelect class="five wide field" [ngClass]="{'error': invalid('subAccMethodSelect') }">
