@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
@@ -246,7 +247,8 @@ public class CheckRequestDetailDao {
 		sql.append("  SELECT COUNT(*) FROM ECERT_REQUEST_FORM WHERE ORGANIZE_ID = ?  AND CAST(REQUEST_DATE AS DATE)  =  ? AND CERTYPE_CODE = ? ");
 		List<Object> params = new ArrayList<>(); 
 		params.add(form.getCorpNo());
-		params.add( EcerDateUtils.formatDDMMYYYYDate(new Date()));
+//		params.add( EcerDateUtils.formatDDMMYYYYDate(new Date()));
+		params.add( DateConstant.convertStrDDMMYYYYToDate(DateConstant.convertDateToStrDDMMYYYY(new Date())));
 		params.add(form.getReqTypeSelect());
 
 		int result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
