@@ -104,6 +104,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.store.select("user").subscribe(user => {
       this.user = user
     });
+
+
+    this.form = this.service.getForm();
+    this.dropdownObj = this.service.getDropdownObj();
+    console.log(this.dropdownObj);
   }
 
   async ngOnInit() {
@@ -111,7 +116,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.roles(this._roles.MAKER)) {
       setTimeout(() => {
         this.isMaker = true;
-      }, 2000);
+      }, 2250);
     }
   }
 
@@ -119,7 +124,12 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.cdRef.detectChanges();
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
+      $('#reqtype').dropdown('set selected', code);
+    }, 1000)
+  }
 
   /**
    * โหลดข้อมูล
@@ -129,8 +139,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   async init() {
     this.service.lock();
 
-    this.dropdownObj = this.service.getDropdownObj();
-    this.form = this.service.getForm();
     this.checkRoles();
     this.allowed.values = await this.service.getRejectReason();
 
@@ -201,7 +209,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
-    this.common.isLoaded();
 
     // Second load
     // setTimeout(() => {
@@ -221,7 +228,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   async checkBox(id) {
-    this.common.isLoading();
     this.cert = await this.service.getCert(id);
     this.chkList = await this.service.getChkList(id);
     for (let i = 0; i < this.chkList.length; i++) {
@@ -230,7 +236,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       }
     }
     this.chkList = await this.service.matchChkList(this.chkList, this.cert);
-    this.common.isLoaded();
   }
 
   checkRoles() {
@@ -321,7 +326,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   formSubmit(form: FormGroup, _data?) {
     event.preventDefault();
-    console.log('submitted', this.data.reqFormId);
     this.submitted = true;
     const data = _data ? _data : {
       id: this.data.reqFormId || null,
@@ -418,7 +422,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           });
         }
       }).css({ "max-width": "220px", "padding": ".25em" });
-    }, 800);
+    }, 1250);
   }
 
   ref1Focus() {
@@ -629,8 +633,17 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.form.controls[`cer2Child1`].setValue('');
         this.toggleChk(1);
       }
-      this.common.isLoaded();
-    }, 1700);
+    }, 1750);
+    // เป็น maker หรือป่าว 
+    if (!this.roles(this._roles.MAKER)) {
+      setTimeout(() => {
+        this.common.isLoaded();
+      }, 2250);
+    } else {
+      setTimeout(() => {
+        this.common.isLoaded();
+      }, 2500);
+    }
   }
 
   calendarValue(name, e) {

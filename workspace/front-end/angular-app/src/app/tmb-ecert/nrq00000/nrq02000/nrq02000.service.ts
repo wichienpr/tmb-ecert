@@ -455,7 +455,6 @@ export class Nrq02000Service {
                 }
             }
         }
-        console.log(form);
         if (hasFinished == certificates.length - 1) {
             return { chkMsg: "กรุณาเลือกเอกสารรับรองที่ต้องการอย่างน้อย 1 รายการ", forms: form };
         } else {
@@ -465,13 +464,15 @@ export class Nrq02000Service {
 
     pdf(form, dt, reqTypeChanged, reqDate): boolean {
         this.common.isLoading(); // Loading page
-        const { chkMsg } = this.chkCertsC(reqTypeChanged, form);
+        const { chkMsg, forms } = this.chkCertsC(reqTypeChanged, form);
+        form = forms;
         if ("" != chkMsg) {
             this.modal.alertWithAct({ msg: chkMsg });
             this.common.isLoaded(); // UnLoading page
             return;
         }
         let modalAler: Modal = { msg: "", success: false }
+        let clearValidate = [];
         for (let key in form.controls) {
             if (form.controls[key].invalid) {
                 for (let enu in ValidatorMessages) {
@@ -487,9 +488,18 @@ export class Nrq02000Service {
                 }
                 if (key != "requestFile" && key != "copyFile") {
                     this.common.isLoaded(); // UnLoading page
-                    return;
+                    if (key.toUpperCase().search("CHILD") != -1) {
+                        console.error("required* ", key);
+                        clearValidate.push(key);
+                    } else {
+                        return;
+                    }
                 }
             }
+        }
+        for (let i = 0; i < clearValidate.length; i++) {
+            form.controls[clearValidate[i]].clearValidators();
+            form.controls[clearValidate[i]].updateValueAndValidity();
         }
         if (form.valid || (form.controls.requestFile.invalid || form.controls.copyFile.invalid)) {
             const { tmbRequestNo } = dt;
