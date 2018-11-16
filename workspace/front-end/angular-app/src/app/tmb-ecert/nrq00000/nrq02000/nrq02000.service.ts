@@ -134,7 +134,8 @@ export class Nrq02000Service {
         let id = this.route.snapshot.queryParams["id"] || "";
         if (id !== "") {
             return new Promise(async resolve => {
-                const data = await this.reqService.getReqFormByFormId(id).toPromise();
+                const rest_data = this.reqService.getReqFormByFormId(id).toPromise();
+                const data = await rest_data;
                 resolve(data ? data : initRequestForm);
             });
         } else {
@@ -269,7 +270,7 @@ export class Nrq02000Service {
                 // console.log("Duplicate resp",response.json().message );
                 let modalConf: Modal = null;
                 if (!this.common.isRole(ROLES.MAKER)) {
-                    if (response.json().message == "DUPLICATE") {
+                    if (!addons.id && response.json().message == "DUPLICATE") {
                         modalConf = {
                             msg: `<label>เนื่องจากระบบตรวจสอบข้อมูลพบว่าลูกค้าได้ทำการยื่นใบคำขอเอกสารรับรองประเภทนี้ไปแล้วนั้น
                                 <br> ลูกค้ามีความประสงค์ต้องการขอเอกสารรับรองอีกครั้งหรือไม่ ถ้าต้องการกรุณากดปุ่ม "ดำเนินการต่อ"
@@ -492,7 +493,7 @@ export class Nrq02000Service {
                         console.error("required* ", key);
                         clearValidate.push(key);
                     } else {
-                        return;
+                        return; 
                     }
                 }
             }
@@ -537,9 +538,11 @@ export class Nrq02000Service {
                                 } else if (!controls[`cal${index}Child${idx}`]) {
                                     d.numSetCc = controls[`cer${index}Child${idx}`].value;
                                 } else {
-                                    d.numEditCc = controls[`cer${index}Child${idx}`].value;
                                     if (idx == 2) {
-                                        d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
+                                        if (!controls[`cer${index}Child${idx}`].disabled) {
+                                            d.numEditCc = controls[`cer${index}Child${idx}`].value;
+                                            d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
+                                        }
                                     } else if (idx > 2 && idx < obj.children.length - 1) {
                                         // let year = null;
                                         let years: Array<string> = [];
@@ -585,7 +588,7 @@ export class Nrq02000Service {
                 accountName: this.form.get("accName").value,
                 accountNo: this.form.get("accNo").value,
                 telephone: this.form.get("telReq").value,
-                reqDate: dateLocaleEN(new Date(reqDate)),
+                reqDate: moment(reqDate).format('DD/MM/YYYY'),
                 tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
                 rpReqFormList: rpReqFormList
             };
@@ -725,22 +728,14 @@ export class Nrq02000Service {
                                 ob.registeredDate = null;
                             }
                             if (idx == 2) {
-                                // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                                 let str = form.controls['cal' + index + 'Child' + idx].value;
-                                if (addons.id == null) {
-                                    str = ThDateToEnDate(str);
-                                }
+                                str = ThDateToEnDate(str);
                                 ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                             }
                             if (idx > 2 && idx < obj.children.length - 1) {
                                 if (ob.code == '10007') {
-                                    // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                    // ob.acceptedDate = new Date(str[2], str[1], str[0]);
                                     let str = form.controls['cal' + index + 'Child' + idx].value;
-                                    if (addons.id == null) {
-                                        str = ThDateToEnDate(str);
-                                    }
+                                    str = ThDateToEnDate(str);
                                     ob.acceptedDate = moment(str, "DD/MM/YYYY").toDate();
                                 }
                                 if (ob.code == '10006' || ob.code == '20006' || ob.code == '30005') {
@@ -757,12 +752,8 @@ export class Nrq02000Service {
                                 }
                             }
                             if (idx == obj.children.length - 1) {
-                                // let str = form.controls['cal' + index + 'Child' + idx].value.split("/");
-                                // ob.registeredDate = new Date(parseInt(str[2]), parseInt(str[1]) - 1, parseInt(str[0]));
                                 let str = form.controls['cal' + index + 'Child' + idx].value;
-                                if (addons.id == null) {
-                                    str = ThDateToEnDate(str);
-                                }
+                                str = ThDateToEnDate(str);
                                 ob.registeredDate = moment(str, "DD/MM/YYYY").toDate();
                                 ob.other = form.controls['etc' + index + 'Child' + idx].value;
                             }

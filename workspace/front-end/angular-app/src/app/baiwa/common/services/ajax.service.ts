@@ -13,7 +13,7 @@ export class AjaxService {
   });
 
   public static CONTEXT_PATH = "/ecert-webapp";
-  public static isDebug = true;
+  public static isDebug = false;
 
   constructor(private http: Http,private httpClient:HttpClient) { }
 
