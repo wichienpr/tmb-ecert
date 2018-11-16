@@ -592,7 +592,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                       controls[`etc${index}Child${idx}`].setValue(ob.other);
                     }
                     if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
-                      const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : [];
+                      const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : ob.statementYear != null ? [ob.statementYear]:[] ;
                       for (let key in years) {
                         years[key] = years[key];
                       }
