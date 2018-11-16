@@ -65,6 +65,8 @@ export class CalendarComponent implements AfterViewInit, OnInit {
         if (initial) {
             const init = moment(initial).format('DD/MM/YYYY');
             $(`#${this.calendar.calendarId}`).calendar('set date', moment(ThDateToEnDate(init), 'DD/MM/YYYY').toDate());
+        } else {
+            $(`#${this.calendar.calendarId}`).calendar('clear');
         }
     }
 

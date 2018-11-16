@@ -493,7 +493,7 @@ export class Nrq02000Service {
                         console.error("required* ", key);
                         clearValidate.push(key);
                     } else {
-                        return;
+                        return; 
                     }
                 }
             }
@@ -538,9 +538,11 @@ export class Nrq02000Service {
                                 } else if (!controls[`cal${index}Child${idx}`]) {
                                     d.numSetCc = controls[`cer${index}Child${idx}`].value;
                                 } else {
-                                    d.numEditCc = controls[`cer${index}Child${idx}`].value;
                                     if (idx == 2) {
-                                        d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
+                                        if (!controls[`cer${index}Child${idx}`].disabled) {
+                                            d.numEditCc = controls[`cer${index}Child${idx}`].value;
+                                            d.dateEditReg = ThDateToEnDate(controls[`cal${index}Child${idx}`].value);
+                                        }
                                     } else if (idx > 2 && idx < obj.children.length - 1) {
                                         // let year = null;
                                         let years: Array<string> = [];
@@ -586,7 +588,7 @@ export class Nrq02000Service {
                 accountName: this.form.get("accName").value,
                 accountNo: this.form.get("accNo").value,
                 telephone: this.form.get("telReq").value,
-                reqDate: dateLocaleEN(new Date(reqDate)),
+                reqDate: moment(reqDate).format('DD/MM/YYYY'),
                 tmpReqNo: tmbRequestNo == "" ? this.tmbReqFormId : tmbRequestNo,
                 rpReqFormList: rpReqFormList
             };
