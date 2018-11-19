@@ -65,7 +65,10 @@ public class TMBLDAPManager {
 						for (int i = 0; i < memberOf.size(); i++) {
 							Object str = memberOf.get(i);
 							//check NSLL Project
-							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);
+							if(str.toString().indexOf(ADConstant.AD_PROJECT) != -1){
+								memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);							
+							}
+//							memberOfs.add(str.toString().split("CN=")[1].split(",")[0]);
 							
 						}
 					}else {
@@ -137,9 +140,9 @@ public class TMBLDAPManager {
 	public int  getValueRoleByRoleName(String roleName) {
 		if(ADConstant.ROLE_SUPER.equals(roleName)) {
 			return 4;
-		}else if (ADConstant.ROLE_CHECKER.equals(roleName)) {
-			return 3;
 		}else if (ADConstant.ROLE_MAKER.equals(roleName)) {
+			return 3;
+		}else if (ADConstant.ROLE_CHECKER.equals(roleName)) {
 			return 2;
 		}else if(ADConstant.ROLE_REQUESTER.equals(roleName)) {
 			return 1;
@@ -151,9 +154,9 @@ public class TMBLDAPManager {
 		if(value == 4 ) {
 			return ADConstant.ROLE_SUPER ;
 		}else if (value == 3 ) {
-			return ADConstant.ROLE_CHECKER;
-		}else if (value == 2 ) {
 			return ADConstant.ROLE_MAKER;
+		}else if (value == 2 ) {
+			return ADConstant.ROLE_CHECKER ;
 		}else if(value == 1 ) {
 			return ADConstant.ROLE_REQUESTER;
 		}

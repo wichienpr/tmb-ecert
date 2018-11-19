@@ -286,6 +286,7 @@ public class ImportECMBatchService {
 			fileImport.setDocTypeCode(docTyep);
 			fileImport.setImportDate(EcerDateUtils.formatDDMMYYYYDate(new Date()));
 			fileImport.setRegistrationId(reqVo.getOrganizeId());
+			fileImport.setRefAppNo(reqVo.getTmbRequestNo());
 			
 			fileslist.add(fileImport);
 		}
