@@ -40,6 +40,7 @@ import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 import com.tmb.ecert.requestorform.persistence.vo.ReqUser;
 
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
+import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.provider.TMBLDAPManager;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
@@ -413,13 +414,13 @@ public class RequestorFormService {
 		return reqForm;
 	}
 	
-	public boolean confirmAD(ReqUser user) {
-		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	public boolean confirmAD(ReqUser user) {
+//		if ("superchecker".equalsIgnoreCase(user.getUsername())&&"password".equalsIgnoreCase(user.getPassword())) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 	public CommonMessage<String> validate( Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		int result = daoCrs.checkDuplicate(form);
@@ -431,18 +432,18 @@ public class RequestorFormService {
 		return msg;
 	}
 	
-//	public boolean confirmAD(ReqUser user) {
-//		boolean isLogged = false;
-//		try {
-//			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
-//			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
-//				isLogged = true;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			isLogged = false;
-//		}
-//		return isLogged;
-//	}
+	public boolean confirmAD(ReqUser user) {
+		boolean isLogged = false;
+		try {
+			TMBPerson tmb = ldap.isAuthenticate(user.getUsername(), user.getPassword());
+			if (ADConstant.ROLE_SUPER.equals(tmb.getMemberOfs().get(0))) {
+				isLogged = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			isLogged = false;
+		}
+		return isLogged;
+	}
 
 }
