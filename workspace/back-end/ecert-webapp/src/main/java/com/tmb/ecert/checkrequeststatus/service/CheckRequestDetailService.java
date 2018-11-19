@@ -107,6 +107,7 @@ public class CheckRequestDetailService {
 			newReq = dao.findReqFormById(req.getReqFormId(), false);
 			newReq.setRejectReasonCode(req.getRejectReasonCode());
 			newReq.setRejectReasonOther(req.getRejectReasonOther());
+			newReq.setStatus(req.getStatus());
 
 			// Get Role of user login
 			// StringBuilder roleName = new StringBuilder();
