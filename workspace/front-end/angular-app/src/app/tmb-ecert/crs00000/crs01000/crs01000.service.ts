@@ -36,19 +36,19 @@ export class Crs01000Service {
     }
     if (status == "10001" && (this.common.isRole(ROLES.MAKER) || this.common.isRole(ROLES.REQUESTOR))) {
       this.router.navigate(["/nrq/nrq02000"], {
-        queryParams: { id: idReq }
+        queryParams: { id: idReq, statusCode: status }
       });
       return;
     }
     if (status == "10011" && this.common.isRole(ROLES.REQUESTOR)) {
       this.router.navigate(["/nrq/nrq02000"], {
-        queryParams: { id: idReq }
+        queryParams: { id: idReq, statusCode: status }
       });
       return;
     }
     if (status == "10003" && this.common.isRole(ROLES.REQUESTOR) && this.common.isUser(userId)) {
       this.router.navigate(["/nrq/nrq02000"], {
-        queryParams: { id: idReq }
+        queryParams: { id: idReq, statusCode: status }
       });
       return;
     }
