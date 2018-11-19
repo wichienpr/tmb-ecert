@@ -191,7 +191,7 @@ public class UploadCertificateService {
 				} else {
 					wsErrorDesc = "FTP FILE IMPORT DOCUMENT FAIL";
 					statusUpload = false;
-					emailservice.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, wsErrorDesc );
+//					emailservice.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, wsErrorDesc );
 					break;
 				}
 				countftp++;
@@ -201,9 +201,9 @@ public class UploadCertificateService {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
-				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
-				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
-				throw new Exception(wsErrorDesc);
+//				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
+//				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
+//				throw new Exception(wsErrorDesc);
 			}
 
 //		} catch (Exception e) {
@@ -223,7 +223,7 @@ public class UploadCertificateService {
 		} else if (StatusConstant.IMPORT_ECM_WS.SEGMENTCODE_MAP_4.equals(segmentcode)) {
 			return "4";
 		} else {
-			return "0";
+			return "";
 		}
 	}
 
@@ -251,6 +251,7 @@ public class UploadCertificateService {
 			fileImport.setDocTypeCode(docTyep);
 			fileImport.setImportDate(EcerDateUtils.formatDDMMYYYYDate(new Date()));
 			fileImport.setRegistrationId(reqVo.getOrganizeId());
+			fileImport.setRefAppNo(reqVo.getTmbRequestNo());
 
 			fileslist.add(fileImport);
 		}
