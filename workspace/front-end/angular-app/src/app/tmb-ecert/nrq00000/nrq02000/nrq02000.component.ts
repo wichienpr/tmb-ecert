@@ -192,22 +192,22 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
 
-    if (this.isIEOrEdge) {
+    if (this.isIEOrEdge) { // IE or EDGE
       await setTimeout(async () => {
         $('#reqtype').dropdown('set selected', code);
-      }, 250);
+      }, 500);
       if (this.roles(this._roles.MAKER)) {
-        await setTimeout(async () => { this.isMaker = true }, 500);
-        await setTimeout(async () => { this.common.isLoaded() }, 750);
+        await setTimeout(async () => { this.isMaker = true }, 1750);
+        await setTimeout(async () => { this.common.isLoaded() }, 2000);
       } else {
-        await setTimeout(async () => { this.common.isLoaded() }, 500);
+        await setTimeout(async () => { this.common.isLoaded() }, 1500);
       }
-    } else {
+    } else { // Other browsers
       if (this.roles(this._roles.MAKER)) {
-        await setTimeout(async () => { this.isMaker = true }, 200);
-        await setTimeout(async () => { this.common.isLoaded() }, 500);
+        await setTimeout(async () => { this.isMaker = true }, 800);
+        await setTimeout(async () => { this.common.isLoaded() }, 1250);
       } else {
-        await setTimeout(async () => { $('#reqtype').dropdown('set selected', code) }, 200);
+        await setTimeout(async () => { $('#reqtype').dropdown('set selected', code) }, 1000);
         this.common.isLoaded();
       }
     }
@@ -423,7 +423,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     const data = {
       reqFormId: this.data.reqFormId,
       rejectReasonCode: this.allowedSelect.value,
-      rejectReasonOther: this.otherReason.value
+      rejectReasonOther: this.otherReason.value,
+      status: this.service.getStatusCode()
     };
     if (this.formReject.valid) {
       this.service.rejected(data);
@@ -682,11 +683,22 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           }
         }
       } else {
+        this.list = [];
+        $('a.ui.label').remove();
         for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
           this.form.controls[`chk${index}Child${i}`].setValue(false);
           this.form.controls[`cer${index}Child${i}`].setValue('');
           if (this.form.controls[`cal${index}Child${i}`]) {
-            this.form.controls[`cal${index}Child${i}`].setValue('');
+            if (typeof this.form.controls[`cal${index}Child${i}`].value == "object") {
+              if (!this.showChildren) {
+                this.form.controls[`cal${index}Child${i}`].setValue(this.list);
+              }
+            } else {
+              if (!this.showChildren) {
+                this.form.controls[`cal${index}Child${i}`].setValue('');
+                this.calendar[i].initial = null;
+              }
+            }
           }
           if (this.form.controls[`etc${index}Child${i}`]) {
             this.form.controls[`etc${index}Child${i}`].setValue('');
@@ -710,7 +722,15 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       });
     }
     if (child != 1) {
-      this.form.controls[`cal${parent}Child${child}`].setValue('');
+      if (typeof this.form.controls[`cal${parent}Child${child}`].value == "object") {
+        this.list = [];
+        $('a.ui.label').remove();
+        this.form.controls[`cal${parent}Child${child}`].setValue(this.list);
+        $('#multi-select').dropdown('set selected', this.list);
+      } else {
+        this.form.controls[`cal${parent}Child${child}`].setValue('');
+        this.calendar[child].initial = null;
+      }
     }
     this.form.controls[`cer${parent}Child${child}`].setValue('');
     if (this.form.controls[`etc${parent}Child${child}`]) {

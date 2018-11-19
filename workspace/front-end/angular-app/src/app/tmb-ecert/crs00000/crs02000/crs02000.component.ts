@@ -207,6 +207,7 @@ export class Crs02000Component implements OnInit {
         reqFormId: this.data.reqFormId,
         rejectReasonCode: this.allowedSelect.value,
         rejectReasonOther: this.otherReason.value,
+        status: this.service.getStatusCode(),
         for: what
       };
       this.service.rejected(data);

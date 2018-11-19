@@ -489,7 +489,7 @@ export class Nrq02000Service {
                         console.error("required* ", key);
                         clearValidate.push(key);
                     } else {
-                        return; 
+                        return;
                     }
                 }
             }
@@ -847,6 +847,10 @@ export class Nrq02000Service {
         }, error => {
             this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
         });
+    }
+
+    getStatusCode() {
+        return this.route.snapshot.queryParams["statusCode"] || "";
     }
 
 }
