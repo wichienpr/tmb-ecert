@@ -216,9 +216,7 @@ export class Nrq02000Service {
     lock(flag: number = 1) {
         const id = this.route.snapshot.queryParams["id"] || "";
         if (id !== "" && this.common.isRole(ROLES.MAKER)) {
-            this.ajax.post(URL.LOCK, { reqFormId: parseInt(id), lockFlag: flag }, response => {
-                console.log(response);
-            });
+            this.ajax.post(URL.LOCK, { reqFormId: parseInt(id), lockFlag: flag }, response => { });
         }
     }
 
@@ -262,12 +260,10 @@ export class Nrq02000Service {
             form.controls[clearValidate[i]].updateValueAndValidity();
         }
 
-        console.log("submit")
         if (form.valid) {
             // add for check duplicate
             const formData = this.bindingData(certificates, files, form, addons);
             this.ajax.upload(URL.CHECKDUP, formData, response => {
-                // console.log("Duplicate resp",response.json().message );
                 let modalConf: Modal = null;
                 if (!this.common.isRole(ROLES.MAKER)) {
                     if (!addons.id && response.json().message == "DUPLICATE") {
@@ -819,7 +815,6 @@ export class Nrq02000Service {
             userStatus: this.common.isRole(ROLES.MAKER) ? ROLES.MAKER : ROLES.REQUESTOR,
             lockFlag: 0
         };
-        console.log("data", data);
         for (let key in data) {
             if (data[key]) {
                 if (key == "certificates") {

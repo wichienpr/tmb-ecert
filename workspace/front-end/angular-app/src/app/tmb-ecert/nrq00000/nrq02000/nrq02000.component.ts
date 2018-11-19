@@ -10,6 +10,7 @@ import { CommonService, ModalService } from 'app/baiwa/common/services';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { DateConstant } from 'app/baiwa/common/components/calendar/calendar.component';
 import * as moment from 'moment';
+import { Router, ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 
@@ -66,6 +67,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   allowedModal: Modal;
   authForSubmit: Modal;
   firstEnter: boolean = true;
+  loadTable: boolean = false;
+  private isIEOrEdge: boolean = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
 
   constructor(
     private service: Nrq02000Service,
@@ -104,59 +107,30 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.store.select("user").subscribe(user => {
       this.user = user
     });
-
+    console.clear();
 
     this.form = this.service.getForm();
     this.dropdownObj = this.service.getDropdownObj();
-    console.log(this.dropdownObj);
-
-    console.clear();
   }
 
   async ngOnInit() {
-    await this.init();
-    if (this.roles(this._roles.MAKER)) {
-      setTimeout(() => {
-        this.isMaker = true;
-      }, 2250);
-    }
-  }
+    this.common.isLoading();
 
-  ngAfterViewChecked() {
-    this.cdRef.detectChanges();
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
-      $('#reqtype').dropdown('set selected', code);
-    }, 1000)
-  }
-
-  /**
-   * โหลดข้อมูล
-   * @ `dropdownObj` ข้อมูล dropdown {`reqType`,`customSeg`,`payMethod`,`subAccMethod`}.
-   * @ `form` ข้อมูลแบบฟอร์มคำขอ
-   */
-  async init() {
-
-    // Loading data 
+    // fetching data 
     const _allowed = this.service.getRejectReason();
     const _data = this.service.getData();
 
+    // change status to locked
     this.service.lock();
 
     this.checkRoles();
     this.allowed.values = await _allowed;
 
-    // First Load
-    const code = this.data && this.data.cerTypeCode ? this.data.cerTypeCode : '50001';
-    this.form.controls.reqTypeSelect.setValue(code);
-    this.reqTypeChange(code);
-
-    this.common.isLoading();
     this.data = await _data;
-    if (this.data && this.data.tmbRequestNo) {
+
+    const code = this.data.cerTypeCode || '50001';
+
+    if (this.data && this.data.tmbRequestNo) { // ถ้ามีข้อมูลให้เข้าเงื่อนไขแก้ไข
       this.isdownload = true;
       const { requestFile, copyFile, customSegSelect } = this.form.controls;
       const {
@@ -211,25 +185,130 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.accNo = Acc.convertAccNo(accountNo);
       this.amountBlur('amountDbd');
       this.amountBlur('amountTmb');
-      console.log(this.data);
       await this.checkBox(id);
     } else {
+      this.reqTypeChange(code);
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
 
-    this.dropdownActive();
+    if (this.isIEOrEdge) {
+      await setTimeout(async () => {
+        $('#reqtype').dropdown('set selected', code);
+      }, 250);
+      if (this.roles(this._roles.MAKER)) {
+        await setTimeout(async () => { this.isMaker = true }, 500);
+        await setTimeout(async () => { this.common.isLoaded() }, 750);
+      } else {
+        await setTimeout(async () => { this.common.isLoaded() }, 500);
+      }
+    } else {
+      if (this.roles(this._roles.MAKER)) {
+        await setTimeout(async () => { this.isMaker = true }, 200);
+        await setTimeout(async () => { this.common.isLoaded() }, 500);
+      } else {
+        await setTimeout(async () => { $('#reqtype').dropdown('set selected', code) }, 200);
+        this.common.isLoaded();
+      }
+    }
+  }
+
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      // After 5 second will auto uploading
+      this.common.isLoaded();
+    }, 5000);
+  }
+
+  private checkMatchTypeCode(): boolean {
+    for (let chk in this.chkList) {
+      for (let req in this.reqTypeChanged) {
+        if (this.chkList[chk].typeCode == this.reqTypeChanged[req].typeCode) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   async checkBox(id) {
-    this.cert = await this.service.getCert(id);
-    this.chkList = await this.service.getChkList(id);
+    const _cert = this.service.getCert(id);
+    const _chkList = this.service.getChkList(id);
+    this.cert = await _cert;
+    this.chkList = await _chkList;
     for (let i = 0; i < this.chkList.length; i++) {
       if (this.chkList[i].feeDbd == "" && i != 0 || this.chkList[i].typeCode == "50003") {
         this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
       }
     }
     this.chkList = await this.service.matchChkList(this.chkList, this.cert);
+    const controls = this.form.controls;
+    if (this.data && this.data.reqFormId
+      && this.chkList && this.chkList.length > 0
+      && this.checkMatchTypeCode()) {
+      this.reqTypeChanged.forEach((obj, index) => {
+        if (index != 0) {
+          obj.reqcertificateId = this.chkList[index - 1].reqcertificateId;
+          obj.statementYear = this.chkList[index - 1].statementYear;
+          obj.value = this.chkList[index - 1].value;
+          obj.check = this.chkList[index - 1].check;
+          obj.other = this.chkList[index - 1].other;
+          obj.acceptedDate = this.chkList[index - 1].acceptedDate;
+          obj.registeredDate = this.chkList[index - 1].registeredDate;
+          controls[`chk${index}`].setValue(obj.check);
+          controls[`cer${index}`].setValue(obj.value);
+          if (obj.children) {
+            this.showChildren = obj.check;
+            obj.children.forEach((ob, idx) => {
+              if (idx != 0) {
+                if (this.chkList[index - 1].children) {
+                  ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
+                  ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
+                  ob.value = this.chkList[index - 1].children[idx - 1].value;
+                  ob.check = this.chkList[index - 1].children[idx - 1].check;
+                  ob.other = this.chkList[index - 1].children[idx - 1].other;
+                  ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
+                  ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
+                  controls[`chk${index}Child${idx}`].setValue(ob.check);
+                  controls[`cer${index}Child${idx}`].setValue(ob.value);
+                  if (controls[`etc${index}Child${idx}`]) {
+                    controls[`etc${index}Child${idx}`].setValue(ob.other);
+                  }
+                  if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
+                    const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : (ob.statementYear ? [ob.statementYear] : []);
+                    for (let key in years) {
+                      years[key] = years[key];
+                    }
+                    controls[`cal${index}Child${idx}`].setValue(years); this.list = years;
+                    setTimeout(() => {
+                      $('#multi-select').dropdown('set selected', years);
+                    }, 150);
+                  }
+                  if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
+                    let d = new Date(ob.acceptedDate),
+                      month = '' + (d.getMonth() + 1),
+                      day = '' + d.getDate(),
+                      year = d.getFullYear();
+                    this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();
+                  }
+                  if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
+                    let d = new Date(ob.registeredDate),
+                      month = '' + (d.getMonth() + 1),
+                      day = '' + d.getDate(),
+                      year = d.getFullYear();
+                    this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();
+                  }
+                }
+              }
+            });
+          }
+        }
+      });
+    }
   }
 
   checkRoles() {
@@ -254,7 +333,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       } else {
         this.hiddenReceipt4 = true;
       }
-      // this.form.controls.acceptNo.clearValidators();
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue('');
       this.form.controls.payMethodSelect.setValue('30001');
@@ -415,7 +493,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             return false;
           });
         }
-      }).css({ "max-width": "220px", "padding": ".25em" });
+      }).css({ "max-width": "215px", "padding": ".25em 0 .25em .25em" });
     }, 1250);
   }
 
@@ -479,15 +557,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
-  async reqTypeChange(e) {
+  async reqTypeChange(code: string) {
     this.showChildren = false;
-    this.common.isLoading();
     this.dropdownActive();
-    if (e != "") {
-      this.reqTypeChanged = new Assigned().getValue([]);
-      this.reqTypeChanged = await this.service.reqTypeChange(e);
-      this.reqTypeChanged.forEach(async (obj, index) => {
-        if (index != 0) {
+    if (code != "") {
+      this.reqTypeChanged = await this.service.reqTypeChange(code);
+      for (let index in this.reqTypeChanged) {
+        const obj = this.reqTypeChanged[index];
+        if (index != "0") {
           let value = '';
           if (this.form.controls[`chk${index}`]) {
             this.form.setControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
@@ -496,7 +573,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
             this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           }
-          if (!obj.feeDbd) {
+          if (!obj.feeDbd && !obj.feeTmb) {
             obj.children = await this.service.reqTypeChange(obj.code);
             obj.children.forEach((ob, idx) => {
               if (idx != 0) {
@@ -548,96 +625,22 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             });
           }
         }
-        if (index == this.reqTypeChanged.length - 1) {
-          return;
+        if (index == (this.reqTypeChanged.length - 1).toString()) {
+          break;
         }
-      });
-    }
-    setTimeout(() => {
-      const controls = this.form.controls;
-      if (this.data && this.data.reqFormId
-        && this.chkList && this.chkList.length > 0
-        && this.chkList[0].typeCode == this.reqTypeChanged[0].typeCode) {
-        this.reqTypeChanged.forEach((obj, index) => {
-          if (index != 0) {
-            obj.reqcertificateId = this.chkList[index - 1].reqcertificateId;
-            obj.statementYear = this.chkList[index - 1].statementYear;
-            obj.value = this.chkList[index - 1].value;
-            obj.check = this.chkList[index - 1].check;
-            obj.other = this.chkList[index - 1].other;
-            obj.acceptedDate = this.chkList[index - 1].acceptedDate;
-            obj.registeredDate = this.chkList[index - 1].registeredDate;
-            controls[`chk${index}`].setValue(obj.check);
-            controls[`cer${index}`].setValue(obj.value);
-            if (obj.children) {
-              this.showChildren = obj.check;
-              obj.children.forEach((ob, idx) => {
-                if (idx != 0) {
-                  if (this.chkList[index - 1].children) {
-                    ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
-                    ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
-                    ob.value = this.chkList[index - 1].children[idx - 1].value;
-                    ob.check = this.chkList[index - 1].children[idx - 1].check;
-                    ob.other = this.chkList[index - 1].children[idx - 1].other;
-                    ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
-                    ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
-                    controls[`chk${index}Child${idx}`].setValue(ob.check);
-                    controls[`cer${index}Child${idx}`].setValue(ob.value);
-                    if (controls[`etc${index}Child${idx}`]) {
-                      controls[`etc${index}Child${idx}`].setValue(ob.other);
-                    }
-                    if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
-                      const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : (ob.statementYear ? [ob.statementYear] : []);
-                      for (let key in years) {
-                        years[key] = years[key];
-                      }
-                      controls[`cal${index}Child${idx}`].setValue(years); this.list = years;
-                      setTimeout(() => {
-                        $('#multi-select').dropdown('set selected', years);
-                      }, 150);
-                    }
-                    if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
-                      let d = new Date(ob.acceptedDate),
-                        month = '' + (d.getMonth() + 1),
-                        day = '' + d.getDate(),
-                        year = d.getFullYear();
-                      this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();
-                      //controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
-                    }
-                    if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                      let d = new Date(ob.registeredDate),
-                        month = '' + (d.getMonth() + 1),
-                        day = '' + d.getDate(),
-                        year = d.getFullYear();
-                      this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();
-                      //controls[`cal${index}Child${idx}`].setValue([digit(day), digit(month), year].join("/"));
-                    }
-                  }
-                }
-              });
-            }
-          }
-        });
       }
-    }, 1500);
-    setTimeout(() => {
-      if (this.form.get('cer1').value == "") {
-        this.form.controls[`chk1`].setValue(true);
-        this.form.controls[`cer1`].setValue(1);
+    }
+    if (this.form.get('cer1').value == "") {
+      this.form.controls[`chk1`].setValue(true);
+      this.form.controls[`cer1`].setValue(1);
+      if (this.form.controls[`chk2Child1`]) {
         this.form.controls[`chk2Child1`].setValue(false);
         this.form.controls[`cer2Child1`].setValue('');
-        this.toggleChk(1);
       }
-    }, 1750);
-    // เป็น maker หรือป่าว 
-    if (!this.roles(this._roles.MAKER)) {
-      setTimeout(() => {
-        this.common.isLoaded();
-      }, 2250);
-    } else {
-      setTimeout(() => {
-        this.common.isLoaded();
-      }, 2500);
+      this.toggleChk(1);
+    }
+    if (this.data && this.data.tmbRequestNo) {
+      await this.checkBox(this.data.reqFormId.toString());
     }
   }
 
@@ -679,22 +682,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
           }
         }
       } else {
-        this.list = [];
-        $('a.ui.label').remove();
         for (let i = 1; i < this.reqTypeChanged[index].children.length; i++) {
           this.form.controls[`chk${index}Child${i}`].setValue(false);
           this.form.controls[`cer${index}Child${i}`].setValue('');
           if (this.form.controls[`cal${index}Child${i}`]) {
-            if (typeof this.form.controls[`cal${index}Child${i}`].value == "object") {
-              if (!this.showChildren) {
-                this.form.controls[`cal${index}Child${i}`].setValue(this.list);
-              }
-            } else {
-              if (!this.showChildren) {
-                this.form.controls[`cal${index}Child${i}`].setValue('');
-                this.calendar[i].initial = null;
-              }
-            }
+            this.form.controls[`cal${index}Child${i}`].setValue('');
           }
           if (this.form.controls[`etc${index}Child${i}`]) {
             this.form.controls[`etc${index}Child${i}`].setValue('');
@@ -718,18 +710,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       });
     }
     if (child != 1) {
-      if (typeof this.form.controls[`cal${parent}Child${child}`].value == "object") {
-        if (this.form.controls[`chk${parent}Child${child}`].value == true) {
-          this.list = [];
-          this.form.controls[`cal${parent}Child${child}`].setValue(this.list);
-          $('#multi-select').dropdown('set selected', this.list);
-        }
-      } else {
-        if (this.form.controls[`chk${parent}Child${child}`].value == true) {
-          this.form.controls[`cal${parent}Child${child}`].setValue('');
-          this.calendar[child].initial = null;
-        }
-      }
+      this.form.controls[`cal${parent}Child${child}`].setValue('');
     }
     this.form.controls[`cer${parent}Child${child}`].setValue('');
     if (this.form.controls[`etc${parent}Child${child}`]) {
@@ -761,12 +742,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     $('#multi-select').dropdown('restore defaults');
   }
 
-  customSegChange(e) {
-    console.log('customSegChange => ', e);
-  }
+  customSegChange(e) { }
 
   payMethodChange(e) {
-    console.log('payMethodChange => ', e);
     if (e != "30004") {
       this.hiddenReceipt4 = false;
       this.form.controls.ref1.setValidators([Validators.required]);
@@ -811,7 +789,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.form.controls.accNo.setValue(Acc.convertAccNo(obj.accountNo));
       }
     });
-    console.log('subAccMethodChange => ', e);
   }
 
   handleCorpName(e) {

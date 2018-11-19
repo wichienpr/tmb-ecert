@@ -179,7 +179,7 @@ export class Btm01000Component implements OnInit {
   // }
 
   doSearch() {
-    console.log("search data ",this.serchForm.value.dateFrom," to ", this.serchForm.value.dateTo )
+    // console.log("search data ",this.serchForm.value.dateFrom," to ", this.serchForm.value.dateTo )
     if (!this.serchForm.touched) {
       Object.keys(this.serchForm.value).forEach(element => {
         let fc = this.serchForm.get(element);
@@ -246,7 +246,7 @@ export class Btm01000Component implements OnInit {
   }
 
   clearSearchData() {
-    console.log("clear search");
+    // console.log("clear search");
     let now = EnDateToThDate(moment().format('DD/MM/YYYY'));
     this.serchForm.setValue({ dateFrom: now, dateTo: now, batchType: '', operationType: '' });
     this.batchMonitorDT.clear();

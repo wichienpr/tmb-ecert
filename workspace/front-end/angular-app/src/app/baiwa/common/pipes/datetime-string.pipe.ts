@@ -5,7 +5,6 @@ import { EnYearToThYear } from '../helpers';
 @Pipe({ name: 'datetimeString' })
 export class DatetimeStringPipe implements PipeTransform {
     transform(value: Date, local: string = "en"): string {
-        console.log(value);
         // return moment(value).format('DD/MM/YYYY HH:mm');
         if (value) {
             const dateStr = moment(value).format('DD/MM/YYYY HH:mm');

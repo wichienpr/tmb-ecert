@@ -11,6 +11,7 @@ import {
     TmbReqNumberPipe,
     DatetimeFromStringPipe,
     DateFromStringPipe,
+    StatementYearBreakPipe
 } from "pipes/";
 
 @NgModule({
@@ -26,7 +27,8 @@ import {
         DatetimeStringPipe,
         TmbReqNumberPipe,
         DatetimeFromStringPipe,
-        DateFromStringPipe
+        DateFromStringPipe,
+        StatementYearBreakPipe
     ],
     exports: [
         AccountNumberPipe,
@@ -39,7 +41,8 @@ import {
         DatetimeStringPipe,
         TmbReqNumberPipe,
         DatetimeFromStringPipe,
-        DateFromStringPipe
+        DateFromStringPipe,
+        StatementYearBreakPipe
     ]
 })
 export class PipesModule { }

@@ -139,3 +139,8 @@ tr:nth-child(even) {
 .disabled {
     pointer-events: none !important;
 }
+
+
+.ui.multiple.selection.dropdown > i.dropdown.icon {
+    display: none !important;
+}

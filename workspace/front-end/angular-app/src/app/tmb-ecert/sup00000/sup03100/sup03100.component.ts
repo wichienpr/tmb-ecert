@@ -78,7 +78,7 @@ export class Sup03100Component implements OnInit {
   }
 
   clickSave() {
-    console.log("html tag ==> ", this.emailForm.value.body);
+    // console.log("html tag ==> ", this.emailForm.value.body);
     // console.log("html tag ==> ", this.sanitizer.bypassSecurityTrustHtml(this.emailForm.value.body))
 
     this.requestObj = {
@@ -102,7 +102,7 @@ export class Sup03100Component implements OnInit {
       title: "แจ้งเตือน",
       color: "alert"
     }
-    console.log("body value ",this.emailForm.value.body  );
+    // console.log("body value ",this.emailForm.value.body  );
 
     if (this.emailForm.value.body == "" || this.emailForm.value.body =="<p><br></p>") {
       this.modal.alert({ msg: "กรุณากรอก Body" });

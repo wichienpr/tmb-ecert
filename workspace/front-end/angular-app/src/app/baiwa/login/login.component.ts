@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
     this.loginsv.login(this.username, this.password).subscribe(resp => {
       let result: AjaxLoginVo = resp as AjaxLoginVo;
-      console.log("ACTION : LOGIN", result);
+      // console.log("ACTION : LOGIN", result);
       this.loading = false;
       if (result.status == "SUCCESS" && result.userId) {
         const INIT_USER_DETAIL: UserDetail = {
@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.loginMessage = "เกิดข้อผิดผลาดกรุณาติดต่อผู้ดูแลระบบ";
         this.showLoginMessage = true;
-        console.log("error")
+        console.error("error", error)
       },
       ()=>{
         this.loading = false;

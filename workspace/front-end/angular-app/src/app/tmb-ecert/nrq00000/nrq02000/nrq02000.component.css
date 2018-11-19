@@ -94,3 +94,7 @@ td > label {
 .disabled {
     pointer-events: none !important;
 }
+
+.tableLoader {
+    height: 200px;
+}

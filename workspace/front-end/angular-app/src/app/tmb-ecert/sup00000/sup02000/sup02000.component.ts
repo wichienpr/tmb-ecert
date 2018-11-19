@@ -73,7 +73,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
         i++;
       });
     })
-    console.log("getparam sucess ", this.parameterForm);
+    // console.log("getparam sucess ", this.parameterForm);
   }
 
   clickSave() {

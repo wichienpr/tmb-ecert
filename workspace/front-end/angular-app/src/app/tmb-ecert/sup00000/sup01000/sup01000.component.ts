@@ -221,7 +221,7 @@ export class Sup01000Component implements OnInit {
 
     }
     clickExportRole() {
-      console.log(" rolename: ",this.dataStateSearch.roleName," status:", this.dataStateSearch.status);
+      // console.log(" rolename: ",this.dataStateSearch.roleName," status:", this.dataStateSearch.status);
       this.service.callExportAPI(this.dataStateSearch.roleName, this.dataStateSearch.status);
 
     }
@@ -231,7 +231,7 @@ export class Sup01000Component implements OnInit {
     uploadRole() {
       this.loadingUpload = false;
       this.onSubmitUpload = true;
-      console.log(this.uploadForm.valid);
+      // console.log(this.uploadForm.valid);
       if (this.uploadForm.valid) {
         this.loadingUpload = true;
         this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
@@ -243,7 +243,7 @@ export class Sup01000Component implements OnInit {
           }
         }, error => {
           this.modal.alert({ msg: "ทำรายการล้มเหลว" });
-          // console.log("call get error");
+          console.error("call get error");
         },() =>{
           this.loadingUpload = false;
         });

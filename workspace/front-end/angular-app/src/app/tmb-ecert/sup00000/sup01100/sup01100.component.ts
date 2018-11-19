@@ -295,9 +295,9 @@ export class sup01100Component implements OnInit {
       this.service.serviceSearchPermissionByRole(this.sup01000.roldId).subscribe(res => {
         this.setRolePermission(res);
       }, error => {
-        console.log("error", error);
+        // console.log("error", error);
       }, () => {
-        console.log("complete....");
+        // console.log("complete....");
       });
     }
 

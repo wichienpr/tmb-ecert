@@ -45,7 +45,7 @@ export class Srn01000Component implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.statusHomePage = this.route.snapshot.queryParams["codeStatus"];
-    console.log(this.statusHomePage)
+    // console.log(this.statusHomePage)
     if (this.statusHomePage) {
       setTimeout(() => {
         this.searchStatusByHomePage(this.statusHomePage);
@@ -55,7 +55,7 @@ export class Srn01000Component implements OnInit, AfterViewInit {
 
   searchData() {
     this.form.setValue({ status: "", tmbReqNo: this.form.value.tmbReqNo });
-    console.log(this.form.value);
+    // console.log(this.form.value);
 
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
@@ -65,7 +65,7 @@ export class Srn01000Component implements OnInit, AfterViewInit {
     }
 
     if (this.form.invalid) {
-      console.log("form invalid");
+      // console.log("form invalid");
       return false;
     }
 
@@ -80,9 +80,9 @@ export class Srn01000Component implements OnInit, AfterViewInit {
   }
 
   searchStatusByHomePage(code): void {
-    console.log(code);
+    // console.log(code);
     this.form.setValue({ status: code, tmbReqNo: "" });
-    console.log(this.form.value);
+    // console.log(this.form.value);
     this.dataDt.searchParams(this.form.value);
     this.dataDt.search();
   }

@@ -42,7 +42,7 @@ export class Rep02200Component implements OnInit {
       this.searchData();
     }
 
-    console.log("form : ", this.form);
+    // console.log("form : ", this.form);
     this.getData();
   }
 
@@ -57,7 +57,7 @@ export class Rep02200Component implements OnInit {
   }
 
   getData = () => {
-    console.log(this.form);
+    // console.log(this.form);
     this.loading = true;
     this.dataT = [];
     const URL = "/api/rep/rep02200/list";
@@ -73,7 +73,7 @@ export class Rep02200Component implements OnInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-      console.log("getData True : Data s", this.dataT);
+      // console.log("getData True : Data s", this.dataT);
     });
   }
 

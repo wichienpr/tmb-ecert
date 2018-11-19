@@ -164,7 +164,7 @@ export class Crs02000Service {
           }
           this.common.isLoaded();
         }, error => {
-          console.log("ERROR => ", error);
+          console.error("ERROR => ", error);
           this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
           this.router.navigate(['/crs/crs01000'], {
             queryParams: { codeStatus: "10008" }

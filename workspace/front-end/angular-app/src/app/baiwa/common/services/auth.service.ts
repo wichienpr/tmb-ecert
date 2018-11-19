@@ -42,7 +42,7 @@ export class AuthService {
       // console.log("getUser");
       this.http.post(getuserurl, {}).subscribe(resp => {
         let result: AjaxLoginVo = resp as AjaxLoginVo;
-        console.log("ACTION : RE GET PROFILE" , result);
+        // console.log("ACTION : RE GET PROFILE" , result);
         if (result.status == "SUCCESS" || result.status == "DUP_LOGIN") {
           const INIT_USER_DETAIL: UserDetail = {
             roles: result.roles,
