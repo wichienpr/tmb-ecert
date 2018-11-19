@@ -48,23 +48,24 @@ public class FeepaymentAutoRetryBatchService {
 		try {
 			if (newReq.getCountPayment() <= 3) {
 				response = switchPayment(response, newReq);
-			} else {
-				CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
-				if (isSuccess(dbdStep.getMessage())) {
-
-					newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
-					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-					dao.updateRequestForm(newReq);
-					history.save(newReq);
-
-				} else {
-					newReq.setPaymentStatus("DBDF");
-					response.setData(new ResponseVo(dbdStep.getData().getDescription(),
-							dbdStep.getData().getStatusCode()));
-					response = handlerErrorReq(response, newReq);
-					throw new Exception("DBD => " + response.getData());
-				}
 			}
+//			else {
+//				CommonMessage<FeePaymentResponse> dbdStep = paymentWs.feePayment(newReq);
+//				if (isSuccess(dbdStep.getMessage())) {
+//
+//					newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
+//					response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
+//					dao.updateRequestForm(newReq);
+//					history.save(newReq);
+//
+//				} else {
+//					newReq.setPaymentStatus("DBDF");
+//					response.setData(new ResponseVo(dbdStep.getData().getDescription(),
+//							dbdStep.getData().getStatusCode()));
+//					response = handlerErrorReq(response, newReq);
+//					throw new Exception("DBD => " + response.getData());
+//				}
+//			}
 		} catch (Exception e) {
 			int count = 0;
 			if (newReq.getCountPayment() != null) {
