@@ -191,13 +191,23 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.reqDate = this.service.getReqDate();
       this.tmbReqFormId = await this.service.getTmbReqFormId();
     }
-    if (this.roles(this._roles.MAKER)) {
-      if (!this.isIEOrEdge) {
-        setTimeout(() => { this.isMaker = true }, 200);
-        setTimeout(() => { this.common.isLoaded() }, 500);
+
+    if (this.isIEOrEdge) {
+      await setTimeout(async () => {
+        $('#reqtype').dropdown('set selected', code);
+      }, 250);
+      if (this.roles(this._roles.MAKER)) {
+        await setTimeout(async () => { this.isMaker = true }, 500);
+        await setTimeout(async () => { this.common.isLoaded() }, 750);
+      } else {
+        await setTimeout(async () => { this.common.isLoaded() }, 500);
       }
     } else {
-      if (!this.isIEOrEdge) {
+      if (this.roles(this._roles.MAKER)) {
+        await setTimeout(async () => { this.isMaker = true }, 200);
+        await setTimeout(async () => { this.common.isLoaded() }, 500);
+      } else {
+        await setTimeout(async () => { $('#reqtype').dropdown('set selected', code) }, 200);
         this.common.isLoaded();
       }
     }
@@ -208,22 +218,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const code = this.data.cerTypeCode || '50001';
-    if (this.isIEOrEdge) {
-      setTimeout(() => {
-        $('#reqtype').dropdown('set selected', code);
-      }, 200);
-      if (this.roles(this._roles.MAKER)) {
-        setTimeout(() => { this.isMaker = true }, 1000);
-        setTimeout(() => { this.common.isLoaded() }, 1250);
-      } else {
-        setTimeout(() => { this.common.isLoaded() }, 500);
-      }
-    } else {
-      setTimeout(() => {
-        $('#reqtype').dropdown('set selected', code);
-      }, 200);
-    }
+    setTimeout(() => {
+      // After 5 second will auto uploading
+      this.common.isLoaded();
+    }, 5000);
   }
 
   private checkMatchTypeCode(): boolean {
