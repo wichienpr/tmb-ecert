@@ -54,3 +54,8 @@ td>label {
 .ui.checkbox>label {
     font-size: .85em !important;
 }
+
+.break-line {
+    width: 210px !important;
+    white-space: pre-line !important;
+}

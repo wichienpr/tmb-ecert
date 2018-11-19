@@ -177,7 +177,7 @@ export class sup01100Service {
         }
 
         this.userRolePermission.forEach(element => {
-            console.log("key ", element.functionCode, " statsu", element.status);
+            // console.log("key ", element.functionCode, " statsu", element.status);
         });
 
         return this.callSaveAPI(form, roleId)

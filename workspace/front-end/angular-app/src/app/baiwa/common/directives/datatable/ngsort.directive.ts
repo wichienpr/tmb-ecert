@@ -27,7 +27,7 @@ export class NgSortDirective implements OnInit {
 
   ngOnInit() {
     this.sortId = "U" + Math.random().toString(36).substr(2, 9);
-    console.log("SortId : ", this.sortId);
+    // console.log("SortId : ", this.sortId);
     this.mainDt.sortOutput.subscribe((e: SortEvent) => {
       // console.log("ngSort ==>", e);
       if (e.sortId === this.sortId) {

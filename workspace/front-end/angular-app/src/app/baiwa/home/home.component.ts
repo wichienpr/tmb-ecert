@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new DashboardAction.Update(initdashBord));
       },
       error => {
-        console.log("error");
+        console.error("error");
         // alert("ไม่สามารถทำรายการได้.") 
         this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" }, clicked => {
           if (clicked) {

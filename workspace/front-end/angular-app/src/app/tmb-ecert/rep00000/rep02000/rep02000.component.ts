@@ -102,7 +102,7 @@ export class Rep02000Component implements OnInit {
       this.form.controls[`dateTo`].setValue(dTo);
       this.searchData();
     }
-    console.log("form : ", this.form);
+    // console.log("form : ", this.form);
   }
   
   ngAfterViewChecked() {
@@ -116,12 +116,12 @@ export class Rep02000Component implements OnInit {
   }
 
   paidTypeChange(e) {
-    console.log("requestTypeCode : ", e);
+    // console.log("requestTypeCode : ", e);
     this.paidTypeChanged = e;
   }
 
   getData = () => {
-    console.log(this.form);
+    // console.log(this.form);
     this.loading = true;
     this.dataT = [];
     const URL = "/api/rep/rep02000/list";
@@ -139,24 +139,24 @@ export class Rep02000Component implements OnInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-      console.log("getData True : Data length", this.dataT.length);
-      console.log("getData True : Data ", this.dataT);
+      // console.log("getData True : Data length", this.dataT.length);
+      // console.log("getData True : Data ", this.dataT);
     });
 
   }
 
   searchData(): void {
     if (this.form.valid) {
-      console.log("searchData True");
+      // console.log("searchData True");
       this.showData = true;
       this.getData();
     } else {
-      console.log("searchData False");
+      // console.log("searchData False");
     }
   }
 
   clearData(): void {
-    console.log("clearData");
+    // console.log("clearData");
     this.form.reset();
     this.paidTypeClear = true;
     this.showData = false;
@@ -166,7 +166,7 @@ export class Rep02000Component implements OnInit {
   }
 
   exportFile = () => {
-    console.log("exportFile");
+    // console.log("exportFile");
     let param = "";
     param += "?dateForm=" + ThMonthYearToEnMonthYear(this.form.controls.dateForm.value);
     param += "&dateTo=" + ThMonthYearToEnMonthYear(this.form.controls.dateTo.value);

@@ -50,7 +50,7 @@ export class DatatableDirective implements OnInit , OnDestroy {
           }];
           this.search();
         }else{
-          console.log(" columnName=\"EXAMPLE\" <=== is not defind in [th]  ");
+          // console.log(" columnName=\"EXAMPLE\" <=== is not defind in [th]  ");
         }
     });
   }

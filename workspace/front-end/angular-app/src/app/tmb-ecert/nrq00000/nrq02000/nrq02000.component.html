@@ -112,7 +112,7 @@
         </div>
       </div>
 
-      <div class="inline fields" *ngIf="data">
+      <div class="inline fields" *ngIf="data&&data.statusMsg">
         <div class="two wide field">
           <label>
             สถานะ
@@ -148,8 +148,15 @@
             </tr>
           </thead>
           <tbody>
+            <ng-container *ngIf="loadTable">
+              <tr class="tableLoader">
+                <td colspan="6" class="ui segment">
+                  <div class="ui active text loader">กำลังโหลด</div>
+                </td>
+              </tr>
+            </ng-container>
             <ng-container *ngIf="reqTypeIsNull">
-              <tr class="center aligned">
+              <tr [hidden]="loadTable" class="center aligned">
                 <td colspan="6">
                   <h5> ไม่มีข้อมูลประเภทคำขอ </h5>
                 </td>
@@ -159,7 +166,7 @@
               <ng-container *ngFor="let req of reqTypeChanged; let i = index">
                 <!-- header -->
                 <ng-container *ngIf="!req.code">
-                  <tr [className]="classByCode(req.typeCode)">
+                  <tr [className]="classByCode(req.typeCode)" [hidden]="loadTable">
                     <td colspan="6">
                       <h5>{{ req.typeDesc }}</h5>
                     </td>
@@ -168,11 +175,12 @@
 
                 <!-- row 1 -->
                 <ng-container *ngIf="req.code&&req.feeDbd">
-                  <tr>
+                  <tr [hidden]="loadTable">
                     <td class="center aligned">
                       <div class="field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                         <div class="ui checkbox">
-                          <input #chk type="checkbox" name="chk{{i}}" [disableControl]="isMaker" formControlName="chk{{i}}" (change)="toggleChk(i)">
+                          <input #chk type="checkbox" name="chk{{i}}" [disableControl]="isMaker" formControlName="chk{{i}}"
+                            (change)="toggleChk(i)">
                           <label></label>
                         </div>
                       </div>
@@ -217,11 +225,12 @@
                 <ng-container *ngIf="req.code&&!req.feeDbd&&req.children">
                   <!-- parent -->
                   <ng-container>
-                    <tr>
+                    <tr [hidden]="loadTable">
                       <td>
                         <div class="center aligned field" [ngClass]="{'error': invalid('chk'+i), 'disabled': isMaker}">
                           <div class="ui checkbox">
-                            <input #chk type="checkbox" [disableControl]="isMaker" name="chk{{i}}" formControlName="chk{{i}}" (change)="toggleChk(i)">
+                            <input #chk type="checkbox" [disableControl]="isMaker" name="chk{{i}}" formControlName="chk{{i}}"
+                              (change)="toggleChk(i)">
                             <label></label>
                           </div>
                         </div>
@@ -232,13 +241,13 @@
 
                   <!-- children -->
                   <ng-container *ngFor="let item of req.children; let j = index">
-                    <tr *ngIf="j>0" [ngClass]="{ 'hidden': !showChildren }">
+                    <tr [hidden]="loadTable" *ngIf="j>0" [ngClass]="{ 'hidden': !showChildren }">
                       <td></td>
                       <td class="left aligned">
                         <div class="inline field" [ngClass]="{'error': invalid('etc'+i+'Child'+j)||invalid('chk'+i+'Child'+j), 'disabled': isMaker}">
                           <div class="ui checkbox">
-                            <input #chkChild type="checkbox" [disableControl]="isMaker" name="chk{{i}}Child{{j}}" (change)="toggleChkChild(i, j,item)"
-                              formControlName="chk{{i}}Child{{j}}">
+                            <input #chkChild type="checkbox" [disableControl]="isMaker" name="chk{{i}}Child{{j}}"
+                              (change)="toggleChkChild(i, j,item)" formControlName="chk{{i}}Child{{j}}">
                             <label>{{ item.certificate }}</label>
                           </div>
                           <div class="ui input" *ngIf="item.certificate === 'อื่นๆ'">
@@ -257,11 +266,14 @@
                               (calendarValue)="calendarValue('cal'+i+'Child'+j,$event)"></ui-calendar>
                           </div>
                           <div class="ui actions input" *ngIf="j==3" [ngClass]="{'disabled': isMaker || !form.controls['chk'+i+'Child'+j].value}">
-                            <select class="ui multiple selection dropdown" [ngClass]="{'disabled': isMaker}" [disableControl]="isMaker" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}" multiple="" id="multi-select">
+                            <select class="ui multiple selection dropdown" [ngClass]="{'disabled': isMaker}"
+                              [disableControl]="isMaker" formControlName="cal{{i}}Child{{j}}" name="cal{{i}}Child{{j}}"
+                              multiple="" id="multi-select">
                               <option value="{{item}}" *ngFor="let item of list">{{item}}</option>
                             </select>
                             <div class="ui calendar" id="multi-calendar">
-                              <button type="button" class="ui icon button" [disabled]="!form.controls['chk'+i+'Child'+j].value || isMaker"><i class="calendar icon"></i></button>
+                              <button type="button" class="ui icon button" [disabled]="!form.controls['chk'+i+'Child'+j].value || isMaker"><i
+                                  class="calendar icon"></i></button>
                             </div>
                           </div>
                         </div>

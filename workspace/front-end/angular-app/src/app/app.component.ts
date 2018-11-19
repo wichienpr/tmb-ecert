@@ -15,7 +15,6 @@ export class AppComponent {
     const isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     if (isIEOrEdge) {
       $('.modal').css('margin-left', '-360px !important');
-      console.log(isIEOrEdge, $('.modal'));
     }
   }
 

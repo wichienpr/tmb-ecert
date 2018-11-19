@@ -100,15 +100,15 @@ export class Rep01000Component implements OnInit, AfterViewInit {
 
   calendarValue(name, e) {
     this.form.controls[name].setValue(e);
-    console.log(this.form);
-    console.log(this.form.controls[name].value);
+    // console.log(this.form);
+    // console.log(this.form.controls[name].value);
   }
   reqTypeChange(e) {
-    console.log("requestTypeCode : ", e);
+    // console.log("requestTypeCode : ", e);
     this.reqTypeChanged = e;
   }
   paidTypeChange(e) {
-    console.log("requestTypeCode : ", e);
+    // console.log("requestTypeCode : ", e);
     this.paidTypeChanged = e;
   }
 
@@ -116,8 +116,8 @@ export class Rep01000Component implements OnInit, AfterViewInit {
     this.loading = true;
     this.dataT = [];
     const URL = "/api/rep/rep01000/list";
-    console.log(typeof ThDateToEnDate(this.form.get('dateForm').value));
-    console.log("ON SEARCH REP01000 => FROM " + ThDateToEnDate(this.form.get('dateForm').value) + " TO " + ThDateToEnDate(this.form.get('dateTo').value));
+    // console.log(typeof ThDateToEnDate(this.form.get('dateForm').value));
+    // console.log("ON SEARCH REP01000 => FROM " + ThDateToEnDate(this.form.get('dateForm').value) + " TO " + ThDateToEnDate(this.form.get('dateTo').value));
     this.ajax.post(URL, {
       dateForm: ThDateToEnDate(this.form.get('dateForm').value),
       dateTo: ThDateToEnDate(this.form.get('dateTo').value),
@@ -133,22 +133,22 @@ export class Rep01000Component implements OnInit, AfterViewInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-      console.log("getData True : Data s", this.dataT);
+      // console.log("getData True : Data s", this.dataT);
     });
   }
 
   searchData(): void {
     if (this.form.valid) {
-      console.log("searchData True");
+      // console.log("searchData True");
       this.showData = true;
       this.getData();
     } else {
-      console.log("searchData False");
+      // console.log("searchData False");
     }
   }
 
   clearData(): void {
-    console.log("clearData");
+    // console.log("clearData");
     this.form.reset();
     $('#reqtype').dropdown('restore defaults');
     $('#paidtype').dropdown('restore defaults');
@@ -156,7 +156,7 @@ export class Rep01000Component implements OnInit, AfterViewInit {
   }
 
   exportFile = () => {
-    console.log("exportFile");
+    // console.log("exportFile");
     let param = "";
     param += "?dateForm=" + ThDateToEnDate(this.form.controls.dateForm.value);
     param += "&dateTo=" + ThDateToEnDate(this.form.controls.dateTo.value);

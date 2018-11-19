@@ -9,3 +9,4 @@ export { ThaiMoneyString } from './thai-money-string.pipe';
 export { TmbReqNumberPipe } from './tmb-req-number.pipe';
 export { DatetimeFromStringPipe } from './datetime-from-string.pipe';
 export { DateFromStringPipe } from './date-from-string.pipe';
+export { StatementYearBreakPipe } from './statement-year-break.pipe';

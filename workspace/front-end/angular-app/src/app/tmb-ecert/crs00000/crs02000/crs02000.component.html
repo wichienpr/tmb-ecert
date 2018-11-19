@@ -259,10 +259,10 @@
                     </td>
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
-                    <td class="center aligned" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
-                    <td class="center aligned" *ngIf="db.registeredDate">{{ db.registeredDate | dateString }}</td>
-                    <td class="center aligned" *ngIf="db.acceptedDate">{{ db.acceptedDate | dateString }}</td>
-                    <td class="center aligned" *ngIf="db.statementYear">{{ db.statementYear | emptyString }}</td>
+                    <td class="center aligned break-line" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
+                    <td class="center aligned break-line" *ngIf="db.registeredDate">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned break-line" *ngIf="db.acceptedDate">{{ db.acceptedDate | dateString }}</td>
+                    <td class="center aligned break-line" *ngIf="db.statementYear">{{ db.statementYear | statementYearBreak }}</td>
                     <td class="right aligned">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
