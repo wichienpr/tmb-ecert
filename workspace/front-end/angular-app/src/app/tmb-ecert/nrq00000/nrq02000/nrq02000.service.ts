@@ -519,7 +519,6 @@ export class Nrq02000Service {
                 "box4": false
             };
             reqTypeChanged.forEach((obj, index) => {
-
                 if (index != 0 && controls[`chk${index}`].value) {
                     if (obj.children) {
                         d.box2 = index == 1 || index == 2;

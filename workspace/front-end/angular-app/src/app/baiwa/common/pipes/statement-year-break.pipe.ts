@@ -15,6 +15,9 @@ export class StatementYearBreakPipe implements PipeTransform {
                     count = 0;
                 }
             })
+            if (value.split(",").length <= 5) {
+                return value;
+            }
         } else {
             result = value;
         }

@@ -75,7 +75,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private store: Store<{}>,
     private common: CommonService,
-    private modal: ModalService
+    private modal: ModalService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.reqTypeChanged = [];
     this.files = {
@@ -197,7 +199,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         $('#reqtype').dropdown('set selected', code);
       }, 500);
       if (this.roles(this._roles.MAKER)) {
-        await setTimeout(async () => { this.isMaker = true }, 1750);
+        await setTimeout(async () => { this.isMaker = true }, 1500);
         await setTimeout(async () => { this.common.isLoaded() }, 2000);
       } else {
         await setTimeout(async () => { this.common.isLoaded() }, 1500);
@@ -219,14 +221,23 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      // After 5 second will auto uploading
+      // After 7 second will auto uploading
+      const reqId = this.data.reqFormId.toString();
+      const id = this.route.snapshot.queryParams["id"] || "";
+      if (id != reqId && this.data.reqFormId != 0 && this.data.tmbRequestNo) {
+        this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้กรุณาลองใหม่อีกครั้ง" }, clicked => {
+          if (clicked) {
+            this.router.navigate(['/crs/crs01000']);
+          }
+        });
+      }
       this.common.isLoaded();
-    }, 5000);
+    }, 7000);
   }
 
   private checkMatchTypeCode(): boolean {
-    for (let chk in this.chkList) {
-      for (let req in this.reqTypeChanged) {
+    for (let chk = 0; chk < this.chkList.length; chk++) {
+      for (let req = 0; req < this.reqTypeChanged.length; req++) {
         if (this.chkList[chk].typeCode == this.reqTypeChanged[req].typeCode) {
           return true;
         }
@@ -250,53 +261,50 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (this.data && this.data.reqFormId
       && this.chkList && this.chkList.length > 0
       && this.checkMatchTypeCode()) {
-      this.reqTypeChanged.forEach((obj, index) => {
+      for (let index = 0; index < this.reqTypeChanged.length; index++) {
         if (index != 0) {
-          obj.reqcertificateId = this.chkList[index - 1].reqcertificateId;
-          obj.statementYear = this.chkList[index - 1].statementYear;
-          obj.value = this.chkList[index - 1].value;
-          obj.check = this.chkList[index - 1].check;
-          obj.other = this.chkList[index - 1].other;
-          obj.acceptedDate = this.chkList[index - 1].acceptedDate;
-          obj.registeredDate = this.chkList[index - 1].registeredDate;
-          controls[`chk${index}`].setValue(obj.check);
-          controls[`cer${index}`].setValue(obj.value);
-          if (obj.children) {
-            this.showChildren = obj.check;
-            obj.children.forEach((ob, idx) => {
+          this.reqTypeChanged[index].reqcertificateId = this.chkList[index - 1].reqcertificateId;
+          this.reqTypeChanged[index].statementYear = this.chkList[index - 1].statementYear;
+          this.reqTypeChanged[index].value = this.chkList[index - 1].value;
+          this.reqTypeChanged[index].check = this.chkList[index - 1].check;
+          this.reqTypeChanged[index].other = this.chkList[index - 1].other;
+          this.reqTypeChanged[index].acceptedDate = this.chkList[index - 1].acceptedDate;
+          this.reqTypeChanged[index].registeredDate = this.chkList[index - 1].registeredDate;
+          controls[`chk${index}`].setValue(this.reqTypeChanged[index].check);
+          controls[`cer${index}`].setValue(this.reqTypeChanged[index].value);
+          if (this.reqTypeChanged[index].children) {
+            this.showChildren = this.reqTypeChanged[index].check;
+            for (let idx = 0; idx < this.reqTypeChanged[index].children.length; idx++) {
               if (idx != 0) {
                 if (this.chkList[index - 1].children) {
-                  ob.reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
-                  ob.statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
-                  ob.value = this.chkList[index - 1].children[idx - 1].value;
-                  ob.check = this.chkList[index - 1].children[idx - 1].check;
-                  ob.other = this.chkList[index - 1].children[idx - 1].other;
-                  ob.acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
-                  ob.registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
-                  controls[`chk${index}Child${idx}`].setValue(ob.check);
-                  controls[`cer${index}Child${idx}`].setValue(ob.value);
+                  this.reqTypeChanged[index].children[idx].reqcertificateId = this.chkList[index - 1].children[idx - 1].reqcertificateId;
+                  this.reqTypeChanged[index].children[idx].statementYear = this.chkList[index - 1].children[idx - 1].statementYear;
+                  this.reqTypeChanged[index].children[idx].value = this.chkList[index - 1].children[idx - 1].value;
+                  this.reqTypeChanged[index].children[idx].check = this.chkList[index - 1].children[idx - 1].check;
+                  this.reqTypeChanged[index].children[idx].other = this.chkList[index - 1].children[idx - 1].other;
+                  this.reqTypeChanged[index].children[idx].acceptedDate = this.chkList[index - 1].children[idx - 1].acceptedDate;
+                  this.reqTypeChanged[index].children[idx].registeredDate = this.chkList[index - 1].children[idx - 1].registeredDate;
+                  controls[`chk${index}Child${idx}`].setValue(this.reqTypeChanged[index].children[idx].check);
+                  controls[`cer${index}Child${idx}`].setValue(this.reqTypeChanged[index].children[idx].value);
                   if (controls[`etc${index}Child${idx}`]) {
-                    controls[`etc${index}Child${idx}`].setValue(ob.other);
+                    controls[`etc${index}Child${idx}`].setValue(this.reqTypeChanged[index].children[idx].other);
                   }
-                  if (controls[`cal${index}Child${idx}`] && ob.statementYear) {
-                    const years = ob.statementYear.search(",") != -1 ? ob.statementYear.split(",") : (ob.statementYear ? [ob.statementYear] : []);
-                    for (let key in years) {
-                      years[key] = years[key];
-                    }
+                  if (controls[`cal${index}Child${idx}`] && this.reqTypeChanged[index].children[idx].statementYear) {
+                    const years = this.reqTypeChanged[index].children[idx].statementYear.search(",") != -1 ? this.reqTypeChanged[index].children[idx].statementYear.split(",") : (this.reqTypeChanged[index].children[idx].statementYear ? [this.reqTypeChanged[index].children[idx].statementYear] : []);
                     controls[`cal${index}Child${idx}`].setValue(years); this.list = years;
                     setTimeout(() => {
                       $('#multi-select').dropdown('set selected', years);
                     }, 150);
                   }
-                  if (controls[`cal${index}Child${idx}`] && ob.acceptedDate) {
-                    let d = new Date(ob.acceptedDate),
+                  if (controls[`cal${index}Child${idx}`] && this.reqTypeChanged[index].children[idx].acceptedDate) {
+                    let d = new Date(this.reqTypeChanged[index].children[idx].acceptedDate),
                       month = '' + (d.getMonth() + 1),
                       day = '' + d.getDate(),
                       year = d.getFullYear();
                     this.calendar[idx].initial = moment(EnDateToThDate([digit(day), digit(month), year].join("/")), 'DD/MM/YYYY').toDate();
                   }
-                  if (controls[`cal${index}Child${idx}`] && ob.registeredDate) {
-                    let d = new Date(ob.registeredDate),
+                  if (controls[`cal${index}Child${idx}`] && this.reqTypeChanged[index].children[idx].registeredDate) {
+                    let d = new Date(this.reqTypeChanged[index].children[idx].registeredDate),
                       month = '' + (d.getMonth() + 1),
                       day = '' + d.getDate(),
                       year = d.getFullYear();
@@ -304,10 +312,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                   }
                 }
               }
-            });
+            }
           }
         }
-      });
+      }
     }
   }
 
@@ -471,14 +479,18 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         type: CalendarType.YEAR,
         formatter: DateConstant.formatter(CalendarFormatter.yyyy),
         onChange: (date, text) => {
-          const form = this.form.get($('#multi-select').attr('name'));
-          if (this.list.findIndex(obj => obj == text) == -1) {
-            this.list.push(text);
+          if (this.list.length <= 10) {
+            const form = this.form.get($('#multi-select').attr('name'));
+            if (this.list.findIndex(obj => obj == text) == -1) {
+              this.list.push(text);
+            }
+            form.setValue(this.list);
+            setTimeout(() => {
+              $('#multi-select').dropdown('set selected', this.list);
+            }, 150);
+          } else {
+            this.modal.alert({ msg: "เลือกปีงบประมาณได้ไม่เกิน 10 จำนวน" });
           }
-          form.setValue(this.list);
-          setTimeout(() => {
-            $('#multi-select').dropdown('set selected', this.list);
-          }, 150);
         }
       });
       $('.ui.multiple.selection.dropdown').dropdown({
@@ -564,7 +576,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     if (code != "") {
       this.reqTypeChanged = await this.service.reqTypeChange(code);
       for (let index in this.reqTypeChanged) {
-        const obj = this.reqTypeChanged[index];
         if (index != "0") {
           let value = '';
           if (this.form.controls[`chk${index}`]) {
@@ -574,11 +585,11 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
             this.form.addControl(`chk${index}`, new FormControl(false, [Validators.required, Validators.min(1)]));
             this.form.addControl(`cer${index}`, new FormControl({ value: value, disabled: true }, Validators.required));
           }
-          if (!obj.feeDbd && !obj.feeTmb) {
-            obj.children = await this.service.reqTypeChange(obj.code);
-            obj.children.forEach((ob, idx) => {
+          if (!this.reqTypeChanged[index].feeDbd && !this.reqTypeChanged[index].feeTmb) {
+            this.reqTypeChanged[index].children = await this.service.reqTypeChange(this.reqTypeChanged[index].code);
+            for (let idx = 0; idx < this.reqTypeChanged[index].children.length; idx++) {
               if (idx != 0) {
-                if (this.calendar.length !== obj.children.length && idx != 1) {
+                if (this.calendar.length !== this.reqTypeChanged[index].children.length && idx != 1) {
                   this.calendar[idx] = {
                     calendarId: `cal${index}Child${idx}`,
                     calendarName: `cal${index}Child${idx}`,
@@ -589,7 +600,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                     local: CalendarLocal.EN,
                     icon: 'calendar'
                   };
-                  if (ob.code == '10007') {
+                  if (this.reqTypeChanged[index].children[idx].code == '10007') {
                     this.calendar[idx] = {
                       calendarId: `cal${index}Child${idx}`,
                       calendarName: `cal${index}Child${idx}`,
@@ -602,14 +613,14 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                     };
                   }
                 }
-                if (idx === obj.children.length - 1) {
+                if (idx === this.reqTypeChanged[index].children.length - 1) {
                   if (this.form.controls[`etc${index}Child${idx}`]) {
                     this.form.setControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
                   } else {
                     this.form.addControl(`etc${index}Child${idx}`, new FormControl('', Validators.required));
                   }
                 }
-                if (this.form.controls[`chk${index}Child${idx}`] && !(ob.code == '10003' || ob.code == '20003' || ob.code == '30002')) {
+                if (this.form.controls[`chk${index}Child${idx}`] && !(this.reqTypeChanged[index].children[idx].code == '10003' || this.reqTypeChanged[index].children[idx].code == '20003' || this.reqTypeChanged[index].children[idx].code == '30002')) {
                   this.form.setControl(`chk${index}Child${idx}`, new FormControl(false, Validators.required));
                   this.form.setControl(`cer${index}Child${idx}`, new FormControl('', [Validators.required, Validators.min(1)]));
                   if (idx != 1) {
@@ -623,7 +634,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
                   }
                 }
               }
-            });
+            }
           }
         }
         if (index == (this.reqTypeChanged.length - 1).toString()) {
@@ -710,16 +721,16 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   toggleChkChild(parent, child, item: any) {
     if (!this.form.controls[`chk${parent}Child${child}`].value) {
-      this.reqTypeChanged.forEach((obj, index) => {
-        if (obj.children) {
-          obj.children.forEach((ob, idx) => {
+      for (let index = 0; index < this.reqTypeChanged.length; index++) {
+        if (this.reqTypeChanged[index].children) {
+          for (let idx = 0; idx < this.reqTypeChanged[index].children.length; idx++) {
             if (idx != 0 && this.form.controls[`chk${index}Child${idx}`].invalid) {
               this.form.get(`chk${index}Child${idx}`).clearValidators();
               this.form.get(`chk${index}Child${idx}`).updateValueAndValidity();
             }
-          });
+          }
         }
-      });
+      }
     }
     if (child != 1) {
       if (typeof this.form.controls[`cal${parent}Child${child}`].value == "object") {
@@ -885,7 +896,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   noSymbol(e) {
     var txt = String.fromCharCode(e.which);
-    if (!txt.toString().match(/[A-Za-z0-9ก-๙ ]/) || e.charCode == 3647) {
+    if (!txt.toString().match(/[A-Za-z0-9ก-๙. ]/) || e.charCode == 3647) {
       return false;
     }
   }
