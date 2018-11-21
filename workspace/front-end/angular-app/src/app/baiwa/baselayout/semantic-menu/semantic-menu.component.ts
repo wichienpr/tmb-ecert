@@ -8,6 +8,7 @@ import { AuthService, ModalService, CommonService } from 'services/';
 import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { Observable } from 'rxjs';
 import { digit } from 'app/baiwa/common/helpers';
+import { UpdateUser } from 'app/user.action';
 
 declare var $: any;
 
@@ -148,6 +149,16 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   logoutConfirm(e: boolean) {
     if (e == true) {
       this.loginsv.logout().subscribe(rsp => {
+        const INIT_USER_DETAIL: UserDetail = {
+          roles: [],
+          userId: "",
+          username: "",
+          firstName: "",
+          lastName: "",
+          auths: [],
+          segment: "",
+        };
+        this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
         this.router.navigate(['login']);
       });
     }

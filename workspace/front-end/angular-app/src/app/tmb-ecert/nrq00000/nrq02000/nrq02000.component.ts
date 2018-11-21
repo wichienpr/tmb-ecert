@@ -68,6 +68,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   authForSubmit: Modal;
   firstEnter: boolean = true;
   loadTable: boolean = false;
+  retryCount: number = 3;
   private isIEOrEdge: boolean = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
 
   constructor(
@@ -115,15 +116,50 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     this.dropdownObj = this.service.getDropdownObj();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    // change status to locked
+    this.service.lock();
+    this.initial();
+  }
+
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      // After 7 second will auto loading
+      const reqId = this.data.reqFormId.toString();
+      const id = this.route.snapshot.queryParams["id"] || "";
+      if (id != reqId && this.data.reqFormId != 0 && this.data.tmbRequestNo) {
+        // loading data
+        this.initial();
+        setTimeout(() => {
+          // After 5 second if no data will return to main page
+          if (id != reqId && this.data.reqFormId != 0 && this.data.tmbRequestNo) {
+            console.error("LOAD DATA ERROR");
+            this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้กรุณาลองใหม่อีกครั้ง" }, clicked => {
+              if (clicked) {
+                this.router.navigate(['/crs/crs01000']);
+              }
+            });
+          } else {
+            this.common.isLoaded();
+          }
+        }, 5000);
+      } else {
+        this.common.isLoaded();
+      }
+    }, 7000);
+  }
+
+  async initial() {
+
     this.common.isLoading();
 
     // fetching data 
     const _allowed = this.service.getRejectReason();
     const _data = this.service.getData();
-
-    // change status to locked
-    this.service.lock();
 
     this.checkRoles();
     this.allowed.values = await _allowed;
@@ -213,26 +249,6 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         this.common.isLoaded();
       }
     }
-  }
-
-  ngAfterViewChecked() {
-    this.cdRef.detectChanges();
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      // After 7 second will auto uploading
-      const reqId = this.data.reqFormId.toString();
-      const id = this.route.snapshot.queryParams["id"] || "";
-      if (id != reqId && this.data.reqFormId != 0 && this.data.tmbRequestNo) {
-        this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้กรุณาลองใหม่อีกครั้ง" }, clicked => {
-          if (clicked) {
-            this.router.navigate(['/crs/crs01000']);
-          }
-        });
-      }
-      this.common.isLoaded();
-    }, 7000);
   }
 
   private checkMatchTypeCode(): boolean {
@@ -456,17 +472,26 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     e.preventDefault();
     this.authSubmitted = true;
     if (this.formAuth.valid) {
+      this.common.isLoading();
       this.service.toAuthed(this.formAuth.value).then(result => {
         if (result) {
           this.formSubmit(this.form);
         } else {
           this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
         }
+        this.common.isLoaded();
+      }).catch(error => {
+        console.error(error);
+        this.common.isLoaded();
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
       })
     }
   }
 
   dropdownActive() {
+
+    const maxLength = 5;
+
     setTimeout(() => {
       this.list = [];
       const form = this.form.get($('#multi-select').attr('name'));
@@ -479,7 +504,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         type: CalendarType.YEAR,
         formatter: DateConstant.formatter(CalendarFormatter.yyyy),
         onChange: (date, text) => {
-          if (this.list.length <= 10) {
+          if (this.list.length < maxLength) {
             const form = this.form.get($('#multi-select').attr('name'));
             if (this.list.findIndex(obj => obj == text) == -1) {
               this.list.push(text);
@@ -489,7 +514,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
               $('#multi-select').dropdown('set selected', this.list);
             }, 150);
           } else {
-            this.modal.alert({ msg: "เลือกปีงบประมาณได้ไม่เกิน 10 จำนวน" });
+            this.modal.alert({ msg: `เลือกปีงบประมาณได้ไม่เกิน ${maxLength} จำนวน` });
           }
         }
       });
