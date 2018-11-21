@@ -207,6 +207,13 @@
             </tr>
           </thead>
           <tbody>
+            <ng-container *ngIf="chkList.length == 0">
+              <tr class="center aligned">
+                <td colspan="6">
+                  <h5> ไม่มีข้อมูลประเภทคำขอ </h5>
+                </td>
+              </tr>
+            </ng-container>
             <ng-container *ngFor="let chk of chkList; let i = index">
               <ng-container *ngIf="!chk.code">
                 <tr [className]="classByCode(chk.typeCode)">
@@ -260,9 +267,11 @@
                     <td>{{ db.feeTmb }}</td>
                     <td>{{ db.feeTmb }}</td>
                     <td class="center aligned break-line" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
-                    <td class="center aligned break-line" *ngIf="db.registeredDate">{{ db.registeredDate | dateString }}</td>
+                    <td class="center aligned break-line" *ngIf="db.registeredDate">{{ db.registeredDate | dateString
+                      }}</td>
                     <td class="center aligned break-line" *ngIf="db.acceptedDate">{{ db.acceptedDate | dateString }}</td>
-                    <td class="center aligned break-line" *ngIf="db.statementYear">{{ db.statementYear | statementYearBreak }}</td>
+                    <td class="center aligned break-line" *ngIf="db.statementYear">{{ db.statementYear |
+                      statementYearBreak }}</td>
                     <td class="right aligned">{{ db.value == 0 ? '-' : db.value | emptyString }} ชุด</td>
                   </tr>
                 </ng-container>
@@ -473,7 +482,8 @@
               <div class="ui divider"></div>
             </div>
           </div> -->
-            <div class="{{ toggleTitle }} inline field divider-header header-title" style="margin-bottom: 0.5em !important;margin-top: 1.5em !important;" (click)="toggleDocument()">
+            <div class="{{ toggleTitle }} inline field divider-header header-title" style="margin-bottom: 0.5em !important;margin-top: 1.5em !important;"
+              (click)="toggleDocument()">
               <div class="fourteen wide field" style="margin: 1em auto">
                 <h4 class="header">{{ documentMsg }} <div class="floated right" style="float: right">
                     <i class="angle double down icon" *ngIf="toggleDoc == 'content'"></i>
