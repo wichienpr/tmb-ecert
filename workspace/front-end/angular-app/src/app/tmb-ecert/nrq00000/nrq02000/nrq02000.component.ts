@@ -344,6 +344,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.user.segment);
       this.form.controls.payMethodSelect.setValue('30001');
+      this.payMethodChange('30001');
     }
 
     if (this.roles(ROLES.MAKER)) {
@@ -360,6 +361,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue('');
       this.form.controls.payMethodSelect.setValue('30001');
+      this.payMethodChange('30001');
     }
 
     this.form.updateValueAndValidity();
@@ -800,19 +802,30 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   customSegChange(e) { }
 
-  payMethodChange(e) {
-    if (e != "30004") {
+  payMethodChange(code: string) {
+    if (code !== "30003") {
+      this.accNo = Acc.convertAccNo(this.data.accountNo);
+      this.form.get('accNo').patchValue(this.accNo);
+      this.subAccMethodChange("");
+    } else {
+      this.subAccMethodChange(this.form.get("subAccMethodSelect").value);
+    }
+    if (code !== "30004") {
       this.hiddenReceipt4 = false;
       this.form.controls.ref1.setValidators([Validators.required]);
       this.form.controls.ref2.setValidators([Validators.required]);
       this.form.controls.amountDbd.setValidators([Validators.required]);
-      if (e != "30002" && e != "30003") {
+      if (code !== "30002" && code !== "30003") {
         this.hiddenReceipt3 = false;
         this.form.controls.amountTmb.setValidators([Validators.required]);
         this.form.controls.subAccMethodSelect.clearValidators();
       } else {
         this.hiddenReceipt3 = true;
-        this.form.controls.subAccMethodSelect.setValidators([Validators.required]);
+        if (code === "30003") {
+          this.form.controls.subAccMethodSelect.setValidators([Validators.required]);
+        } else {
+          this.form.controls.subAccMethodSelect.clearValidators();
+        }
         this.form.controls.amountTmb.patchValue('');
         this.form.controls.amountTmb.clearValidators();
       }
