@@ -317,7 +317,7 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName') }">
-          <input type="text" (keypress)="noSymbol($event)" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
+          <input type="text" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
             placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
