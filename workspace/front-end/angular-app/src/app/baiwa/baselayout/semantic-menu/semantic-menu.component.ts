@@ -159,7 +159,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           segment: "",
         };
         this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
       });
     }
   }

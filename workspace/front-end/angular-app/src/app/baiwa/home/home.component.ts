@@ -8,6 +8,7 @@ import * as DashboardAction from 'app/dash-board.action';
 import { Router } from "@angular/router";
 import { CommonService, ModalService } from '../common/services';
 import { ROLES } from '../common/constants';
+import { UpdateUser } from 'app/user.action';
 
 @Component({
   selector: 'app-home',
@@ -50,6 +51,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         // alert("ไม่สามารถทำรายการได้.") 
         this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" }, clicked => {
           if (clicked) {
+            const INIT_USER_DETAIL: UserDetail = {
+              roles: [],
+              userId: "",
+              username: "",
+              firstName: "",
+              lastName: "",
+              auths: [],
+              segment: "",
+            };
+            this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
             this.router.navigate(['/login']);
           }
         })
