@@ -75,6 +75,7 @@ export class DatatableDirective implements OnInit , OnDestroy {
       });
 
       if (this.config.serverSide) {
+        console.log("PAGING", this.pagging);
         let start = (this.pagging.page - 1) * this.pagging.currentLength;
         let plength = this.pagging.currentLength;
         params = Object.assign(params, {
