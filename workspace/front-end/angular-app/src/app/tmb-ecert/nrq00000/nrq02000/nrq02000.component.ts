@@ -344,7 +344,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.form.controls.address.clearValidators();
       this.form.controls.customSegSelect.setValue(this.user.segment);
       this.form.controls.payMethodSelect.setValue('30001');
-      this.payMethodChange('30001');
+      // this.payMethodChange('30001');
     }
 
     if (this.roles(ROLES.MAKER)) {
