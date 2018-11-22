@@ -9,11 +9,13 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.mchange.v2.beans.BeansUtils;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
@@ -50,6 +52,10 @@ public class SaveRequestNoDao {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
 			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
+		if (formVo.getCreatedById() != null) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(formVo.getCreatedById());
+		}
 
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
 
@@ -79,6 +85,10 @@ public class SaveRequestNoDao {
 			sql.append(" AND H.TMB_REQUESTNO LIKE ? ");
 			valueList.add("%" + StringUtils.trim(formVo.getTmbReqNo().replaceAll("-", StringUtils.EMPTY)) + "%");
 		}
+		if (formVo.getCreatedById() != null) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(formVo.getCreatedById());
+		}
 
 		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
 				valueList.toArray());
@@ -106,8 +116,12 @@ public class SaveRequestNoDao {
 			sql.append(" AND H.STATUS = ? ");
 			valueList.add(formVo.getStatus());
 		}
+		if (formVo.getCreatedById() != null) {
+			sql.append(" AND H.CREATED_BY_ID = ? ");
+			valueList.add(formVo.getCreatedById());
+		}
 		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
-		srn01000VoList = jdbcTemplate.query(sql.toString(), valueList.toArray(), reqFormByStatusMapping);
+		srn01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), valueList.toArray(), reqFormByStatusMapping);
 
 		return srn01000VoList;
 	}

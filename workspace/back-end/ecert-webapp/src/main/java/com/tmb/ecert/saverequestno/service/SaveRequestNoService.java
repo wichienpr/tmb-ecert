@@ -14,7 +14,10 @@ import com.tmb.ecert.saverequestno.persistence.dao.SaveRequestNoDao;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000FormVo;
 import com.tmb.ecert.saverequestno.persistence.vo.Srn01000Vo;
 
-import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;;
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+import th.co.baiwa.buckwaframework.security.constant.ADConstant;
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;;
 
 @Service
 public class SaveRequestNoService {
@@ -25,10 +28,12 @@ public class SaveRequestNoService {
 	private SaveRequestNoDao srn01000Dao;
 
 	public DataTableResponse<Srn01000Vo> findReqByTmbReqNo(Srn01000FormVo formVo) {
-
+		UserDetails user = UserLoginUtils.getCurrentUserLogin();
 		DataTableResponse<Srn01000Vo> dt = new DataTableResponse<>();
 		List<Srn01000Vo> srn01000VoList = new ArrayList<Srn01000Vo>();
-
+		if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_REQUESTER)) {
+			formVo.setCreatedById(Long.valueOf(user.getUserId()));
+		}
 		if (StringUtils.isNotBlank(formVo.getTmbReqNo())) {
 			srn01000VoList = srn01000Dao.findReqByTmbReqNo(formVo);
 			dt.setData(srn01000VoList);
