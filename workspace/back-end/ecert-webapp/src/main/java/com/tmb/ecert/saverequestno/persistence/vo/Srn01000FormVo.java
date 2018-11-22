@@ -10,6 +10,15 @@ public class Srn01000FormVo extends DatatableRequest{
 	private static final long serialVersionUID = 6998117903775735072L;
 	private String tmbReqNo;
 	private String status;
+	private Long createdById;
+
+	public Long getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(Long createdById) {
+		this.createdById = createdById;
+	}
 
 	public String getTmbReqNo() {
 		return tmbReqNo;
