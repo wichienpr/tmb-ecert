@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -247,29 +248,31 @@ public class EmailService {
 	public void sendEmailToEmailGateWay(Sup03100Vo emailtemplate , Object[] bodyParam ,Object[] bodySubject) {
 		
 		try {
-			log.info("SEND EAIL TO EMAILGATEWAY ");
-			MimeMessageHelper mail = mailGateWay.newMail();
-			mail.setSubject(emailtemplate.getSubject());
-			String body = "<!DOCTYPE html><html ><body><pre style='font-size:16px;'>";
-			body += emailtemplate.getBody();
-			body += "</pre></body></html>";
-			List<String> ccReceiver = new ArrayList<>();
-			List<String> receiver = Arrays.asList(emailtemplate.getTo().split(","));
-			
-			for (int i = 0; i < receiver.size(); i++) {
-				if (i == 0 ) {
-					mail.setTo(receiver.get(i));
-				}else {
-					ccReceiver.add(receiver.get(i));
+			if (emailtemplate.getBody() != null) {
+				log.info("SEND EAIL TO EMAILGATEWAY ");
+				MimeMessageHelper mail = mailGateWay.newMail();
+				mail.setSubject(emailtemplate.getSubject());
+				String body = "<!DOCTYPE html><html ><body><pre style='font-size:16px;'>";
+				body += emailtemplate.getBody();
+				body += "</pre></body></html>";
+				List<String> ccReceiver = new ArrayList<>();
+				List<String> receiver = Arrays.asList(emailtemplate.getTo().split(","));
+				
+				for (int i = 0; i < receiver.size(); i++) {
+					if (i == 0 ) {
+						mail.setTo(receiver.get(i));
+					}else {
+						ccReceiver.add(receiver.get(i));
+					}
 				}
-			}
-			mail.setCc(ccReceiver.toArray(new String[0]));
-			mail.setFrom(emailtemplate.getFrom());
-			mail.setSubject(MessageFormat.format(emailtemplate.getSubject(), bodySubject));
-			mail.setText(MessageFormat.format(body, bodyParam), true);
-			mailGateWay.sendEmail(mail);
+				mail.setCc(ccReceiver.toArray(new String[0]));
+				mail.setFrom(emailtemplate.getFrom());
+				mail.setSubject(MessageFormat.format(emailtemplate.getSubject(), bodySubject));
+				mail.setText(MessageFormat.format(body, bodyParam), true);
+				mailGateWay.sendEmail(mail);
 
-			log.info("SEND EAIL TO EMAILGATEWAY SUCCESS");
+				log.info("SEND EAIL TO EMAILGATEWAY SUCCESS");
+			}
 			
 		} catch (Exception e) {
 			log.error("SEND EAIL TO EMAILGATEWAY FAIL {} ",e.toString());

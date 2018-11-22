@@ -73,6 +73,7 @@ public class UploadCertificateService {
 //		boolean statusUpload[] = new boolean[3];
 		boolean statusUpload = false;
 		boolean statusCheck = false;
+		String pathFile = "";
 		RequestForm reqVo = null;
 		CheckStatusDocumentResponse checkStatusVo = null;
 //		try {
@@ -90,7 +91,7 @@ public class UploadCertificateService {
 				
 				String reqID = ramdomKey(channelid);
 				
-				ftpPath = ftpPath+ "/"+ reqID;
+				pathFile = ftpPath+ "/"+ reqID;
 
 				// STEP 1 : read 3 file from db
 				reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
@@ -102,41 +103,41 @@ public class UploadCertificateService {
 				List<SftpFileVo> files = new ArrayList<>();
 				if (checkStatusVo == null  ) {
 					
-					files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
-					files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
-					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
+					files.add(new SftpFileVo(new File(pathReq), pathFile, reqVo.getCertificateFile()));
+					files.add(new SftpFileVo(new File(pathCer), pathFile, reqVo.getRequestFormFile()));
+					files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
 					}
 					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
 					}
 					
 				}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 					
 					for (IndexGuoupResponse groupResp : checkStatusVo.getIndexGroups()) {
 						if ( ! StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(groupResp.getFileResCode()) ) {
-							files.add(new SftpFileVo(new File(pathUploadfiel +"/" + groupResp.getFileName() ), ftpPath, groupResp.getFileName() ));
+							files.add(new SftpFileVo(new File(pathUploadfiel +"/" + groupResp.getFileName() ), pathFile, groupResp.getFileName() ));
 						}
 					}
 					
 				}else if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())) {
 					
-					files.add(new SftpFileVo(new File(pathReq), ftpPath, reqVo.getCertificateFile()));
-					files.add(new SftpFileVo(new File(pathCer), ftpPath, reqVo.getRequestFormFile()));
-					files.add(new SftpFileVo(new File(pathRec), ftpPath, reqVo.getReceiptFile()));
+					files.add(new SftpFileVo(new File(pathReq), pathFile, reqVo.getCertificateFile()));
+					files.add(new SftpFileVo(new File(pathCer), pathFile, reqVo.getRequestFormFile()));
+					files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getIdCardFile()), ftpPath,  reqVo.getIdCardFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
 					}
 					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getChangeNameFile()), ftpPath, reqVo.getChangeNameFile()));
+						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
 					}
 				}
 
 				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
-				boolean isSuccess = SftpUtils.putFile(sftpVo,ftpPath);
+				boolean isSuccess = SftpUtils.putFile(sftpVo,pathFile);
 				if (isSuccess) {
 					Thread.sleep(3000);
 					int countImport = 0;
@@ -191,7 +192,7 @@ public class UploadCertificateService {
 				} else {
 					wsErrorDesc = "FTP FILE IMPORT DOCUMENT FAIL";
 					statusUpload = false;
-//					emailservice.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, wsErrorDesc );
+					emailservice.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, wsErrorDesc );
 					break;
 				}
 				countftp++;
@@ -201,9 +202,9 @@ public class UploadCertificateService {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
-//				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
-//				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
-//				throw new Exception(wsErrorDesc);
+				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
+				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
+				throw new Exception(wsErrorDesc);
 			}
 
 //		} catch (Exception e) {
