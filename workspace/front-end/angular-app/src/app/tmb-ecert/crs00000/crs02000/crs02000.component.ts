@@ -108,13 +108,15 @@ export class Crs02000Component implements OnInit {
       this.paidType = await this.service.getPaidType().toPromise();
       this.history = await this.service.getHistory(this.id);
       this.chkList = await this.service.getChkList(this.id);
-      this.paidTypeString = this.paidType.find(obj => obj.code == this.data.paidTypeCode).name;
-      for (let i = 0; i < this.chkList.length; i++) {
-        if (this.chkList[i].feeDbd == "" && i != 0) {
-          this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+      if (this.service.getStatusCode() !== "10011") {
+        this.paidTypeString = this.paidType.find(obj => obj.code == this.data.paidTypeCode).name;
+        for (let i = 0; i < this.chkList.length; i++) {
+          if (this.chkList[i].feeDbd == "" && i != 0) {
+            this.chkList[i].children = await this.service.getChkListMore(this.chkList[i].code);
+          }
         }
+        this.chkList = await this.service.matchChkList(this.chkList, this.cert);
       }
-      this.chkList = await this.service.matchChkList(this.chkList, this.cert);
       setTimeout(() => {
         this.dataLoading = false;
       }, 500);
