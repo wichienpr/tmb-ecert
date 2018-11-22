@@ -24,7 +24,7 @@ public class Sup02000Service {
 	@Autowired
 	private ParameterConfigurationDao paramDao;
 	
-	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_ROLEMANAGEMENT);
+	private static final Logger logger = LoggerFactory.getLogger(APPLICATION_LOG_NAME.ECERT_PARAMETERCONFIG);
 	
 	public List<ParameterConfig> getParmeter() {
 		return paramDao.getParameter();

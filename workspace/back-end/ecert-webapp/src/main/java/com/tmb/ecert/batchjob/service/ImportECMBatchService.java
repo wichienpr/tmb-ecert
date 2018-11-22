@@ -102,7 +102,7 @@ public class ImportECMBatchService {
 		Date current = new Date();
 		long start = System.currentTimeMillis();
 		
-		String ftpPath = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PATH); 
+		String pathFile = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PATH); 
 		String ftpHost= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_HOST);
 		String ftpUsername= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_USERNAME);
 		String ftpPassword= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PASSWORD);
@@ -124,6 +124,7 @@ public class ImportECMBatchService {
 			int countCheckstatus = 0;
 			int countftp = 0;
 			boolean statusUpload = false;
+			String ftpPath = "";
 			
 			if (reqFormList != null && reqFormList.size() > 0) {
 				log.info(" BATCH REQUEST FROM SIZE  "+reqFormList.size());
@@ -135,7 +136,7 @@ public class ImportECMBatchService {
 					String reqID ="";
 					while (countftp < timeLoop) {
 						reqID = ramdomKey(channelid);
-						ftpPath = ftpPath+ "/"+ reqID;
+						ftpPath = pathFile+ "/"+ reqID;
 						List<SftpFileVo> files = new ArrayList<>();
 						if (checkStatusVo == null  ) {
 							
