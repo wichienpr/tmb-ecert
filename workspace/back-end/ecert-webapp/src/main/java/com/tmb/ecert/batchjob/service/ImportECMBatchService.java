@@ -230,6 +230,7 @@ public class ImportECMBatchService {
 						countftp++;	
 					}
 					if (statusUpload) {
+						isSuccess = true;
 						int upldateResult = checkReqDetailDao.updateECMFlag(requestForm.getReqFormId());
 						log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 					} else {

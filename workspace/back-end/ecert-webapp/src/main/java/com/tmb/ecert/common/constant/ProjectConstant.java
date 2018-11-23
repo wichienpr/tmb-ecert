@@ -107,7 +107,9 @@ public class ProjectConstant {
 		public static final String FEE_CLIENT_VERSION = "feepayment.clientapp.version";
 		public static final String FEE_SPNAME = "feepayment.SPName";
 		public static final String FEE_TRANS_CODE = "feepayment.transaction.code";
+		public static final String FEE_TRANS_CODE_CA = "feepayment.transaction.code.ca";
 		public static final String FEE_FROM_ACCOUNT_TYPE = "feepayment.fromacctref.account.type";
+		public static final String FEE_FROM_ACCOUNT_TYPE_CA = "feepayment.fromacctref.account.type.ca";
 		public static final String DBD_ACCOUNT = "dbd.accountno";
 		public static final String FEE_TO_ACCOUNT_TYPE = "feepayment.toacctref.account.type";
 		public static final String FEE_EPAY = "feepayment.epay.code";
