@@ -36,6 +36,8 @@ public class StatusConstant {
 		public final static String PAY_DBD = "30002";
 		public final static String PAY_TMB = "30003";
 		public final static String PAY_NONE = "30004";
+		public final static String[] CHECK_ACC_CA = { "2","7","9"};
+		public final static String[] CHECK_ACC_IM = { "1"};
 	}
 	
 	public static class REJECT_CODE {

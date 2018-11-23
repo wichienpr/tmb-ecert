@@ -202,9 +202,9 @@ public class UploadCertificateService {
 				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
-				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
+//				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
 				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
-				throw new Exception(wsErrorDesc);
+//				throw new Exception(wsErrorDesc);
 			}
 
 //		} catch (Exception e) {

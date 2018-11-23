@@ -42,7 +42,7 @@ public class PaymentWebService {
 
 	@Autowired
 	private RequestorDao reqDao;
-	
+
 	public CommonMessage<ApproveBeforePayResponse> approveBeforePayment(RequestForm reqF) {
 		logger.info("PaymentWebService::approveBeforePayment");
 		CommonMessage<ApproveBeforePayResponse> commonMsg = new CommonMessage<ApproveBeforePayResponse>();
@@ -56,7 +56,8 @@ public class PaymentWebService {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpEntity<ApproveBeforePayRequest> request = new HttpEntity<>(req);
 			ResponseEntity<ApproveBeforePayResponse> response = restTemplate.exchange(
-					ApplicationCache.getParamValueByName(WEB_SERVICE_ENDPOINT.APPROVE_BEFOREPAYMENT), HttpMethod.POST, request, ApproveBeforePayResponse.class);
+					ApplicationCache.getParamValueByName(WEB_SERVICE_ENDPOINT.APPROVE_BEFOREPAYMENT), HttpMethod.POST,
+					request, ApproveBeforePayResponse.class);
 			ApproveBeforePayResponse res = response.getBody();
 			if (PAYMENT_STATUS.SUCCESS.equalsIgnoreCase(res.getStatusCode())) {
 				commonMsg.setData(res);
@@ -66,14 +67,15 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailApproveBeforePay(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE), new Date(), e.toString());
+			emailService.sendEmailFailApproveBeforePay(reqF,
+					ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
 		}
 		return commonMsg;
 	}
-	
+
 	public CommonMessage<FeePaymentResponse> feePayment(RequestForm reqF) {
 		logger.info("PaymentWebService::feePaymentExpress");
 		CommonMessage<FeePaymentResponse> commonMsg = new CommonMessage<FeePaymentResponse>();
@@ -82,30 +84,50 @@ public class PaymentWebService {
 		FeePaymentRequest req = new FeePaymentRequest();
 		BigDecimal amountDBD = reqF.getAmountDbd() != null ? reqF.getAmountDbd() : new BigDecimal(0.0);
 		BigDecimal amountTMB = reqF.getAmountTmb() != null ? reqF.getAmountTmb() : new BigDecimal(0.0);
-		req.setRqUid(uuid);
-		req.setClientDt(DateConstant.convertDateToStrDDMMYYYYHHmmss(new Date()));
-		req.setCustLangPref(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CUST_LANG));
-		req.setClientAppOrg(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_ORG));
-		req.setClientAppName(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_NAME));
-		req.setClientAppVersion(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_VERSION));
-		req.setSpName(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_SPNAME));
-		req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
-		req.setFromAccountIdent(reqF.getAccountNo()); // ECERT_REQUEST_FORM.ACCOUNT_NO
-		// ECERT_REQUEST_FORM. ACCOUNTTYPE
-		req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
-				: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
-		req.setToAccountIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.DBD_ACCOUNT));
-		req.setToAccountType(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TO_ACCOUNT_TYPE));
-		req.setCurAmt(amountDBD); // ECERT_REQUEST_FORM.AMOUNT_DBD
-		req.setBillPmtFee(amountTMB); // ECERT_REQUEST_FORM.AMOUNT_TMB
-		req.setRef1(reqF.getRef1()); // ECERT_REQUEST_FORM.REF1
-		req.setRef2(reqF.getRef2()); // ECERT_REQUEST_FORM.REF2
-		req.setPostedDate(DateConstant.convertDateToStrDDMMYYYY(new Date()));
-		req.setEpayCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_EPAY));
-		req.setBranchIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_BRANCH));
-		req.setCompCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_COMP_CODE));
-		req.setPostedTime(DateConstant.convertDateToStrHHmmss(new Date()));
+		String[] acountNoArr = reqF.getAccountNo().split("");
 		try {
+			
+			req.setRqUid(uuid);
+			req.setClientDt(DateConstant.convertDateToStrDDMMYYYYHHmmss(new Date()));
+			req.setCustLangPref(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CUST_LANG));
+			req.setClientAppOrg(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_ORG));
+			req.setClientAppName(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_NAME));
+			req.setClientAppVersion(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_CLIENT_VERSION));
+			req.setSpName(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_SPNAME));
+
+			
+			//set trans code by degit account no 
+			if ( PAYMENT_STATUS.CHECK_ACC_CA[0].equals(acountNoArr[4]) || PAYMENT_STATUS.CHECK_ACC_CA[1].equals(acountNoArr[4]) 
+					|| PAYMENT_STATUS.CHECK_ACC_CA[2].equals(acountNoArr[3]) ) {
+				// ECERT_REQUEST_FORM. ACCOUNTTYPE
+				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
+				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+				
+			}else if (PAYMENT_STATUS.CHECK_ACC_IM[0].equals(acountNoArr[3])) {
+				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE_CA));
+				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE_CA));
+			}else {
+				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
+				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+			}
+
+			req.setFromAccountIdent(reqF.getAccountNo()); // ECERT_REQUEST_FORM.ACCOUNT_NO
+
+			req.setToAccountIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.DBD_ACCOUNT));
+			req.setToAccountType(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TO_ACCOUNT_TYPE));
+			req.setCurAmt(amountDBD); // ECERT_REQUEST_FORM.AMOUNT_DBD
+			req.setBillPmtFee(amountTMB); // ECERT_REQUEST_FORM.AMOUNT_TMB
+			req.setRef1(reqF.getRef1()); // ECERT_REQUEST_FORM.REF1
+			req.setRef2(reqF.getRef2()); // ECERT_REQUEST_FORM.REF2
+			req.setPostedDate(DateConstant.convertDateToStrDDMMYYYY(new Date()));
+			req.setEpayCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_EPAY));
+			req.setBranchIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_BRANCH));
+			req.setCompCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_COMP_CODE));
+			req.setPostedTime(DateConstant.convertDateToStrHHmmss(new Date()));
+
 			RestTemplate restTemplate = new RestTemplate();
 			HttpEntity<FeePaymentRequest> request = new HttpEntity<>(req);
 			ResponseEntity<FeePaymentResponse> response = restTemplate.exchange(
@@ -125,15 +147,15 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailFeePayment(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE),
-					new Date(), e.toString());
+			emailService.sendEmailFailFeePayment(reqF,
+					ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
 		}
 		return commonMsg;
 	}
-	
+
 	public CommonMessage<RealtimePaymentResponse> realtimePayment(RequestForm reqF) {
 		logger.info("PaymentWebService::realtimePayment");
 		CommonMessage<RealtimePaymentResponse> commonMsg = new CommonMessage<RealtimePaymentResponse>();
@@ -170,13 +192,13 @@ public class PaymentWebService {
 				throw new Exception(res.getStatusCode() + " - " + res.getDescription());
 			}
 		} catch (Exception e) {
-			emailService.sendEmailFailRealtimePayment(reqF, ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE),
-					new Date(), e.toString());
+			emailService.sendEmailFailRealtimePayment(reqF,
+					ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.TMB_SERVICECODE), new Date(), e.toString());
 			logger.error(e.getMessage());
 			commonMsg.setMessage(e.getMessage());
 			return commonMsg;
 		}
 		return commonMsg;
 	}
-	
+
 }
