@@ -17,6 +17,7 @@ public class UserDetails extends User implements UserBean {
 	private String firstName;
 	private String lastName;
 	private String branchCode;
+	private String officeCode;
 	
 	// Constructor
 	public UserDetails(String username, String password, boolean enabled,boolean accountNonExpired,
@@ -73,5 +74,14 @@ public class UserDetails extends User implements UserBean {
 	public void setBranchCode(String branchCode) {
 		this.branchCode = branchCode;
 	}
+
+	public String getOfficeCode() {
+		return officeCode;
+	}
+
+	public void setOfficeCode(String officeCode) {
+		this.officeCode = officeCode;
+	}
+	
 
 }
