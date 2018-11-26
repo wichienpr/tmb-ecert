@@ -13,7 +13,9 @@ public class TMBPerson implements Serializable {
     private String group;
 	private String branchCode;
 	private String position;
-    private List<String> memberOfs;//memberO
+	private String officeCode;
+
+	private List<String> memberOfs;//memberO
 
     public String getUserid() {
         return userid;
@@ -92,6 +94,15 @@ public class TMBPerson implements Serializable {
 	public void setPosition(String position) {
 		this.position = position;
 	}
+	
+    public String getOfficeCode() {
+		return officeCode;
+	}
+
+	public void setOfficeCode(String officeCode) {
+		this.officeCode = officeCode;
+	}
+
 
     
     
