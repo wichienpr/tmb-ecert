@@ -142,4 +142,17 @@ export class Rep03000Component implements OnInit {
     return e.charCode >= 48 && e.charCode <= 57;
   }
 
+  noSymbol(e) {
+    var txt = String.fromCharCode(e.which);
+    if (!txt.toString().match(/[A-Za-z0-9ก-๙. ]/) || e.charCode == 3647) {
+      return false;
+    }
+  }
+
+  noPipe(e) {
+    if (e.charCode == 124) {
+      return false;
+    }
+  }
+
 }
