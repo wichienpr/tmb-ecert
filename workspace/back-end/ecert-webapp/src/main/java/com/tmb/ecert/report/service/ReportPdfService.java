@@ -384,6 +384,50 @@ public class ReportPdfService {
 
 		return "REQFORM_" + (vo!=null ? vo.getTmpReqNo(): null);
 	}
+	
+	/* NewFormWithoutCertificatesToPdf */
+	public String reqFormWithoutCert(RpReqFormVo vo) throws IOException, JRException {
+		
+		Date currentDate = new Date();
+		ByteArrayOutputStream os = null;
+		try {
+
+			initialService();
+			// RP001
+			String reportName01 = "REQUESTFORM_ONLY_1ST";
+
+			Map<String, Object> params01 = new HashMap<>();
+
+			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params01.put("tmpReqNo", vo.getTmpReqNo());
+			params01.put("reqDate", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
+
+			JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01,
+					 new JREmptyDataSource());
+			
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint01));
+
+			os = new ByteArrayOutputStream();
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+			exporter.exportReport();
+
+			byte[] reportFile = os.toByteArray();
+
+			String name = "REQFORM_" + vo.getTmpReqNo() + ".pdf";
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
+			ReportUtils.closeResourceFileInputStream(params01);
+		}catch(Exception e) {
+			logger.error("ReportPdfService Error: ", e);
+		}finally {
+			EcertFileUtils.closeStream( os );
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.PRINT_FORM_CODE, ACTION_AUDITLOG_DESC.PRINT_FORM,
+					(vo!=null ? vo.getTmpReqNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
+		}
+
+		return "REQFORM_" + (vo!=null ? vo.getTmpReqNo(): null);
+	}
 
 	/* reqFormToPdf */
 	public String reqFormToPdf(RpReqFormVo vo) throws IOException, JRException {

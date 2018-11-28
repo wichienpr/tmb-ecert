@@ -93,6 +93,12 @@ public class TMBLDAPManager {
 						tmbPerson.setPosition(StringUtils.trim(positionarr[0]));
 					}
 					
+					Attribute officeCode = attrs.get("extensionAttribute2");
+					if(position != null) {
+						String[] officeCodearr = StringUtils.split( officeCode.get().toString(), "|");
+						tmbPerson.setOfficeCode(StringUtils.trim(officeCodearr[1]));
+					}
+					
 					// check role name for return only role
 					int value= 0;
 					String roleName = "";

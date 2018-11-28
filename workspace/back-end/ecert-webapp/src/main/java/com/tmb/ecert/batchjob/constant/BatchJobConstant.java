@@ -113,6 +113,8 @@ public class BatchJobConstant {
 	public static final class OFFICE_CODE {
 		public static final String OFFICE_1092 = "1092";
 		public static final String OFFICE_1078 = "1078";
+		public static final String OFFICE_SEG_0300700000 = "0300700000";
+		public static final String OFFICE_SEG_0201200000 = "0201200000";
 	}
 	
 	public static class ECERT_CUSTSEGMENT_CODE {

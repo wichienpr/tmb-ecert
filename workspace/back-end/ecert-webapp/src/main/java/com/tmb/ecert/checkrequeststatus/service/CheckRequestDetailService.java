@@ -163,6 +163,7 @@ public class CheckRequestDetailService {
 		RequestForm newReq = new RequestForm();
 		try {
 			newReq = dao.findReqFormById(id, false);
+			newReq.setOfficeCode(user.getOfficeCode());
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
 			if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_CHECKER)) {
 				// UserLoginUtils.ishasRole(user, ROLES.CHECKER)
@@ -184,6 +185,7 @@ public class CheckRequestDetailService {
 						newReq.setUuid(dbdStep.getData().getUuid());
 
 						CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
+						newReq.setPayLoadTs(realtimeStep.getData().getPayLoadTs()); // UPDATE PAY_LOAD_TS
 						if (isSuccess(realtimeStep.getMessage())) {
 
 							newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);

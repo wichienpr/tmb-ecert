@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.5.1  -->
+<!-- 2018-11-28T16:44:16 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consent_letter" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="5fde1f75-6bd1-4f3b-8bca-f81e464f17db">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="consent_title" hTextAlign="Center" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="18" isBold="true"/>
+	<style name="consent_detail" hTextAlign="Left" vTextAlign="Middle" vImageAlign="Middle" fontName="Cordia New" fontSize="16"/>
+	<parameter name="logoTmb" class="java.io.InputStream"/>
+	<parameter name="tmpReqNo" class="java.lang.String"/>
+	<parameter name="reqDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="772" splitType="Stretch">
+			<image isUsingCache="false">
+				<reportElement x="0" y="-20" width="320" height="80" uuid="67662d21-c920-437c-bbd6-737e2e549c44"/>
+				<imageExpression><![CDATA[$P{logoTmb}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="44" y="107" width="89" height="18" uuid="94ea28ad-f9bf-4bd4-95dc-f56622d59f63"/>
+				<box>
+					<bottomPen lineWidth="0.75" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="Cordia New" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  "+$P{tmpReqNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="107" width="44" height="18" uuid="105ba206-0c6c-4a80-b61d-aa32886b0f70"/>
+				<textElement textAlignment="Left">
+					<font fontName="Cordia New" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เลขที่คำขอ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_title" x="0" y="57" width="535" height="50" uuid="e039b71a-6cbc-4b5a-8606-d05b7dd02680"/>
+				<textElement textAlignment="Center">
+					<font size="17"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ใบคำขอหนังสือรับรองและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร (e-Certificate) และ หนังสือยินยอมให้หักเงินจากบัญชีเงินฝากเพื่อชำระค่าธรรมเนียมฯ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="360" y="107" width="24" height="18" uuid="02df2093-71ae-4362-bdd8-940be7c3cc7a"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["วันที่"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="consent_detail" x="384" y="107" width="151" height="18" uuid="9c8c70c7-9013-438c-b4aa-cc5b274504f7"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reqDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="39" y="135" width="31" height="18" uuid="c897131d-39c2-4da4-9508-107f95c1c6b1"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ข้าพเจ้า"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="consent_detail" x="70" y="136" width="465" height="18" uuid="828201b2-27c5-484d-85f5-dd073c999a09"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="154" width="95" height="18" uuid="0fe89897-dde7-4224-91e2-7779c09aed84"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เจ้าของบัญชีเงินฝากเลขที่"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="consent_detail" x="95" y="154" width="95" height="18" uuid="94fb7bd6-2c74-42a8-9b32-d12d0d1b5fe3"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="190" y="154" width="345" height="18" uuid="88bd4762-339f-46dd-98bd-809434e2492e"/>
+				<textElement markup="styled">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<style isBold='true'>" + "(“บัญชีเงินฝาก”)" + "</style>" + " ขอทำหนังสือยินยอมให้แก่ธนาคารเพื่อให้ธนาคารหักเงินจากบัญชีเงินฝากของ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="172" width="535" height="18" uuid="4153c575-89b7-42b3-b2cc-68f24ffcc3c7"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ข้าพเจ้าทุกคราว เพื่อชำระค่าธรรมเนียมใดๆของข้าพเจ้า และตามใบคำขอหนังสือรับรองนิติบุคคลและรับรองสำเนาเอกสารทางอิเล็กทรอนิกส์ผ่านธนาคาร"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="190" width="535" height="18" uuid="0d6a16cf-cfaa-4313-aeab-da19d9a49808"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(e-Certificate)ตามจำนวนเงินที่ธนาคารได้รับแจ้งจากข้อมูลอิเล็กทรอนิกส์ (Electronic Data) ของกรมพัฒนาธุรกิจการค้า " + "<style isBold='true'>" + "(“คำขอ”)" + "</style>" + " และ/หรือ บัญชีอื่นใด"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="208" width="535" height="18" uuid="c1ea0667-63f8-4d27-adac-9ec5124ff938"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ซึ่งข้าพเจ้าจะเปลี่ยนแปลง หรือกำหนดเพิ่มเติมในภายหน้า ทั้งนี้ในกรณีที่บัญชีดังกล่าวมีเงินไม่เพียงพอให้ธนาคารหักได้ทั้งหมด ข้าพเจ้าตกลงยินยอม"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="226" width="535" height="18" uuid="c33ff3ce-80cc-4ca0-b689-56cb3aadbc6e"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ให้ธนาคารลงบัญชีเพิ่มยอดหนี้และให้ถือว่าเป็นหนี้เบิกเงินเกินบัญชีและยินยอมเสียดอกเบี้ยตามเงื่อนไขและข้อตกลงในสัญญาเบิกเงินเกินบัญชีหรือ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="244" width="535" height="18" uuid="8f50ce28-0503-43ff-8e13-ee436b2f4b2a"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["คำขอเปิดบัญชีกระแสรายวันที่ทำไว้กับธนาคารได้ ทั้งนี้ ข้าพเจ้าตกลงให้ความยินยอมนี้มีผลใช้บังคับตลอดไปจนกว่าธนาคารจะได้รับชำระหนี้จนครบถ้วน"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="38" y="262" width="497" height="18" uuid="92002e1c-582c-47e5-8671-4b31a56ee6a5"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["อนึ่ง ในการหักบัญชีเงินฝากดังกล่าวข้างต้น ธนาคารไม่จำเป็นต้องแจ้งการหักบัญชีให้ข้าพเจ้าทราบอีก เนื่องจากข้าพเจ้าสามารถตรวจสอบ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="280" width="535" height="18" uuid="11fd72c7-5bce-4df7-a76e-9157f2a292d2"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["รายการหักบัญชีเงินฝากดังกล่าวได้จากสมุดคู่ฝาก และ/หรือ STATEMENT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="38" y="298" width="497" height="18" uuid="cbfcb96a-13cf-4f60-a47a-cbb08e47b8ff"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ในกรณีที่มีการเปลี่ยนแปลงเลขที่บัญชีเงินฝากดังกล่าวข้างต้นไม่ว่าด้วยเหตุใด ข้าพเจ้าตกลงยินยอมให้ธนาคารหักเงินในบัญชีเงินฝากที่"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="0" y="316" width="535" height="18" uuid="ff79fbb6-77a4-4c63-9ff6-c2334f74cc55"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เปลี่ยนแปลงไปนั้นได้ทุกประการโดยไม่ต้องทำเอกสารใดๆเพิ่มเติมให้ธนาคารอีก"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="38" y="334" width="497" height="18" uuid="e38d1a8f-bef6-46c6-aedf-14bb32ce1e7d"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["การกระทำใดๆ ของธนาคารเพื่อให้เป็นไปตามที่กล่าวข้างต้นถือว่า ธนาคารได้กระทำไปตามความประสงค์ของข้าพเจ้าทุกประการ"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="consent_detail" x="199" y="671" width="170" height="18" uuid="da8dd3d8-f3fe-45d1-a9e4-234183267c8b"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="370" y="671" width="165" height="18" uuid="f3370743-53f4-4896-9431-41ca09e9623f"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[") ผู้ขอใช้บริการ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="192" y="690" width="8" height="18" uuid="28861075-77cb-4e4b-92df-5d61627a2023"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="199" y="708" width="170" height="18" uuid="8b072900-e69a-45e1-85dc-e53b8fcc8b87"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["โปรดระบุชื่อและนามสกุล ตัวบรรจง"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="44" y="754" width="491" height="18" uuid="ce887a8b-9e7e-4205-980a-5c6bc19bf6d0"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<style isBold='true'>ข้อควรระวัง : </style>การลงนามในช่องเจ้าของบัญชี ให้เป็นไปตามตัวอย่างลายมือชื่อที่ให้ไว้กับธนาคาร"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="192" y="671" width="8" height="18" uuid="30aacc2f-aab6-4e7a-84dd-c12e32a2d774"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="370" y="690" width="165" height="18" uuid="0d9a4f92-5344-4b92-a77c-ce0ca427478d"/>
+				<textElement textAlignment="Left">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[") เจ้าของบัญชี / ผู้ให้ความยินยอม"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="consent_detail" x="199" y="726" width="170" height="18" uuid="5c6c016c-9ac8-4148-b119-a68559474c25"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["หรือพร้อมประทับตรา (ถ้ามี)"]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="360" width="534" height="280" uuid="bf024c07-b649-4c46-a128-16f013029acc"/>
+				<box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="2.0"/>
+				</box>
+				<textField>
+					<reportElement style="consent_detail" x="0" y="0" width="527" height="18" uuid="420af423-f133-498f-8a70-11e5a51fce3f"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" ข้าพเจ้ามีความประสงค์ขอเอกสาร เพื่อใช้เป็นหลักฐานเอกสารประกอบสำหรับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="39" y="18" width="20" height="18" uuid="18afd479-2082-4ee8-9918-6669c93c6208"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ศาล"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="326" y="18" width="186" height="18" uuid="4671d9dd-f063-4540-9142-57def05d0a2c"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="5" y="36" width="34" height="18" uuid="fadc6bcb-f959-4bd2-91a5-ea1dd2b74f19"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ประเภท"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="37" y="54" width="50" height="18" uuid="0f1ad39e-2978-4ea7-a828-d5169c60f425"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ชื่อนิติบุคคล"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="82" y="54" width="290" height="18" uuid="89910514-e96b-4afe-a795-1207ac82041c"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="87" y="72" width="285" height="18" uuid="d82dedab-86cd-4240-aa97-ac005c3963b9"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="37" y="72" width="55" height="18" uuid="d3044d58-67b4-4fd2-aca4-c2deddfa02aa"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ทะเบียนเลขที่"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="137" y="90" width="74" height="18" uuid="46976e34-40de-4df0-944c-478c6610107e"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="213" y="90" width="30" height="18" uuid="99ec97ca-6030-4260-8d7b-bb6092f452b1"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="243" y="90" width="106" height="18" uuid="ff03a5cb-6019-4898-a8e7-8d06b1d0c247"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ระบุ ชื่อผู้ชำระเงินในใบเสร็จ"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="343" y="90" width="170" height="18" uuid="1b186d20-243e-484e-8584-b7c03e6a5398"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="213" y="108" width="30" height="18" uuid="36de745c-efad-4543-a73e-7d02abb625f5"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="243" y="108" width="106" height="18" uuid="655d7fb5-9b06-4b5a-b654-0e7a0b342035"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ระบุ ชื่อผู้ชำระเงินในใบเสร็จ"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="343" y="108" width="170" height="18" uuid="3c589925-e1e8-4780-96ec-289926cc784e"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="133" y="108" width="78" height="18" uuid="de748111-8f65-4aa9-b84b-1c8943b35e27"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="230" y="144" width="142" height="18" uuid="16dbb2c7-37e1-4251-bc80-02deaf2e5651"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="117" y="181" width="145" height="18" uuid="803fe482-f199-4e29-b967-ddd054272c7d"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="192" y="216" width="162" height="18" uuid="4ce62309-a9af-444b-898f-4f2c4c2126cc"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="68" y="252" width="172" height="18" uuid="a8597264-2b0b-4b64-9ad7-66c90b3d3298"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement x="26" y="20" width="12" height="18" uuid="41b4ad9f-d470-42a8-9a13-48c7c16eddd8"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="61" y="20" width="12" height="18" uuid="20766cb9-3c1f-4ed8-9d6c-da21c9684821"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="74" y="18" width="59" height="18" uuid="ac0bc0ba-e2b6-469a-97c1-08e8e8799b30"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["สถาบันการเงิน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="148" y="18" width="67" height="18" uuid="fe8d5c73-302a-48ef-a165-b1a4c3743391"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หน่วยงานราชการ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="135" y="20" width="12" height="18" uuid="c72c621a-090b-44fe-a307-68a12acce432"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="230" y="18" width="46" height="18" uuid="8b263c68-ccfd-4309-af0d-8aec71fa5f8e"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ทำนิติกรรม"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="217" y="20" width="12" height="18" uuid="56aee862-809e-456c-b72b-564444c62200"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="291" y="19" width="39" height="18" uuid="23480717-a7a2-4cb0-9371-598fcdae2f05"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["อื่นๆ ระบุ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="278" y="21" width="12" height="18" uuid="5360d47b-3015-4d93-8723-f46c002c9558"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="110" width="12" height="18" uuid="95052e22-362c-46c5-ad65-263d2a6ea4ad"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="108" width="89" height="18" uuid="cce28aca-2ade-45ca-8272-853d614e5dbf"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["รับรองสำเนา จำนวน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="90" width="94" height="18" uuid="a390f0c2-caea-4684-9615-6bb749a762d8"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หนังสือรับรอง จำนวน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="92" width="12" height="18" uuid="24193086-1e35-4d30-b763-94ee0e745515"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="85" y="126" width="116" height="18" uuid="854789e3-b6de-401d-8968-83100fc78e52"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หนังสือบริคณห์สนธิ ฉบับจัดตั้ง"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="72" y="128" width="12" height="18" uuid="dbfcbf3b-2553-40ef-9d47-2365a59b5a8c"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="72" y="146" width="12" height="18" uuid="7831d4f1-9075-4da7-8d8d-a3675c4f64a5"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="85" y="144" width="150" height="18" uuid="218d5b68-3c22-4775-a67d-eb77ca33eb56"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หนังสือบริคณห์สนธิ ฉบับแก้ไข ล่าสุดเมื่อ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="162" width="42" height="18" uuid="a52ee996-1e18-4b67-9a91-98c3d260a1f8"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["งบการเงิน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="164" width="12" height="18" uuid="34fa878d-5a47-4b6e-a85a-a7714dd30527"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="52" y="36" width="240" height="18" uuid="c6b29aa6-8f77-41cf-825c-926ea605f5db"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ห้างหุ้นส่วนจำกัด/สามัญนิติบุคคล บริษัทจำกัด บริษัทมหาชนจำกัด"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="39" y="38" width="12" height="18" uuid="9e3ab888-9be1-4a90-b7e7-d21c0974ac0e"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="305" y="36" width="110" height="18" uuid="570ba869-5061-416d-a77c-34b4aa3b8fed"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ประกอบธุรกิจของคนต่างด้าว"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="292" y="38" width="12" height="18" uuid="9e039a3c-5dc2-44f1-a433-ea3dc5a0146c"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="428" y="36" width="102" height="18" uuid="1d4d0dd9-a690-47e6-81e4-8feba125ae46"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หอการค้า/สมาคมหอการค้า"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="415" y="38" width="12" height="18" uuid="4576528b-63b6-4682-aa05-b678651fcfc5"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="85" y="181" width="36" height="18" uuid="a2d3d8eb-883b-4189-96ef-59c333cf98ba"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ประจำปี"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="72" y="183" width="12" height="18" uuid="4b7bf92e-ae71-4c9b-9390-6aecc5185d1d"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="85" y="199" width="39" height="18" uuid="529878df-2e79-4dd6-865c-4d94d0799abe"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ณ วันเลิก"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="72" y="201" width="12" height="18" uuid="6b20558e-4e67-4e49-bc6b-4a0bf5ea88e3"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="219" width="12" height="18" uuid="f5f19086-0d42-44c1-9a39-126980eb1aed"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="217" width="148" height="18" uuid="c18fe513-d347-48d6-ba59-32e2cf11bcc1"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["บัญชีรายชื่อผู้ถือหุ้นฉบับยื่นไว้ล่าสุด หรือ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="255" width="12" height="18" uuid="d2f89e17-5b9a-416b-9ebb-a38e6c142da4"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="253" width="21" height="18" uuid="836433a5-7fa1-4bbe-a0d9-093d792fd35f"/>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["อื่นๆ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="175" y="237" width="12" height="18" uuid="cb67a86f-2cbf-4707-9f44-bea47497d690"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="188" y="235" width="77" height="18" uuid="732cf138-4c65-4df2-b684-3d9543f78093"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หนังสือนัดประชุม"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="37" y="237" width="12" height="18" uuid="2446627f-d026-4452-8157-9e769bdd3a88"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="50" y="235" width="42" height="18" uuid="ba280ff6-2978-458f-8a79-a50897741bbf"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ข้อบังคับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="107" y="237" width="12" height="18" uuid="f9618521-3e69-4f98-876e-5ae31370bf51"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="120" y="235" width="40" height="18" uuid="85e5765b-3193-4992-b549-6d15bc45f5c4"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ดวงตรา"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="280" y="237" width="12" height="18" uuid="8d247a78-3838-4fa0-80b2-b358ab5e9542"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="293" y="235" width="86" height="18" uuid="05089f02-8c20-46e7-8362-45b509cbab57"/>
+					<textElement textAlignment="Left">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["รายงานการประชุม"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="30"/>
+	</pageFooter>
+</jasperReport>

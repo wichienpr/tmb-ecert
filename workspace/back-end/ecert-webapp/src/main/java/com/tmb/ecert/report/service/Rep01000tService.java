@@ -201,7 +201,9 @@ public class Rep01000tService {
 	
 	public String convertAccountNo(String accountNo) {
 		String accountNoReturn = "";
-		accountNoReturn = accountNo.substring(0, 3)+"-"+accountNo.substring(3, 4)+"-"+accountNo.substring(4, 9)+"-"+accountNo.substring(9);
+		if (StringUtils.isNotBlank(accountNo)) {
+			accountNoReturn = accountNo.substring(0, 3)+"-"+accountNo.substring(3, 4)+"-"+accountNo.substring(4, 9)+"-"+accountNo.substring(9);
+		}
 		return accountNoReturn;
 	}
 	

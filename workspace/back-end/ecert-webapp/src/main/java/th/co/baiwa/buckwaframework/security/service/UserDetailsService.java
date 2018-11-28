@@ -199,6 +199,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		UserDetails rs = new UserDetails(username, "" ,grantedAuthorityList	);
 		rs.setUserId(tMBPerson.getUserid());
 		rs.setBranchCode(tMBPerson.getBranchCode());
+		rs.setOfficeCode(tMBPerson.getOfficeCode());
 		
 		String fullName = tMBPerson.getName(); // firstname , lastname
 		logger.debug("Full Name : {}", fullName); // TODO plz checked

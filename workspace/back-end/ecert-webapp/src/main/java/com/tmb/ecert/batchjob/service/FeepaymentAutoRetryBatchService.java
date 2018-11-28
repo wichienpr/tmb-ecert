@@ -94,6 +94,7 @@ public class FeepaymentAutoRetryBatchService {
 					newReq.setUuid(dbdStep.getData().getUuid());
 
 					CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
+					newReq.setPayLoadTs(realtimeStep.getData().getPayLoadTs()); // UPDATE PAY_LOAD_TS
 					if (isSuccess(realtimeStep.getMessage())) {
 
 						newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);

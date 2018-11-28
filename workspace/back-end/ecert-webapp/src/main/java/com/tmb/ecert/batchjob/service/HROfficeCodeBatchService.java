@@ -64,7 +64,7 @@ public class HROfficeCodeBatchService {
 		
 		String errorDesc = "";
 		try {
-			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_IP);
+			String path = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_PATH);
 			String host = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_IP);
 			String username = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_USERNAME);
 			String password = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_HROFFICECODE_PASSWORD);
