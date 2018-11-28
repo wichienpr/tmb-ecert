@@ -79,6 +79,11 @@ public class Sup01000Service {
 	private static String EXCEL_DATE_FORMAT =  "yyyyMMdd";
 	private static String EXCEL_REPORT = "report/excel_template/";
 	private static String EXCEL_TEMPALTE = "RolePermission_Template.xlsx";
+	private static String EXCEL_ERR_MSG_FORMAT_FILE = "ทำรายไม่สำเร็จ เนื่องจากประเภทไฟล์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_FORMAT = "ทำรายไม่สำเร็จ เนื่องจากข้อมูลไฟล์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_NAME_BLANK = "ทำรายไม่สำเร็จ เนื่องจากชื่อสิทธิ์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_NAME_DUP = "ทำรายไม่สำเร็จ เนื่องจากมีชื่อสิทธิ์ซ้ำในไฟล์" ;
+	private static String EXCEL_ERR_MSG_FAIL = "ทำรายไม่สำเร็จ" ;
 	
 
 	private static String[] headerTable = { "Role Name ", " สถานะ ", "ยินดีต้อนรับ \n (UI-00002)",
@@ -450,7 +455,7 @@ public class Sup01000Service {
 						if (statusFlag == 2) {
 							logger.error("uploadFileRole","Upload Role Permission format error");
 							message.setData(MESSAGE_STATUS.FAILED);
-							message.setMessage(MESSAGE_STATUS.FAILED);
+							message.setMessage(EXCEL_ERR_MSG_FORMAT);
 							return message;
 						}else {
 							vo.setStatus(statusFlag);
@@ -466,7 +471,7 @@ public class Sup01000Service {
 							if (statusPermisFlag == 2) {
 								logger.error("uploadFileRole","Upload Role Permission format error");
 								message.setData(MESSAGE_STATUS.FAILED);
-								message.setMessage(MESSAGE_STATUS.FAILED);
+								message.setMessage(EXCEL_ERR_MSG_FORMAT);
 								return message;
 							}else {
 								roleVo.setStatus(statusPermisFlag);
@@ -481,10 +486,10 @@ public class Sup01000Service {
 					
 					//check duplicate role name in list
 					for (int i = 0; i < listRolePermission.size(); i++) {
-						if(listRolePermission.get(i).getRoleName().isEmpty()) {
+						if(StringUtils.isBlank(listRolePermission.get(i).getRoleName())) {
 							logger.error("uploadFileRole","Upload Role Permission role name is blank.");
 							message.setData(MESSAGE_STATUS.FAILED);
-							message.setMessage(MESSAGE_STATUS.FAILED);
+							message.setMessage(EXCEL_ERR_MSG_NAME_BLANK);
 							return message;
 							
 						}else {
@@ -494,7 +499,7 @@ public class Sup01000Service {
 								if(listRolePermission.get(i).getRoleName().equals(roleName)) {
 									logger.error("uploadFileRole","Upload Role Permission role name is duplicate.");
 									message.setData(MESSAGE_STATUS.FAILED);
-									message.setMessage(MESSAGE_STATUS.FAILED);
+									message.setMessage(EXCEL_ERR_MSG_NAME_DUP);
 									return message;
 								}
 							}
@@ -508,24 +513,24 @@ public class Sup01000Service {
 					return message;
 
 				} catch (Exception e) {
-					logger.info("uploadFileRole","upload excel file fail \n ");
+					logger.info("uploadFileRole","upload excel file fail ");
 					e.printStackTrace();
 					message.setData(MESSAGE_STATUS.FAILED);
-					message.setMessage(MESSAGE_STATUS.FAILED);
+					message.setMessage(EXCEL_ERR_MSG_FAIL);
 					return message;
 
 				}
 			}else {
 				logger.info("uploadFileRole","upload excel file format not xlsx");
 				message.setData(MESSAGE_STATUS.FAILED);
-				message.setMessage(MESSAGE_STATUS.FAILED);
+				message.setMessage(EXCEL_ERR_MSG_FORMAT_FILE);
 				return message;
 			}
 
 		} else {
 			logger.info("uploadFileRole","upload excel file is empty");
 			message.setData(MESSAGE_STATUS.FAILED);
-			message.setMessage(MESSAGE_STATUS.FAILED);
+			message.setMessage(EXCEL_ERR_MSG_FAIL);
 			return message;
 		}
 

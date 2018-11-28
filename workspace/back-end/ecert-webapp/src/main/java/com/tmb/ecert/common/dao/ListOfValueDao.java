@@ -77,6 +77,8 @@ public class ListOfValueDao {
 			list.setStatus(rs.getInt("STATUS"));
 			list.setAccountNo(rs.getString("ACCTNO"));
 			list.setShortName(rs.getString("SHORT_NAME"));
+			list.setOfficeCode(rs.getString("OFFICE_CODE"));
+			list.setSegmentCode(rs.getString("SEGMENT_CODE"));
 			
 			return list;
 		}

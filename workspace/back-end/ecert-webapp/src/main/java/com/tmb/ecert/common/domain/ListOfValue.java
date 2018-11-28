@@ -12,6 +12,8 @@ public class ListOfValue {
 	private String accountType;
 	private String accountNo;
 	private String shortName;
+	private String officeCode;
+	private String segmentCode;
 
 	public String getCode() {
 		return code;
@@ -100,6 +102,25 @@ public class ListOfValue {
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
+
+	public String getOfficeCode() {
+		return officeCode;
+	}
+
+	public void setOfficeCode(String officeCode) {
+		this.officeCode = officeCode;
+	}
+
+	public String getSegmentCode() {
+		return segmentCode;
+	}
+
+	public void setSegmentCode(String segmentCode) {
+		this.segmentCode = segmentCode;
+	}
+	
+	
+	
 	
 	
 

@@ -222,6 +222,7 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String customerPayContent(RequestForm request, String effrectiveDate) {
+		int [] glAddress = this.spritAddress(request.getAddress());
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR1), 0, 1));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER1), 0, 30));
@@ -234,10 +235,16 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_OWNDER_BRANCHCODE1), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_ENTRY_BRANCHCODE), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESTINATION_BRANCHCODE1), 0, 4));
-		tmp.add(this.replaceValue(this.getOfficeCode(request.getCustsegmentCode(), request.getOfficeCode()), 0, 10));
-		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
+		tmp.add(this.replaceValue(this.getOriginalOfficeCode(request.getCustsegmentCode()), 0, 10));
+		tmp.add(this.replaceValue(this.getEntryOfficeCode(request, request.getOfficeCode()), 0, 10));
+		
+//		tmp.add(this.replaceValue(this.getOfficeCode(request.getCustsegmentCode(), request.getOfficeCode()), 0, 10));
+//		tmp.add(this.replaceValue(this.getOfficeCode(request.getCustsegmentCode(), request.getOfficeCode()), 0, 10));
+//		tmp.add(this.replaceValue(paymentGLSummaryBatchDao.queryOfficeCode2(request.getOfficeCode()), 0, 10));
+		
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESCTICATION_OFFICECODE1), 0, 10));
-		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
+//		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3)); getSegmentCodeFromLOV
+		tmp.add(this.replaceValue(getSegmentCodeFromLOV(request.getCustsegmentCode()), 0, 3));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PRODUCTCODE1), 0, 240));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE1), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE1), 0, 8));
@@ -258,9 +265,11 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add(this.replaceValue(request.getOrganizeId(), 0, 13));
 		tmp.add(this.replaceValue(request.getCompanyName(), 0, 100));
-		tmp.add(this.replaceValue(request.getAddress(), 0, 100));
-		tmp.add(this.replaceValue(request.getAddress(), 100, 200));
-		tmp.add(this.replaceValue(request.getAddress(), 200, 300));
+		
+		tmp.add(this.replaceValue(request.getAddress(), 0, glAddress[0]));
+		tmp.add(this.replaceValue(request.getAddress(), glAddress[0], glAddress[1]));
+		tmp.add(this.replaceValue(request.getAddress(), glAddress[1], glAddress[2]));
+		
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_RD_PLACE), 0, 100));
 		tmp.add("");
 		tmp.add("");
@@ -360,6 +369,7 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String tmbPayContent(RequestForm request, String effrectiveDate) {
+//		String officeCode = paymentGLSummaryBatchDao.queryOfficeCode2(request.getOfficeCode());
 		List<String> tmp = new ArrayList<>();
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_INDICATOR2), 0, 1));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_LEDGER2), 0, 30));
@@ -372,10 +382,14 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_OWNDER_BRANCHCODE2), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_ENTRY_BRANCHCODE), 0, 4));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESTINATION_BRANCHCODE2), 0, 4));
-		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
-		tmp.add(this.replaceValue(request.getOfficeCode(), 0, 10));
+//		tmp.add(this.replaceValue(officeCode, 0, 10));
+//		tmp.add(this.replaceValue(officeCode, 0, 10));
+		tmp.add(this.replaceValue(this.getOriginalOfficeCode( request.getCustsegmentCode()), 0, 10));
+		tmp.add(this.replaceValue(this.getEntryOfficeCode(request,  request.getOfficeCode()), 0, 10));
+		
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESCTICATION_OFFICECODE2), 0, 10));
-		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
+//		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
+		tmp.add(this.replaceValue(getSegmentCodeFromLOV(request.getCustsegmentCode()), 0, 3));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PRODUCTCODE2), 0, 240));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE2), 0, 8));
@@ -531,22 +545,33 @@ public class PaymentGLSummaryBatchService {
 		return dateFormat;
 	}
 	private String getOfficeCode(String customerCode, String officeCode) {
-		
 		String officeCode1 = "";
 		String officeCode2 = "";
-		if (ECERT_CUSTSEGMENT_CODE.SB.equals(customerCode)) {
-			officeCode1 = OFFICE_CODE.OFFICE_1092;
-			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
-		} else if (ECERT_CUSTSEGMENT_CODE.BB.equals(customerCode)) {
-			officeCode1 = OFFICE_CODE.OFFICE_1078;
-			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
-		} else if (ECERT_CUSTSEGMENT_CODE.MB.equals(customerCode)) {
-			officeCode1 = OFFICE_CODE.OFFICE_1078;
-			officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
-		} else {
-			officeCode2 = officeCode;
+		if ( officeCode.length() == 4) {
+			if (ECERT_CUSTSEGMENT_CODE.SB.equals(customerCode)) {
+				officeCode1 = OFFICE_CODE.OFFICE_1092;
+				officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
+			} else if (ECERT_CUSTSEGMENT_CODE.BB.equals(customerCode)) {
+				officeCode1 = OFFICE_CODE.OFFICE_1078;
+				officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
+			} else if (ECERT_CUSTSEGMENT_CODE.MB.equals(customerCode)) {
+				officeCode1 = OFFICE_CODE.OFFICE_1078;
+				officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode1);
+			} else {
+				officeCode2 = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+			}
+		}else if ( officeCode.length() == 10 ) { // for change officecode by AD update to 10 digit
+			if (ECERT_CUSTSEGMENT_CODE.SB.equals(customerCode)) {
+				officeCode2 = OFFICE_CODE.OFFICE_SEG_0300700000;
+			} else if (ECERT_CUSTSEGMENT_CODE.BB.equals(customerCode)) {
+				officeCode2 = OFFICE_CODE.OFFICE_SEG_0201200000;
+			} else if (ECERT_CUSTSEGMENT_CODE.MB.equals(customerCode)) {
+				officeCode2 = OFFICE_CODE.OFFICE_SEG_0201200000;
+			} else {
+				officeCode2 = OFFICE_CODE.OFFICE_SEG_0300700000;
+			}
 		}
-		
+
 		return officeCode2;
 	}
 	
@@ -620,5 +645,117 @@ public class PaymentGLSummaryBatchService {
 			}
 		}
 		return file;
+	}
+	
+	private String getOriginalOfficeCode(String customerCode) {
+		String returnOfficeCode = ApplicationCache.getLovByCode(customerCode).getOfficeCode();
+		return returnOfficeCode;
+	}
+	
+	private String getEntryOfficeCode(RequestForm req,String officeCode) {
+		String returnOfficeCode = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+//		if (PAID_TYPE.TMB_PAY_DBD_TMB.equals(req.getPaidTypeCode())) {
+//			returnOfficeCode = ApplicationCache.getLovByCode(req.getDebitAccountType()).getOfficeCode();
+//		}else{
+//			returnOfficeCode =  paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+//		}
+		return returnOfficeCode;
+	}
+	private String getSegmentCodeFromLOV(String customerCode) {
+		return ApplicationCache.getLovByCode(customerCode).getSegmentCode();
+	}
+	
+	private int [] spritAddress(String glAddress) {
+        int [] indexArr = new int [3];
+		if (StringUtils.isNotEmpty(glAddress)) {
+			
+			int glAddresslength=glAddress.length();
+	        List<Integer> list = new ArrayList<>();
+	        for(int i=0;i<glAddresslength;i++){
+	            char c=glAddress.charAt(i);
+	            if(c==' '){
+	            list.add(i);
+	            }
+	        }
+
+	        int space100 = 0;
+	        int index100 = 0;
+	        for (int i = 0; i < list.size(); i++) {
+	        	if ((int)list.get(i) >= 100) {
+	        		space100 = (int)list.get(i);
+	        		index100 = i;
+	        		break;
+	        	}
+			}
+	        
+	        if (space100 == 100 ) {
+	        	indexArr[0] = 100;
+	        }else {
+	        	if (index100 != 0) {
+	            	indexArr[0] = (int)list.get(index100-1);
+	        	}else {
+	            	indexArr[0] = glAddresslength;
+	        	}
+	        }
+	        
+	        int space200 = 0;
+	        int index200 = 0;
+	        for (int i = 0; i < list.size(); i++) {
+	        	if ((int)list.get(i) >= indexArr[0] + 100 ) {
+	        		space200 = (int)list.get(i);
+	        		index200 = i;
+	        		break;
+	        	}
+			}
+	        
+	        if (space200 == indexArr[0] + 100 ) {
+	        	indexArr[1] = indexArr[0] + 100;
+	        }else {
+	        	if (index200 != 0) {
+	            	indexArr[1] = (int)list.get(index200-1);
+	        	}else {
+	        		if (glAddresslength < indexArr[0] + 100 ) {
+	            		indexArr[1] = glAddresslength-1;
+	        		}else {
+	            		indexArr[1] = (int)list.get(index200 - 1);
+	        		}
+
+	        	}
+
+	        }
+	        
+	        int space300 = 0;
+	        int index300 = 0;
+	        for (int i = 0; i < list.size(); i++) {
+	        	if ((int)list.get(i) >= indexArr[1] + 100 ) {
+	        		space300 = (int)list.get(i);
+	        		index300 = i;
+	        		break;
+	        	}
+			}
+	        
+	        if (space300 == indexArr[1] + 100 ) {
+	        	indexArr[2] = indexArr[1] + 100;
+	        }else {
+	        	if (index300 != 0) {
+	            	indexArr[2] = (int)list.get(index300-1);
+	        	}else {
+	        		if (glAddresslength < indexArr[1] + 100 ) {
+	                	indexArr[2] = glAddresslength-1;
+	        		}else {
+	            		indexArr[2] = (int)list.get(index200 - 1);
+	        		}
+	        	}
+	        }
+	        
+	        return indexArr;
+	        
+		}else {
+			indexArr[0] = 0;
+			indexArr[1] = 0;
+			indexArr[2] = 0;
+			return indexArr;
+		}
+		
 	}
 }
