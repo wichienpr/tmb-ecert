@@ -36,7 +36,7 @@
                                 <label class="full-width text-right">ชื่อผู้ประกอบการ </label>
                             </div>
                             <div class="five wide field ">
-                                <input type="text" formControlName="customerName" placeholder="ชื่อผู้ประกอบการ">
+                                <input type="text" formControlName="customerName" (keypress)="noPipe($event)" placeholder="ชื่อผู้ประกอบการ">
                             </div>
                         </div>
 

@@ -236,10 +236,11 @@ export class Sup01000Component implements OnInit {
         this.loadingUpload = true;
         this.service.callUploadAPI(this.fileExcelUpload).subscribe(src => {
           this.responseObj = src;
+          console.log("response upload ",this.responseObj);
           if (this.responseObj.message == MESSAGE_STATUS.SUCCEED) {
             this.modal.alert({ msg: "ทำรายการสำเร็จ" });
           } else {
-            this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+            this.modal.alert({ msg: this.responseObj.message });
           }
         }, error => {
           this.modal.alert({ msg: "ทำรายการล้มเหลว" });

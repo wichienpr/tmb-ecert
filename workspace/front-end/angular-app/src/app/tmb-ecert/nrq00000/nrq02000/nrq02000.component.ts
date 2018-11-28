@@ -939,4 +939,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     }
   }
 
+  noPipe(e) {
+    if (e.charCode == 124) {
+      return false;
+    }
+  }
+
 }

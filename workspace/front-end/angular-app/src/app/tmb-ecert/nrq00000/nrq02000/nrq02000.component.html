@@ -317,7 +317,7 @@
           </label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName') }">
-          <input type="text" maxlength="500" #corpName formControlName="corpName" (input)="handleCorpName($event)"
+          <input type="text" maxlength="500" #corpName (keypress)="noPipe($event)" formControlName="corpName" (input)="handleCorpName($event)"
             placeholder="ชื่อนิติบุคคล">
         </div>
       </div>
@@ -361,7 +361,7 @@
           <label>ที่อยู่</label>
         </div>
         <div class="five wide field">
-          <textarea maxlength="4000" #address formControlName="address" rows="2"></textarea>
+          <textarea maxlength="4000" (keypress)="noPipe($event)" #address formControlName="address" rows="2"></textarea>
         </div>
       </div>
 
@@ -416,7 +416,7 @@
           <label>ชื่อเจ้าของบัญชี</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('accName') }">
-          <input type="text" (keypress)="noSymbol($event)" maxlength="255" #accName formControlName="accName"
+          <input type="text" (keypress)="noPipe($event)" maxlength="255" #accName formControlName="accName"
             placeholder="ชื่อบัญชี">
         </div>
       </div>
@@ -425,7 +425,7 @@
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
-          <input type="text" (keypress)="noSymbol($event)" class="txt-red" #corpName1 formControlName="corpName1"
+          <input type="text" (keypress)="noPipe($event)" class="txt-red" #corpName1 formControlName="corpName1"
             placeholder="ชื่อนิติบุคคล">
         </div>
         <div class="two wide field">
