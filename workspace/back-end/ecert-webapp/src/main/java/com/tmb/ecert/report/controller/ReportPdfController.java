@@ -55,7 +55,8 @@ public class ReportPdfController {
 	@PostMapping("/reqFormOriginal")
 	@ResponseBody
 	public String pdfreqFormOriginal(@RequestBody RpReqFormVo vo) throws IOException, JRException {
-		return reportPdfService.reqFormOriginalToPdf(vo);
+//		return reportPdfService.reqFormOriginalToPdf(vo);
+		return reportPdfService.reqFormWithoutCert(vo);
 	}
 
 	/* reqForm */
