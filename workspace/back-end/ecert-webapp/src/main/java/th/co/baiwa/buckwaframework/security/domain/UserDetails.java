@@ -18,6 +18,12 @@ public class UserDetails extends User implements UserBean {
 	private String lastName;
 	private String branchCode;
 	private String officeCode;
+	private String department;
+    private String group;
+	private String belongto;
+	private String telephoneNo;
+	private String email;
+	
 	
 	// Constructor
 	public UserDetails(String username, String password, boolean enabled,boolean accountNonExpired,
@@ -81,6 +87,46 @@ public class UserDetails extends User implements UserBean {
 
 	public void setOfficeCode(String officeCode) {
 		this.officeCode = officeCode;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getBelongto() {
+		return belongto;
+	}
+
+	public void setBelongto(String belongto) {
+		this.belongto = belongto;
+	}
+
+	public String getTelephoneNo() {
+		return telephoneNo;
+	}
+
+	public void setTelephoneNo(String telephoneNo) {
+		this.telephoneNo = telephoneNo;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 
