@@ -191,7 +191,7 @@ public class RequestorDao {
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
 		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?,LOCK_FLAG=?,PAYMENT_BRANCHCODE=?,");
-		sql.append("PAYMENT_DATE=?");
+		sql.append("PAYMENT_DATE=?,PAYLOADTS=?,OFFICE_CODE=?");
 		sql.append(" WHERE REQFORM_ID = ?");
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(),
 				vo.getCustomerName(), vo.getCompanyName(), vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(),
@@ -206,7 +206,7 @@ public class RequestorDao {
 				vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 				vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
 				vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(),
-				vo.getPaymentBranchCode(), vo.getPaymentDate(),
+				vo.getPaymentBranchCode(), vo.getPaymentDate(), vo.getPayLoadTs(), vo.getOfficeCode(),
 				vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
