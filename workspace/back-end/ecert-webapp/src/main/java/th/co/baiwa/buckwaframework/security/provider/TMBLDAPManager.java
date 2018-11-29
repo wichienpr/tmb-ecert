@@ -58,7 +58,9 @@ public class TMBLDAPManager {
 					tmbPerson.setPassword(password);
 					tmbPerson.setTmbcn(attrs.get("cn").get().toString());
 					tmbPerson.setUserid(username);
-					tmbPerson.setName(attrs.get("displayName").get().toString());
+//					tmbPerson.setName(attrs.get("displayName").get().toString());
+//					name th
+					tmbPerson.setName(attrs.get("msDS-PhoneticDisplayName").get().toString());
 					List<String> memberOfs = new ArrayList<>();
 					Attribute memberOf = attrs.get("memberOf");
 					if(memberOf != null) {
@@ -81,10 +83,10 @@ public class TMBLDAPManager {
 						tmbPerson.setBranchCode(StringUtils.trim(branch[1]));
 					}
 					
-					Attribute group = attrs.get("extensionAttribute6");
+					Attribute group = attrs.get("extensionAttribute4");
 					if(group != null) {
 						String[] grouparr = StringUtils.split( group.get().toString(), "|");
-						tmbPerson.setGroup(StringUtils.trim(grouparr[1]));
+						tmbPerson.setGroup(StringUtils.trim(grouparr[0]));
 					}
 					
 					Attribute position = attrs.get("extensionAttribute1");
@@ -94,9 +96,30 @@ public class TMBLDAPManager {
 					}
 					
 					Attribute officeCode = attrs.get("extensionAttribute2");
-					if(position != null) {
+					if(officeCode != null) {
 						String[] officeCodearr = StringUtils.split( officeCode.get().toString(), "|");
 						tmbPerson.setOfficeCode(StringUtils.trim(officeCodearr[1]));
+					}
+					
+					Attribute department = attrs.get("extensionAttribute3");
+					if(department != null) {
+						String[] departmentarr = StringUtils.split( department.get().toString(), "|");
+						tmbPerson.setDepartment(StringUtils.trim(departmentarr[0]));
+					}
+					
+					Attribute belongto = attrs.get("msExchExtensionCustomAttribute2");
+					if(belongto != null) {
+						tmbPerson.setBelongto(belongto.get().toString());
+					}
+					
+					Attribute telephone = attrs.get("telephoneNumber");
+					if(telephone != null) {
+						tmbPerson.setTelephoneNo(telephone.get().toString());
+					}
+					
+					Attribute mail = attrs.get("mail");
+					if(mail != null) {
+						tmbPerson.setEmail(mail.get().toString());
 					}
 					
 					// check role name for return only role

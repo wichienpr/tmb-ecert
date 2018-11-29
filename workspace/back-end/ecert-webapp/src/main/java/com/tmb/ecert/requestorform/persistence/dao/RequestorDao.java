@@ -118,8 +118,9 @@ public class RequestorDao {
 		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
 		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
 		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE,");
-		sql.append("LOCK_FLAG, DELETE_FLAG, PAYMENT_BRANCHCODE");
-		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		sql.append("LOCK_FLAG, DELETE_FLAG, PAYMENT_BRANCHCODE,");
+		sql.append("CREATED_BY_DEPARTMENT ,CREATED_BY_GROUP, CREATED_BY_BELONGTO, CREATED_BY_TEL, CREATED_BY_EMAIL");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -170,6 +171,12 @@ public class RequestorDao {
 				 */
 				ps.setInt(34, 0);
 				ps.setString(35, vo.getPaymentBranchCode());
+				// Newer
+				ps.setString(36, vo.getCreatedByDepartment());
+				ps.setString(37, vo.getCreatedByGroup());
+				ps.setString(38, vo.getCreatedByBelongto());
+				ps.setString(39, vo.getCreatedByTel());
+				ps.setString(40, vo.getCreatedByEmail());
 				return ps;
 			}
 		}, holder);
