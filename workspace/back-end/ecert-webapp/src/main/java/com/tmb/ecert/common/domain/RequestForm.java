@@ -60,6 +60,12 @@ public class RequestForm extends DatatableRequest {
 	private String rejectReasonCode;
 	private String rejectReasonOther;
 
+	private String createdByDepartment;
+	private String createdByGroup;
+	private String createdByBelongto;
+	private String createdByTel;
+	private String createdByEmail;
+	
 	private String createdById;
 	private String createdByName;
 	private Timestamp createdDateTime;
@@ -80,6 +86,46 @@ public class RequestForm extends DatatableRequest {
 	private Integer lockFlag;
 	private Integer deleteFlag;
 	
+	public String getCreatedByDepartment() {
+		return createdByDepartment;
+	}
+
+	public void setCreatedByDepartment(String createdByDepartment) {
+		this.createdByDepartment = createdByDepartment;
+	}
+
+	public String getCreatedByGroup() {
+		return createdByGroup;
+	}
+
+	public void setCreatedByGroup(String createdByGroup) {
+		this.createdByGroup = createdByGroup;
+	}
+
+	public String getCreatedByBelongto() {
+		return createdByBelongto;
+	}
+
+	public void setCreatedByBelongto(String createdByBelongto) {
+		this.createdByBelongto = createdByBelongto;
+	}
+
+	public String getCreatedByTel() {
+		return createdByTel;
+	}
+
+	public void setCreatedByTel(String createdByTel) {
+		this.createdByTel = createdByTel;
+	}
+
+	public String getCreatedByEmail() {
+		return createdByEmail;
+	}
+
+	public void setCreatedByEmail(String createdByEmail) {
+		this.createdByEmail = createdByEmail;
+	}
+
 	// optional
 	private String uuid;
 

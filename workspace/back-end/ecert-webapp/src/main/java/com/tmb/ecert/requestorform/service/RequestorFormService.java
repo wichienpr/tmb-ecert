@@ -320,6 +320,12 @@ public class RequestorFormService {
 				req.setDeleteFlag(0);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
+				// User Properties
+				req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartment());
+				req.setCreatedByGroup(UserLoginUtils.getCurrentUserLogin().getGroup());
+				req.setCreatedByBelongto(UserLoginUtils.getCurrentUserLogin().getBelongto());
+				req.setCreatedByTel(UserLoginUtils.getCurrentUserLogin().getTelephoneNo());
+				req.setCreatedByEmail(UserLoginUtils.getCurrentUserLogin().getEmail());
 				try {
 					nextId = dao.save(req); // SAVE REQUEST FORM
 				} catch (Exception e) {
