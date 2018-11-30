@@ -122,6 +122,7 @@ public class CheckRequestCertificatService {
 		try {
 			
 			uploadCerService.uploadEcertificate(certificateVo.getId(), user.getUserId());
+			req.setOfficeCode(user.getOfficeCode());
 			requesterDao.update(req);
 			historyDao.save(req);
 			// SEND EMAIL

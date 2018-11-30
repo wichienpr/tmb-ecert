@@ -265,11 +265,9 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add(this.replaceValue(request.getOrganizeId(), 0, 13));
 		tmp.add(this.replaceValue(request.getCompanyName(), 0, 100));
-		
 		tmp.add(this.replaceValue(request.getAddress(), 0, glAddress[0]));
 		tmp.add(this.replaceValue(request.getAddress(), glAddress[0], glAddress[1]));
 		tmp.add(this.replaceValue(request.getAddress(), glAddress[1], glAddress[2]));
-		
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_RD_PLACE), 0, 100));
 		tmp.add("");
 		tmp.add("");
@@ -386,7 +384,6 @@ public class PaymentGLSummaryBatchService {
 //		tmp.add(this.replaceValue(officeCode, 0, 10));
 		tmp.add(this.replaceValue(this.getOriginalOfficeCode( request.getCustsegmentCode()), 0, 10));
 		tmp.add(this.replaceValue(this.getEntryOfficeCode(request,  request.getOfficeCode()), 0, 10));
-		
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_DESCTICATION_OFFICECODE2), 0, 10));
 //		tmp.add(this.replaceValue(getGLCustomerCode(request.getCustsegmentCode()), 0, 3));
 		tmp.add(this.replaceValue(getSegmentCodeFromLOV(request.getCustsegmentCode()), 0, 3));
@@ -653,12 +650,24 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String getEntryOfficeCode(RequestForm req,String officeCode) {
-		String returnOfficeCode = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+		String returnOfficeCode = "";
+		String str = "";
 //		if (PAID_TYPE.TMB_PAY_DBD_TMB.equals(req.getPaidTypeCode())) {
 //			returnOfficeCode = ApplicationCache.getLovByCode(req.getDebitAccountType()).getOfficeCode();
 //		}else{
 //			returnOfficeCode =  paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
 //		}
+		if ( officeCode.length() == 4) {
+			str = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+			if (StringUtils.isNotBlank(str)) {
+				returnOfficeCode = str;
+			}else {
+				returnOfficeCode = OFFICE_CODE.OFFICE_SEG_DEFULT;
+			}
+		}else if ( officeCode.length() == 10 ) { // for change officecode by AD update to 10 digit
+			returnOfficeCode = officeCode;
+		}
+		
 		return returnOfficeCode;
 	}
 	private String getSegmentCodeFromLOV(String customerCode) {
