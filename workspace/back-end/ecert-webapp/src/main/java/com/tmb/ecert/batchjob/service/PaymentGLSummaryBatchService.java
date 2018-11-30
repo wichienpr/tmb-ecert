@@ -645,8 +645,9 @@ public class PaymentGLSummaryBatchService {
 	}
 	
 	private String getOriginalOfficeCode(String customerCode) {
-		String returnOfficeCode = ApplicationCache.getLovByCode(customerCode).getOfficeCode();
-		return returnOfficeCode;
+//		String returnOfficeCode = ApplicationCache.getLovByCode(customerCode).getOfficeCode();
+//		return returnOfficeCode;
+		return paymentGLSummaryBatchDao.queryCustomerCodeGLByCode(customerCode).getOfficeCode();
 	}
 	
 	private String getEntryOfficeCode(RequestForm req,String officeCode) {
@@ -676,7 +677,8 @@ public class PaymentGLSummaryBatchService {
 		return returnOfficeCode;
 	}
 	private String getSegmentCodeFromLOV(String customerCode) {
-		return ApplicationCache.getLovByCode(customerCode).getSegmentCode();
+		return paymentGLSummaryBatchDao.queryCustomerCodeGLByCode(customerCode).getSegmentCode();
+//		return ApplicationCache.getLovByCode(customerCode).getSegmentCode();
 	}
 	
 	private int [] spritAddress(String glAddress) {

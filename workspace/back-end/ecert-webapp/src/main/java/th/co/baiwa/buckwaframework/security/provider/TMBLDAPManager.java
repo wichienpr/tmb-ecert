@@ -58,9 +58,9 @@ public class TMBLDAPManager {
 					tmbPerson.setPassword(password);
 					tmbPerson.setTmbcn(attrs.get("cn").get().toString());
 					tmbPerson.setUserid(username);
-					tmbPerson.setName(attrs.get("displayName").get().toString());
+//					tmbPerson.setName(attrs.get("displayName").get().toString());
 //					name th
-//					tmbPerson.setName(attrs.get("msDS-PhoneticDisplayName").get().toString());
+					tmbPerson.setName(attrs.get("msDS-PhoneticDisplayName").get().toString());
 					List<String> memberOfs = new ArrayList<>();
 					Attribute memberOf = attrs.get("memberOf");
 					if(memberOf != null) {
@@ -105,7 +105,9 @@ public class TMBLDAPManager {
 					if(department != null) {
 						String[] departmentarr = StringUtils.split( department.get().toString(), "|");
 						tmbPerson.setDepartment(StringUtils.trim(departmentarr[0]));
+						tmbPerson.setDepartmentCode(StringUtils.trim(departmentarr[1]));
 					}
+
 					
 					Attribute belongto = attrs.get("msExchExtensionCustomAttribute2");
 					if(belongto != null) {

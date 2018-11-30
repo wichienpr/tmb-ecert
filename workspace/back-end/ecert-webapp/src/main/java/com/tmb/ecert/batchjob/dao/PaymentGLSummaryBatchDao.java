@@ -31,6 +31,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.Crs01000Vo;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.Certificate;
+import com.tmb.ecert.common.domain.ListOfValue;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 
@@ -87,6 +88,8 @@ public class PaymentGLSummaryBatchDao {
 	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOBGL_FAILED (PAYMENTDATE) VALUES (?) ";
 	
 	private final String QUERY_OFFICE_CODE = " select OFFICE_CODE2 from ECERT_HR_OFFICECODE where OFFICE_CODE1 = ? ";
+	
+	private final String QUERY_SEGMENT_CODE = "  SELECT SEGMENT_CODE , OFFICE_CODE FROM ECERT_LISTOFVALUE WHERE CODE = ? ";
 	
 	
 	
@@ -266,6 +269,20 @@ public class PaymentGLSummaryBatchDao {
 		@Override
 		public String mapRow(ResultSet rs, int arg1) throws SQLException {
 			return rs.getString("OFFICE_CODE2");
+		}
+	};
+	
+	public ListOfValue queryCustomerCodeGLByCode(String segment) {
+		List<ListOfValue> segmentCodeGL = jdbcTemplate.query(this.QUERY_SEGMENT_CODE, new Object[] {segment}, segmentCodeRM);
+		return !CollectionUtils.isEmpty(segmentCodeGL) ? segmentCodeGL.get(0) : null;
+	}
+	private RowMapper<ListOfValue> segmentCodeRM = new RowMapper<ListOfValue>() {
+		@Override
+		public ListOfValue mapRow(ResultSet rs, int arg1) throws SQLException {
+			ListOfValue list = new ListOfValue();
+			list.setSegmentCode(rs.getString("SEGMENT_CODE"));
+			list.setOfficeCode(rs.getString("OFFICE_CODE"));
+			return list;
 		}
 	};
 }

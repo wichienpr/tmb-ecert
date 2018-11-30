@@ -321,7 +321,7 @@ public class RequestorFormService {
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
 				// User Properties
-				req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartment());
+				req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartmentCode() +" / "+UserLoginUtils.getCurrentUserLogin().getDepartment());
 				req.setCreatedByGroup(UserLoginUtils.getCurrentUserLogin().getGroup());
 				req.setCreatedByBelongto(UserLoginUtils.getCurrentUserLogin().getBelongto());
 				req.setCreatedByTel(UserLoginUtils.getCurrentUserLogin().getTelephoneNo());

@@ -23,6 +23,7 @@ public class UserDetails extends User implements UserBean {
 	private String belongto;
 	private String telephoneNo;
 	private String email;
+	private String departmentCode;
 	
 	
 	// Constructor
@@ -128,6 +129,15 @@ public class UserDetails extends User implements UserBean {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
+	}
+	
 	
 
 }
