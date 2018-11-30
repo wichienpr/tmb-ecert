@@ -58,9 +58,9 @@ public class TMBLDAPManager {
 					tmbPerson.setPassword(password);
 					tmbPerson.setTmbcn(attrs.get("cn").get().toString());
 					tmbPerson.setUserid(username);
-//					tmbPerson.setName(attrs.get("displayName").get().toString());
+					tmbPerson.setName(attrs.get("displayName").get().toString());
 //					name th
-					tmbPerson.setName(attrs.get("msDS-PhoneticDisplayName").get().toString());
+//					tmbPerson.setName(attrs.get("msDS-PhoneticDisplayName").get().toString());
 					List<String> memberOfs = new ArrayList<>();
 					Attribute memberOf = attrs.get("memberOf");
 					if(memberOf != null) {
