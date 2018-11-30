@@ -657,16 +657,21 @@ public class PaymentGLSummaryBatchService {
 //		}else{
 //			returnOfficeCode =  paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
 //		}
-		if ( officeCode.length() == 4) {
-			str = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
-			if (StringUtils.isNotBlank(str)) {
-				returnOfficeCode = str;
-			}else {
-				returnOfficeCode = OFFICE_CODE.OFFICE_SEG_DEFULT;
+		if (StringUtils.isNotBlank(officeCode)) {
+			if ( officeCode.length() == 4) {
+				str = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
+				if (StringUtils.isNotBlank(str)) {
+					returnOfficeCode = str;
+				}else {
+					returnOfficeCode = OFFICE_CODE.OFFICE_SEG_DEFULT;
+				}
+			}else if ( officeCode.length() == 10 ) { // for change officecode by AD update to 10 digit
+				returnOfficeCode = officeCode;
 			}
-		}else if ( officeCode.length() == 10 ) { // for change officecode by AD update to 10 digit
-			returnOfficeCode = officeCode;
+		}else {
+			returnOfficeCode = OFFICE_CODE.OFFICE_SEG_DEFULT;
 		}
+
 		
 		return returnOfficeCode;
 	}
