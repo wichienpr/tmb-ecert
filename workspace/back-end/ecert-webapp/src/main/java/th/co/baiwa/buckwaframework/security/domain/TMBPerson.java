@@ -18,6 +18,7 @@ public class TMBPerson implements Serializable {
 	private String belongto;
 	private String telephoneNo;
 	private String email;
+	private String departmentCode;
 
 	private List<String> memberOfs;//memberO
 
@@ -137,6 +138,14 @@ public class TMBPerson implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
 	}
 	
 
