@@ -149,7 +149,7 @@ public class CheckRequestStatusDao {
 			sql.append(" AND H.CREATED_BY_ID = ? ");
 			valueList.add(formVo.getUserId());
 		}
-		sql.append(" ORDER BY H.TMB_REQUESTNO DESC");
+		sql.append(" ORDER BY H.REQUEST_DATE DESC");
 		crs01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), valueList.toArray(), reqFormByStatusMapping);
 
 		return crs01000VoList;
