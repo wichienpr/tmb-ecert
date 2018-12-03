@@ -126,8 +126,18 @@ export class Adl01000Component implements OnInit {
       // console.log("form invalid");
       return false;
     }
+    let strFrom = this.formadl.get("dateForm").value;
+    let strTo = this.formadl.get("dateTo").value;
+    let type = this.formadl.get("createdById").value;
+    let oper = this.formadl.get("actionCode").value
+    let param = {
+      dateForm: ThDateToEnDate(strFrom),  
+      dateTo: ThDateToEnDate(strTo),             
+      createdById: type,    
+      actionCode:oper,   
+    }
 
-    let urldownload = "/api/adl/adl01000/exportFile" + "?" + this.commonsvr.toGetQuery(this.formadl.value);
+    let urldownload = "/api/adl/adl01000/exportFile" + "?" + this.commonsvr.toGetQuery(param);
     // console.log(urldownload);
     this.ajax.download(urldownload);
   }
