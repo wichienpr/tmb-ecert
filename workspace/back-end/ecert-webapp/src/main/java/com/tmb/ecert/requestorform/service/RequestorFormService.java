@@ -103,25 +103,25 @@ public class RequestorFormService {
 	public CommonMessage<String> update(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		RequestForm req = daoCrs.findReqFormById(form.getReqFormId(), false);
-		if ("10005".equals(form.getStatus())) {
-			if (req.getMakerById() != null) {
-				if (!req.getMakerById().equalsIgnoreCase(UserLoginUtils.getCurrentUserLogin().getUserId())) {
-					msg.setData("HASMAKER");
-					msg.setMessage("ERROR");
-					return msg;
-				}
-			}
-			if ("false".equals(form.getHasAuthed())) {
-				if (form.getAmount() != null) {
-					if (form.getAmount().doubleValue() > Double
-							.parseDouble(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.AMOUNT_LIMIT))) {
-						msg.setData("NEEDLOGIN");
-						msg.setMessage("ERROR");
-						return msg;
-					}
-				}
-			}
-		}
+//		if ("10005".equals(form.getStatus())) {
+//			if (req.getMakerById() != null) {
+//				if (!req.getMakerById().equalsIgnoreCase(UserLoginUtils.getCurrentUserLogin().getUserId())) {
+//					msg.setData("HASMAKER");
+//					msg.setMessage("ERROR");
+//					return msg;
+//				}
+//			}
+//			if ("false".equals(form.getHasAuthed())) {
+//				if (form.getAmount() != null) {
+//					if (form.getAmount().doubleValue() > Double
+//							.parseDouble(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.AMOUNT_LIMIT))) {
+//						msg.setData("NEEDLOGIN");
+//						msg.setMessage("ERROR");
+//						return msg;
+//					}
+//				}
+//			}
+//		}
 		String userId = UserLoginUtils.getCurrentUserLogin().getUserId();
 		String userName = UserLoginUtils.getCurrentUserLogin().getFirstName()
 				.concat(" " + UserLoginUtils.getCurrentUserLogin().getLastName());

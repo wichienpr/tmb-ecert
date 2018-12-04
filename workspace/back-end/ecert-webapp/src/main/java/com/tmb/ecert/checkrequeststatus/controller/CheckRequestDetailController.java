@@ -25,7 +25,7 @@ import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 @RequestMapping("api/crs/crs02000")
 @Controller
 public class CheckRequestDetailController {
-	
+
 	@Autowired
 	private CheckRequestDetailService crsService;
 
@@ -34,41 +34,42 @@ public class CheckRequestDetailController {
 	public RequestForm formFromId(@PathVariable("id") String id) {
 		return crsService.findReqFormById(id);
 	}
-	
+
 	@GetMapping("/cert/{id}")
 	@ResponseBody
 	public List<RequestCertificate> certFromId(@PathVariable("id") String id) {
 		return crsService.findCertByReqFormId(id);
 	}
-	
+
 	@GetMapping("/cert/list/{id}")
 	@ResponseBody
 	public List<Certificate> certListFromId(@PathVariable("id") String id) {
 		return crsService.findCertListByReqFormId(id);
 	}
-	
+
 	@GetMapping("/download/{filename}")
 	@ResponseBody
 	public void download(@PathVariable("filename") String fileName, HttpServletResponse response) {
 		crsService.download(fileName, response);
 	}
-	
+
 	@GetMapping("pdf/{name}")
 	@ResponseBody
 	public void pdf(@PathVariable("name") String name, HttpServletResponse response) {
 		crsService.pdf(name, response);
 	}
-	
+
 	@PostMapping("cert/reject")
 	@ResponseBody
 	public CommonMessage<String> rejectMak(@RequestBody RequestForm req) {
 		return this.crsService.reject(req, UserLoginUtils.getCurrentUserLogin());
 	}
-	
-	@GetMapping("cert/approve/{reqFormId}")
+
+	@GetMapping("cert/approve/{reqFormId}/{superchecker}")
 	@ResponseBody
-	public CommonMessage<ResponseVo> approve(@PathVariable("reqFormId") String reqFormId) {
-		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin());
+	public CommonMessage<ResponseVo> approve(@PathVariable("reqFormId") String reqFormId,
+			@PathVariable("superchecker") String authed) {
+		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin(), authed);
 	}
-	
+
 }
