@@ -378,6 +378,20 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     return 'โปรดแนบเอกสาร';
   }
 
+  get isMakerAndSelectPaidType() {
+    if (this.roles(ROLES.MAKER)) {
+      if (this.form.get('payMethodSelect').value === '30002') {
+        return true;
+      }
+      if (this.form.get('payMethodSelect').value === '30003') {
+        return true;
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
+
   get onlyMaker() { return this.roles(ROLES.MAKER) }
   get onlyRequestor() { return this.roles(ROLES.REQUESTOR) }
   get onlyChecker() { return this.roles(ROLES.CHECKER) }

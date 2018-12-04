@@ -19,12 +19,14 @@ export class Crs02000Component implements OnInit {
 
   formCert: FormGroup;
   formReject: FormGroup;
+  formAuth: FormGroup;
 
   id: string = "";
   date: Date = new Date();
   dataLoading: boolean = false;
   certSubmitted: boolean = false;
   rejectSubmitted: boolean = false;
+  authSubmitted: boolean = false;
   history: RequestForm[] = [];
   chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
@@ -43,6 +45,8 @@ export class Crs02000Component implements OnInit {
   @ViewChild("historyDt")
   historyDt: DatatableDirective;
   historyConfig: DatatableCofnig;
+  
+  authForSubmit: Modal;
 
   files: any;
 
@@ -61,10 +65,15 @@ export class Crs02000Component implements OnInit {
     this.files = {
       certFile: null,
     };
+    this.formAuth = new FormGroup({
+      authUsername: new FormControl('', Validators.required),
+      authPassword: new FormControl('', Validators.required),
+    });
     this.tab = {
       A: "active",
       B: ""
     };
+    this.authForSubmit = { modalId: "auth", type: "custom" };
 
     this.historyConfig = {
       url: URL.REQUEST_HISTORY,
@@ -120,6 +129,26 @@ export class Crs02000Component implements OnInit {
       setTimeout(() => {
         this.dataLoading = false;
       }, 500);
+    }
+  }
+
+  auth(e) {
+    e.preventDefault();
+    this.authSubmitted = true;
+    if (this.formAuth.valid) {
+      this.common.isLoading();
+      this.service.toAuthed(this.formAuth.value).then(result => {
+        if (result) {
+          this.service.approveDirectly(this.id);
+        } else {
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+        }
+        this.common.isLoaded();
+      }).catch(error => {
+        console.error(error);
+        this.common.isLoaded();
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+      })
     }
   }
 
@@ -242,6 +271,9 @@ export class Crs02000Component implements OnInit {
         return ''
     }
   }
+
+  get authUsername() { return this.formAuth.get("authUsername") }
+  get authPassword() { return this.formAuth.get("authPassword") }
 
   get documentMsg() {
     if (this.roles(ROLES.MAKER) || this.roles(ROLES.CHECKER)) {
