@@ -189,10 +189,12 @@ export class Crs02000Service {
         this.router.navigate(['/crs/crs01000'], {
           queryParams: { codeStatus: "10009" }
         });
+        this.hasAuthed = "false";
         this.common.isLoaded(); // Loading page
       }
       if (data.data && data.data.message == "NEEDLOGIN") {
         this.authForSubmit();
+        this.hasAuthed = "false";
         this.common.isLoaded(); // Loading page
         return;
       }
@@ -200,14 +202,16 @@ export class Crs02000Service {
       this.router.navigate(['/crs/crs01000'], {
         queryParams: { codeStatus: "10008" }
       });
+      this.hasAuthed = "false";
       this.common.isLoaded(); // Loading page
     }, error => {
       console.error("ERROR => ", error);
-      this.common.isLoaded();
       this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ", success: false });
       this.router.navigate(['/crs/crs01000'], {
         queryParams: { codeStatus: "10008" }
       });
+      this.hasAuthed = "false";
+      this.common.isLoaded(); // Loading page
     });
   }
 
