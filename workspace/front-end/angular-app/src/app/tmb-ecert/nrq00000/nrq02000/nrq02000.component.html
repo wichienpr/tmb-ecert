@@ -415,7 +415,7 @@
         <div class="required two wide field">
           <label>ชื่อเจ้าของบัญชี</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('accName') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('accName'), 'disabled': isMakerAndSelectPaidType }">
           <input type="text" (keypress)="noPipe($event)" maxlength="255" #accName formControlName="accName"
             placeholder="ชื่อบัญชี">
         </div>
@@ -424,7 +424,7 @@
         <div class="four wide field">
           <label>ชื่อบนใบเสร็จธนาคาร TMB</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('corpName1') }">
+        <div class="five wide field" [ngClass]="{'error': invalid('corpName1'), 'disabled': isMakerAndSelectPaidType }">
           <input type="text" (keypress)="noPipe($event)" class="txt-red" #corpName1 formControlName="corpName1"
             placeholder="ชื่อนิติบุคคล">
         </div>

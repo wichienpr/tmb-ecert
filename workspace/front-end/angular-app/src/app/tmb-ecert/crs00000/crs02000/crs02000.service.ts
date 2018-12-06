@@ -5,9 +5,11 @@ import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile, Rejected, ResponseVo } from './crs02000.models';
 import { REQ_STATUS } from 'app/baiwa/common/constants';
-import { EnYearToThYear } from 'app/baiwa/common/helpers';
+
+declare var $: any;
 
 export const URL = {
+  CONFIRM: "/api/nrq/confirm",
   REQUEST_FORM: "/api/crs/crs02000/data",
   REQUEST_CERTIFICATE: "/api/crs/crs02000/cert",
   DOWNLOAD: "/api/crs/crs02000/download/",
@@ -26,6 +28,8 @@ export const URL = {
   providedIn: 'root'
 })
 export class Crs02000Service {
+
+  private hasAuthed: string = "false";
 
   constructor(
     private route: ActivatedRoute,
@@ -78,6 +82,25 @@ export class Crs02000Service {
     });
   }
 
+  toAuthed(user: any) {
+    const data = {
+      username: user.authUsername,
+      password: user.authPassword
+    }
+    return new Promise(resolve => {
+      this.ajax.post(URL.CONFIRM, data, response => {
+        let state = false;
+        if (response) {
+          state = response.json() as boolean;
+        }
+        if (state) {
+          this.hasAuthed = "true";
+        }
+        resolve(state);
+      })
+    });
+  }
+
   getChkListMore(id: string) {
     return this.ajax.post(URL.CER_BY_TYPECODE, { typeCode: id }, res => {
       return res.text() ? res.json() : {};
@@ -127,6 +150,10 @@ export class Crs02000Service {
     return tab;
   }
 
+  authForSubmit() {
+    $("#auth").modal("show");
+  }
+
   approveToggle(reqFormId: string): any {
     const modal: Modal = {
       approveMsg: "ยืนยัน",
@@ -139,40 +166,53 @@ export class Crs02000Service {
     };
     this.modal.confirm(e => {
       if (e) {
-        this.common.isLoading();
-        this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}`, response => {
-          let data: ResponseVo = {
-            data: {
-              status: "",
-              message: ""
-            },
-            message: "",
-          };
-          if (response) {
-            data = response.json() as ResponseVo;
-          }
-          if (data.message == "SUCCESS") {
-            this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
-            this.router.navigate(['/crs/crs01000'], {
-              queryParams: { codeStatus: "10009" }
-            });
-          } else {
-            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
-            this.router.navigate(['/crs/crs01000'], {
-              queryParams: { codeStatus: "10008" }
-            });
-          }
-          this.common.isLoaded();
-        }, error => {
-          console.error("ERROR => ", error);
-          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
-          this.router.navigate(['/crs/crs01000'], {
-            queryParams: { codeStatus: "10008" }
-          });
-          this.common.isLoaded();
-        });
+        this.approveDirectly(reqFormId);
       }
     }, modal);
+  }
+
+  approveDirectly(reqFormId: string): void {
+    this.common.isLoading();
+    this.ajax.get(`${URL.CER_APPROVE}/${reqFormId}/${this.hasAuthed}`, response => {
+      let data: ResponseVo = {
+        data: {
+          status: "",
+          message: ""
+        },
+        message: "",
+      };
+      if (response) {
+        data = response.json() as ResponseVo;
+      }
+      if (data.message == "SUCCESS") {
+        this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+        this.router.navigate(['/crs/crs01000'], {
+          queryParams: { codeStatus: "10009" }
+        });
+        this.hasAuthed = "false";
+        this.common.isLoaded(); // Loading page
+      }
+      if (data.data && data.data.message == "NEEDLOGIN") {
+        this.authForSubmit();
+        this.hasAuthed = "false";
+        this.common.isLoaded(); // Loading page
+        return;
+      }
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ", success: false });
+      this.router.navigate(['/crs/crs01000'], {
+        queryParams: { codeStatus: "10008" }
+      });
+      this.hasAuthed = "false";
+      this.common.isLoaded(); // Loading page
+    }, error => {
+      console.error("ERROR => ", error);
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ", success: false });
+      this.router.navigate(['/crs/crs01000'], {
+        queryParams: { codeStatus: "10008" }
+      });
+      this.hasAuthed = "false";
+      this.common.isLoaded(); // Loading page
+    });
   }
 
   matchChkList(chkList: Certificate[], cert: RequestCertificate[]) {
