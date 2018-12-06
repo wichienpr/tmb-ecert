@@ -21,6 +21,7 @@ import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.Certificate;
@@ -155,7 +156,7 @@ public class CheckRequestDetailService {
 		return commonMsg;
 	}
 
-	public CommonMessage<ResponseVo> approve(String reqFormId, UserDetails user) {
+	public CommonMessage<ResponseVo> approve(String reqFormId, UserDetails user, String authed) {
 		logger.info("CheckRequestDetailService::approve REQFORM_ID => {}", reqFormId);
 		Date currentDate = new Date();
 		Long id = Long.valueOf(reqFormId);
@@ -165,6 +166,17 @@ public class CheckRequestDetailService {
 			newReq = dao.findReqFormById(id, false);
 			newReq.setOfficeCode(user.getOfficeCode());
 			logger.info("CheckRequestDetailService::approve PAYMENT_TYPE => {}", newReq.getPaidTypeCode());
+			// Checked by SuperChecker
+			if ("false".equals(authed)) {
+				if (newReq.getAmount() != null) {
+					if (newReq.getAmount().doubleValue() > Double
+							.parseDouble(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.AMOUNT_LIMIT))) {
+						response.setData(new ResponseVo("NEEDLOGIN", "ERROR"));
+						response.setMessage("ERROR");
+						return response;
+					}
+				}
+			}
 			if (UserLoginUtils.ishasRoleName(user, ADConstant.ROLE_CHECKER)) {
 				// UserLoginUtils.ishasRole(user, ROLES.CHECKER)
 				newReq.setCheckerById(user.getUserId());

@@ -529,7 +529,7 @@ public class RepDao {
 					List<Object> params = new ArrayList<>();
 					List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 					
-				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 "); 
+				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 AND STATUS IN ('10009','10010') "); 
 					
 					if (StringUtils.isNotBlank(formVo.getPaymentDate())) {
 						sql.append("  AND  MONTH(a.PAYMENT_DATE) = MONTH(?) AND YEAR(a.PAYMENT_DATE)= YEAR(?) ");

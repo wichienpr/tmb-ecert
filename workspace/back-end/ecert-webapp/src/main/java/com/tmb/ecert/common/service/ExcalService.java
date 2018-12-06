@@ -1,7 +1,9 @@
 package com.tmb.ecert.common.service;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -29,10 +31,12 @@ public class ExcalService {
 	public CellStyle topLeft;
 	public CellStyle bgLightBule;
 	public CellStyle bgBule;
+	public CellStyle cellTextCenter;
 	public Font fontHeader;
 	
 	public XSSFWorkbook setUpExcel() {
 		XSSFWorkbook workbook = new XSSFWorkbook();
+		DataFormat dataFormat = workbook.createDataFormat();
 		
 		fontHeader = workbook.createFont();
 		fontHeader.setBold(true);
@@ -130,6 +134,15 @@ public class ExcalService {
 
 		topLeft = workbook.createCellStyle();
 		topLeft.setAlignment(HorizontalAlignment.LEFT);
+		
+		cellTextCenter = workbook.createCellStyle();
+		cellTextCenter.setAlignment(HorizontalAlignment.CENTER);
+		cellTextCenter.setBorderBottom(BorderStyle.THIN);
+		cellTextCenter.setBorderLeft(BorderStyle.THIN);
+		cellTextCenter.setBorderRight(BorderStyle.THIN);
+		cellTextCenter.setBorderTop(BorderStyle.THIN);
+		cellTextCenter.setDataFormat(dataFormat.getFormat("@"));
+		
 		return workbook;
 	}
 
