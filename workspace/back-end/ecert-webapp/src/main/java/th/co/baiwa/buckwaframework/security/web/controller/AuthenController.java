@@ -95,10 +95,16 @@ public class AuthenController {
 				vo.setStatus(LOGIN_STATUS.DUP_LOGIN);
 				if (!session.getId().equals(inallsess.get(1).getSessionId())) { // Currently user
 					this.forceLogOut(request, response);
+					vo = new AjaxLoginVo();
+					vo.setStatus(LOGIN_STATUS.FAIL);
+					return vo;
 				}
 			} else {
 				if (!session.getId().equals(inallsess.get(0).getSessionId())) { // Previously user
 					this.forceLogOut(request, response);
+					vo = new AjaxLoginVo();
+					vo.setStatus(LOGIN_STATUS.FAIL);
+					return vo;
 				}
 			}
 
