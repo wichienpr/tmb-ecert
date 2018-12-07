@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Calendar, CalendarFormatter, CalendarLocal, CalendarType, Lov, Modal } from 'app/baiwa/common/models';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Calendar, Lov, Modal } from 'app/baiwa/common/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Btm01000Service } from 'app/tmb-ecert/btm00000/btm01000/btm01000.service';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
@@ -10,14 +10,14 @@ import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/componen
 import { Btm01000 } from './btm01000.model';
 import * as moment from 'moment';
 import { DropdownComponent } from 'app/baiwa/common/components/dropdown/dropdown.component';
-import {  dateLocaleEN, ThDateToEnDate, ThYearToEnYear, dateLocale, EnYearToThYear,EnDateToThDate } from "helpers/";
-import { initChangeDetectorIfExisting } from '@angular/core/src/render3/instructions';
+import { ThDateToEnDate, EnDateToThDate } from "helpers/";
+
 @Component({
   selector: 'app-btm01000',
   templateUrl: './btm01000.component.html',
   styleUrls: ['./btm01000.component.css']
 })
-export class Btm01000Component implements OnInit {
+export class Btm01000Component implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild("batchMonitorDT")
   batchMonitorDT: DatatableDirective;
@@ -69,6 +69,8 @@ export class Btm01000Component implements OnInit {
   retrunModal: Modal;
 
   tempItem: Btm01000;
+  interval: any = null;
+  timeInterval: number = 30;
 
   constructor(private service: Btm01000Service, private modalService: ModalService,
     private commonserice: CommonService) {
@@ -78,6 +80,12 @@ export class Btm01000Component implements OnInit {
       message: ""
     }
     this.rerunDateOnly = true;
+
+    this.service.getParameters().subscribe(response => {
+      const data = response as Array<any>;
+      const selected = data.find(obj => obj.propertyName === "time.to.interval");
+      this.timeInterval = parseInt(selected ? selected.propertyValue : "30");
+    });
   }
 
   ngOnInit() {
@@ -101,9 +109,7 @@ export class Btm01000Component implements OnInit {
       type: "custom"
     };
 
-
     this.dropdownBatchJob = {
-
       dropdownId: "batchJobType",
       dropdownName: "batchJobType",
       type: "search",
@@ -112,7 +118,6 @@ export class Btm01000Component implements OnInit {
       values: [],
       valueName: "code",
       labelName: "name"
-
     };
 
     this.dropdownJobMonitor = {
@@ -159,27 +164,40 @@ export class Btm01000Component implements OnInit {
       formatter: "dd/mm/yyyy"
     };
 
-
     this.service.getDropdownBatchJob().subscribe((obj: Lov[]) => {
       this.dropdownBatchJob.values = obj
     });
-    this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) =>{
+    this.service.getDropdownJobMonitoringStatus().subscribe((obj: Lov[]) => {
       this.dropdownJobMonitor.values = obj
     });
+  }
 
+  ngAfterViewInit() {
+    // On Page Created and Searched
+    setTimeout(() => {
+      this.doSearch();
+    }, 500);
 
+    // Delay 3 seconds for loading parameter and find time to interval
+    setTimeout(() => {
+      // Refresh This Page
+      this.interval = setInterval(() => {
+        this.doSearch();
+      }, this.timeInterval * 60 * 1000); // 30 minute refresh
+      console.log(`INTERVAL: ${this.timeInterval} MINUTES`);
+    }, 3000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+    console.log("CLEARED INTERVAL");
   }
 
   calendarValue(name, e) {
     this.serchForm.controls[name].setValue(e);
   }
 
-  // calendarreRunValue(name, e) {
-  //   this.reRunForm.controls[name].setValue(e);
-  // }
-
   doSearch() {
-    // console.log("search data ",this.serchForm.value.dateFrom," to ", this.serchForm.value.dateTo )
     if (!this.serchForm.touched) {
       Object.keys(this.serchForm.value).forEach(element => {
         let fc = this.serchForm.get(element);
@@ -191,11 +209,11 @@ export class Btm01000Component implements OnInit {
       let strTo = this.serchForm.get("dateTo").value;
       let type = this.serchForm.get("batchType").value;
       let oper = this.serchForm.get("operationType").value
-      const formsearch ={
-        dateFrom:ThDateToEnDate(strFrom),
-        dateTo:ThDateToEnDate(strTo),
-        batchType:type,
-        operationType:oper
+      const formsearch = {
+        dateFrom: ThDateToEnDate(strFrom),
+        dateTo: ThDateToEnDate(strTo),
+        batchType: type,
+        operationType: oper
 
       }
       this.batchMonitorDT.searchParams(formsearch)
@@ -211,10 +229,9 @@ export class Btm01000Component implements OnInit {
   }
 
   showModalreRun(item) {
-    let btmTemp: Btm01000 = Object.assign({},item) ;
-    let dateF :string = btmTemp.endofdate;
+    let btmTemp: Btm01000 = Object.assign({}, item);
+    let dateF: string = btmTemp.endofdate;
     this.touchedreRun = true;
-    // console.log("date format", dateF.substr(0, 10))
     if (item.jobtypeCode == 60003 || item.jobtypeCode == 60002 || item.jobtypeCode == 60001) {
       if (item.jobtypeCode != 60003) {
         this.rerunDateOnly = false;
@@ -235,7 +252,6 @@ export class Btm01000Component implements OnInit {
       this.modalService.confirm((e) => {
         if (e) {
           this.callRerunJobAPI(item);
-          // console.log("comfirm modal ");
         }
       }, modalConf);
     }
@@ -246,28 +262,28 @@ export class Btm01000Component implements OnInit {
   }
 
   clearSearchData() {
-    // console.log("clear search");
     let now = EnDateToThDate(moment().format('DD/MM/YYYY'));
     this.serchForm.setValue({ dateFrom: now, dateTo: now, batchType: '', operationType: '' });
     this.batchMonitorDT.clear();
     this.statusDropDown.clear();
     this.typeDropDown.clear();
   }
+
   continueRerun() {
     let startD = this.reRunForm.get("reRunDateForm").value;
     let endD = this.reRunForm.get("reRunDateTo").value;
     this.tempItem.startDate = ThDateToEnDate(startD);
-    if (endD != null){
+    if (endD != null) {
       this.tempItem.stopDate = ThDateToEnDate(endD);
     }
     this.callRerunJobAPI(this.tempItem)
-
   }
+
   callRerunJobAPI(itme) {
     const req = {
-      startDate:itme.startDate.substr(0, 10),
-      stopDate:itme.stopDate,
-      jobtypeCode:itme.jobtypeCode
+      startDate: itme.startDate.substr(0, 10),
+      stopDate: itme.stopDate,
+      jobtypeCode: itme.jobtypeCode
     }
     this.service.callRerunJobService(req).subscribe(res => {
       this.messageRes = res;

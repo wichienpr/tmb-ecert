@@ -66,6 +66,11 @@ export class AuthService {
     });
   }
 
+  public kickPreviousUser(): Promise<any> {
+    const url = AjaxService.CONTEXT_PATH + "/forcekick";;
+    return this.http.post(url, {}).toPromise();
+  }
+
   get isLoggedIn() {
     if (this.userLogin == null) return false;
     if (this.userLogin.userId === "") {

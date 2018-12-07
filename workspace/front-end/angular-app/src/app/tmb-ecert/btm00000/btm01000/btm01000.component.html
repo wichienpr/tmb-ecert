@@ -1,6 +1,4 @@
-
-
-<ui-modal [modal]="retrunModal"  #modalreRun="ui-modal" (modalevent)="modalEvent($event)">
+<ui-modal [modal]="retrunModal" #modalreRun="ui-modal" (modalevent)="modalEvent($event)">
     <ng-template [formGroup]="reRunForm">
         <i class="close icon"></i>
         <div class="header" style="background: #1678C2">
@@ -8,21 +6,21 @@
         </div>
         <div class="content">
             <div class="ui form">
-                <div class="inline fields" >
-                    <div  class="three wide field" *ngIf="!rerunDateOnly">
+                <div class="inline fields">
+                    <div class="three wide field" *ngIf="!rerunDateOnly">
 
                     </div>
                     <div class="two wide field">
                         <label class="custom-label-w-25">จากวันที่</label>
                     </div>
                     <div class="six wide field">
-                            <ng-calendar [config]="calendarreRunFrom" #calendarRerunFrom="ng-calendar"  style="width:100%"></ng-calendar>
+                        <ng-calendar [config]="calendarreRunFrom" #calendarRerunFrom="ng-calendar" style="width:100%"></ng-calendar>
                     </div>
                     <div class="two wide field" *ngIf="rerunDateOnly">
                         <label class="custom-label-w-25">ถึงวันที่</label>
                     </div>
                     <div class="six wide field" *ngIf="rerunDateOnly">
-                            <ng-calendar [config]="calendarreRunTo" #calendarRerunTo="ng-calendar"  style="width:100%"></ng-calendar>
+                        <ng-calendar [config]="calendarreRunTo" #calendarRerunTo="ng-calendar" style="width:100%"></ng-calendar>
                     </div>
                 </div>
             </div>
@@ -45,7 +43,6 @@
     </ng-template>
 </ui-modal>
 
-
 <div class="ui grid">
     <div class="sixteen wide column">
         <h2 class="ui header"> Batch Monitoring
@@ -55,23 +52,22 @@
             <span>ระบุเงื่อนไขในการค้นหา </span>
         </div>
 
-
         <div class="ui attached segment">
             <form class="ui form" [formGroup]="serchForm">
                 <div class="inline fields">
                     <div class="two wide field"></div>
                     <div class="two wide field">
-                        <label class="custom-label-w-25">วันที่ดำเนินการ<span style="color: red"> * </span></label>
+                        <label class="custom-label-w-25">วันที่ดำเนินการ</label>
                     </div>
                     <div class="four wide field" [ngClass]="{'error':(dateFrom.invalid && (dateFrom.dirty || dateFrom.touched)) }">
-                            <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar"  style="width:100%"></ng-calendar>
+                        <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar" style="width:100%"></ng-calendar>
                         <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateFrom',$event)" style="width:100%"></ui-calendar> -->
                     </div>
                     <div class="one wide field">
-                        <label class="custom-label-w-25">ถึงวันที่<span style="color: red"> * </span></label>
+                        <label class="custom-label-w-25">ถึงวันที่</label>
                     </div>
                     <div class="four wide field" [ngClass]="{'error':(dateTo.invalid && (dateTo.dirty || dateTo.touched)) }">
-                            <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar"  style="width:100%"></ng-calendar>
+                        <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar" style="width:100%"></ng-calendar>
                         <!-- <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar> -->
                     </div>
                 </div>
@@ -91,7 +87,7 @@
                         <label>สถานะการดำเนินการ</label>
                     </div>
                     <div class="four wide field">
-                        <ui-dropdown [dropdown]="dropdownJobMonitor" #statusDropDown="ui-dropdown" ></ui-dropdown>
+                        <ui-dropdown [dropdown]="dropdownJobMonitor" #statusDropDown="ui-dropdown"></ui-dropdown>
                     </div>
                 </div>
                 <br>
@@ -117,17 +113,17 @@
             </div>
 
             <br>
-            <ng-datatable-search [ng-datatable]="batchMonitorDT" ></ng-datatable-search>
+            <ng-datatable-search [ng-datatable]="batchMonitorDT"></ng-datatable-search>
             <table [ngDatatable]="batchMonitorConfig" #batchMonitorDT="ngDatatable" class="ui small celled table nowrap sortable"
                 id="table" style="width: 100%">
                 <thead>
                     <tr style="text-align: center;">
-                        <th >ลำดับ</th>
+                        <th>ลำดับ</th>
                         <th [ngSort]="batchMonitorDT" columnName="START_DATE">วันที่ดำเนินการ </th>
-                        <th [ngSort]="batchMonitorDT" columnName="NAME" >ประเภท</th>
-                        <th [ngSort]="batchMonitorDT" columnName="STATUS" >สถานะการดำเนินการ </th>
-                        <th [ngSort]="batchMonitorDT" >สาเหตุ</th>
-                        <th >Rerun</th>
+                        <th [ngSort]="batchMonitorDT" columnName="NAME">ประเภท</th>
+                        <th [ngSort]="batchMonitorDT" columnName="STATUS">สถานะการดำเนินการ </th>
+                        <th [ngSort]="batchMonitorDT">สาเหตุ</th>
+                        <th>Rerun</th>
 
                     </tr>
                 </thead>
@@ -140,9 +136,9 @@
                         <td style="text-align: center">{{item.startDate | datetimeFromString }}</td>
                         <td style="text-align: center">{{item.jobtypeName}}</td>
                         <td style="text-align: center">{{item.statusDesc}}</td>
-                        
+
                         <td style="text-align: center" [ngSwitch]="item.status== 80002">
-                            <div *ngSwitchCase="true" >
+                            <div *ngSwitchCase="true">
 
                                 <button class="ui blue basic button" (click)="showModalDetail(item)"> <i class="exclamation icon"></i>
                                     สาเหตุ
@@ -152,24 +148,24 @@
                                 -
                             </div>
                         </td>
-                        
-                        <td style="text-align: center" [ngSwitch]="item.status== 80002">
-                                <!-- && btnrerun -->
-                            <div *ngSwitchCase="true" >
 
-                                <button  class="ui blue basic button" (click)="showModalreRun(item)"> <i class="undo alternate icon"></i>
+                        <td style="text-align: center" [ngSwitch]="item.status== 80002">
+                            <!-- && btnrerun -->
+                            <div *ngSwitchCase="true">
+
+                                <button class="ui blue basic button" (click)="showModalreRun(item)"> <i class="undo alternate icon"></i>
                                     Rerun
                                 </button>
                             </div>
-                            <div  *ngSwitchCase="false">
+                            <div *ngSwitchCase="false">
                                 -
                             </div>
                         </td>
-                        
+
                     </tr>
                 </tbody>
             </table>
             <br>
-            <ng-datatable-footer [ng-datatable]="batchMonitorDT"  ></ng-datatable-footer>
+            <ng-datatable-footer [ng-datatable]="batchMonitorDT"></ng-datatable-footer>
         </div>
     </div>

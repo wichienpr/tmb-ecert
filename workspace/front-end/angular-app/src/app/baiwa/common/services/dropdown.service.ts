@@ -77,6 +77,13 @@ export class DropdownService { // TABLE => ECERT_LISTOFVALUE
             );
     }
 
+    getParameterGroup(): Observable<Lov[]> {
+        return this.http.post<Lov[]>(URL.LOV_BY_TYPE, { type: 12 })
+            .pipe(
+                retry(3), catchError(this.handleError)
+            );
+    }
+
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.

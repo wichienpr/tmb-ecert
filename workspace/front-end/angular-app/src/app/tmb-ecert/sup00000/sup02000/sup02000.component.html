@@ -1,56 +1,50 @@
 <h2 class="ui header">
   Parameter Configuration
 </h2>
-
-<div class="ui form segment ">
-  <div class="ui grid ">
-
-
-    <div class="row">
-      <div class="three wide column">&nbsp;</div>
-      <form class="ten wide column" [formGroup]="parameterForm">
-        <div class="ten wide column" formArrayName="formPropArray">
-          <table class="ui small celled table nowrap " id="table" style="width: 100%">
-            <thead>
-              <tr style="text-align: center;">
-                <th>Property Name</th>
-                <th>Value</th>
-
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr *ngFor="let item of formPropArray.controls;let i = index">
-
-                <ng-container [formGroupName]="i">
-                  <td style="width: 40%">{{item.controls.propertyName.value}}</td>
-                  <td style="width: 60%">
-                    <input type="text" formControlName="propertyValue"  style="width: 95%;">
-                  </td>
-                </ng-container>
-              </tr>
-            </tbody>
-          </table>
+<div class="ui form segment">
+  <div class="ui stackable grid">
+    <div class="row centered">
+      <div class="twelve wide column">
+        <div class="ui centered grid" style="margin-bottom: 10px;margin-top: 10px">
+          <div class="three wide column right aligned" style="line-height: 38px">
+            Parameter Group
+          </div>
+          <div class="eight wide column">
+            <ui-dropdown [dropdown]="paramsDropdown" (valueChange)="paramsGroupChange($event)"></ui-dropdown>
+          </div>
         </div>
+      </div>
+      <form class="twelve wide column" [formGroup]="parameterForm">
+        <table class="ui small celled table nowrap" formArrayName="formPropArray" id="table" style="width: 100%">
+          <thead>
+            <tr style="text-align: center;">
+              <th>Property Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of formPropArray.controls;let i = index" [hidden]="!paramsSelected(item.controls.propertyGroup.value)">
+              <ng-container [formGroupName]="i">
+                <td style="width: 45%">{{item.controls.propertyName.value}}</td>
+                <td style="width: 55%">
+                  <input type="text" formControlName="propertyValue" style="width: 100%;">
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
       </form>
-      <div class="three wide column">&nbsp;</div>
+      <div class="twelve wide column" style="margin-bottom: 10px;margin-top: 25px">
+        <div class="ui grid">
+          <div class="column center aligned">
+            <button class="ui blue basic button" (click)="clickSave()" *ngIf="isCanSave">
+              <i class="download circle icon"></i>
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-
-
   </div>
-
-
-
-  <br>
-  <br>
-  <div class="ui center aligned grid">
-    <button class="ui blue basic button" (click)="clickSave()" *ngIf="isCanSave">
-      <i class="download circle icon"></i>
-      บันทึก
-    </button> &nbsp;&nbsp;&nbsp;
-  </div>
-  <br>
 
 </div>
