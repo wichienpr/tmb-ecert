@@ -29,6 +29,7 @@ public class ParameterConfigDao {
 		public ParameterConfig mapRow(ResultSet rs, int arg1) throws SQLException {
 			ParameterConfig row = new ParameterConfig();
 			row.setParameterconfigId(rs.getLong("PARAMETERCONFIG_ID"));
+			row.setPropertyGroup(rs.getString("PROPERTY_GROUP"));
 			row.setPropertyName(rs.getString("PROPERTY_NAME"));
 			row.setPropertyValue(rs.getString("PROPERTY_VALUE"));
 			row.setUpdatedById(rs.getString("UPDATED_BY_ID"));

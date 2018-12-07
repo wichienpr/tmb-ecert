@@ -4,12 +4,19 @@ import java.sql.Timestamp;
 
 public class ParameterConfig {
 	private Long parameterconfigId;
+	private String propertyGroup;
 	private String propertyName;
 	private String propertyValue;
 	private String updatedById;
 	private String updatedByName;
 	private Timestamp updatedDatetime;
 	
+	public String getPropertyGroup() {
+		return propertyGroup;
+	}
+	public void setPropertyGroup(String propertyGroup) {
+		this.propertyGroup = propertyGroup;
+	}
 	public Long getParameterconfigId() {
 		return parameterconfigId;
 	}

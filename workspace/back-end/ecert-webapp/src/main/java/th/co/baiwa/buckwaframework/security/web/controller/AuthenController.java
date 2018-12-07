@@ -38,127 +38,143 @@ import th.co.baiwa.buckwaframework.support.ApplicationCache;
 public class AuthenController {
 	@Autowired
 	private SessionRegistry sessionRegistry;
-	
+
 	@Autowired
 	private AuditLogService auditLogService;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AuthenController.class);
-	
+
+	@PostMapping("/forcekick")
+	public void forceKickPreviousUser(HttpServletRequest request, HttpServletResponse response) {
+		UserDetails user = null;
+		try {
+			user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
+			if (inallsess.size() >= 2) {
+				String id = inallsess.get(0).getSessionId();
+				inallsess.get(0).expireNow();
+				sessionRegistry.removeSessionInformation(id);
+			}
+		} catch (Exception e) {
+			logger.error("AuthenController.forceKickPreviousUser Error: {} ", e.getMessage());
+		}
+	}
+
 	@PostMapping("/onloginseccess")
 	public AjaxLoginVo onLoginSeccess(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		AjaxLoginVo vo = new AjaxLoginVo();
 		UserDetails user = null;
 		Date currentDate = new Date();
-		
+
 		try {
-			
+
 			HttpSession session = request.getSession(false);
-		
-			logger.info("onLoginSeccess : {}" ,session.getId());
-			
+
+			logger.info("onLoginSeccess : {}", session.getId());
+
 			user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			vo.setUserId(user.getUserId());
 			vo.setFirstName(user.getFirstName());
 			vo.setLastName(user.getLastName());
 			vo.setUsername(user.getUsername());
-			
-			for ( GrantedAuthority item : user.getAuthorities()) {
+
+			for (GrantedAuthority item : user.getAuthorities()) {
 				vo.getRoles().add(item.getAuthority());
-			} 
-			
+			}
+
 			vo.setStatus(LOGIN_STATUS.SUCCESS);
 			vo.setAuths(user.getAuths());
-			
+
 			List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
-			
+
 			logger.info("{}", inallsess.size());
-			
-			if(inallsess.size() >= 2) {
+
+			if (inallsess.size() >= 2) {
 				vo.setStatus(LOGIN_STATUS.DUP_LOGIN);
+				if (!session.getId().equals(inallsess.get(1).getSessionId())) { // Currently user
+					this.forceLogOut(request, response);
+				}
+			} else {
+				if (!session.getId().equals(inallsess.get(0).getSessionId())) { // Previously user
+					this.forceLogOut(request, response);
+				}
 			}
-			
-			//check out off service
+
+			// check out off service
 			String timefrom = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_FROM);
 			String timeto = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_TO);
 			String currentTime = DateFormatUtils.format(new Date(), "HHmm").trim();
-			
+
 			String strFrom = timefrom.replace(":", "").trim();
 			String strTo = timeto.replace(":", "").trim();
-			if(NumberUtils.toInt(strFrom) <= NumberUtils.toInt(currentTime) &&
-					NumberUtils.toInt(strTo) >= NumberUtils.toInt(currentTime) 	) {
+			if (NumberUtils.toInt(strFrom) <= NumberUtils.toInt(currentTime)
+					&& NumberUtils.toInt(strTo) >= NumberUtils.toInt(currentTime)) {
 				logger.info("ON SERVICE");
-				auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE,
-						ACTION_AUDITLOG_DESC.LOGIN,
+				auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE, ACTION_AUDITLOG_DESC.LOGIN,
 						(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
 						currentDate);
-			}else {
+			} else {
 				logger.info("OUTOFF SERVICE");
 				vo.setStatus(LOGIN_STATUS.OUTOFF_SERVICE);
 				vo.setDiscription(timefrom + "  ถึงเวลา " + timeto);
 				this.forceLogOut(request, response);
 			}
-			
-			
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error("AuthenController.onLoginSeccess Error: {} ", e.getMessage());
 		}
-		return vo;	
+		return vo;
 	}
 
 	@PostMapping("/onloginerror")
 	public AjaxLoginVo onloginerror(@RequestParam String error) {
 		AjaxLoginVo vo = new AjaxLoginVo();
-		try{
+		try {
 			logger.info("onloginerror : {}", error);
 			vo.setStatus(error);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error("AuthenController.onloginerror Error: {} ", e.getMessage());
 		}
 		return vo;
 	}
-	
-	
-	@RequestMapping(value="/onlogout", method = RequestMethod.GET)
-	public AjaxLoginVo logoutPage (HttpServletRequest request, HttpServletResponse response) {
+
+	@RequestMapping(value = "/onlogout", method = RequestMethod.GET)
+	public AjaxLoginVo logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		Date currentDate = new Date();
 		AjaxLoginVo vo = new AjaxLoginVo();
 		UserDetails user = null;
-		logger.info("logoutPage : {}" ,session.getId());
+		logger.info("logoutPage : {}", session.getId());
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		    if (auth != null){
-		    	
-		    	user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (auth != null) {
 
-		    	auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGOUT_CODE,
-							ACTION_AUDITLOG_DESC.LOGOUT,
-							user,
-							currentDate);
-		    	  
-		        new SecurityContextLogoutHandler().logout(request, response, auth);
-		        sessionRegistry.removeSessionInformation(session.getId());
-		    }
+				user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+				auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGOUT_CODE, ACTION_AUDITLOG_DESC.LOGOUT, user,
+						currentDate);
+
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				sessionRegistry.removeSessionInformation(session.getId());
+			}
 			vo.setStatus(LOGIN_STATUS.SUCCESS);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error("AuthenController.logoutPage Error: {} ", e.getMessage());
 		}
-		
+
 		return vo;
 	}
-	
-	
-	//this for login out off service only not call
+
+	// this for login out off service only not call
 	private void forceLogOut(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){
-	    	HttpSession session = request.getSession();
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	        sessionRegistry.removeSessionInformation(session.getId());
-			logger.info("forceLogOut : {}" ,session.getId());
-	    }
+		if (auth != null) {
+			HttpSession session = request.getSession();
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+			sessionRegistry.removeSessionInformation(session.getId());
+			logger.info("forceLogOut : {}", session.getId());
+		}
 	}
-	
+
 }
