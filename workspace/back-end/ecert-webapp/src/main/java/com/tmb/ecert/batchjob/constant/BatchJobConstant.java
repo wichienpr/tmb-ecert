@@ -108,6 +108,7 @@ public class BatchJobConstant {
 	
 	public static class HROFFICE_CODE {
 		public static final String BATCH_HROFFICECODE_FILE_TYPE = "hrofficecode.file.type";
+		public static final String BATCH_HROFFICECODE_ACTIVE_STATUS = "A";
 	}
 	
 	public static final class OFFICE_CODE {
@@ -172,5 +173,6 @@ public class BatchJobConstant {
 	}
 
 	public static Integer RERUN_DEFAULT = 1;
+	public static Integer BATCHRUN_DEFAULT = 0;
 
 }

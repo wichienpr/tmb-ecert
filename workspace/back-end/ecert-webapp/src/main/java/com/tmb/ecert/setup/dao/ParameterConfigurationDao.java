@@ -39,7 +39,7 @@ public class ParameterConfigurationDao {
 		
 		List<ParameterConfig> list = new ArrayList<ParameterConfig>();
 		
-		sql.append(" SELECT PARAMETERCONFIG_ID ,PROPERTY_NAME,PROPERTY_VALUE FROM ECERT_PARAMETER_CONFIG ");
+		sql.append(" SELECT PARAMETERCONFIG_ID,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_GROUP FROM ECERT_PARAMETER_CONFIG ");
 		
 		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup02000RowMapper);
 		return list;
@@ -52,6 +52,7 @@ public class ParameterConfigurationDao {
 		public ParameterConfig mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ParameterConfig vo = new ParameterConfig();
 			vo.setParameterconfigId(rs.getLong("PARAMETERCONFIG_ID"));
+			vo.setPropertyGroup(rs.getString("PROPERTY_GROUP"));
 			vo.setPropertyName(rs.getString("PROPERTY_NAME"));
 			vo.setPropertyValue(rs.getString("PROPERTY_VALUE"));
 			return vo;

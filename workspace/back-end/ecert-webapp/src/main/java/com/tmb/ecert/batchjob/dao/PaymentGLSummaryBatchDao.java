@@ -24,6 +24,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
@@ -87,7 +88,9 @@ public class PaymentGLSummaryBatchDao {
 	
 	private final String QUERY_INSERT_ECERT_JOB_GL_FAILED = " INSERT INTO ECERT_JOBGL_FAILED (PAYMENTDATE) VALUES (?) ";
 	
-	private final String QUERY_OFFICE_CODE = " select OFFICE_CODE2 from ECERT_HR_OFFICECODE where OFFICE_CODE1 = ? ";
+	private final String QUERY_OFFICE_CODE = " select OFFICE_CODE2 from ECERT_HR_OFFICECODE where OFFICE_CODE1 = ?"
+			+ " AND EFFECTIVE_DATE = (SELECT MAX(EFFECTIVE_DATE) FROM ECERT_HR_OFFICECODE WHERE OFFICE_CODE1 = ? )  "
+			+ " AND STATUS = '"+BatchJobConstant.HROFFICE_CODE.BATCH_HROFFICECODE_ACTIVE_STATUS+"' ";
 	
 	private final String QUERY_SEGMENT_CODE = "  SELECT SEGMENT_CODE , OFFICE_CODE FROM ECERT_LISTOFVALUE WHERE CODE = ? ";
 	
@@ -261,7 +264,7 @@ public class PaymentGLSummaryBatchDao {
 	}
 	
 	public String queryOfficeCode2(String officeCode1) {
-		List<String> officeCode2 = jdbcTemplate.query(this.QUERY_OFFICE_CODE, new Object[] {officeCode1}, officeCode2RowMapper);
+		List<String> officeCode2 = jdbcTemplate.query(this.QUERY_OFFICE_CODE, new Object[] {officeCode1,officeCode1}, officeCode2RowMapper);
 		return !CollectionUtils.isEmpty(officeCode2) ? officeCode2.get(0) : "";
 	}
 	
