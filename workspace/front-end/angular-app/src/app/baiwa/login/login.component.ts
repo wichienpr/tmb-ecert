@@ -78,8 +78,12 @@ export class LoginComponent implements OnInit {
         };
         this.modal.confirm((e) => {
           if (e) {
-            this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
-            this.router.navigate(["/home"]);
+            this.loginsv.kickPreviousUser().then(() => {
+              this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
+              this.router.navigate(["/home"]);
+            }).catch(error => {
+              console.error(error);
+            });
           }
         }, modal);
       } else if (result.status == "OUTOFF_SERVICE") {
@@ -97,12 +101,11 @@ export class LoginComponent implements OnInit {
         this.showLoginMessage = true;
         console.error("error", error)
       },
-      ()=>{
+      () => {
         this.loading = false;
         // console.log("complete")
       }
-      )
-      ;
+    );
 
     return false;
   }

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Modal } from 'models/';
-import { Router, NavigationStart, NavigationEnd, NavigationCancel } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CommonService } from 'app/baiwa/common/services';
+import { ModalService, AuthService } from 'app/baiwa/common/services';
+import { UserDetail } from 'app/user.model';
+import { Store } from '@ngrx/store';
+import { UpdateUser } from 'app/user.action';
 
 @Component({
   selector: 'app-semantic-body',
@@ -19,7 +22,9 @@ export class SemanticBodyComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private common: CommonService
+    private store: Store<AppState>,
+    private modal: ModalService,
+    private auth: AuthService
   ) {
     this.modalAlert = {
       modalId: "alert",
@@ -56,4 +61,29 @@ export class SemanticBodyComponent implements OnInit {
 
   ngOnInit() { }
 
+  changeOfRoutes() {
+    this.auth.getUser().catch(error => {
+      console.error("ไม่สามารถรับข้อมูลผู้ใช้ได้ ", error);
+      this.modal.alertWithAct({ msg: "ไม่สามารถทำรายการได้ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" }, clicked => {
+        if (clicked) {
+          const INIT_USER_DETAIL: UserDetail = {
+            roles: [],
+            userId: "",
+            username: "",
+            firstName: "",
+            lastName: "",
+            auths: [],
+            segment: "",
+          };
+          this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
+          this.router.navigate(['/login']);
+        }
+      })
+    })
+  }
+
+}
+
+interface AppState {
+  user: UserDetail
 }
