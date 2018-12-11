@@ -81,6 +81,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
   }
 
   callSearchAPI() {
+    this.formPropArray.reset();
     this.service.callGetParamAPI().subscribe(src => {
       this.paramResult = src;
       let i = 0;
@@ -102,6 +103,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
         this.formPropArray.push(newFormGroup);
         i++;
       });
+      console.log("search parameter " , this.formPropArray)
     })
   }
 
@@ -158,6 +160,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
         this.commonService.isLoaded();
       }
     }, modalConf);
+
   }
 
   get formPropArray(): FormArray {
