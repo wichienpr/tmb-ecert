@@ -86,7 +86,7 @@ public class PaymentGLSummaryBatchService {
 			List<String> contents = this.createContentFile(requestForms);
 			contents.add(this.createTrailer(requestForms));
 			
-			String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, runDate);
+			String fileName = this.createFileName(BatchJobConstant.BATCHRUN_DEFAULT, runDate);
 			String achiveFilePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH) + "/" + fileName;
 			
 			File file = this.writeFile(contents, StandardCharsets.UTF_8.name(), achiveFilePath);
