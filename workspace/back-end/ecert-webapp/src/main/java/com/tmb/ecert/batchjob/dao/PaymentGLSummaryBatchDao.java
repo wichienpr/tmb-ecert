@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import com.tmb.ecert.batchjob.constant.BatchJobConstant;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAID_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
@@ -64,9 +65,9 @@ public class PaymentGLSummaryBatchDao {
 			"FROM ECERT_REQUEST_FORM A   " + 
 			"INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID  " + 
 			"INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE " + 
-			"LEFT JOIN ECERT_JOBGL_FAILED D ON CAST(D.PAYMENTDATE AS DATE) = CAST(A.REQUEST_DATE AS DATE) " + 
+			"LEFT JOIN ECERT_JOBGL_FAILED D ON CAST(D.PAYMENTDATE AS DATE) = CAST(A.PAYLOADTS AS DATE) " + 
 			"WHERE A.DELETE_FLAG = 0 AND  A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') " +
-			"AND (CONVERT(date, A.REQUEST_DATE) = ? OR CONVERT(date, D.PAYMENTDATE) <= ?) GROUP BY " + 
+			"AND (CONVERT(date, A.PAYLOADTS) = ? OR CONVERT(date, D.PAYMENTDATE) <= ?) GROUP BY " + 
 			"	A.REQFORM_ID, " + 
 			"	B.REQFORM_ID, " + 
 			"	B.CERTIFICATE_CODE, " + 
@@ -78,8 +79,10 @@ public class PaymentGLSummaryBatchDao {
 	private final String QUERY_REQ_GL_SUMMARY_PROCESS_FROMTODATE = " SELECT A.*,B.REQFORM_ID AS REQFORM_ID_1,B.CERTIFICATE_CODE,"
 			+ " C.CERTIFICATE_ID,C.CODE AS CERT_CODE,C.CERTIFICATE FROM ECERT_REQUEST_FORM A "
 			+ " INNER JOIN ECERT_REQUEST_CERTIFICATE B ON B.REQFORM_ID = A.REQFORM_ID "
-			+ " INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE "
-	        + " WHERE A.DELETE_FLAG = 0 AND A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') AND CONVERT(date,A.REQUEST_DATE) >= ? AND CONVERT(date,A.REQUEST_DATE) <= ? ";
+			+ " INNER JOIN ECERT_CERTIFICATE C ON C.CODE = B.CERTIFICATE_CODE " 
+	        + " WHERE A.DELETE_FLAG = 0 AND A.STATUS IN ('"+StatusConstant.WAIT_UPLOAD_CERTIFICATE+"','"+StatusConstant.SUCCEED+"') "
+	        + " AND A.PAIDTYPE_CODE IN ('"+PAID_TYPE.CUSTOMER_PAY_DBD+"','"+PAID_TYPE.CUSTOMER_PAY_DBD_TMB+"','"+PAID_TYPE.TMB_PAY_DBD_TMB+"') "
+	   		+ " AND CONVERT(date,A.PAYLOADTS) >= ? AND CONVERT(date,A.PAYLOADTS) <= ? ";
 	
 	
 	private final String QUERY_UPDATE_ECERT_JOB_MONITORING = " UPDATE ECERT_JOB_MONITORING " + 
