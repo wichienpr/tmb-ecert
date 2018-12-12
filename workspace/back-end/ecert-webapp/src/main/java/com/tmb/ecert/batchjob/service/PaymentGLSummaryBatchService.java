@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -37,6 +39,7 @@ import com.tmb.ecert.batchjob.domain.EcertJobGLFailed;
 import com.tmb.ecert.batchjob.domain.EcertJobMonitoring;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.CHANNEL;
+import com.tmb.ecert.common.constant.ProjectConstant.SYSTEM;
 import com.tmb.ecert.common.constant.StatusConstant.JOBMONITORING;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
