@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
@@ -26,6 +27,8 @@ import com.tmb.ecert.report.persistence.vo.Rep02200FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep02200Vo;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
+
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Repository
 public class RepDao {
@@ -570,13 +573,15 @@ public class RepDao {
 				    		vo.setAddress(rs.getString("ADDRESS"));   
 				    		vo.setBranch(rs.getString("BRANCH"));  
 				    		
-				    		
+				    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
 				    		Float totalAmountTmbVat = 0f;
-				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.93f;
+//				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.93f;
+				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (1-(Float.parseFloat(vatpercent)/100));
 				    		vo.setAmountTmbVat(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
 				    		
 				    		Float totalAmountVat = 0f;
-				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f;
+//				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f;
+				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (Float.parseFloat(vatpercent)/100);
 				    		vo.setAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
 				    		
 				    		vo.setAmountTmb(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TMB"))); 

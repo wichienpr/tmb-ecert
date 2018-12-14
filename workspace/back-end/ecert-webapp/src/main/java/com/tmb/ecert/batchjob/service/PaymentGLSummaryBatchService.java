@@ -103,7 +103,7 @@ public class PaymentGLSummaryBatchService {
 			
 			List<SftpFileVo> files = new ArrayList<>();
 			files.add(new SftpFileVo(file, fullPath , fileName));
-			SftpVo sftpVo = new SftpVo(files, host, username,  TmbAesUtil.decrypt(keystorePath, password));
+			SftpVo sftpVo = new SftpVo(files, host, username, TmbAesUtil.decrypt(keystorePath, password));
 			boolean isSuccess = SftpUtils.putFile(sftpVo);
 			
 			if (!isSuccess) {
