@@ -238,7 +238,8 @@ export class Btm01000Component implements OnInit, AfterViewInit, OnDestroy {
         this.reRunForm.get("reRunDateForm").patchValue(dateF.substr(0, 10));
       } else {
         this.rerunDateOnly = true;
-        this.reRunForm.get("reRunDateForm").patchValue(dateF.substr(0, 10));
+        let startDate = moment(dateF, "DD/MM/YYYY").subtract(1, 'days');
+        this.reRunForm.get("reRunDateForm").patchValue(moment(startDate, "DD/MM/YYYY"));
         this.reRunForm.get("reRunDateTo").patchValue(dateF.substr(0, 10));
       }
       this.tempItem = item;
