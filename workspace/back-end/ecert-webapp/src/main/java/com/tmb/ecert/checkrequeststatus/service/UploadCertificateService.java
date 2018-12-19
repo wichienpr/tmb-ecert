@@ -76,7 +76,7 @@ public class UploadCertificateService {
 		String pathFile = "";
 		RequestForm reqVo = null;
 		CheckStatusDocumentResponse checkStatusVo = null;
-//		try {
+		try {
 			log.info(" START PROCESS UPLOAD CERTIFIACTE BY CERTIFICATE ID "+Long.toString(certificateID));
 			int timesleep = Integer.parseInt(
 					ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.UPLOADCERTIFICARE_SLEEP));
@@ -207,10 +207,10 @@ public class UploadCertificateService {
 //				throw new Exception(wsErrorDesc);
 			}
 
-//		} catch (Exception e) {
-//			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
-//			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
-//		}
+		} catch (Exception e) {
+			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
+			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
+		}
 
 	}
 
