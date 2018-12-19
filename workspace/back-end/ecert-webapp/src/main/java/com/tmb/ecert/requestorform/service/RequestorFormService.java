@@ -149,6 +149,13 @@ public class RequestorFormService {
 				changeNameFile = "NCHANGE_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
+			
+			if (!StatusConstant.PAYMENT_STATUS.PAY_TMB.equals(form.getSubAccMethodSelect())) {
+				form.setSubAccMethodSelect(null);
+				form.setAccountType(null);
+				form.setGlType(null);
+				form.setTranCode(null);
+			}
 			try {
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
 				}.getType();
@@ -282,6 +289,8 @@ public class RequestorFormService {
 				changeNameFile = "NCHANGE_" + form.getTmbReqFormNo() + "." + ext;
 				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
+			
+			
 			try {
 				Long nextId = 0L;
 				Type listType = new TypeToken<List<Nrq02000CerVo>>() {
