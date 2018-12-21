@@ -276,7 +276,7 @@
                     </div>
                   </td>
                   <td><label>{{ chk.certificate }}</label></td>
-                  <td>{{ chk.feeTmb }}</td>
+                  <td>{{ chk.feeDbd }}</td>
                   <td>{{ chk.feeTmb }}</td>
                   <td class="center aligned">
                     {{ chk.code == '10007' ? (chk.acceptedDate|dateString) : '' }}
@@ -309,7 +309,7 @@
                         </label>
                       </div>
                     </td>
-                    <td>{{ db.feeTmb }}</td>
+                    <td>{{ db.feeDbd }}</td>
                     <td>{{ db.feeTmb }}</td>
                     <td class="center aligned break-line" *ngIf="!db.registeredDate&&!db.acceptedDate&&!db.statementYear"></td>
                     <td class="center aligned break-line" *ngIf="db.registeredDate">{{ db.registeredDate | dateString

@@ -821,6 +821,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.accNo = Acc.convertAccNo(this.data.accountNo);
       this.form.get('accNo').patchValue(this.accNo);
       this.subAccMethodChange("");
+      // this.form.controls.subAccMethodSelect.setValue("");
     } else {
       this.subAccMethodChange(this.form.get("subAccMethodSelect").value);
     }
