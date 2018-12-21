@@ -64,6 +64,7 @@ public class BatchJobConstant {
 		public static final String ECERT_HOUSEKEEPING = "e-certificate-jobhousekeeping.log";
 		public static final String ECERT_HROFFICECODE = "e-certificate-jobhrofficecode.log";	
 		public static final String ECERT_IMPORTECM = "e-certificate-jobimportecm.log";	
+		public static final String ECERT_ECMMASTERDATA = "e-certificate-jobemcmasterdata.log";	
 	}
 	
 	public static class PAYMENT_GL_SUMMARY {
@@ -170,6 +171,7 @@ public class BatchJobConstant {
 		public final static String AUDITLOG_TYPE ="60005";
 		public final static String HOUSEKEEPING_TYPE ="60006";
 		public final static String IMPORT_ECM ="60007";
+		public final static String ECM_MASTERDATA ="60008";
 	}
 
 	public static Integer RERUN_DEFAULT = 1;

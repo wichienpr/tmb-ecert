@@ -133,8 +133,8 @@ public class ReportPdfService {
 			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 			params01.put("docType", "ต้นฉบับ");
 			params01.put("receiptNo", req.getReceiptNo());
-			params01.put("date", DateFormatUtils.format(req.getCreatedDateTime(), "dd MMMM yyyy", new Locale("th", "TH")));
-			params01.put("time", DateFormatUtils.format(req.getCreatedDateTime(), "HH.mm", new Locale("th", "TH")));
+			params01.put("date", DateFormatUtils.format(req.getPayLoadTs(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params01.put("time", DateFormatUtils.format(req.getPayLoadTs(), "HH.mm", new Locale("th", "TH")));
 			params01.put("customerNameReceipt", req.getCustomerNameReceipt());
 			params01.put("organizeId", req.getOrganizeId());
 			params01.put("address", req.getAddress());
@@ -180,8 +180,8 @@ public class ReportPdfService {
 			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 			params02.put("docType", "สำเนา");
 			params02.put("receiptNo", req.getReceiptNo());
-			params02.put("date", DateFormatUtils.format(req.getCreatedDateTime(), "dd MMMM yyyy", new Locale("th", "TH")));
-			params02.put("time", DateFormatUtils.format(req.getCreatedDateTime(), "HH.mm", new Locale("th", "TH")));
+			params02.put("date", DateFormatUtils.format(req.getPayLoadTs(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params02.put("time", DateFormatUtils.format(req.getPayLoadTs(), "HH.mm", new Locale("th", "TH")));
 			params02.put("customerNameReceipt", req.getCustomerNameReceipt());
 			params02.put("organizeId", req.getOrganizeId());
 			params02.put("address", req.getAddress());

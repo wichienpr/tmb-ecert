@@ -35,6 +35,7 @@ import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.service.PaymentWebService;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
+import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
@@ -68,6 +69,9 @@ public class CheckRequestDetailService {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private ReceiptGenKeyService receiptGenKeyService;
 
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
@@ -199,7 +203,13 @@ public class CheckRequestDetailService {
 						CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
 						newReq.setPayLoadTs(realtimeStep.getData().getPayLoadTs()); // UPDATE PAY_LOAD_TS
 						if (isSuccess(realtimeStep.getMessage())) {
-
+							
+							// UPDATE RECEIPT ID WHEN PAYMENT SUCCESS.
+							if (StringUtils.isEmpty(newReq.getReceiptNo())) {
+								String receiptNo = receiptGenKeyService.getNextKey();
+								newReq.setReceiptNo(receiptNo);
+							}
+							
 							newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 							updateForm(newReq, user);
 							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
