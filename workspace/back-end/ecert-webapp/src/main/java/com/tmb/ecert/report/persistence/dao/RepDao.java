@@ -549,7 +549,7 @@ public class RepDao {
 						sql.append(" AND a.CUSTOMER_NAME = ?");
 						params.add(formVo.getCustomerName());
 					}
-					
+					sql.append(" ORDER BY RECEIPT_NO , PAYMENT_DATE ASC ");
 //					log.info("sqlRep03000 : {}",sql.toString());
 					rep03000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep03000RowMapper);
 					

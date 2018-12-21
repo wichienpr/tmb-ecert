@@ -17,7 +17,13 @@ public class EcerDateUtils {
 	public static String EXPRESS_DATE_FORMAT = "dd/MM/yyyy HHmmss";
 	public static String yyMMdd_EN_FORMAT = "yyMMdd";
 	public static String HHmm_EN_FORMAT = "HH:mm";
+	public static String YYYY_EN_FORMAT = "YYYY";
+	public static String M_EN_FORMAT = "M";
+	public static String MMYYYY_EN_FORMAT = "MM/YYYY";
 
+	public static final String[] MONTH_NAMES = { "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม" };
+	
+	
 	public static Date parseTranDateFromExpress(String date) {
 		if (StringUtils.isBlank(date)) {
 			return null;
@@ -85,5 +91,47 @@ public class EcerDateUtils {
 
 		return DateFormatUtils.format(date, HHmm_EN_FORMAT);
 	}
+
+	public static String formatYYYY_TH(Date date) {
+		if (date == null) {
+			return null;
+		}
+		try {
+			int yearEN = Integer.parseInt(DateFormatUtils.format(date, YYYY_EN_FORMAT));
+			return Integer.toString(yearEN+543);
+		} catch (Exception e) {
+			logger.error(" Invalid date format {} ", date);
+			return null;
+		}
+
+	}
+	
+	public static String formatMMM_TH(Date date) {
+		if (date == null) {
+			return null;
+		}
+		
+		return MONTH_NAMES[Integer.parseInt(formatM_EN(date))-1];
+	}
+	
+	public static String formatM_EN(Date date) {
+		if (date == null) {
+			return null;
+		}
+		return DateFormatUtils.format(date, M_EN_FORMAT);
+	}
+	
+	public static Date parseDateMMYYYYEN(String date) {
+		if (StringUtils.isBlank(date)) {
+			return null;
+		}
+		try {
+			return DateUtils.parseDate(date, MMYYYY_EN_FORMAT);
+		} catch (Exception e) {
+			logger.error(" Invalid date format {} ", date);
+			return null;
+		}
+	}
+
 
 }

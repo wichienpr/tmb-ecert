@@ -25,11 +25,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 
+import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 
 @Service
@@ -91,67 +93,85 @@ public class Rep03000tService {
 //			String[] tbTH1 = formVo.getTrHtml1();
 			
 			row = sheet.createRow(rowNum);
-			cell = row.createCell(0);
-			cell.setCellValue("รายงาน Output VAT");
+			cell = row.createCell(4);
+			cell.setCellValue("รายงานภาษีขาย");
 			cell.setCellStyle(fontHeader);
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 9)); //tr colspan=10
-			rowNum++;rowNum++;
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 9)); //tr colspan=10
+			rowNum++;
+			row = sheet.createRow(rowNum);
+			cell = row.createCell(3);
+			cell.setCellValue("เดือนภาษี");
+			cell.setCellStyle(fontHeader);
+			
+			cell = row.createCell(4);
+			cell.setCellValue(EcerDateUtils.formatMMM_TH(EcerDateUtils.parseDateMMYYYYEN(formVo.getPaymentDate())));
+//			cell.setCellStyle(fontHeader);
+			
+			cell = row.createCell(5);
+			cell.setCellValue("ปี");
+			cell.setCellStyle(fontHeader);
+			
+			cell = row.createCell(6);
+			cell.setCellValue(EcerDateUtils.formatYYYY_TH(EcerDateUtils.parseDateMMYYYYEN(formVo.getPaymentDate())));
+//			cell.setCellStyle(fontHeader);
+			
+			rowNum++;
 		
 			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
 			cell.setCellValue("ชื่อผู้ประกอบการ");
 			cell.setCellStyle(fontHeader);
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
-			cell = row.createCell(3);
-			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getCustomerName());
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
-			rowNum++;
-			
-			row = sheet.createRow(rowNum);
-			cell = row.createCell(0);
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
+			cell = row.createCell(1);
+//			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getCustomerName());
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
+			cell.setCellValue("บมจ.ธนาคารทหารไทย จำกัด (มหาชน)");
+
+//			row = sheet.createRow(rowNum);
+			cell = row.createCell(6);
 			cell.setCellStyle(fontHeader);
 			cell.setCellValue("เลขประจำตัวผู้เสียภาษีอากร");
-			sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 2)); //tr colspan=3
-			cell = row.createCell(3);
-			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getOrganizeId());
-			sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 3, 9)); //tr colspan=7
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 2)); //tr colspan=3
+			cell = row.createCell(7);
+//			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getOrganizeId());
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 3, 9)); //tr colspan=7
+			cell.setCellValue("0107537000017");
 			rowNum++;
 			
 			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
 			cell.setCellValue("ชื่อสถานประกอบการ");
 			cell.setCellStyle(fontHeader);
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
-			cell = row.createCell(3);
-			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getCompanyName());
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
-			rowNum++;
-			
-/*			row = sheet.createRow(rowNum);
-			cell = row.createCell(0);
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
+			cell = row.createCell(1);
+			cell.setCellValue("บมจ.ธนาคารทหารไทย จำกัด (มหาชน)");
+//			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getCompanyName());
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
+		
+			cell = row.createCell(6);
 			cell.setCellValue("สำนักงานใหญ่/สาขา");
 			cell.setCellStyle(fontHeader);
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
-			cell = row.createCell(3);
-			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getBranch());
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
-			rowNum++;*/
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
+			cell = row.createCell(7);
+			cell.setCellValue("00000");
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
+			rowNum++;
 			
 			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
 			cell.setCellValue("ที่อยู่สถานประกอบการ");
 			cell.setCellStyle(fontHeader);
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
-			cell = row.createCell(3);
-			cell.setCellValue((dataTestList.size()==0)?"-":dataTestList.get(0).getAddress());
-			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 2)); //tr colspan=3
+			cell = row.createCell(1);
+			cell.setCellValue("3000 ถนนพหลโยธิน แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900");
+//			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 3, 9)); //tr colspan=7
 			rowNum++;rowNum++;
 			
 
 /*			String[] tbTH1 = { "ลำดับ","ใบกำกับภาษี","","ชื่อผู้ซื้อสินค้า/ผู้รับบริการ","เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ","สถานประกอบการ","สำนักงานใหญ่/สาขา", "มูลค่าสินค้า/บริการ",
 		             "จำนวนเงินภาษีมูลค่าเพิ่ม","จำนวนเงินรวม"};*/
-			String[] tbTH1 = { "ลำดับ","ใบกำกับภาษี","","ชื่อผู้ซื้อสินค้า/ผู้รับบริการ","เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ","สถานประกอบการ", "มูลค่าสินค้า/บริการ",
-		             "จำนวนเงินภาษีมูลค่าเพิ่ม","จำนวนเงินรวม"};
+			String[] tbTH1 = { "ลำดับ","ใบกำกับภาษี","","ชื่อผู้ซื้อสินค้า/ผู้รับบริการ","เลขประจำตัวผู้เสียภาษีอากร \n ของผู้ซื้อสินค้า/ผู้รับบริการ","สถานประกอบการ", "มูลค่าสินค้า/บริการ",
+		             "จำนวนเงิน \n ภาษีมูลค่าเพิ่ม","จำนวนเงินรวม"};
 			row = sheet.createRow(rowNum);
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -161,7 +181,7 @@ public class Rep03000tService {
 			rowNum++;
 			
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "เลขที่", "วันที่"};
+			String[] tbTH2 = { "เลขที่", "วันที่","","","สำนักงานใหญ่/สาขา","","",""};
 			row = sheet.createRow(rowNum);
 			int cellNumtbTH2 = 1;
 			for (int i = 0; i < tbTH2.length; i++) {
@@ -174,7 +194,9 @@ public class Rep03000tService {
 			// merge(firstRow, lastRow, firstCol, lastCol)
 			
 			for (int i = 3; i<=9; i++) {
-				sheet.addMergedRegion(new CellRangeAddress(rowNum-1,rowNum, i, i)); //tr1-9 rowspan=2
+				if(i != 5) {
+					sheet.addMergedRegion(new CellRangeAddress(rowNum-1,rowNum, i, i)); //tr1-9 rowspan=2
+				}
 			}
 		
 			sheet.addMergedRegion(new CellRangeAddress(rowNum-1,rowNum, 0, 0)); //tr1 rowspan=2
@@ -192,13 +214,13 @@ public class Rep03000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getReceiptNo()))?detail.getReceiptNo(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getPaymentDate()))?detail.getPaymentDate(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()))?detail.getCompanyName(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()))?detail.getCompanyName(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellTextCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()))?detail.getOrganizeId(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAddress()))?detail.getAddress(): "" );
 //				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getBranch()))?detail.getBranch(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmbVat().toString()))?detail.getAmountTmbVat().toString(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmbVat().toString()))?detail.getAmountTmbVat().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
 				
 				rowNum++;
 				order++;
