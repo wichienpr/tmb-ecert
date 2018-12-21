@@ -22,10 +22,10 @@
 
                                 <ng-calendar [config]="calendarConig" #calendar="ng-calendar"  style="width:100%"></ng-calendar>
                             </div>
-                            <div class="three wide field required">
+                            <div class="three wide field">
                                 <label class="full-width text-right">เลขประจำตัวผู้เสียภาษีอากร</label>
                             </div>
-                            <div class="five wide field " [ngClass]="validate('organizeId', ngForm.submitted) ? '' : 'error'">
+                            <div class="five wide field " >
                                 <input type="text" (keypress)="onlyNumber($event)" formControlName="organizeId"
                                     placeholder="เลขประจำตัวผู้เสียภาษีอากร">
                             </div>
@@ -66,7 +66,7 @@
         <span>ผลการค้นหา </span>
     </div>
     <div class="ui attached segment {{ loading? 'loading' : '' }}">
-        <div class="ui form">
+        <!-- <div class="ui form">
             <div class="inline fields">
                 <div class="one wide field "></div>
 
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- <div class="inline fields">
+             <div class="inline fields">
                 <div class="one wide field "></div>
 
                 <div class="two wide field ">
@@ -104,7 +104,7 @@
                 <div class="three wide field ">
                     <span>{{branchHead | emptyString }}</span>
                 </div>
-            </div> -->
+            </div> 
             <div class="inline fields">
                 <div class="one wide field "></div>
 
@@ -115,11 +115,9 @@
                 <div class="seven wide field ">
                     <span>{{addressHead | emptyString }}</span>
                 </div>
-
             </div>
+        </div> -->
 
-
-        </div>
         <br>
         <br>
         <div style="overflow-x: auto;white-space: nowrap;">
