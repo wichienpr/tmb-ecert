@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
+
 @Service
 public class DownloadService {
 	
@@ -78,5 +80,31 @@ public class DownloadService {
 		} catch (Exception e) {
 			logger.error("DownloadService::pdf", e);
 		}
+	}
+	
+	public void manual(HttpServletResponse response) {
+		try {
+			FileInputStream results = null;
+			try {
+				String path = ApplicationCache.getParamValueByName(ProjectConstant.ECERT_MANUAL.MANUAL_PATH); 
+				String filename = ApplicationCache.getParamValueByName(ProjectConstant.ECERT_MANUAL.MANUAL_FILENAME); 
+				File file = new File(path+"/" + filename);
+				results = new FileInputStream(file);
+				response.setContentType("application/pdf");
+				response.addHeader("Content-Disposition", "inline;filename="+filename);
+				IOUtils.copy(results, response.getOutputStream());
+				response.flushBuffer();
+			} catch (Exception e) {
+				logger.error("DownloadService::download", e);
+			} finally {
+				if (results != null) {
+					results.close();
+				}
+			}
+		} catch (Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_DOWNLOAD, e.toString());
+			logger.error("DownloadService::download", e);
+		}
+
 	}
 }

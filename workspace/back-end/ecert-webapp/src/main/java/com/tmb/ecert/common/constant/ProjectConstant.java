@@ -122,6 +122,7 @@ public class ProjectConstant {
 		public static final String ECM_FTP_PASSWORD = "ecm.ftp.password";
 		
 		public static final String AMOUNT_LIMIT = "payment.amount.limit";
+		
 	}
 	
 	public static class EMAIL_SERVICE {
@@ -139,5 +140,10 @@ public class ProjectConstant {
 		public static final String FUNCTION_NAME_PRINT_COVERSHEET = "Print Coversheet";
 		public static final String FUNCTION_NAME_PRINT_UPLOADCERTIFICATE = "Upload Certificate";
 
+	}
+	
+	public static class ECERT_MANUAL {
+		public static final String MANUAL_PATH = "ecert.manual.path";
+		public static final String MANUAL_FILENAME = "ecert.manual.filename";
 	}
 }

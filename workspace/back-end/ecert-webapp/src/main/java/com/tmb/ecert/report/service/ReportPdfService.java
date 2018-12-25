@@ -146,19 +146,23 @@ public class ReportPdfService {
 				//amountTmb
 				params01.put("amountTmb", formatNumber.format(req.getAmountTmb()));
 				
-/*				 feeAmount = Amount_tmb * (100/ (100+ vat) ) 
-				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+
+//				vatAmount = (feeAmount*(vat/100)) 
+//				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
+				vatAmount = (req.getAmountTmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params01.put("vatAmount",formatNumber.format(vatAmount));
+				 
+//				feeAmount = Amount_tmb * (100/ (100+ vat) );
+//				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+				feeAmount = req.getAmountTmb().doubleValue() - vatAmount;
 				params01.put("feeAmount",formatNumber.format(feeAmount));
 				
-				 vatAmount = (feeAmount*(vat/100)) 
-				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
-				params01.put("vatAmount",formatNumber.format(vatAmount));*/
 			
-				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
+/*				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
 				params01.put("feeAmount",formatNumber.format(new BigDecimal(feeAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
 				
 				vatAmount = req.getAmountTmb().doubleValue() * ( Double.parseDouble(vat.getVat()) / 100);
-				params01.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
+				params01.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));*/
 				
 				/*thaiBath*/
 				params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
@@ -193,19 +197,21 @@ public class ReportPdfService {
 				//amountTmb
 				params02.put("amountTmb", formatNumber.format(req.getAmountTmb()));
 				
-/*				 feeAmount = Amount_tmb * (100/ (100+ vat) ) 
-				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+//				vatAmount = (feeAmount*(vat/100)) 
+//				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
+				vatAmount = (req.getAmountTmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params02.put("vatAmount",formatNumber.format(vatAmount));
+				 
+//				feeAmount = Amount_tmb * (100/ (100+ vat) );
+//				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
+				feeAmount = req.getAmountTmb().doubleValue() - vatAmount;
 				params02.put("feeAmount",formatNumber.format(feeAmount));
 				
-				 vatAmount = (feeAmount*(vat/100)) 
-				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
-				params02.put("vatAmount",formatNumber.format(vatAmount));*/
-				
-				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
+/*				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
 				params02.put("feeAmount",formatNumber.format(new BigDecimal(feeAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
 				
 				vatAmount = req.getAmountTmb().doubleValue() * ( Double.parseDouble(vat.getVat()) / 100);
-				params02.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
+				params02.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));*/
 				
 				/*thaiBath*/
 				params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
