@@ -110,6 +110,16 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           { label: "Email Configuration", url: "/sup/sup03000", role: this.checkA(PAGE_AUTH.P0001500) }
         ]
       },
+      { // Main Menu 7
+        label: "คู่มือการใช้งาน",
+        url: null,
+        role: true,
+        child: [ // Sub Menu 6.1
+          { label: "Video การใช้งานสำหรับ Requester", url: "/api/manual/pdf", role: true },
+          { label: "เอกสารคู่มือการใช้งานระบบ", url: "/man/man01000" , role: true },
+
+        ]
+      },
     ];
 
     this.timeticker = setInterval(() => { this.clock() }, 1000);
@@ -136,6 +146,10 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   checkRA(_roles: ROLES, _auths: PAGE_AUTH) { // Check roles or auths
     return this.commonsv.isRole(_roles) || this.commonsv.isAuth(_auths);
+  }
+
+  downloadManual(){
+    return this.commonsv.downloadManual();
   }
 
   logout() {
