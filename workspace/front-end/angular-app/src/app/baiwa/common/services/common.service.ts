@@ -4,6 +4,7 @@ import { PAGE_AUTH, ROLES } from 'app/baiwa/common/constants';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AjaxService } from './ajax.service';
 declare var $;
 
 @Injectable({
@@ -14,7 +15,8 @@ export class CommonService {
   private user: UserDetail;
   private loading: boolean = false;
 
-  constructor(private store: Store<{}>) {
+  constructor(private store: Store<{}>,
+              private ajax: AjaxService,) {
     this.store.select('user').subscribe(user => this.user = user);
   }
 
@@ -42,6 +44,10 @@ export class CommonService {
 
   isUser(userId: string): boolean {
     return this.user.userId === userId
+  }
+  downloadManual(){
+    this.ajax.download("/api/manual/pdf");
+    return "/";
   }
 
   blockui() {

@@ -1,0 +1,10 @@
+.bg {
+    z-index: -999;
+    top: -25px;
+    left: 0vw;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
