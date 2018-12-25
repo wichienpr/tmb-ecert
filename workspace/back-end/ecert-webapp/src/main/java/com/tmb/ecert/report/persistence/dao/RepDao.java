@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PAID_TYPE;
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
@@ -532,7 +533,9 @@ public class RepDao {
 					List<Object> params = new ArrayList<>();
 					List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 					
-				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 AND STATUS IN ('10009','10010') "); 
+				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 AND STATUS IN ('10009','10010') "
+				    		+ " AND a.PAIDTYPE_CODE IN ('"+PAID_TYPE.CUSTOMER_PAY_DBD+"','"+PAID_TYPE.CUSTOMER_PAY_DBD_TMB+"','"+PAID_TYPE.TMB_PAY_DBD_TMB+"') ");
+				    		
 					
 					if (StringUtils.isNotBlank(formVo.getPaymentDate())) {
 						sql.append("  AND  MONTH(a.PAYMENT_DATE) = MONTH(?) AND YEAR(a.PAYMENT_DATE)= YEAR(?) ");
@@ -575,14 +578,19 @@ public class RepDao {
 				    		
 				    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
 				    		Float totalAmountTmbVat = 0f;
-//				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.93f;
-				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (1-(Float.parseFloat(vatpercent)/100));
-				    		vo.setAmountTmbVat(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+//				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (1-(Float.parseFloat(vatpercent)/100));
+//				    		vo.setAmountTmbVat(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+//				    		
+//				    		Float totalAmountVat = 0f;
+//				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (Float.parseFloat(vatpercent)/100);
+//				    		vo.setAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
 				    		
 				    		Float totalAmountVat = 0f;
-//				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f;
-				    		totalAmountVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))* (Float.parseFloat(vatpercent)/100);
+				    		totalAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
 				    		vo.setAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+				    		
+				    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) - totalAmountVat ;
+				    		vo.setAmountTmbVat(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
 				    		
 				    		vo.setAmountTmb(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT_TMB"))); 
 				    		

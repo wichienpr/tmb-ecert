@@ -208,6 +208,10 @@ public class Rep03000tService {
 			rowNum++;
 			cellNum = 0;
 			int order = 1;
+
+			Double sumVat = new Double(0);
+			Double sumAmountTMBvat = new Double(0);
+			Double sumAmountTMB = new Double(0);
 			for (Rep03000Vo detail : dataTestList) {
 				row = sheet.createRow(rowNum);
 				// No.
@@ -222,13 +226,41 @@ public class Rep03000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
 				
+				sumAmountTMB = sumAmountTMB + convertBigDecimalToLong(detail.getAmountTmb());
+				sumVat = sumVat + convertBigDecimalToLong(detail.getAmountVat());
+				sumAmountTMBvat = sumAmountTMBvat + + convertBigDecimalToLong(detail.getAmountTmbVat());
+				
 				rowNum++;
 				order++;
 				cellNum = 0;
 			}
 			
+			row = sheet.createRow(rowNum);
+
+			cell = row.createCell(0);
+			cell.setCellValue("รวม" );
+			cell.setCellStyle(excalService.cellRight);
+			
+			for (int i = 1; i <= 5; i++) {
+				cell = row.createCell(i);
+				cell.setCellValue("");
+				cell.setCellStyle(excalService.cellRight);
+			}
+			
+			cell = row.createCell(6);
+			cell.setCellValue((new BigDecimal(sumAmountTMBvat).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString()));
+			cell.setCellStyle(excalService.cellRight);
+			cell = row.createCell(7);
+			cell.setCellValue((new BigDecimal(sumVat).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString()));
+			cell.setCellStyle(excalService.cellRight);
+			cell = row.createCell(8);
+			cell.setCellValue((new BigDecimal(sumAmountTMB).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString()));
+			cell.setCellStyle(excalService.cellRight);
+			
+			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 5));
 			
 			
+
 			/*set	fileName*/		
 			String fileName ="Output-VAT_Report_"+DateFormatUtils.format(new Date(),"yyyyMMdd");;
 			log.info(fileName);
@@ -260,6 +292,9 @@ public class Rep03000tService {
 		accountNoReturn = accountNo.substring(0, 3)+"-"+accountNo.substring(3, 4)+"-"+accountNo.substring(4, 9)+"-"+accountNo.substring(9);
 		return accountNoReturn;
 	}
+	 public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
+		 return (bigdecimal!=null)?bigdecimal.floatValue():0f;
+	 }
 	
 }
 
