@@ -155,8 +155,8 @@ export class Rep01000Component implements OnInit, AfterViewInit {
     this.ajax.post(URL, {
       dateForm: ThDateToEnDate(this.form.get('dateForm').value),
       dateTo: ThDateToEnDate(this.form.get('dateTo').value),
-      organizeId: this.form.get('corpNo').value,
-      companyName: this.form.get('corpName').value,
+      organizeId: this.form.get('organizeId').value,
+      companyName: this.form.get('companyName').value,
       requestTypeCode: this.reqTypeChanged,
       paidtypeCode: this.paidTypeChanged
     }, res => {
@@ -213,9 +213,11 @@ export class Rep01000Component implements OnInit, AfterViewInit {
     let param = "";
     param += "?dateForm=" + ThDateToEnDate(this.form.controls.dateForm.value);
     param += "&dateTo=" + ThDateToEnDate(this.form.controls.dateTo.value);
+    param += "&paymentDateForm=" + ThDateToEnDate(this.form.controls.paymentDateForm.value);
+    param += "&paymentDateTo=" + ThDateToEnDate(this.form.controls.paymentDateTo.value);
 
-    (this.form.controls.corpNo.value != null) ? param += "&organizeId=" + this.form.controls.corpNo.value : "";
-    (this.form.controls.corpName.value != null) ? param += "&companyName=" + this.form.controls.corpName.value : "";
+    (this.form.controls.organizeId.value != null) ? param += "&organizeId=" + this.form.controls.organizeId.value : "";
+    (this.form.controls.companyName.value != null) ? param += "&companyName=" + this.form.controls.companyName.value : "";
 
     (this.reqTypeChanged != null) ? param += "&requestTypeCode=" + this.reqTypeChanged : "";
     (this.paidTypeChanged != null) ? param += "&paidtypeCode=" + this.paidTypeChanged : "";

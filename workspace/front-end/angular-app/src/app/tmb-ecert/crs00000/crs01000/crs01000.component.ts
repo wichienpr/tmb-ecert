@@ -124,7 +124,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   searchData() {
-    console.log("search data ");
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
         let fc = this.form.get(element);
@@ -153,7 +152,6 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   searchStatus(code): void {
-    console.log("ll")
     if (code == 10011) {
       this.router.navigate(["/srn/srn01000"], {
         queryParams: { codeStatus: code }
