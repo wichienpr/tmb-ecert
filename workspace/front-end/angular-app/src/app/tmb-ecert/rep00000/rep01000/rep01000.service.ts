@@ -11,10 +11,12 @@ export class Rep01000Service {
 
     dropdownObj: any;
     form: FormGroup = new FormGroup({
-        dateForm: new FormControl('', Validators.required),             // วันที่ขอ
-        dateTo: new FormControl('', Validators.required),               // ถึงวันที่
-        corpNo: new FormControl(),                                      // เลขที่นิติบุคคล
-        corpName: new FormControl(),                                    // ชื่อนิติบุคคล
+        dateForm: new FormControl(''),             // วันที่ขอ
+        dateTo: new FormControl(''),               // ถึงวันที่
+        paymentDateForm: new FormControl(''),             // วันที่ขอ
+        paymentDateTo: new FormControl(''),               // ถึงวันที่
+        organizeId: new FormControl(),                                      // เลขที่นิติบุคคล
+        companyName: new FormControl(),                                    // ชื่อนิติบุคคล
         reqTypeSelect: new FormControl(),                               // ประเภทคำขอ
         paidTypeSelect: new FormControl(),                              // ประเภทการชำระเงิน
     });

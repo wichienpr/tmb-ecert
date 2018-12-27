@@ -57,8 +57,8 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   ngOnInit() {
     let now = moment().format('DD/MM/YYYY');
     this.form = new FormGroup({
-      reqDate: new FormControl(now, Validators.required),   //วันที่ขอ
-      toReqDate: new FormControl(now, Validators.required), //ถึงวันที่
+      reqDate: new FormControl(now),   //วันที่ขอ
+      toReqDate: new FormControl(now), //ถึงวันที่
       organizeId: new FormControl(''),                      //เลขที่นิติบุคคล
       companyName: new FormControl(''),                     //ชื่อนิติบุคคล
       tmbReqNo: new FormControl(''),                        //TMB Req. No.
@@ -124,6 +124,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   searchData() {
+    console.log("search data ");
     if (!this.form.touched) {
       Object.keys(this.form.value).forEach(element => {
         let fc = this.form.get(element);
@@ -152,18 +153,26 @@ export class Crs01000Component implements OnInit, AfterViewInit {
   }
 
   searchStatus(code): void {
+    console.log("ll")
     if (code == 10011) {
       this.router.navigate(["/srn/srn01000"], {
         queryParams: { codeStatus: code }
       });
     } else {
+      
+      if (code == 10010 ){
+        let now = moment().format('DD/MM/YYYY');
+        this.form.setValue({ status: code, reqDate: now, toReqDate: now, organizeId: "", companyName: "", tmbReqNo: "" });
+      }else {
+        this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
+      }
       $('.ui.sidebar')
         .sidebar({
           context: '.ui.grid.pushable'
         })
         .sidebar('setting', 'transition', 'push')
         .sidebar('toggle');
-      this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
+        // this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
       this.dataDt.searchParams(this.form.value);
       this.dataDt.search();
     }
