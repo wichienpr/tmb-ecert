@@ -12,6 +12,7 @@ public class Rep01000Vo {
 	public String companyName;
 	public String custsegmentCode;
 	public String custsegmentDesc;
+	public String paymentDate;
 
 	public String requestTypeCode;
 	public String requestTypeDesc;
@@ -232,5 +233,15 @@ public class Rep01000Vo {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+	public String getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+	
+	
 
 }

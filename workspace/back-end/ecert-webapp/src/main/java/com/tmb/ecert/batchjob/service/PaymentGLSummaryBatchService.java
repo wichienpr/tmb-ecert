@@ -520,6 +520,7 @@ public class PaymentGLSummaryBatchService {
 			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd()));
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
+		calSumTransaction = calSumTransaction.setScale(3, BigDecimal.ROUND_HALF_EVEN);
 		String sumTransaction = String.format("%.2f", calSumTransaction.doubleValue());
 
 		trailer.add(indicator);

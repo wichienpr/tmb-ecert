@@ -43,7 +43,12 @@ public class CheckRequestStatusService {
 		if (StringUtils.isNotBlank(formVo.getStatus())) {
 			crs01000VoList = crs01000Dao.findReqByStatus(formVo);
 			count = crs01000Dao.countFindReqByStatusDataTable(formVo);
-		} else if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
+		} 
+//		else if (StringUtils.isNotBlank(formVo.getReqDate()) && StringUtils.isNotBlank(formVo.getToReqDate())) {
+//			crs01000VoList = crs01000Dao.findReq(formVo);
+//			count = crs01000Dao.countFindReqDataTable(formVo);
+//		}
+		else {
 			crs01000VoList = crs01000Dao.findReq(formVo);
 			count = crs01000Dao.countFindReqDataTable(formVo);
 		}

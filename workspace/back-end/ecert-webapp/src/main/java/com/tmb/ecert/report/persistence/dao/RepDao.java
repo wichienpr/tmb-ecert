@@ -29,6 +29,8 @@ import com.tmb.ecert.report.persistence.vo.Rep02200Vo;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DatatableSort;
+import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Repository
@@ -63,6 +65,17 @@ public class RepDao {
 			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
 			params.add(date);
 		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateForm())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateTo())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateTo());
+			params.add(date);
+		}
+		
 		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
 			sql.append(" AND a.ORGANIZE_ID = ?");
 			params.add(formVo.getOrganizeId());
@@ -88,6 +101,136 @@ public class RepDao {
 		
 		return rep01000VoList;
 	}
+	
+	public List<Rep01000Vo> getDataRep01000Datatable(Rep01000FormVo formVo) {
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
+		
+		    sql.append(" SELECT a.*,b.NAME AS CERTYPE_DESC, ");      
+			sql.append(" c.NAME AS CUSTSEGMENT_DESC, ");   
+			sql.append(" d.NAME AS PAIDTYPE_DESC ");   
+			sql.append(" FROM ECERT_REQUEST_FORM a "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.PAIDTYPE_CODE = d.CODE "); 
+			sql.append(" WHERE a.DELETE_FLAG = 0 AND (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+		
+		if (StringUtils.isNotBlank(formVo.getDateForm())) {
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getDateTo())) {
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
+			params.add(date);
+		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateForm())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateTo())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateTo());
+			params.add(date);
+		}
+		
+		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
+			sql.append(" AND a.ORGANIZE_ID = ?");
+			params.add(formVo.getOrganizeId());
+		}
+		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
+			sql.append(" AND a.COMPANY_NAME = ? ");
+			params.add(formVo.getCompanyName());
+		}
+		if (StringUtils.isNotBlank(formVo.getRequestTypeCode())) {
+			sql.append(" AND a.CERTYPE_CODE = ?");
+			params.add(formVo.getRequestTypeCode());
+		}
+		
+		if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+			sql.append(" AND a.PAIDTYPE_CODE = ?");
+			params.add(formVo.getPaidtypeCode());
+		}
+		
+		if(!formVo.getSort().isEmpty()) {
+			sql.append( "ORDER BY ");
+			List<String> orders = new ArrayList<>();
+			for(DatatableSort item : formVo.getSort()) {
+				orders.add( item.getColumn() + " " + item.getOrder());
+			}
+			sql.append(StringUtils.join(orders,", "));
+		}else {
+			// default order
+			sql.append(" ORDER BY a.REQUEST_DATE DESC ");	
+		}
+		
+		log.info("sqlRep01000 : {}",sql.toString());
+//		rep01000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep01000RowMapper);
+		rep01000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), params.toArray(), rep01000RowMapper);
+		
+		
+		return rep01000VoList;
+	}
+	
+
+	public int getDataRep01000Count(Rep01000FormVo formVo) {
+		StringBuilder sql = new StringBuilder("");
+		List<Object> params = new ArrayList<>();
+		
+		    sql.append(" SELECT a.*,b.NAME AS CERTYPE_DESC, ");      
+			sql.append(" c.NAME AS CUSTSEGMENT_DESC, ");   
+			sql.append(" d.NAME AS PAIDTYPE_DESC ");   
+			sql.append(" FROM ECERT_REQUEST_FORM a "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE b on a.CERTYPE_CODE = b.CODE  "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE c on a.CUSTSEGMENT_CODE = c.CODE "); 
+			sql.append(" LEFT JOIN ECERT_LISTOFVALUE d on a.PAIDTYPE_CODE = d.CODE "); 
+			sql.append(" WHERE a.DELETE_FLAG = 0 AND (a.STATUS = '10003' OR a.STATUS = '10004' OR a.STATUS = '10007' OR a.STATUS = '10008' OR a.STATUS = '10009' OR a.STATUS = '10010') ");
+		
+		if (StringUtils.isNotBlank(formVo.getDateForm())) {
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNotBlank(formVo.getDateTo())) {
+			sql.append(" AND  CAST(a.REQUEST_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getDateTo());
+			params.add(date);
+		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateForm())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) >= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateForm());
+			params.add(date);
+		}
+		if (StringUtils.isNoneBlank(formVo.getPaymentDateTo())) {
+			sql.append(" AND  CAST(a.PAYMENT_DATE as DATE) <= ? ");
+			Date date = DateConstant.convertStrDDMMYYYYToDate(formVo.getPaymentDateTo());
+			params.add(date);
+		}
+		
+		if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
+			sql.append(" AND a.ORGANIZE_ID = ?");
+			params.add(formVo.getOrganizeId());
+		}
+		if (StringUtils.isNotBlank(formVo.getCompanyName())) {
+			sql.append(" AND a.COMPANY_NAME = ? ");
+			params.add(formVo.getCompanyName());
+		}
+		if (StringUtils.isNotBlank(formVo.getRequestTypeCode())) {
+			sql.append(" AND a.CERTYPE_CODE = ?");
+			params.add(formVo.getRequestTypeCode());
+		}
+		
+		if (StringUtils.isNotBlank(formVo.getPaidtypeCode())) {
+			sql.append(" AND a.PAIDTYPE_CODE = ?");
+			params.add(formVo.getPaidtypeCode());
+		}
+
+		BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class, params.toArray());
+		return rs.intValue();
+	}
 	  
 
 	 private RowMapper<Rep01000Vo> rep01000RowMapper = new RowMapper<Rep01000Vo>() {
@@ -98,7 +241,8 @@ public class RepDao {
 	    		vo.setRequestDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("REQUEST_DATE")));                   
 	    		vo.setTmbRequestno(rs.getString("TMB_REQUESTNO"));                 
 	    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));                     
-	    		vo.setCompanyName(rs.getString("COMPANY_NAME")); 
+	    		vo.setCompanyName(rs.getString("COMPANY_NAME"));
+	    		vo.setPaymentDate(DateConstant.convertDateToStrDDMMYYYY(rs.getDate("PAYMENT_DATE")));  
 	    		
 	    		vo.setCustsegmentCode(rs.getString("CUSTSEGMENT_CODE")); 
 	    		vo.setCustsegmentDesc(rs.getString("CUSTSEGMENT_DESC")); 
@@ -108,19 +252,45 @@ public class RepDao {
 	    		
 	    		vo.setAccountNo(rs.getString("ACCOUNT_NO"));  
 	    		
-	    		Float totalAmountDbdVat = 0f;
-	    		totalAmountDbdVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD"))*0.93f;
-	    		vo.setAmountDbd(new BigDecimal(totalAmountDbdVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+//	    		Float totalAmountDbdVat = 0f;
+//	    		totalAmountDbdVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD"))*0.93f;
+//	    		vo.setAmountDbd(new BigDecimal(totalAmountDbdVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+//	    		
+//	    		Float totalAmountTmbVat = 0f;
+//	    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.93f;
+//	    		vo.setAmountTmb(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+//	    		
+//	    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
+//	    		
+//	    		Float totalAmountVat = 0f;
+//	    		totalAmountVat=(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f)+(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD"))*0.07f);
+//	    		vo.setTotalAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));   
 	    		
-	    		Float totalAmountTmbVat = 0f;
-	    		totalAmountTmbVat=convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.93f;
-	    		vo.setAmountTmb(new BigDecimal(totalAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));  
+	    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
+	    		Float tmbAmountTmbVat = 0f;
+	    		Float dbdAmountTmbVat = 0f;
+	    		Float tmbAmountVat = 0f;
+	    		Float dbdAmountVat = 0f;
+	    		BigDecimal vatSum = new BigDecimal(0);
+	    		BigDecimal vattmb = new BigDecimal(0);
+	    		BigDecimal vatdbd = new BigDecimal(0);
+	    		
+	    		tmbAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+	    		dbdAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+	    		
+	    		tmbAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) - tmbAmountVat ;
+	    		dbdAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) - dbdAmountVat ;
+	    		
+	    		vattmb = new BigDecimal(tmbAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+	    		vatdbd = new BigDecimal(dbdAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+	    		vatSum = vatSum.add(vattmb);
+	    		vatSum = vatSum.add(vatdbd);
 	    		
 	    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
+	    		vo.setAmountTmb(new BigDecimal(tmbAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN)); 
+	    		vo.setAmountDbd(new BigDecimal(dbdAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+	    		vo.setTotalAmountVat(vatSum.setScale(2, BigDecimal.ROUND_HALF_EVEN));   
 	    		
-	    		Float totalAmountVat = 0f;
-	    		totalAmountVat=(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f)+(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD"))*0.07f);
-	    		vo.setTotalAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));     
 	    		
 	    		vo.setPaidtypeCode(rs.getString("PAIDTYPE_CODE"));   
 	    		vo.setPaidtypeDesc(rs.getString("PAIDTYPE_DESC"));   
@@ -558,7 +728,66 @@ public class RepDao {
 					
 					return rep03000VoList;
 				}
+			 
+
+			 public List<Rep03000Vo> getDataRep03000Datatable(Rep03000FormVo formVo) {
+					StringBuilder sql = new StringBuilder("");
+					List<Object> params = new ArrayList<>();
+					List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
+					
+				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 AND STATUS IN ('10009','10010') "
+				    		+ " AND a.PAIDTYPE_CODE IN ('"+PAID_TYPE.CUSTOMER_PAY_DBD+"','"+PAID_TYPE.CUSTOMER_PAY_DBD_TMB+"','"+PAID_TYPE.TMB_PAY_DBD_TMB+"') ");
+				    		
+					
+					if (StringUtils.isNotBlank(formVo.getPaymentDate())) {
+						sql.append("  AND  MONTH(a.PAYMENT_DATE) = MONTH(?) AND YEAR(a.PAYMENT_DATE)= YEAR(?) ");
+						Date date = DateConstant.convertStringMMYYYYToDate(formVo.getPaymentDate());
+						params.add(date);
+						params.add(date);
+					}
+					if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
+						sql.append(" AND a.ORGANIZE_ID = ?");
+						params.add(formVo.getOrganizeId());
+					}
+//					log.info("formVo.getCustomerName() : {}",formVo.getCustomerName());
+					if (StringUtils.isNotBlank(formVo.getCustomerName())) {
+						sql.append(" AND a.CUSTOMER_NAME = ?");
+						params.add(formVo.getCustomerName());
+					}
+					sql.append(" ORDER BY RECEIPT_NO , PAYMENT_DATE ASC ");
+//					log.info("sqlRep03000 : {}",sql.toString());
+					rep03000VoList = jdbcTemplate.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()), params.toArray(), rep03000RowMapper);
+//					rep03000VoList = jdbcTemplate.query(sql.toString(), params.toArray(), rep03000RowMapper);
+					
+					return rep03000VoList;
+				}
 				
+			 public int getDataRep03000Count(Rep03000FormVo formVo) {
+					StringBuilder sql = new StringBuilder("");
+					List<Object> params = new ArrayList<>();
+					
+				    sql.append(" SELECT a.* FROM ECERT_REQUEST_FORM a WHERE 1=1 AND a.DELETE_FLAG=0 AND STATUS IN ('10009','10010') "
+				    		+ " AND a.PAIDTYPE_CODE IN ('"+PAID_TYPE.CUSTOMER_PAY_DBD+"','"+PAID_TYPE.CUSTOMER_PAY_DBD_TMB+"','"+PAID_TYPE.TMB_PAY_DBD_TMB+"') ");
+				    		
+					
+					if (StringUtils.isNotBlank(formVo.getPaymentDate())) {
+						sql.append("  AND  MONTH(a.PAYMENT_DATE) = MONTH(?) AND YEAR(a.PAYMENT_DATE)= YEAR(?) ");
+						Date date = DateConstant.convertStringMMYYYYToDate(formVo.getPaymentDate());
+						params.add(date);
+						params.add(date);
+					}
+					if (StringUtils.isNotBlank(formVo.getOrganizeId())) {
+						sql.append(" AND a.ORGANIZE_ID = ?");
+						params.add(formVo.getOrganizeId());
+					}
+//					log.info("formVo.getCustomerName() : {}",formVo.getCustomerName());
+					if (StringUtils.isNotBlank(formVo.getCustomerName())) {
+						sql.append(" AND a.CUSTOMER_NAME = ?");
+						params.add(formVo.getCustomerName());
+					}
+					BigDecimal rs = jdbcTemplate.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class, params.toArray());
+					return rs.intValue();
+				}
 
 				 private RowMapper<Rep03000Vo> rep03000RowMapper = new RowMapper<Rep03000Vo>() {
 				    	@Override

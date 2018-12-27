@@ -31,6 +31,7 @@ import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 
@@ -60,6 +61,17 @@ public class Rep03000tService {
 		formVo.setRep03000VoList(rep03000VoList);
 	
 		return formVo;
+	}
+	
+	public DataTableResponse<Rep03000Vo> findAllDatatable(Rep03000FormVo formVo){
+		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
+		DataTableResponse<Rep03000Vo> datatableList = new DataTableResponse<>();
+		rep03000VoList = repDao.getDataRep03000Datatable(formVo);
+		datatableList.setData(rep03000VoList);
+		int count = repDao.getDataRep03000Count(formVo);
+		datatableList.setRecordsTotal(count);
+	
+		return datatableList;
 	}
 
 	
