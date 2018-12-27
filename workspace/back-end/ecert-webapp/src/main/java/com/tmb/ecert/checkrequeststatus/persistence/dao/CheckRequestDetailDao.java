@@ -147,6 +147,8 @@ public class CheckRequestDetailDao {
 			row.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
 			row.setCompanyName(rs.getString("COMPANY_NAME"));
 			row.setRequestDate(rs.getTimestamp("REQUEST_DATE"));
+			row.setIdCardFile(rs.getString("IDCARD_FILE"));
+			row.setChangeNameFile(rs.getString("CHANGENAME_FILE"));
 			return row;
 		}
 	};

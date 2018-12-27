@@ -23,12 +23,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.domain.RoleVo;
 import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep01000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
 import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 
 @Service
@@ -65,6 +67,34 @@ public class Rep01000tService {
 		return rep01000VoListReturn;
 	}
 	
+	public  DataTableResponse<Rep01000Vo> findAllDatatable(Rep01000FormVo formVo){
+		List<Rep01000Vo> rep01000VoList = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> requestTypeList = new ArrayList<Rep01000Vo>();
+		List<Rep01000Vo> rep01000VoListReturn = new ArrayList<Rep01000Vo>();
+		DataTableResponse<Rep01000Vo> returnDT= new DataTableResponse<>();
+		rep01000VoList = repDao.getDataRep01000Datatable(formVo);
+		for (Rep01000Vo rep01000Vo : rep01000VoList) {
+			
+			requestTypeList = repDao.getRequestTypeRep01000(rep01000Vo.getId());
+			String requestTypeString = "";
+			String requestTypeStringExcel = "";
+			for (Rep01000Vo requestType : requestTypeList) {
+				requestTypeString += (StringUtils.isNoneBlank(requestTypeString))?","+requestType.getRequestTypeDesc():requestType.getRequestTypeDesc();
+				requestTypeStringExcel += (StringUtils.isNoneBlank(requestTypeStringExcel))?","+requestType.getRequestTypeDesc():requestType.getRequestTypeDesc();
+			}
+			rep01000Vo.setRequestTypeDesc(requestTypeString);
+			rep01000Vo.setRequestTypeExcel(requestTypeStringExcel);
+			rep01000VoListReturn.add(rep01000Vo);
+			
+		}
+
+		returnDT.setData(rep01000VoListReturn);
+		int count = repDao.getDataRep01000Count(formVo);
+		returnDT.setRecordsTotal(count);
+
+		return returnDT;
+	}
+	
 	public void exportFile(Rep01000FormVo formVo, HttpServletResponse response) throws IOException {
 		
 		List<Rep01000Vo> dataTestList = new ArrayList<Rep01000Vo>();
@@ -99,7 +129,7 @@ public class Rep01000tService {
 			
 			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
 		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
-		             "รวม","ประเภทการชำระเงิน","Maker ID","Maker Name","Checker ID","Checker Name","สถานะ","หมายเหตุ"};
+		             "รวม","ประเภทการชำระเงิน","Maker ID","Maker Name","Checker ID","Checker Name","Payment Date","สถานะ","หมายเหตุ"};
 			row = sheet.createRow(rowNum++);
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -109,9 +139,9 @@ public class Rep01000tService {
 			
 			
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "DBD", "TMB","Tax"};
+			String[] tbTH2 = { "","","","","","","","","","DBD", "TMB","Tax","","","","","","","","",""};
 			row = sheet.createRow(rowNum);
-			int cellNumtbTH2 = 9;
+			int cellNumtbTH2 = 0;
 			for (int i = 0; i < tbTH2.length; i++) {
 				cell = row.createCell(cellNumtbTH2);
 				cell.setCellValue(tbTH2[i]);
@@ -124,7 +154,7 @@ public class Rep01000tService {
 			for (int i = 0; i<=8; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr1-9 rowspan=2
 			}
-			for (int i = 12; i<=19; i++) {
+			for (int i = 12; i<=20; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr13-18 rowspan=2
 			}
 			
@@ -148,15 +178,16 @@ public class Rep01000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getCertypeDesc()                 ))?detail.getCertypeDesc()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getRequestTypeExcel()            ))?detail.getRequestTypeExcel()            : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(convertAccountNo(detail.getAccountNo()) ))?convertAccountNo(detail.getAccountNo()) : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmountVat().toString()   ))?detail.getTotalAmountVat().toString()   : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmountVat().toString()   ))?detail.getTotalAmountVat().toString()   : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getPaidtypeDesc()                ))?detail.getPaidtypeDesc()                : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerById()                   ))?detail.getMakerById()                   : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getMakerByName()                 ))?detail.getMakerByName()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerById()                 ))?detail.getCheckerById()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getCheckerByName()               ))?detail.getCheckerByName()               : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter  );cell.setCellValue((StringUtils.isNotBlank(detail.getPaymentDate()               ))?detail.getPaymentDate()                 : "" );
 				String status = "";
 				if(StringUtils.isNotBlank(detail.getStatus())&&(detail.getStatus().equals("10009") || detail.getStatus().equals("10010") )) {
 					status = "สำเร็จ";

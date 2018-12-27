@@ -1,6 +1,8 @@
 package com.tmb.ecert.report.persistence.vo;
 
-public class Rep01000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Rep01000FormVo extends DatatableRequest {
 
 	public String dateForm;
 	public String dateTo;
@@ -8,6 +10,9 @@ public class Rep01000FormVo {
 	public String companyName;
 	public String requestTypeCode;
 	public String paidtypeCode;
+	
+	public String paymentDateForm;
+	public String paymentDateTo;
 
 	public String getDateForm() {
 		return dateForm;
@@ -56,5 +61,22 @@ public class Rep01000FormVo {
 	public void setPaidtypeCode(String paidtypeCode) {
 		this.paidtypeCode = paidtypeCode;
 	}
+
+	public String getPaymentDateForm() {
+		return paymentDateForm;
+	}
+
+	public void setPaymentDateForm(String paymentDateForm) {
+		this.paymentDateForm = paymentDateForm;
+	}
+
+	public String getPaymentDateTo() {
+		return paymentDateTo;
+	}
+
+	public void setPaymentDateTo(String paymentDateTo) {
+		this.paymentDateTo = paymentDateTo;
+	}
+	
 
 }

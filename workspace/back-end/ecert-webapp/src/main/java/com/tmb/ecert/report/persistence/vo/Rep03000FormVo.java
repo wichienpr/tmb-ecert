@@ -2,7 +2,9 @@ package com.tmb.ecert.report.persistence.vo;
 
 import java.util.List;
 
-public class Rep03000FormVo {
+import th.co.baiwa.buckwaframework.common.bean.DatatableRequest;
+
+public class Rep03000FormVo extends DatatableRequest {
 
 	private String paymentDate;
 	private String organizeId;

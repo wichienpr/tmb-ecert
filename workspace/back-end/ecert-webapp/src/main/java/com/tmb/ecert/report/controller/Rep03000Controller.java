@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.service.EmailService;
+import com.tmb.ecert.report.persistence.vo.Rep01000Vo;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
 import com.tmb.ecert.report.service.Rep03000tService;
+
+import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 
 @Controller
 @RequestMapping("api/rep/rep03000")
@@ -37,17 +40,16 @@ public class Rep03000Controller {
 	
 	@PostMapping("/list")
 	@ResponseBody
-	public Rep03000FormVo list(@RequestBody Rep03000FormVo formVo){
-		Rep03000FormVo formVofindAll = new Rep03000FormVo();
-		
+	public DataTableResponse<Rep03000Vo> list(@RequestBody Rep03000FormVo formVo){
+		DataTableResponse<Rep03000Vo> response = new DataTableResponse<>();
 		try {
-			formVofindAll = rep03000tService.findAll(formVo);
+			response = rep03000tService.findAllDatatable(formVo);
 			
 		} catch (Exception e) {
 			log.error("Error ! ==> Rep03000Controller method list",e);
 		}
 		
-		return formVofindAll;
+		return response;
 	}
 	@GetMapping("/exportFile")
 	@ResponseBody
