@@ -61,7 +61,7 @@
     </div>
 </div>
 <br>
-<div class="sixteen wide column" *ngIf="showData">
+<div class="sixteen wide column" [hidden]="!repDT.isSearch">
     <div class="ui top attached header segment">
         <span>ผลการค้นหา </span>
     </div>
@@ -121,7 +121,8 @@
         <br>
         <br>
         <div style="overflow-x: auto;white-space: nowrap;">
-            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+            <ng-datatable-search [ng-datatable]="repDT"></ng-datatable-search>
+            <table e [ngDatatable]="repDTConfig" #repDT="ngDatatable"   class="ui small celled table nowrap" style="width: 100%" id="table">
                 <thead>
                     <tr style="text-align: center;">
                         <th rowspan="2">ลำดับ</th>
@@ -140,10 +141,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="text-center" *ngIf="dataT.length==0">
+                    <tr class="text-center" *ngIf="repDT.isEmpty">
                         <td colspan="10" style="text-align: center !important;">ไม่มีข้อมูล</td>
                     </tr>
-                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                    <tr class="text-center" *ngFor="let data of repDT.datas; let i=index">
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.receiptNo}}</td>
                         <td style="text-align: center !important;">{{data.paymentDate | dateFromString}}</td>
@@ -157,6 +158,9 @@
                     </tr>
                 </tbody>
             </table>
+            <br>
+            <ng-datatable-footer [ng-datatable]="repDT"></ng-datatable-footer>
+            <br>
         </div>
         <br>
         <br>

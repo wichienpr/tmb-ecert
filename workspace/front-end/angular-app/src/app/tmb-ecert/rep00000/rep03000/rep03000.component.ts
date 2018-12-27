@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { isValid, ThMonthYearToEnMonthYear } from 'app/baiwa/common/helpers';
 import { Rep03000Service } from 'app/tmb-ecert/rep00000/rep03000/rep03000.service';
 import { NgCalendarComponent, NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
+import { DatatableDirective, DatatableCofnig } from 'app/baiwa/common/directives/datatable/datatable.directive';
 
 const URL = {
   export: "/api/rep/rep03000/exportFile"
@@ -18,6 +19,9 @@ const URL = {
 })
 export class Rep03000Component implements OnInit {
   showData: boolean = false;
+
+  @ViewChild("repDT")
+  repDT: DatatableDirective;
 
   @ViewChild("calendar")
   calendar: NgCalendarComponent;
@@ -35,6 +39,8 @@ export class Rep03000Component implements OnInit {
   calendar1: Calendar;
   form: FormGroup;
 
+  repDTConfig: DatatableCofnig;
+  
   constructor(
     private ajax: AjaxService,
     private service: Rep03000Service
@@ -62,7 +68,13 @@ export class Rep03000Component implements OnInit {
     // };
   }
 
-  ngOnInit() { }
+  ngOnInit() {     
+    this.repDTConfig = {
+    url: "/api/rep/rep03000/list",
+    serverSide: true,
+    useBlockUi: true
+  };
+}
 
   calendarValue(name, e) {
     this.form.controls[name].setValue(e);
@@ -111,8 +123,14 @@ export class Rep03000Component implements OnInit {
 
   searchData(): void {
     if (this.form.valid) {
-      this.showData = true;
-      this.getData();
+      const searchParam = {
+        paymentDate: ThMonthYearToEnMonthYear(this.form.get('dateVat').value),
+        organizeId: this.form.get('organizeId').value,
+        customerName: this.form.get('customerName').value
+      }
+      this.repDT.searchParams(searchParam);
+      this.repDT.search();
+
     }
   }
 

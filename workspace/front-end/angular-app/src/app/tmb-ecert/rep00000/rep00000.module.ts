@@ -10,6 +10,7 @@ import { Rep03000Component } from 'app/tmb-ecert/rep00000/rep03000/rep03000.comp
 import { ModalModule, CalendarModule, DropdownModule } from 'components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
+import { DatatableModule } from 'app/baiwa/common/directives';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { PipesModule } from 'app/baiwa/common/pipes/pipes.module';
     DropdownModule,
     CalendarModule,
     // PipesModule
+    DatatableModule,
     PipesModule
   ],
   declarations: [

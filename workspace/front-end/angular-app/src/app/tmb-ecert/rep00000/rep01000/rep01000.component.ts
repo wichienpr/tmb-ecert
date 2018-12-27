@@ -6,6 +6,7 @@ import { Rep01000Service } from './rep01000.service';
 import { Certificate } from 'models/';
 import { ThDateToEnDate } from 'app/baiwa/common/helpers';
 import { NgCalendarComponent, NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
+import { DatatableDirective, DatatableCofnig } from 'app/baiwa/common/directives/datatable/datatable.directive';
 
 declare var $: any;
 
@@ -21,11 +22,20 @@ const URL = {
 })
 export class Rep01000Component implements OnInit, AfterViewInit {
 
+  @ViewChild("repDT")
+  repDT: DatatableDirective;
+
   @ViewChild("calendarFrom")
   calendarFrom: NgCalendarComponent;
 
   @ViewChild("calendarTo")
   calendarTo: NgCalendarComponent;
+
+  @ViewChild("calendarPaymentFrom")
+  calendarPaymentFrom: NgCalendarComponent;
+
+  @ViewChild("calendarPaymentTo")
+  calendarPaymentTo: NgCalendarComponent;
   
   showData: boolean = false;
   dataT: any[] = [];
@@ -42,6 +52,10 @@ export class Rep01000Component implements OnInit, AfterViewInit {
   calendarFromConig: NgCalendarConfig;
   calendarToConig: NgCalendarConfig;
 
+  calendarPaymentFromConig: NgCalendarConfig;
+  calendarPaymentToConig: NgCalendarConfig;
+
+  repDTConfig: DatatableCofnig;
   constructor(
     private ajax: AjaxService,
     private service: Rep01000Service,
@@ -62,6 +76,19 @@ export class Rep01000Component implements OnInit, AfterViewInit {
       id: "dateTo",
       formControl: this.form.get("dateTo"),
       startCalendar: "dateForm",
+      formatter: "dd/mm/yyyy"
+    };
+
+    this.calendarPaymentFromConig = {
+      id: "paymentDateForm",
+      formControl: this.form.get("paymentDateForm"),
+      endCalendar: "paymentDateTo",
+      formatter: "dd/mm/yyyy"
+    };
+    this.calendarPaymentToConig = {
+      id: "paymentDateTo",
+      formControl: this.form.get("paymentDateTo"),
+      startCalendar: "paymentDateForm",
       formatter: "dd/mm/yyyy"
     };
     // this.calendar1 = {
@@ -90,7 +117,14 @@ export class Rep01000Component implements OnInit, AfterViewInit {
     // };
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.repDTConfig = {
+      url: "/api/rep/rep01000/list",
+      serverSide: true,
+      useBlockUi: true
+    };
+   }
 
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
@@ -140,8 +174,21 @@ export class Rep01000Component implements OnInit, AfterViewInit {
   searchData(): void {
     if (this.form.valid) {
       // console.log("searchData True");
-      this.showData = true;
-      this.getData();
+      // this.showData = true;
+      // this.getData();
+      const searchParam = {
+        dateForm: ThDateToEnDate(this.form.get('dateForm').value),
+        dateTo: ThDateToEnDate(this.form.get('dateTo').value),
+        paymentDateForm :ThDateToEnDate(this.form.get('paymentDateForm').value),
+        paymentDateTo :ThDateToEnDate(this.form.get('paymentDateTo').value),
+        organizeId: this.form.get('organizeId').value,
+        companyName: this.form.get('companyName').value,
+        requestTypeCode: this.reqTypeChanged,
+        paidtypeCode: this.paidTypeChanged
+      }
+
+      this.repDT.searchParams(searchParam);
+      this.repDT.search();
     } else {
       // console.log("searchData False");
     }
@@ -149,10 +196,16 @@ export class Rep01000Component implements OnInit, AfterViewInit {
 
   clearData(): void {
     // console.log("clearData");
-    this.form.reset();
+    this.form.reset({        dateForm: '',          
+    dateTo: '' ,            
+    paymentDateForm: '' ,           
+    paymentDateTo: '' ,             
+    organizeId: ''   ,                               
+    companyName: ''     });
     $('#reqtype').dropdown('restore defaults');
     $('#paidtype').dropdown('restore defaults');
-    this.showData = false;
+    // this.showData = false;
+    this.repDT.clear();
   }
 
   exportFile = () => {
@@ -181,6 +234,13 @@ export class Rep01000Component implements OnInit, AfterViewInit {
   }
   get dateTo() {
     return this.form.get("dateTo");
+  }
+
+  get paymentDateForm() {
+    return this.form.get("paymentDateForm");
+  }
+  get paymentDateTo() {
+    return this.form.get("paymentDateTo");
   }
 
 }

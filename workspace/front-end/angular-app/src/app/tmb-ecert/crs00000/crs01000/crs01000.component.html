@@ -74,13 +74,13 @@
 
             <div class="inline fields">
               <div class="two wide field">
-                <label class="custom-label-w-22">วันที่ขอ<span style="color: red"> * </span></label>
+                <label class="custom-label-w-22">วันที่ขอ</label>
               </div>
               <div class="five wide field" [ngClass]="{'error':(reqDate.invalid && (reqDate.dirty || reqDate.touched))}">
                 <ng-calendar [config]="calendar1" style="width:100%"></ng-calendar>
               </div>
               <div class="two wide field ">
-                <label>ถึงวันที่<span style="color: red"> * </span></label>
+                <label>ถึงวันที่</label>
               </div>
               <div class="five wide field" [ngClass]="{'error':(toReqDate.invalid && (toReqDate.dirty || toReqDate.touched))}">
                 <ng-calendar [config]="calendar2" style="width:100%"></ng-calendar>
