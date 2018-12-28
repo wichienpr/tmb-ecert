@@ -517,10 +517,10 @@ public class PaymentGLSummaryBatchService {
 		String indicator = "T"; 
 		BigDecimal calSumTransaction = new BigDecimal(0.0);
 		for (RequestForm request : requestForms) {
-			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd()));
+			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
-		calSumTransaction = calSumTransaction.setScale(3, BigDecimal.ROUND_HALF_EVEN);
+		calSumTransaction = calSumTransaction.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		String sumTransaction = String.format("%.2f", calSumTransaction.doubleValue());
 
 		trailer.add(indicator);

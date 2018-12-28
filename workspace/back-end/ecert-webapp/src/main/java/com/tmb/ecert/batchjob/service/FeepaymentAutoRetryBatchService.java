@@ -2,6 +2,7 @@ package com.tmb.ecert.batchjob.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.PaymentWebService;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
+import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
 @Service
 @ConditionalOnProperty(name = "job.autoRetryFeePayment.cornexpression", havingValue = "", matchIfMissing = false)
@@ -35,6 +37,10 @@ public class FeepaymentAutoRetryBatchService {
 
 	@Autowired
 	private RequestHistoryDao history;
+	
+	@Autowired
+	private ReceiptGenKeyService receiptGenKeyService;
+
 
 	public void run() {
 		List<RequestForm> forms = dao.findByStatus(StatusConstant.PAYMENT_FAILED);
@@ -96,7 +102,13 @@ public class FeepaymentAutoRetryBatchService {
 					CommonMessage<RealtimePaymentResponse> realtimeStep = paymentWs.realtimePayment(newReq);
 					newReq.setPayLoadTs(realtimeStep.getData().getPayLoadTs()); // UPDATE PAY_LOAD_TS
 					if (isSuccess(realtimeStep.getMessage())) {
-
+						
+						// UPDATE RECEIPT ID WHEN PAYMENT SUCCESS.
+						if (StringUtils.isEmpty(newReq.getReceiptNo())) {
+							String receiptNo = receiptGenKeyService.getNextKey();
+							newReq.setReceiptNo(receiptNo);
+						}
+						
 						newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 						response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 						dao.updateRequestForm(newReq);
