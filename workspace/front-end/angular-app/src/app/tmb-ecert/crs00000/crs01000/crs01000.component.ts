@@ -10,7 +10,7 @@ import { ROLES } from 'app/baiwa/common/constants';
 import { DatatableCofnig, DatatableDirective } from 'app/baiwa/common/directives/datatable/datatable.directive';
 import { NgCalendarConfig } from 'app/baiwa/common/components/calendar/ng-calendar.component';
 import * as moment from 'moment';
-import { ThDateToEnDate } from 'app/baiwa/common/helpers';
+import { ThDateToEnDate,dateLocale,EnDateToThDate} from 'app/baiwa/common/helpers';
 
 declare var $: any;
 
@@ -159,7 +159,7 @@ export class Crs01000Component implements OnInit, AfterViewInit {
     } else {
       
       if (code == 10010 ){
-        let now = moment().format('DD/MM/YYYY');
+        let now = EnDateToThDate(moment().format('DD/MM/YYYY'));
         this.form.setValue({ status: code, reqDate: now, toReqDate: now, organizeId: "", companyName: "", tmbReqNo: "" });
       }else {
         this.form.setValue({ status: code, reqDate: "", toReqDate: "", organizeId: "", companyName: "", tmbReqNo: "" });
