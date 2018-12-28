@@ -209,23 +209,24 @@ export class Rep01000Component implements OnInit, AfterViewInit {
   }
 
   exportFile = () => {
-    console.log("exportFile");
+
     let param = "";
     // param += "?dateForm=" + ThDateToEnDate(this.form.controls.dateForm.value);
     // param += "&dateTo=" + ThDateToEnDate(this.form.controls.dateTo.value);
     // param += "&paymentDateForm=" + ThDateToEnDate(this.form.controls.paymentDateForm.value);
     // param += "&paymentDateTo=" + ThDateToEnDate(this.form.controls.paymentDateTo.value);
-    (this.form.controls.dateForm.value != null) ? param += "?dateForm=" + ThDateToEnDate(this.form.controls.dateForm.value) : "";
-    (this.form.controls.dateTo.value != null) ? param += "&dateTo=" + ThDateToEnDate(this.form.controls.dateTo.value) : "";
-    (this.form.controls.paymentDateForm.value != null) ? param += "&paymentDateForm=" + ThDateToEnDate(this.form.controls.paymentDateForm.value) : "";
-    (this.form.controls.paymentDateTo.value != null) ? param += "&paymentDateTo=" + ThDateToEnDate(this.form.controls.paymentDateTo.value) : "";
+
+    (ThDateToEnDate(this.form.controls.dateForm.value) != null ) ? param += "?dateForm=" + ThDateToEnDate(this.form.controls.dateForm.value) : param +="?dateForm=";
+    (ThDateToEnDate(this.form.controls.dateTo.value) != null ) ? param += "&dateTo=" + ThDateToEnDate(this.form.controls.dateTo.value) : param +="&dateTo=";
+    (ThDateToEnDate(this.form.controls.paymentDateForm.value) != null ) ? param += "&paymentDateForm=" + ThDateToEnDate(this.form.controls.paymentDateForm.value) : param +="&paymentDateForm=";
+    (ThDateToEnDate(this.form.controls.paymentDateTo.value) != null ) ? param += "&paymentDateTo=" + ThDateToEnDate(this.form.controls.paymentDateTo.value) : param +="&paymentDateTo=";
+ 
 
     (this.form.controls.organizeId.value != null) ? param += "&organizeId=" + this.form.controls.organizeId.value : "";
     (this.form.controls.companyName.value != null) ? param += "&companyName=" + this.form.controls.companyName.value : "";
 
     (this.reqTypeChanged != null) ? param += "&requestTypeCode=" + this.reqTypeChanged : "";
     (this.paidTypeChanged != null) ? param += "&paidtypeCode=" + this.paidTypeChanged : "";
-
     this.ajax.download(URL.export + param);
   }
 

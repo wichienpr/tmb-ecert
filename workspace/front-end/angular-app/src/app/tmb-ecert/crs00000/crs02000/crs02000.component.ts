@@ -244,6 +244,9 @@ export class Crs02000Component implements OnInit {
       this.service.rejected(data);
     }
   }
+  paymentRetry(){
+    this.service.paymentRetry();
+  }
 
   chkStatus = status => {
     return this.service.getStatusCode() == status;
@@ -289,10 +292,10 @@ export class Crs02000Component implements OnInit {
   get otherReason() { return this.formReject.controls.otherReason }
 
   get certFile() { return this.formCert.get('certFile') }
-  get btnApprove() { return this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005) && this.common.isAuth(PAGE_AUTH.P0000402) }
+  get btnApprove() { return (this.roles(ROLES.CHECKER) || this.roles(ROLES.SUPER_CHECKER) ) && this.chkStatus(REQ_STATUS.ST10005) && this.common.isAuth(PAGE_AUTH.P0000402) }
   get btnReject() {
     if (this.common.isAuth(PAGE_AUTH.P0000403)) {
-      if (this.roles(ROLES.CHECKER) && this.chkStatus(REQ_STATUS.ST10005)) {
+      if ((this.roles(ROLES.CHECKER) || this.roles(ROLES.SUPER_CHECKER) ) && this.chkStatus(REQ_STATUS.ST10005)) {
         return true;
       }
       return false;
@@ -309,6 +312,10 @@ export class Crs02000Component implements OnInit {
     // && this.chkStatus(REQ_STATUS.ST10005)
     // && this.common.isAuth(PAGE_AUTH.P0000406))
     // || 
+  }
+
+  get btnPayment(){
+    return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10008) && this.common.isAuth(PAGE_AUTH.P0000401)
   }
 
 }

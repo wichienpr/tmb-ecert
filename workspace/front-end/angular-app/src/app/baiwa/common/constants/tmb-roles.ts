@@ -5,4 +5,5 @@ export enum ROLES {
     IT = "IT",
     ISA = "ISA",
     REQUESTOR = "DBDS_Requester",
+    SUPER_CHECKER = "DBDS_Super_Checker"
 }
