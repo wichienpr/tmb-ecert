@@ -21,7 +21,8 @@ export const URL = {
   PDF: "/api/report/pdf/view/",
   UPLOAD: "/api/crs/crs01000/upLoadCertificate",
   CER_REJECT: "/api/crs/crs02000/cert/reject",
-  CER_APPROVE: "/api/crs/crs02000/cert/approve"
+  CER_APPROVE: "/api/crs/crs02000/cert/approve",
+  PAYMENT_RETRY: "/api/crs/crs02000/retry"
 }
 
 @Injectable({
@@ -317,6 +318,42 @@ export class Crs02000Service {
 
   cancel(): void {
     this.location.back();
+  }
+
+  paymentRetry(){
+    this.common.isLoading();
+    let reqId = this.getId();
+    const modal: Modal = {
+      approveMsg: "ยืนยัน",
+      rejectMsg: "ยกเลิก",
+      type: "confirm",
+      size: "small",
+      modalId: "approve",
+      msg: `<label>ยืนยันการอนุมัติการชำระเงินค่าธรรมเนียม</label>`,
+      title: "อนุมัติการชำระเงินค่าธรรมเนียม"
+    };
+    this.modal.confirm(e => {
+      if (e) {
+        this.common.isLoaded();
+        this.ajax.get(URL.PAYMENT_RETRY+"/?reqFormId="+reqId, response => {
+          const data = response.json();
+          if (data && data.message == "SUCCESS") {
+            this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
+            // this.router.navigate(['/crs/crs01000'], {
+            //   queryParams: { codeStatus: "10010" }
+            // });
+          }else {
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+          }
+        },error => {
+          console.error(error);
+          this.common.isLoaded();
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+        });
+      }
+    }, modal);
+
+
   }
 
 }

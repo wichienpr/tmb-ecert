@@ -183,7 +183,7 @@ export class sup01100Component implements OnInit {
       }
       ,
       {
-        rolename: "UI-00012 - Audit Loge",
+        rolename: "UI-00012 - Audit Log",
         status: 0,
         fuctioncode: PAGE_AUTH.P0001200,
         chliddata: [{
