@@ -248,6 +248,11 @@ public class CheckRequestDetailService {
 		}
 		return response;
 	}
+	
+	public CommonMessage<ResponseVo> retryPayment(String reqFormId, UserDetails user) {
+		CommonMessage<ResponseVo> messageRes = new CommonMessage<>();
+		return messageRes;
+	}
 
 	private boolean isSuccess(String value) {
 		return PAYMENT_STATUS.SUCCESS_MSG.equals(value);

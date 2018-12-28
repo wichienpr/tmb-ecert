@@ -71,5 +71,11 @@ public class CheckRequestDetailController {
 			@PathVariable("superchecker") String authed) {
 		return this.crsService.approve(reqFormId, UserLoginUtils.getCurrentUserLogin(), authed);
 	}
+	
+	@GetMapping("retry/{reqFormId}")
+	@ResponseBody
+	public CommonMessage<ResponseVo> retry(@PathVariable("reqFormId") String reqid, HttpServletResponse response) {
+		return this.crsService.retryPayment(reqid, UserLoginUtils.getCurrentUserLogin());
+	}
 
 }
