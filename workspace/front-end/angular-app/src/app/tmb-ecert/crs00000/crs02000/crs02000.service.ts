@@ -321,7 +321,7 @@ export class Crs02000Service {
   }
 
   paymentRetry(){
-    this.common.isLoading();
+    // this.common.isLoading();
     let reqId = this.getId();
     const modal: Modal = {
       approveMsg: "ยืนยัน",
@@ -334,14 +334,15 @@ export class Crs02000Service {
     };
     this.modal.confirm(e => {
       if (e) {
-        this.common.isLoaded();
-        this.ajax.get(URL.PAYMENT_RETRY+"/?reqFormId="+reqId, response => {
+        this.common.isLoading();
+        this.ajax.get(URL.PAYMENT_RETRY+"/"+reqId, response => {
           const data = response.json();
+          this.common.isLoaded();
           if (data && data.message == "SUCCESS") {
             this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
-            // this.router.navigate(['/crs/crs01000'], {
-            //   queryParams: { codeStatus: "10010" }
-            // });
+            this.router.navigate(['/crs/crs01000'], {
+              queryParams: { codeStatus: "10005" }
+            });
           }else {
             this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
           }
