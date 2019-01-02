@@ -251,6 +251,18 @@ public class CheckRequestDetailService {
 	
 	public CommonMessage<ResponseVo> retryPayment(String reqFormId, UserDetails user) {
 		CommonMessage<ResponseVo> messageRes = new CommonMessage<>();
+		try {
+			RequestForm req  = dao.findReqFormById(Long.valueOf(reqFormId), false);
+			req.setStatus(StatusConstant.WAIT_PAYMENT_APPROVAL);
+			
+			reqDao.update(req);
+			hstDao.save(req);
+			
+			messageRes.setMessage("SUCCESS");
+		} catch (Exception e) {
+			messageRes.setMessage("ERROR");
+		}
+	
 		return messageRes;
 	}
 
