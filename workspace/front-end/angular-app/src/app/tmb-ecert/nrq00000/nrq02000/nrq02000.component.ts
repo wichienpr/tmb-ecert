@@ -176,7 +176,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         glType, tranCode, accountType, status, companyName,
         caNumber, organizeId, customerName, telephone, remark,
         requestFormFile, idCardFile, department, reqFormId, address,
-        ref1, ref2, amountTmb, amountDbd
+        ref1, ref2, amountTmb, amountDbd, majorNo
       } = this.data;
       if (requestFormFile) {
         requestFile.clearValidators();
@@ -210,6 +210,7 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         ref2: ref2,
         amountDbd: amountDbd,
         amountTmb: amountTmb,
+        majorNo: majorNo,
         customSegSelect: this.user.segment || this.dropdownObj.customSeg.values[0].code
       });
       const id = this.data.reqFormId.toString();

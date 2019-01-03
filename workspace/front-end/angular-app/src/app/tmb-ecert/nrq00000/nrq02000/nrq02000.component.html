@@ -413,11 +413,11 @@
             (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off" placeholder="">
         </div>
         <div class="required two wide field">
-          <label>ชื่อเจ้าของบัญชี</label>
+          <label>สำนักงานใหญ่/สาขาที่</label>
         </div>
-        <div class="five wide field" [ngClass]="{'error': invalid('accName'), 'disabled': isMakerAndSelectPaidType }">
-          <input type="text" (keypress)="noPipe($event)" maxlength="255" #accName formControlName="accName"
-            placeholder="ชื่อบัญชี">
+        <div class="five wide field" [ngClass]="{'error': invalid('majorNo'), 'disabled': onlyMaker }">
+          <input type="text" (keypress)="accNoPress($event)" maxlength="5" minlength="5" #majorNo formControlName="majorNo"
+            placeholder="สำนักงานใหญ่/สาขาที่">
         </div>
       </div>
       <div class="inline fields">
@@ -428,7 +428,17 @@
           <input type="text" (keypress)="noPipe($event)" class="txt-red" #corpName1 formControlName="corpName1"
             placeholder="ชื่อนิติบุคคล">
         </div>
-        <div class="two wide field">
+        <div class="required two wide field">
+          <label>ชื่อเจ้าของบัญชี</label>
+        </div>
+        <div class="five wide field" [ngClass]="{'error': invalid('accName'), 'disabled': isMakerAndSelectPaidType }">
+          <input type="text" (keypress)="noPipe($event)" maxlength="255" #accName formControlName="accName"
+            placeholder="ชื่อบัญชี">
+        </div>
+      </div>
+
+      <div class="inline fields">
+        <div class="four wide field">
           <label>เบอร์โทรผู้ขอ/ลูกค้า (ถ้ามี)</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('telReq') }">
