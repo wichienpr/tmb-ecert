@@ -17,6 +17,15 @@ public class Rep03000Vo {
 	public BigDecimal amountTmb;
 
 	private String customerName;
+	private String majorNo;
+
+	public String getMajorNo() {
+		return majorNo;
+	}
+
+	public void setMajorNo(String majorNo) {
+		this.majorNo = majorNo;
+	}
 
 	public Long getId() {
 		return id;

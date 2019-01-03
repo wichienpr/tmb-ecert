@@ -187,6 +187,7 @@ public class RequestorFormService {
 				req.setDepartment(form.getDepartmentName());
 				req.setGlType(form.getGlType());
 				req.setIdCardFile(copyFile);
+				req.setMajorNo(form.getMajorNo());
 				if (ADConstant.ROLE_MAKER.equals(form.getUserStatus())) {
 					req.setMakerById(userId);
 					req.setMakerByName(userName);
@@ -329,6 +330,7 @@ public class RequestorFormService {
 				req.setDeleteFlag(0);
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
+				req.setMajorNo(form.getMajorNo());
 				// User Properties
 				req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartmentCode() +" / "+UserLoginUtils.getCurrentUserLogin().getDepartment());
 				req.setCreatedByGroup(UserLoginUtils.getCurrentUserLogin().getGroup());
@@ -436,7 +438,8 @@ public class RequestorFormService {
 //			return false;
 //		}
 //	}
-	public CommonMessage<String> validate( Nrq02000FormVo form) {
+	
+	public CommonMessage<String> validate(Nrq02000FormVo form) {
 		CommonMessage<String> msg = new CommonMessage<String>();
 		int result = daoCrs.checkDuplicate(form);
 		if (result > 0) {

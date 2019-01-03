@@ -111,16 +111,16 @@ public class RequestorDao {
 	public Long save(RequestForm vo) {
 
 		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_INSERT);
-		sql.append("(CERTYPE_CODE,ORGANIZE_ID,CUSTOMER_NAME,COMPANY_NAME,");
-		sql.append("BRANCH,CUSTSEGMENT_CODE,CA_NUMBER,DEPARTMENT,PAIDTYPE_CODE,");
-		sql.append("DEBIT_ACCOUNT_TYPE,TRANCODE,GLTYPE,ACCOUNTTYPE,ACCOUNT_NO,");
-		sql.append("ACCOUNT_NAME,CUSTOMER_NAMERECEIPT,TELEPHONE,REQUESTFORM_FILE,");
-		sql.append("IDCARD_FILE,CHANGENAME_FILE,CERTIFICATE_FILE,ADDRESS,");
-		sql.append("REMARK,RECEIPT_NO,STATUS,CREATED_BY_ID,CREATED_BY_NAME,");
-		sql.append("CREATED_DATETIME,MAKER_BY_ID,MAKER_BY_NAME,TMB_REQUESTNO, REQUEST_DATE,");
-		sql.append("LOCK_FLAG, DELETE_FLAG, PAYMENT_BRANCHCODE,");
-		sql.append("CREATED_BY_DEPARTMENT ,CREATED_BY_GROUP, CREATED_BY_BELONGTO, CREATED_BY_TEL, CREATED_BY_EMAIL");
-		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
+		sql.append("(CERTYPE_CODE, ORGANIZE_ID, CUSTOMER_NAME, COMPANY_NAME,");
+		sql.append("BRANCH, CUSTSEGMENT_CODE, CA_NUMBER,DEPARTMENT, PAIDTYPE_CODE,");
+		sql.append("DEBIT_ACCOUNT_TYPE, TRANCODE, GLTYPE, ACCOUNTTYPE, ACCOUNT_NO,");
+		sql.append("ACCOUNT_NAME, CUSTOMER_NAMERECEIPT, TELEPHONE, REQUESTFORM_FILE,");
+		sql.append("IDCARD_FILE, CHANGENAME_FILE, CERTIFICATE_FILE, ADDRESS,");
+		sql.append("REMARK,RECEIPT_NO, STATUS, CREATED_BY_ID, CREATED_BY_NAME,");
+		sql.append("CREATED_DATETIME, MAKER_BY_ID, MAKER_BY_NAME, TMB_REQUESTNO, REQUEST_DATE,");
+		sql.append("LOCK_FLAG, DELETE_FLAG, PAYMENT_BRANCHCODE, MAJOR_NO,");
+		sql.append("CREATED_BY_DEPARTMENT , CREATED_BY_GROUP, CREATED_BY_BELONGTO, CREATED_BY_TEL, CREATED_BY_EMAIL");
+		sql.append(") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"); // GETDATE()
 
 		KeyHolder holder = new GeneratedKeyHolder();
 
@@ -172,11 +172,12 @@ public class RequestorDao {
 				ps.setInt(34, 0);
 				ps.setString(35, vo.getPaymentBranchCode());
 				// Newer
-				ps.setString(36, vo.getCreatedByDepartment());
-				ps.setString(37, vo.getCreatedByGroup());
-				ps.setString(38, vo.getCreatedByBelongto());
-				ps.setString(39, vo.getCreatedByTel());
-				ps.setString(40, vo.getCreatedByEmail());
+				ps.setString(36, vo.getMajorNo());
+				ps.setString(37, vo.getCreatedByDepartment());
+				ps.setString(38, vo.getCreatedByGroup());
+				ps.setString(39, vo.getCreatedByBelongto());
+				ps.setString(40, vo.getCreatedByTel());
+				ps.setString(41, vo.getCreatedByEmail());
 				return ps;
 			}
 		}, holder);
@@ -198,7 +199,7 @@ public class RequestorDao {
 		sql.append("UPDATED_BY_NAME=?,UPDATED_DATETIME=?,STATUS=?,RECEIPT_DATE=?,");
 		sql.append("RECEIPT_FILE=?,ECM_FLAG=?,REF1=?,REF2=?,AMOUNT=?,REJECTREASON_CODE=?,REJECTREASON_OTHER=?,");
 		sql.append("AMOUNT_TMB=?,AMOUNT_DBD=?,CHECKER_BY_ID=?,CHECKER_BY_NAME=?,LOCK_FLAG=?,PAYMENT_BRANCHCODE=?,");
-		sql.append("PAYMENT_DATE=?,PAYLOADTS=?,OFFICE_CODE=?");
+		sql.append("PAYMENT_DATE=?,PAYLOADTS=?,OFFICE_CODE=?,MAJOR_NO=?");
 		sql.append(" WHERE REQFORM_ID = ?");
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getCerTypeCode(), vo.getOrganizeId(),
 				vo.getCustomerName(), vo.getCompanyName(), vo.getBranch(), vo.getCustsegmentCode(), vo.getCaNumber(),
@@ -213,7 +214,7 @@ public class RequestorDao {
 				vo.getStatus(), vo.getReceiptDate(), vo.getReceiptFile(), vo.getEcmFlag(),
 				vo.getRef1(), vo.getRef2(), vo.getAmount(), vo.getRejectReasonCode(), vo.getRejectReasonOther(),
 				vo.getAmountTmb(), vo.getAmountDbd(), vo.getCheckerById(), vo.getCheckerByName(), vo.getLockFlag(),
-				vo.getPaymentBranchCode(), vo.getPaymentDate(), vo.getPayLoadTs(), vo.getOfficeCode(),
+				vo.getPaymentBranchCode(), vo.getPaymentDate(), vo.getPayLoadTs(), vo.getOfficeCode(), vo.getMajorNo(),
 				vo.getReqFormId() });
 
 		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);

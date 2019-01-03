@@ -803,7 +803,8 @@ public class RepDao {
 				    		vo.setOrganizeId(rs.getString("ORGANIZE_ID"));  
 				    		
 				    		vo.setAddress(rs.getString("ADDRESS"));   
-				    		vo.setBranch(rs.getString("BRANCH"));  
+				    		vo.setBranch(rs.getString("BRANCH"));
+				    		vo.setMajorNo(rs.getString("MAJOR_NO"));
 				    		
 				    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
 				    		Float totalAmountTmbVat = 0f;

@@ -38,43 +38,41 @@ import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 @Service
 public class Rep03000tService {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private RepDao repDao;
-	
+
 	@Autowired
 	private ExcalService excalService;
-	
-	
-	public Rep03000FormVo findAll(Rep03000FormVo formVo){
+
+	public Rep03000FormVo findAll(Rep03000FormVo formVo) {
 		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 		rep03000VoList = repDao.getDataRep03000(formVo);
-	
-		if(rep03000VoList.size()!=0) {
+
+		if (rep03000VoList.size() != 0) {
 			formVo.setCustomerNameHead(rep03000VoList.get(0).getCustomerName());
 			formVo.setOrganizeIdHead(rep03000VoList.get(0).getOrganizeId());
 			formVo.setCompanyNameHead(rep03000VoList.get(0).getCompanyName());
 			formVo.setBranchHead(rep03000VoList.get(0).getBranch());
 			formVo.setAddressHead(rep03000VoList.get(0).getAddress());
 		}
-		
+
 		formVo.setRep03000VoList(rep03000VoList);
-	
+
 		return formVo;
 	}
-	
-	public DataTableResponse<Rep03000Vo> findAllDatatable(Rep03000FormVo formVo){
+
+	public DataTableResponse<Rep03000Vo> findAllDatatable(Rep03000FormVo formVo) {
 		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 		DataTableResponse<Rep03000Vo> datatableList = new DataTableResponse<>();
 		rep03000VoList = repDao.getDataRep03000Datatable(formVo);
 		datatableList.setData(rep03000VoList);
 		int count = repDao.getDataRep03000Count(formVo);
 		datatableList.setRecordsTotal(count);
-	
+
 		return datatableList;
 	}
 
-	
 	public void exportFile(Rep03000FormVo formVo, HttpServletResponse response) throws IOException {
 		Rep03000FormVo formVofindAll = new Rep03000FormVo();
 		List<Rep03000Vo> dataTestList = new ArrayList<Rep03000Vo>();
@@ -232,8 +230,9 @@ public class Rep03000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getPaymentDate()))?detail.getPaymentDate(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()))?detail.getCompanyName(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellTextCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()))?detail.getOrganizeId(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAddress()))?detail.getAddress(): "" );
+//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAddress()))?detail.getAddress(): "" );
 //				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getBranch()))?detail.getBranch(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMajorNo())) ? detail.getMajorNo() : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmbVat().toString()))?detail.getAmountTmbVat().toString(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
@@ -298,16 +297,16 @@ public class Rep03000tService {
 
 			log.info("Done");
 		}
-	
+
 	public String convertAccountNo(String accountNo) {
 		String accountNoReturn = "";
-		accountNoReturn = accountNo.substring(0, 3)+"-"+accountNo.substring(3, 4)+"-"+accountNo.substring(4, 9)+"-"+accountNo.substring(9);
+		accountNoReturn = accountNo.substring(0, 3) + "-" + accountNo.substring(3, 4) + "-" + accountNo.substring(4, 9)
+				+ "-" + accountNo.substring(9);
 		return accountNoReturn;
 	}
-	 public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
-		 return (bigdecimal!=null)?bigdecimal.floatValue():0f;
-	 }
-	
+
+	public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
+		return (bigdecimal != null) ? bigdecimal.floatValue() : 0f;
+	}
+
 }
-
-
