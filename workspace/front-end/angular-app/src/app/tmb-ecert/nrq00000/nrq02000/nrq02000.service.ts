@@ -56,6 +56,7 @@ export class Nrq02000Service {
         note: new FormControl(),                                        // หมายเหตุ
         requestFile: new FormControl('', Validators.required),          // ใบคำขอหนังสือรับรองนิติบุคคลและหนังสือยินยอมให้หักเงินจากบัญชีเงินฝาก
         copyFile: new FormControl('', Validators.required),             // สำเนาบัตรประชาชน
+        majorNo: new FormControl('00000', Validators.required),         // สำนักงานใหญ่/สาขาที่
         changeNameFile: new FormControl(),                              // สำเนาใบเปลี่ยนชื่อหรือนามสกุล
         ref1: new FormControl(),
         ref2: new FormControl(),
@@ -812,7 +813,8 @@ export class Nrq02000Service {
             rejectReasonOther: addons.rejectReasonOther,
             hasAuthed: this.hasAuthed,
             userStatus: this.common.isRole(ROLES.MAKER) ? ROLES.MAKER : ROLES.REQUESTOR,
-            lockFlag: 0
+            lockFlag: 0,
+            majorNo: form.controls.majorNo.value,
         };
         for (let key in data) {
             if (data[key]) {
@@ -871,6 +873,7 @@ export enum ValidatorMessages {
     amountTmb = "กรุณากรอกข้อมูลให้ครบ",
     acceptNo = "กรุณากรอกข้อมูลให้ครบ",
     subAccMethodSelect = "กรุณากรอกข้อมูลให้ครบ",
+    majorNo = "กรุณากรอกข้อมูลให้ครบ",
 }
 
 interface Pdf {
