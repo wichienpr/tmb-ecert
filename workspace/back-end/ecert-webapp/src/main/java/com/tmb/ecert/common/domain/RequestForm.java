@@ -77,6 +77,7 @@ public class RequestForm extends DatatableRequest {
 	private String makerByName;
 	private String checkerById;
 	private String checkerByName;
+	private String majorNo;
 
 	private String officeCode;
 	private Timestamp receiptDate;
@@ -86,6 +87,14 @@ public class RequestForm extends DatatableRequest {
 	private Integer lockFlag;
 	private Integer deleteFlag;
 	
+	public String getMajorNo() {
+		return majorNo;
+	}
+
+	public void setMajorNo(String majorNo) {
+		this.majorNo = majorNo;
+	}
+
 	public String getCreatedByDepartment() {
 		return createdByDepartment;
 	}

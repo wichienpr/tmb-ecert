@@ -43,7 +43,16 @@ public class Nrq02000FormVo {
 	private String rejectReasonOther;
 	private String hasAuthed;
 	private String userStatus;
+	private String majorNo;
 	
+	public String getMajorNo() {
+		return majorNo;
+	}
+
+	public void setMajorNo(String majorNo) {
+		this.majorNo = majorNo;
+	}
+
 	public String getHasAuthed() {
 		return hasAuthed;
 	}
