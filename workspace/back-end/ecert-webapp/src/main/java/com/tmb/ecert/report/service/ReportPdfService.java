@@ -140,6 +140,7 @@ public class ReportPdfService {
 			params01.put("address", req.getAddress());
 			params01.put("pageActive", "1");
 			params01.put("pageTotal", "2");
+			params01.put("majorNo", req.getMajorNo());
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 				//vat
 				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
@@ -191,6 +192,7 @@ public class ReportPdfService {
 			params02.put("address", req.getAddress());
 			params02.put("pageActive", "2");
 			params02.put("pageTotal", "2");
+			params02.put("majorNo", req.getMajorNo());
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 				//vat
 				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
