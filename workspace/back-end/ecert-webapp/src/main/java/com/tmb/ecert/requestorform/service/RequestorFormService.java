@@ -409,6 +409,7 @@ public class RequestorFormService {
 			req.setStatus("10011");
 			req.setLockFlag(0);
 			req.setDeleteFlag(0);
+			req.setMajorNo("00000");
 			dao.save(req); // SAVE REQUEST FORM
 			msg.setData(reqTmbNo);
 			msg.setMessage("SUCCESS");
