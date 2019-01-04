@@ -588,13 +588,17 @@
                 <i class="check circle outline icon" *ngIf="btnMaker"></i>
                 ไม่ชำระผ่าน e-Payment
               </button>
-              <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMakerReject">
+              <button class="ui blue basic button" (click)="rejectModal()" type="button" *ngIf="btnMakerReject&&fromPayment">
                 <i class="undo icon"></i>
                 ปฏิเสธ
               </button>
-              <button class="ui grey basic button" (click)="cancel()" type="button">
+              <button class="ui grey basic button" (click)="cancel()" type="button" *ngIf="fromPayment">
                 <i class="times circle outline icon"></i>
                 ยกเลิก
+              </button>
+              <button class="ui grey  basic button" type="button" (click)="back()" *ngIf="!fromPayment">
+                <i class="arrow alternate circle left outline icon"></i>
+                ย้อนกลับ
               </button>
             </div>
           </div>

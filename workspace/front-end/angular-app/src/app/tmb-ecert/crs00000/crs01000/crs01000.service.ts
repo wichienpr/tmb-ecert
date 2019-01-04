@@ -52,6 +52,18 @@ export class Crs01000Service {
       });
       return;
     }
+    if (status == "10008" && this.common.isRole(ROLES.MAKER)) {
+      this.router.navigate(["/nrq/nrq02000"], {
+        queryParams: { id: idReq, statusCode: status }
+      });
+      return;
+    }
+    if (status == "10008" && (this.common.isRole(ROLES.CHECKER) || this.common.isRole(ROLES.SUPER_CHECKER) )) {
+      this.router.navigate(["/crs/crs02000"], {
+        queryParams: { id: idReq, statusCode: status }
+      });
+      return;
+    }
     this.router.navigate(["/crs/crs02000"], {
       queryParams: { id: idReq, statusCode: status }
     });
