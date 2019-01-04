@@ -11,6 +11,7 @@ import { ROLES, PAGE_AUTH } from 'app/baiwa/common/constants';
 import { DateConstant } from 'app/baiwa/common/components/calendar/calendar.component';
 import * as moment from 'moment';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 declare var $: any;
 
@@ -78,7 +79,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
     private common: CommonService,
     private modal: ModalService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
   ) {
     this.reqTypeChanged = [];
     this.files = {
@@ -407,6 +409,8 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
   get btnMaker() { return this.roles(ROLES.MAKER) }
   get btnMakerApprove() { return this.roles(ROLES.MAKER) && this.common.isAuth(PAGE_AUTH.P0000401) }
   get btnMakerReject() { return (this.roles(ROLES.MAKER) || this.roles(ROLES.REQUESTOR)) && this.common.isAuth(PAGE_AUTH.P0000403) && this.data.reqFormId }
+  get btnBranch() { return this.roles(ROLES.MAKER)  && this.service.getStatusCode() != "10008" }
+  get fromPayment() { return this.service.getStatusCode() != "10008" }
 
   get authUsername() { return this.formAuth.get("authUsername") }
   get authPassword() { return this.formAuth.get("authPassword") }
@@ -591,6 +595,9 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
 
   cancel() {
     this.service.cancel(this.data.reqFormId != 0);
+  }
+  back() {
+    this.location.back();
   }
 
   rejectModal() {
