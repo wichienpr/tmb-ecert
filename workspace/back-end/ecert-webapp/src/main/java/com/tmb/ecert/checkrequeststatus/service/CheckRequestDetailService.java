@@ -230,7 +230,7 @@ public class CheckRequestDetailService {
 				} else {
 					response.setData(new ResponseVo(approveStep.getData().getDescription(),
 							approveStep.getData().getStatusCode()));
-					response = handlerErrorReq(response, newReq, user);
+					//response = handlerErrorReq(response, newReq, user); 
 					throw new Exception(response.getData().getStatus() + " : " + response.getData().getMessage());
 				}
 			}
@@ -256,7 +256,7 @@ public class CheckRequestDetailService {
 			req.setStatus(StatusConstant.WAIT_PAYMENT_APPROVAL);
 			
 			reqDao.update(req);
-			hstDao.save(req);
+//			hstDao.save(req);
 			
 			messageRes.setMessage("SUCCESS");
 		} catch (Exception e) {
