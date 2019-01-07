@@ -150,7 +150,7 @@ public class RequestorFormService {
 				upload.createFile(form.getChangeNameFile().getBytes(), folder, changeNameFile);
 			}
 			
-			if (!StatusConstant.PAYMENT_STATUS.PAY_TMB.equals(form.getSubAccMethodSelect())) {
+			if (!StatusConstant.PAYMENT_STATUS.PAY_TMB.equals(form.getPayMethodSelect())) {
 				form.setSubAccMethodSelect(null);
 				form.setAccountType(null);
 				form.setGlType(null);
