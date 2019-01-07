@@ -302,7 +302,13 @@ export class Crs02000Component implements OnInit {
     }
     return false;
   }
-  get btnPrintReciept() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) }
+  get btnPrintReciept() { 
+    if ( this.data.paidTypeCode == '30004'){
+      return false;
+    }else{
+      return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+    }
+  }
   get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
   get btnUpload() {
     return (this.roles(ROLES.MAKER)

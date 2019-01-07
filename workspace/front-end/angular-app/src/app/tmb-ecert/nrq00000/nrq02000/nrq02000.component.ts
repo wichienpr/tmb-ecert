@@ -829,9 +829,10 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
       this.accNo = Acc.convertAccNo(this.data.accountNo);
       this.form.get('accNo').patchValue(this.accNo);
       this.subAccMethodChange("");
-      // this.form.controls.subAccMethodSelect.setValue("");
     } else {
-      this.subAccMethodChange(this.form.get("subAccMethodSelect").value);
+      this.data.debitAccountType = '40002';
+      this.subAccMethodChange('40002');
+      this.form.controls.subAccMethodSelect.setValue('40002');
     }
     if (code !== "30004") {
       this.hiddenReceipt4 = false;

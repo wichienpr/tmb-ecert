@@ -192,6 +192,7 @@ export class Crs02000Service {
         });
         this.hasAuthed = "false";
         this.common.isLoaded(); // Loading page
+        return;
       }
       if (data.data && data.data.message == "NEEDLOGIN") {
         this.authForSubmit();

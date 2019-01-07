@@ -137,6 +137,7 @@ export class Rep03000Component implements OnInit {
   clearData(): void {
     this.form.reset();
     this.showData = false;
+    this.repDT.clear();
   }
 
   exportFile = () => {
