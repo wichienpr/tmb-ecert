@@ -180,8 +180,8 @@ export class Rep02000Component implements OnInit {
     this.router.navigate(['/rep/rep02100'], {
       queryParams: {
         custsegmentCode: custsegmentCode,
-        dateForm: this.form.controls.dateForm.value,
-        dateTo: this.form.controls.dateTo.value
+        dateForm: ThMonthYearToEnMonthYear(this.form.controls.dateForm.value),
+        dateTo: ThMonthYearToEnMonthYear(this.form.controls.dateTo.value)
       }
     });
   }
