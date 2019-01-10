@@ -276,10 +276,10 @@ public class RepDao {
 	    		BigDecimal vatdbd = new BigDecimal(0);
 	    		
 	    		tmbAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
-	    		dbdAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+//	    		dbdAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
 	    		
 	    		tmbAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) - tmbAmountVat ;
-	    		dbdAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) - dbdAmountVat ;
+	    		dbdAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) ;
 	    		
 	    		vattmb = new BigDecimal(tmbAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 	    		vatdbd = new BigDecimal(dbdAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
