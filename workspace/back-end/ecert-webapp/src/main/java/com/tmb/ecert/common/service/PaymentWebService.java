@@ -99,7 +99,7 @@ public class PaymentWebService {
 //			req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
 //					: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
 			
-			if(reqF.getPaymentStatus().equals(StatusConstant.PAYMENT_STATUS.PAY_TMB)) {
+			if(reqF.getPaidTypeCode().equals(StatusConstant.PAYMENT_STATUS.PAY_TMB)) {
 				req.setTranCode(reqF.getTranCode());
 				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
 						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
