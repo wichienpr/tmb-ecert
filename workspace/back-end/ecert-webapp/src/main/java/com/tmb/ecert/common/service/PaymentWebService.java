@@ -24,6 +24,7 @@ import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_ENDPOINT;
 import com.tmb.ecert.common.constant.ProjectConstant.WEB_SERVICE_PARAMS;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -98,24 +99,31 @@ public class PaymentWebService {
 //			req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
 //					: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
 			
-			//set trans code by degit account no 
-			if ( PAYMENT_STATUS.CHECK_ACC_CA[0].equals(acountNoArr[4]) || PAYMENT_STATUS.CHECK_ACC_CA[1].equals(acountNoArr[4]) 
-					|| PAYMENT_STATUS.CHECK_ACC_CA[2].equals(acountNoArr[3]) ) {
-				// ECERT_REQUEST_FORM. ACCOUNTTYPE
-				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
+			if(reqF.getPaymentStatus().equals(StatusConstant.PAYMENT_STATUS.PAY_TMB)) {
+				req.setTranCode(reqF.getTranCode());
 				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
 						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
-				
-			}else if (PAYMENT_STATUS.CHECK_ACC_IM[0].equals(acountNoArr[3])) {
-				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE_CA));
-				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
-						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE_CA));
 			}else {
-				req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
-				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
-						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+				
+				//set trans code by degit account no 
+				if ( PAYMENT_STATUS.CHECK_ACC_CA[0].equals(acountNoArr[4]) || PAYMENT_STATUS.CHECK_ACC_CA[1].equals(acountNoArr[4]) 
+						|| PAYMENT_STATUS.CHECK_ACC_CA[2].equals(acountNoArr[3]) ) {
+					// ECERT_REQUEST_FORM. ACCOUNTTYPE
+					req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
+					req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+							: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+					
+				}else if (PAYMENT_STATUS.CHECK_ACC_IM[0].equals(acountNoArr[3])) {
+					req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE_CA));
+					req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+							: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE_CA));
+				}else {
+					req.setTranCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TRANS_CODE));
+					req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
+							: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+				}
+				
 			}
-			
 			
 			req.setToAccountIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.DBD_ACCOUNT));
 			req.setToAccountType(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_TO_ACCOUNT_TYPE));
