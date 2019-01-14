@@ -1,7 +1,7 @@
 <div class="ui grid">
     <div class="sixteen wide column">
 
-        <h2 class="ui header">รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day</h2>
+        <h2 class="ui header">รายงานสรุปการให้บริการ ( e-Certificate ) : End day</h2>
 
         <div class="ui top attached header segment">
             <span>ระบุเงื่อนไขในการค้นหา </span>
@@ -117,8 +117,10 @@
                                 <th rowspan="2">ประเภทคำขอ</th>
                                 <th rowspan="2">รายละเอียดคำขอ</th>
                                 <th rowspan="2">เลขที่บัญชี</th>
-                                <th colspan="3">จำนวนเงิน : บาท</th>
-                                <th rowspan="2">รวม</th>
+                                <!-- <th colspan="3">จำนวนเงิน : บาท</th> -->
+                                <th colspan="3">หักบัญชีลูกค้า</th>
+                                <th colspan="3">Fee income/expense - TMB</th>
+                                <!-- <th rowspan="2">รวม</th> -->
                                 <th rowspan="2">ประเภทการชำระเงิน</th>
                                 <th rowspan="2">Maker ID</th>
                                 <th rowspan="2">Maker Name</th>
@@ -128,9 +130,12 @@
                                 <th rowspan="2">หมายเหตุ</th>
                             </tr>
                             <tr>
-                                <th>DBD</th>
-                                <th>TMB</th>
-                                <th>Tax TMB</th>
+                                <th>DBD - หัก<br>บัญชีลูกค้า</th>
+                                <th>TMB Fee <br>(Include VAT)</th>
+                                <th>รวม</th>
+                                <th>Fee expense</th>
+                                <th>Fee income</th>
+                                <th>VAT</th>
                                 <th><label class="status">Success</label></th>
                                 <th><label class="status">Fail</label></th>
                             </tr>
@@ -149,15 +154,24 @@
                                 <td style="text-align: left   !important;">{{data.certypeDesc}}</td>
                                 <td style="text-align: left   !important;"><span *ngFor="let requestTypeDesc of data.requestTypeDesc | commaStringBr ">{{requestTypeDesc}}<br></span></td>
                                 <td style="text-align: center !important;">{{data.accountNo | accountNo}}</td>
-                                <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat
-                                    :"###,###.00"}}</td>
-                                <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat
-                                    :"###,###.00"}}</td>
-                                <td style="text-align: right  !important;">{{data.totalAmountVat | decimalFormat
-                                    :"###,###.00"}}</td>
-                                <td style="text-align: right  !important;">{{data.amount | decimalFormat
-                                    :"###,###.00"}}</td>
-                                <td style="text-align: left   !important;">{{data.paidtypeDesc}}</td>
+                                
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode==30001||data.paidtypeCode==30002 ||data.paidtypeCode==30004">{{data.amountDbd | decimalFormat :"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode==30003">0.00</span></td>
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode==30001">{{data.amountTmb+data.totalAmountVat | decimalFormat :"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode!=30001">0.00</span></td>
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode!=30003">{{data.amountDbd+data.amountTmb+data.totalAmountVat | decimalFormat:"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode==30003">0.00</span></td>
+
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode==30003">{{data.amountDbd | decimalFormat :"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode!=30003">0.00</span></td>
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode==30001">{{data.amountTmb | decimalFormat  :"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode!=30001">0.00</span></td>
+                                <td style="text-align: right  !important;"><span *ngIf="data.paidtypeCode==30001">{{data.totalAmountVat | decimalFormat :"###,###.00"}}</span>
+                                    <span *ngIf="data.paidtypeCode!=30001">0.00</span></td>
+
+                                <!-- <td style="text-align: right  !important;">{{data.amount | decimalFormat
+                                    :"###,###.00"}}</td> -->
+                                <td style="text-align: left   !important;">{{data.paidtypeDesc}}{{data.paidtypeCode}}</td>
                                 <td style="text-align: center !important;">{{data.makerById}}</td>
                                 <td style="text-align: left   !important;">{{data.makerByName}}</td>
                                 <td style="text-align: center !important;">{{data.checkerById}}</td>
