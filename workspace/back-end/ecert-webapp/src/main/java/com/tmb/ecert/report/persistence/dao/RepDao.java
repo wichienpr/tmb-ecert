@@ -266,30 +266,30 @@ public class RepDao {
 //	    		totalAmountVat=(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB"))*0.07f)+(convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD"))*0.07f);
 //	    		vo.setTotalAmountVat(new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));   
 	    		
-	    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
+//	    		String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
 	    		Float tmbAmountTmbVat = 0f;
 	    		Float dbdAmountTmbVat = 0f;
 	    		Float tmbAmountVat = 0f;
 	    		Float dbdAmountVat = 0f;
-	    		BigDecimal vatSum = new BigDecimal(0);
+//	    		BigDecimal vatSum = new BigDecimal(0);
 	    		BigDecimal vattmb = new BigDecimal(0);
-	    		BigDecimal vatdbd = new BigDecimal(0);
+//	    		BigDecimal vatdbd = new BigDecimal(0);
 	    		
-	    		tmbAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+	    		tmbAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_VAT_TMB")) );
 //	    		dbdAmountVat= (convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
 	    		
 	    		tmbAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_TMB")) - tmbAmountVat ;
 	    		dbdAmountTmbVat = convertBigDecimalToLong(rs.getBigDecimal("AMOUNT_DBD")) ;
 	    		
 	    		vattmb = new BigDecimal(tmbAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-	    		vatdbd = new BigDecimal(dbdAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-	    		vatSum = vatSum.add(vattmb);
-	    		vatSum = vatSum.add(vatdbd);
+//	    		vatdbd = new BigDecimal(dbdAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+//	    		vatSum = vatSum.add(vattmb);
+//	    		vatSum = vatSum.add(vatdbd);
 	    		
-	    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT"))); 
+	    		vo.setAmount(convertBigDecimalToZero(rs.getBigDecimal("AMOUNT")));
 	    		vo.setAmountTmb(new BigDecimal(tmbAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN)); 
 	    		vo.setAmountDbd(new BigDecimal(dbdAmountTmbVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));
-	    		vo.setTotalAmountVat(vatSum.setScale(2, BigDecimal.ROUND_HALF_EVEN));   
+	    		vo.setTotalAmountVat(vattmb.setScale(2, BigDecimal.ROUND_HALF_EVEN));   
 	    		
 	    		
 	    		vo.setPaidtypeCode(rs.getString("PAIDTYPE_CODE"));   
@@ -836,7 +836,7 @@ public class RepDao {
 		 }
 		 
 		 public BigDecimal convertBigDecimalToZero(BigDecimal bigdecimal) {
-			 return (bigdecimal!=null)?bigdecimal.setScale(2, BigDecimal.ROUND_HALF_EVEN):BigDecimal.ZERO;
+			 return (bigdecimal!=null)?bigdecimal.setScale(2, BigDecimal.ROUND_HALF_EVEN):BigDecimal.ZERO.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		 }
 
 }

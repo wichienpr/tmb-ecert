@@ -2,6 +2,7 @@ package com.tmb.ecert.requestorform.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
@@ -193,6 +195,11 @@ public class RequestorFormService {
 					req.setMakerByName(userName);
 					req.setPaymentDate(timestamp);
 				}
+				
+				String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
+				Float tmbAmountVat= (convertBigDecimalToLong(form.getAmountTmb()) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+				req.setAmountTmbVat(new BigDecimal(tmbAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+				
 				req.setUpdatedById(userId);
 				req.setUpdatedByName(userName);
 				req.setOrganizeId(form.getCorpNo());
@@ -331,6 +338,10 @@ public class RequestorFormService {
 				req.setRemark(form.getNote());
 				req.setTelephone(form.getTelReq());
 				req.setMajorNo(form.getMajorNo());
+				
+				String vatpercent = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.VAT_PERCENT);
+				Float tmbAmountVat= (convertBigDecimalToLong(form.getAmountTmb()) * Float.parseFloat(vatpercent) / (100 + Float.parseFloat(vatpercent) ));
+				req.setAmountTmbVat(new BigDecimal(tmbAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN));
 				// User Properties
 				req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartmentCode() +" / "+UserLoginUtils.getCurrentUserLogin().getDepartment());
 				req.setCreatedByGroup(UserLoginUtils.getCurrentUserLogin().getGroup());
@@ -464,5 +475,8 @@ public class RequestorFormService {
 		}
 		return isLogged;
 	}
+	 public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
+		 return (bigdecimal!=null)?bigdecimal.floatValue():0f;
+	 }
 
 }
