@@ -78,6 +78,7 @@ public class RequestForm extends DatatableRequest {
 	private String checkerById;
 	private String checkerByName;
 	private String majorNo;
+	private BigDecimal amountTmbVat;
 
 	private String officeCode;
 	private Timestamp receiptDate;
@@ -87,6 +88,14 @@ public class RequestForm extends DatatableRequest {
 	private Integer lockFlag;
 	private Integer deleteFlag;
 	
+	public BigDecimal getAmountTmbVat() {
+		return amountTmbVat;
+	}
+
+	public void setAmountTmbVat(BigDecimal amountTmbVat) {
+		this.amountTmbVat = amountTmbVat;
+	}
+
 	public String getMajorNo() {
 		return majorNo;
 	}

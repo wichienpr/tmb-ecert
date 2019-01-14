@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.RoleVo;
 import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.dao.RepDao;
@@ -120,7 +121,7 @@ public class Rep01000tService {
 			
 			row = sheet.createRow(rowNum);
 			cell = row.createCell(0);
-			cell.setCellValue("รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day");
+			cell.setCellValue("รายงานสรุปการให้บริการ ( e-Certificate ) : End day");
 			cell.setCellStyle(fontHeader);
 			sheet.addMergedRegion(new CellRangeAddress(rowNum,rowNum, 0, 19)); //tr colspan=20
 			rowNum+=2;
@@ -128,8 +129,8 @@ public class Rep01000tService {
 //			String[] tbTH1 = formVo.getTrHtml1();
 			
 			String[] tbTH1 = { "ลำดับ","วันที่","เลขที่อ้างอิง (TMB Req No.)","เลขที่นิติบุคคล", "ชื่อ",
-		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","จำนวนเงิน : บาท","","",
-		             "รวม","ประเภทการชำระเงิน","Maker ID","Maker Name","Checker ID","Checker Name","Payment Date","สถานะ","หมายเหตุ"};
+		             "Segment", "ประเภทคำขอ","รายละเอียดคำขอ","เลขที่บัญชี","หักบัญชีลูกค้า"      ,"","",
+		             "Fee income/expense - TMB","","","ประเภทการชำระเงิน" ,"Maker ID","Maker Name","Checker ID","Checker Name","Payment Date","สถานะ","หมายเหตุ"};
 			row = sheet.createRow(rowNum++);
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -139,7 +140,7 @@ public class Rep01000tService {
 			
 			
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "","","","","","","","","","DBD", "TMB","Tax","","","","","","","","",""};
+			String[] tbTH2 = { "","","","","","","","","","DBD - หักบัญชีลูกค้า", "TMB Fee (Include VAT)","รวม","Fee expense", "Fee income","VAT","","","","","","","",""};
 			row = sheet.createRow(rowNum);
 			int cellNumtbTH2 = 0;
 			for (int i = 0; i < tbTH2.length; i++) {
@@ -154,12 +155,13 @@ public class Rep01000tService {
 			for (int i = 0; i<=8; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr1-9 rowspan=2
 			}
-			for (int i = 12; i<=20; i++) {
+			for (int i = 15; i<=22; i++) {
 				sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum, i, i)); //tr13-18 rowspan=2
 			}
 			
 			
 			sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum-1, 9, 11)); //tr colspan=3
+			sheet.addMergedRegion(new CellRangeAddress(rowNum-1, rowNum-1,12, 14)); //tr colspan=3
 			
 			/* Detail */
 //			List<LicenseList6010> exportDataList = null;
@@ -178,10 +180,28 @@ public class Rep01000tService {
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getCertypeDesc()                 ))?detail.getCertypeDesc()                 : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getRequestTypeExcel()            ))?detail.getRequestTypeExcel()            : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(convertAccountNo(detail.getAccountNo()) ))?convertAccountNo(detail.getAccountNo()) : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmountVat().toString()   ))?detail.getTotalAmountVat().toString()   : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
+				
+//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountDbd().toString()        ))?detail.getAmountDbd().toString()        : "" );
+//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()        ))?detail.getAmountTmb().toString()        : "" );
+//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getTotalAmountVat().toString()   ))?detail.getTotalAmountVat().toString()   : "" );
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getAmountDbd().toString()))?(StatusConstant.PAYMENT_STATUS.PAY_TMB_DBD.equals(detail.getPaidtypeCode().toString())
+								||StatusConstant.PAYMENT_STATUS.PAY_DBD.equals(detail.getPaidtypeCode().toString())||StatusConstant.PAYMENT_STATUS.PAY_NONE.equals(detail.getPaidtypeCode().toString())?detail.getAmountDbd().toString():"0.00") :"" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getAmountTmb().toString()))?(StatusConstant.PAYMENT_STATUS.PAY_TMB_DBD.equals(detail.getPaidtypeCode().toString())?detail.getAmountTmb().add(detail.getTotalAmountVat()).toString():"0.00"): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getAmount().toString()))?(!StatusConstant.PAYMENT_STATUS.PAY_TMB.equals(detail.getPaidtypeCode().toString())?detail.getAmount().toString():"0.00") : "" );
+				
+				
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getAmountDbd().toString()))?(StatusConstant.PAYMENT_STATUS.PAY_TMB.equals(detail.getPaidtypeCode().toString())?detail.getAmountDbd().toString():"0.00") : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getAmountTmb().toString()))?(StatusConstant.PAYMENT_STATUS.PAY_TMB_DBD.equals(detail.getPaidtypeCode().toString())?detail.getAmountTmb().toString():"0.00") : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue(
+						(StringUtils.isNotBlank(detail.getTotalAmountVat().toString()))?(StatusConstant.PAYMENT_STATUS.PAY_TMB_DBD.equals(detail.getPaidtypeCode().toString())?detail.getTotalAmountVat().toString():"0.00") : "" );
+				
+//				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount().toString()           ))?detail.getAmount().toString()           : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getPaidtypeDesc()                ))?detail.getPaidtypeDesc()                : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMakerById()                   ))?detail.getMakerById()                   : "" );
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft  );cell.setCellValue((StringUtils.isNotBlank(detail.getMakerByName()                 ))?detail.getMakerByName()                 : "" );
