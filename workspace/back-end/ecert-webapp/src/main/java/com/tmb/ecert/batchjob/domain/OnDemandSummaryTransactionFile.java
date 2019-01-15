@@ -55,9 +55,11 @@ public class OnDemandSummaryTransactionFile {
 				headerLine.append(StringUtils.rightPad(ONDEMAND.TMB_REQ_NO,17));
 				headerLine.append(StringUtils.rightPad(ONDEMAND.ORG_ID,15));
 				headerLine.append(StringUtils.rightPad(ONDEMAND.SEGMENT,10));
-				headerLine.append(StringUtils.rightPad(ONDEMAND.PAID_TYPE,41));
+//				headerLine.append(StringUtils.rightPad(ONDEMAND.PAID_TYPE,41));
 				headerLine.append(StringUtils.rightPad(ONDEMAND.ACCT_NO,10));
 				headerLine.append(StringUtils.leftPad(ONDEMAND.AMOUNT,22));
+				headerLine.append(StringUtils.rightPad("",5," ")); // add new 14 jan 2019
+				headerLine.append(StringUtils.rightPad(ONDEMAND.PAID_TYPE,41));
 				break;
 		}
 		return (headerLine!=null&& headerLine.length()>0 ? headerLine.toString(): StringUtils.EMPTY);
@@ -71,9 +73,11 @@ public class OnDemandSummaryTransactionFile {
 			obj.append(StringUtils.rightPad(detail.getTmeReqNo(),17));
 			obj.append(StringUtils.rightPad(detail.getOrgId(),15));
 			obj.append(StringUtils.rightPad(detail.getSegment(),10));
-			obj.append(StringUtils.rightPad(detail.getPaidType(),41));
+//			obj.append(StringUtils.rightPad(detail.getPaidType(),41));
 			obj.append(StringUtils.rightPad(detail.getAccountNo(),10));
 			obj.append(StringUtils.leftPad(detail.getAmount(),22));
+			obj.append(StringUtils.rightPad("",5," ")); // add new 14 jan 2019
+			obj.append(StringUtils.rightPad(detail.getPaidType(),41));
 		}
 		return (obj!=null&& obj.length()>0 ? obj.toString(): StringUtils.EMPTY);
 	}
