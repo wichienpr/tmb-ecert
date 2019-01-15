@@ -162,7 +162,7 @@ public class BatchJobConstant {
 		public static final String OFFICECODE="ondemand.officecode";
 		public static final String BRANCHNAME="ondemand.branchname";
 		public static final String REPORTID = "ondemand.reportid";
-		public static final int NUMBER_OF_PAGE = 43;
+		public static final int NUMBER_OF_PAGE = 39;
 	}
 	
 	public static class JOBMONITORING_TYPE{

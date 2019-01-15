@@ -86,7 +86,7 @@ public class PaymentOnDemandSummaryBatchService {
 			
 			if (reqFormList != null && reqFormList.size() > 0) {
 				
-				String reportId = String.format(ApplicationCache.getParamValueByName(ONDEMAND.REPORTID),"1");
+				String reportId = String.format(ApplicationCache.getParamValueByName(ONDEMAND.REPORTID),"001");
 				
 				OnDemandSummaryTransactionFile onDemandSummaryTransactionFile= mapping(reqFormList,reportId);
 				
@@ -164,7 +164,7 @@ public class PaymentOnDemandSummaryBatchService {
 				HeaderOndemand header = new HeaderOndemand();				
 				
 				//Header Line 1
-				header.setControlPage(String.valueOf(start));
+				header.setControlPage(String.valueOf(1));
 				header.setBranchCode(ApplicationCache.getParamValueByName(ONDEMAND.OFFICECODE));
 				header.setBankName(ApplicationCache.getParamValueByName(ONDEMAND.TMBBANK));
 				header.setPageNo(String.valueOf(start));
@@ -206,9 +206,10 @@ public class PaymentOnDemandSummaryBatchService {
 						ListOfValue segmentCode = ApplicationCache.getLovByCode(reqForm.getCustsegmentCode());
 						detail.setSegment(StringUtils.defaultString(segmentCode!=null ? segmentCode.getShortName().trim(): null ,StringUtils.EMPTY));
 						ListOfValue paidType = ApplicationCache.getLovByCode(reqForm.getPaidTypeCode());
-						detail.setPaidType(StringUtils.defaultString(paidType!=null  ? paidType.getName(): null,StringUtils.EMPTY));
+//						detail.setPaidType(StringUtils.defaultString(paidType!=null  ? paidType.getName(): null,StringUtils.EMPTY));
 						detail.setAccountNo(StringUtils.defaultString(reqForm.getAccountNo(),StringUtils.EMPTY));
 						detail.setAmount(StringUtils.defaultString(reqForm.getAmountTmb()!=null?amountFormat.format(reqForm.getAmountTmb()):"0.00"));
+						detail.setPaidType(StringUtils.defaultString(paidType!=null  ? paidType.getName(): null,StringUtils.EMPTY));
 						page.getDetails().append(onDemandTrnFile.tranformDetail(detail));
 						page.getDetails().append(System.lineSeparator());		
 					}
