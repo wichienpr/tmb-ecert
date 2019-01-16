@@ -112,7 +112,11 @@ public class PaymentOnDemandSummaryBatchService {
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
 						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, sftpVo.getErrorMessage());
 					}
+				}else {
+					jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_CONVERT);
 				}
+			}else {
+				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
 			}
 			//############################ GENERATE AND FTP ONDEMAND PAYMENT SUMMARY END #############################
 

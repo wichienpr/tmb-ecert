@@ -145,5 +145,6 @@ public class ProjectConstant {
 	public static class ECERT_MANUAL {
 		public static final String MANUAL_PATH = "ecert.manual.path";
 		public static final String MANUAL_FILENAME = "ecert.manual.filename";
+		public static final String MANUAL_PATHVIDEO = "ecert.manual.pathvideo";
 	}
 }

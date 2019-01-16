@@ -113,7 +113,11 @@ public class PaymentDBDSummaryBatchService {
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
 						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP ,sftpVo.getErrorMessage() );
 					}
+				}else {
+					jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_CONVERT);
 				}
+			}else {
+				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
 			}
 			//############################ MAPPING FIELD DBD PAYMENT SUMMARY END #################################
 		} catch (Exception ex) {
