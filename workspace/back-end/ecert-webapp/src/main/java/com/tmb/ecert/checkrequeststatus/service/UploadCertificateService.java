@@ -209,7 +209,8 @@ public class UploadCertificateService {
 
 		} catch (Exception e) {
 			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
-			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", e);
+			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE ERROR ", e);
+			throw new Exception(wsErrorDesc);
 		}
 
 	}

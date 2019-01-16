@@ -107,6 +107,17 @@ public class BatchJobConstant {
 		public static final String BATCH_GL_HEADER_FILE_TYPE = "gl.header.file.type";
 	}
 	
+	public static class ECM_MASTER {
+		public static final String BATCH_ECM_V2_PATH = "ecm.v2.ftp.path";
+		public static final String BATCH_ECM_V2_IP = "ecm.v2.ftp.ip";
+		public static final String BATCH_ECM_V2_USERNAME = "ecm.v2.ftp.username";
+		public static final String BATCH_ECM_V2_PASSWORD = "ecm.v2.ftp.password";
+		public static final String BATCH_ECM_V2_FILENAME = "ecm.v2.ftp.filename";
+		public static final String BATCH_ECM_V2_FILE_TYPE = "ecm.v2.ftp.filetype";
+		public static final String BATCH_ECM_V2_ARCHIVE_FILE_PATH = "ecm.v2.ftp.archive.path";
+		
+	}
+	
 	public static class HROFFICE_CODE {
 		public static final String BATCH_HROFFICECODE_FILE_TYPE = "hrofficecode.file.type";
 		public static final String BATCH_HROFFICECODE_ACTIVE_STATUS = "A";
@@ -176,5 +187,8 @@ public class BatchJobConstant {
 
 	public static Integer RERUN_DEFAULT = 1;
 	public static Integer BATCHRUN_DEFAULT = 0;
+	
+	public static Integer GL_BATCHRUN_LASTDIGIT = 1;
+	public static Integer GL_BATCHRERUN_LASTDIGIT = 2;
 
 }

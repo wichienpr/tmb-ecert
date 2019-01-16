@@ -89,7 +89,11 @@ public class AuditLogBatchService {
 						emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_SEND_FTP, jobMonitoring.getErrorDesc() );
 						jobMonitoring.setErrorDesc(sftpVo.getErrorMessage());
 					}
+				}else {
+					jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_CONVERT);
 				}
+			}else {
+				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
 			}
 			//############################ WRITE FILE AND FTP AUDIT LOG SUMMARY END #################################
 		} catch (Exception ex) {

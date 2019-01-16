@@ -89,7 +89,7 @@ public class PaymentGLSummaryBatchService {
 			List<String> contents = this.createContentFile(requestForms);
 			contents.add(this.createTrailer(requestForms));
 			
-			String fileName = this.createFileName(BatchJobConstant.BATCHRUN_DEFAULT, runDate);
+			String fileName = this.createFileName(BatchJobConstant.GL_BATCHRUN_LASTDIGIT, runDate);
 			String achiveFilePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH) + "/" + fileName;
 			
 			File file = this.writeFile(contents, StandardCharsets.UTF_8.name(), achiveFilePath);
@@ -146,7 +146,7 @@ public class PaymentGLSummaryBatchService {
 			List<String> contents = this.createContentFile(requestForms);
 			contents.add(this.createTrailer(requestForms));
 			
-			String fileName = this.createFileName(BatchJobConstant.RERUN_DEFAULT, requestDate);
+			String fileName = this.createFileName(BatchJobConstant.GL_BATCHRERUN_LASTDIGIT, requestDate);
 			String achiveFilePath = ApplicationCache.getParamValueByName(PARAMETER_CONFIG.BATCH_GL_ARCHIVE_FILE_PATH) + "/" + fileName;
 			
 			File file = this.writeFile(contents, StandardCharsets.UTF_8.name(), achiveFilePath);
@@ -252,12 +252,12 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE1), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE1), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_TAXCODE1), 0, 2));
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE1), 0, 3));
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE1), 0, 3));
 		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
@@ -275,8 +275,8 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
-		tmp.add(this.replaceValue(this.getVatValue(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
+		tmp.add(this.replaceValue(this.getVatValue(request.getAmountTmb()), 0, 16));
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
@@ -305,11 +305,11 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getVatValue(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getVatValue(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_AMT_CURRENCY_CODE), 0, 3));
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getVatValue(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getVatValue(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_AMT_CURRENCY_CODE), 0, 3));
 		tmp.add("");
 		tmp.add("");
@@ -394,12 +394,12 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE2), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_TAXCODE2), 0, 2));
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
@@ -517,7 +517,7 @@ public class PaymentGLSummaryBatchService {
 		String indicator = "T"; 
 		BigDecimal calSumTransaction = new BigDecimal(0.0);
 		for (RequestForm request : requestForms) {
-			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountTmb())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
 		calSumTransaction = calSumTransaction.setScale(2, BigDecimal.ROUND_HALF_EVEN);

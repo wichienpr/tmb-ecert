@@ -96,7 +96,11 @@ public class HouseKeepingBatchService {
 						log.error("HouseKeepingBatchService archived file failed.");
 						jobMonitoring.setErrorDesc("HouseKeepingBatchService archived file failed.");
 					}
+				}else {
+					jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_CONVERT);
 				}
+			}else {
+				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
 			}
 			//############################ WRITE AND ARCHIVE FILE AUDIT LOG HOUSE KEEPING SUMMARY BEGIN #################################
 			

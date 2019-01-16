@@ -97,10 +97,11 @@ public class ImportECMBatchService {
 	 * 
 	 */
 	public void sendDocumentToECM() {
-		boolean isSuccess = false;
+		boolean isSuccess = true;
 		EcertJobMonitoring jobMonitoring = new EcertJobMonitoring();
 		Date current = new Date();
 		long start = System.currentTimeMillis();
+		String errorResp = "";
 		
 		String pathFile = ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_PATH); 
 		String ftpHost= ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_PARAMS.ECM_FTP_HOST);
@@ -186,14 +187,14 @@ public class ImportECMBatchService {
 								ImportDocumentResponse impResp = callImportWS(requestForm,reqID,channelid,"BATCH",files,docTyep);
 								
 								if (CODE_SUCCESS.equals(impResp.getResCode())) {
-									log.info(" WS IMPORT SUCCESS ");
+//									log.info(" WS IMPORT SUCCESS ");
 									statusUpload = true;
 									break;
 									
 								}else {
 									statusUpload = false;
 									countImport++;
-									log.info("CALL WS IMPORT FIAL {} ", impResp.getDescription());
+//									log.info("CALL WS IMPORT FIAL {} ", impResp.getDescription());
 								}
 							}
 							if (statusUpload == true) {
@@ -203,7 +204,7 @@ public class ImportECMBatchService {
 									checkStatusVo  = CheckStatusWS(requestForm,reqID,channelid,"BATCH",docTyep);
 									
 									if (CODE_CHECK_SUCCESS.equals(checkStatusVo.getStatusCode())) {
-										log.info(" WS CHECK STATUS SUCCESS ");
+//										log.info(" WS CHECK STATUS SUCCESS ");
 										statusUpload = true;
 										break ;
 										
@@ -215,7 +216,7 @@ public class ImportECMBatchService {
 										
 									}
 									countCheckstatus++;
-									log.info(" WS CHECK STATUS FAIL "+checkStatusVo.getStatusCode() +" Des" + checkStatusVo.getDescription() );
+//									log.info(" WS CHECK STATUS FAIL "+checkStatusVo.getStatusCode() +" Des" + checkStatusVo.getDescription() );
 								}		
 							}
 							if(statusUpload) {
@@ -230,13 +231,21 @@ public class ImportECMBatchService {
 						countftp++;	
 					}
 					if (statusUpload) {
-						isSuccess = true;
+						isSuccess = isSuccess && statusUpload;
 						int upldateResult = checkReqDetailDao.updateECMFlag(requestForm.getReqFormId());
-						log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
+//						log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 					} else {
-						log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
+						isSuccess = false;
+						errorResp = errorResp +" REQ ID "+requestForm.getReqFormId().toString()+" upload file fail \n";
+//						log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
 					}
 				}
+				
+				if (!isSuccess) {
+					jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
+				}
+			}else {
+				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
 			}
 			//############################ SEND DOCUMENTS TO ECM END #############################
 
