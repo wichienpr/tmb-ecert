@@ -116,7 +116,7 @@ export class Sup03100Component implements OnInit {
               this.response = res;
               this.commonsvr.unblockui();
               if (this.response.message == null) {
-                this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
               } else {
                 modalresp.msg = "ทำรายการสำเร็จ";
                 this.modal.confirm((e) => {

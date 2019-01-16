@@ -141,13 +141,13 @@ export class Crs02000Component implements OnInit {
         if (result) {
           this.service.approveDirectly(this.id);
         } else {
-          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+          this.modal.alert({ msg: "ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" })
         }
         this.common.isLoaded();
       }).catch(error => {
         console.error(error);
         this.common.isLoaded();
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" })
       })
     }
   }

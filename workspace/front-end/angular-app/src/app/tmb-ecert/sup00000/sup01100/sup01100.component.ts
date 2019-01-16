@@ -321,7 +321,7 @@ export class sup01100Component implements OnInit {
           this.service.saveNewRole(this.form, this.rolepermisson, this.sup01000.roldId ).subscribe(res => {
             this.responseObj = res;
             if (this.responseObj.message == MESSAGE_STATUS.FAILED) {
-              this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+              this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
             } else {
               modalresp.msg  = "ทำรายการสำเร็จ";
               this.modal.confirm((e) => {

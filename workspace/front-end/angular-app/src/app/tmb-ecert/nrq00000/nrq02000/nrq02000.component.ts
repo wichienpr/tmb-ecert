@@ -498,13 +498,13 @@ export class Nrq02000Component implements OnInit, AfterViewInit {
         if (result) {
           this.formSubmit(this.form);
         } else {
-          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" })
         }
         this.common.isLoaded();
       }).catch(error => {
         console.error(error);
         this.common.isLoaded();
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง" })
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" })
       })
     }
   }

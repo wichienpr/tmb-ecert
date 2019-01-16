@@ -30,6 +30,7 @@
     "semantic-ui-calendar": "0.0.8",
     "semantic-ui-css": "^2.4.0",
     "summernote": "^0.8.10",
+    "videogular2": "^6.4.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

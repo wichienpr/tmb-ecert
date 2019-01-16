@@ -1,0 +1,19 @@
+<div class="ui grid">
+  <div class="two wide column"></div>
+  <div class="twelve wide column">
+    <!-- <vg-player >
+            <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+              <source src="/ecert-webapp/api/manual/video" type="video/mp4">
+            </video>
+          </vg-player> -->
+    <vg-buffering></vg-buffering>
+    <vg-scrub-bar [vgSlider]="true" style="display: none;">
+    </vg-scrub-bar>
+    <vg-player>
+      <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+        <source src="/ecert-webapp/api/manual/video" type="video/mp4">
+      </video>
+    </vg-player>
+  </div>
+  <div class="two wide column"></div>
+</div>

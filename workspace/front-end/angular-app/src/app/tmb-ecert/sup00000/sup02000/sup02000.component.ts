@@ -141,7 +141,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
         this.service.callSaveParameterAPI(listParameter).subscribe(res => {
           this.responseObj = res;
           if (this.responseObj.message == MESSAGE_STATUS.FAILED) {
-            this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
             this.commonService.isLoaded();
           } else {
             setTimeout(() => {
@@ -153,7 +153,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
             }, 1000);
           }
         }, err => {
-          this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
           this.commonService.isLoaded();
         });
       } else {
