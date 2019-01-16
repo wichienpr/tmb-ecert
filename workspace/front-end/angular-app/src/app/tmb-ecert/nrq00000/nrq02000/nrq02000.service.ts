@@ -315,7 +315,7 @@ export class Nrq02000Service {
                             if (response.json().data && response.json().data == "HASMAKER") {
                                 msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
                             } else {
-                                msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                                msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765";
                             }
                             const modal: Modal = {
                                 msg: msg,
@@ -364,7 +364,7 @@ export class Nrq02000Service {
                                 if (data.data && data.data == "HASMAKER") {
                                     msg = "ไม่สามารถทำรายการได้ เนื่องจากอยู่ในขั้นตอนกำลังดำเนินการชำระเงิน";
                                 } else {
-                                    msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                                    msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765";
                                 }
                                 const modal: Modal = {
                                     msg: msg,
@@ -375,7 +375,7 @@ export class Nrq02000Service {
                             }
                         }, err => {
                             console.error(err)
-                            let msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ";
+                            let msg = "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765";
                             const modal: Modal = {
                                 msg: msg,
                                 success: false
@@ -589,7 +589,7 @@ export class Nrq02000Service {
                 rpReqFormList: rpReqFormList
             };
             this.reqService.getPdf(URL.CREATE_FORM, data, error => {
-                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
             });
             this.common.isLoaded(); // UnLoading page
             return true;
@@ -843,10 +843,10 @@ export class Nrq02000Service {
                 });
                 this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
             } else {
-                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+                this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
             }
         }, error => {
-            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
         });
     }
 

@@ -1,0 +1,7 @@
+vg-player {
+    background-color: transparent;
+    margin: 30px;
+    width: 95%;
+    height: calc(100% -80px);
+
+}

@@ -243,7 +243,7 @@ export class Sup01000Component implements OnInit {
             this.modal.alert({ msg: this.responseObj.message });
           }
         }, error => {
-          this.modal.alert({ msg: "ทำรายการล้มเหลว" });
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
           console.error("call get error");
         },() =>{
           this.loadingUpload = false;

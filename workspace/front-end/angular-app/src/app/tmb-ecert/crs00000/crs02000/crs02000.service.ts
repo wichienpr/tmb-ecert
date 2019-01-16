@@ -133,10 +133,10 @@ export class Crs02000Service {
         });
         this.modal.alert({ msg: "ทำรายการสำเร็จ", success: true });
       } else {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
       }
     }, error => {
-      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่หรือติดต่อผู้ดูแลระบบ" });
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
     });
   }
 
@@ -200,7 +200,7 @@ export class Crs02000Service {
         this.common.isLoaded(); // Loading page
         return;
       }
-      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ", success: false });
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765", success: false });
       this.router.navigate(['/crs/crs01000'], {
         queryParams: { codeStatus: "10008" }
       });
@@ -208,7 +208,7 @@ export class Crs02000Service {
       this.common.isLoaded(); // Loading page
     }, error => {
       console.error("ERROR => ", error);
-      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ", success: false });
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765", success: false });
       this.router.navigate(['/crs/crs01000'], {
         queryParams: { codeStatus: "10008" }
       });
@@ -273,7 +273,7 @@ export class Crs02000Service {
         this.ajax.download(URL.PDF + response._body + "/download");
         this.common.isLoaded();
       }, error => {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
         this.common.isLoaded();
       });
     }
@@ -283,7 +283,7 @@ export class Crs02000Service {
         this.ajax.download(URL.PDF + response._body + "/download");
         this.common.isLoaded();
       }, error => {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
         this.common.isLoaded();
       });
     }
@@ -308,12 +308,12 @@ export class Crs02000Service {
       else if (data && data.message == "PRESS_UPLOAD_RECIEPTTAX") {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาพิมพ์ใบเสร็จ" });
       } else {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
       }
     }, error => {
       console.error(error);
       this.common.isLoaded();
-      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
     });
   }
 
@@ -345,12 +345,12 @@ export class Crs02000Service {
               queryParams: { codeStatus: "10005" }
             });
           }else {
-            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+            this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
           }
         },error => {
           console.error(error);
           this.common.isLoaded();
-          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ" });
+          this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
         });
       }
     }, modal);

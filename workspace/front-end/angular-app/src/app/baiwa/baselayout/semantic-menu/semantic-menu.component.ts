@@ -115,7 +115,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         url: null,
         role: true,
         child: [ // Sub Menu 6.1
-          { label: "Video การใช้งานสำหรับ Requester", url: "/api/manual/pdf", role: true },
+          { label: "Video การใช้งานสำหรับ Requester", url: "/man/man02000", role: true },
           { label: "เอกสารคู่มือการใช้งานระบบ", url: "/man/man01000" , role: true },
 
         ]
