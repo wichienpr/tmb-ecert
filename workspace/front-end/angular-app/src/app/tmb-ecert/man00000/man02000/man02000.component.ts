@@ -12,7 +12,7 @@ export class Man02000Component implements OnInit {
    }
 
   ngOnInit() {
-     this.pathVideo = "/ecert-webapp/api/manual/video";
+     this.pathVideo = "/ecert-webapp/api/manual/videoDownload";
   }
 
 }
