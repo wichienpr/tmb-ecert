@@ -6,12 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./man02000.component.css']
 })
 export class Man02000Component implements OnInit {
+   pathVideo:String= "";
   constructor() {
-
+    
    }
 
   ngOnInit() {
-    let pathVideo = "/ecert-webapp/api/manual/video";
+     this.pathVideo = "/ecert-webapp/api/manual/video";
   }
 
 }
