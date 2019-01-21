@@ -67,4 +67,9 @@ public class StatusConstant {
 		public final static String CHECK_STATUS_PARTIAL_SUCCESS = "0001";
 		public final static String CHECK_STATUS_SUCCESS = "0";
 	}
+	
+	public static class ECM_CONFIGURATION {
+		public final static String NEW_VERSION = "1";
+		public final static String OLD_VERSION = "0";
+	}
 }

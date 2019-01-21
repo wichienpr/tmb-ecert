@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.batchjob.domain.EcmMasterData;
+import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ECMUuploadRequest;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.Certificate;
@@ -116,6 +118,18 @@ public class CheckRequestDetailDao {
 		RequestForm result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), findFileNameMapping);
 
 		Log.info("RequestorDao::findCertificateFileByReqID finished with... tmbReqNo:{}", result.getTmbRequestNo());
+		
+		return result;
+	}
+	
+	public EcmMasterData findECMMaster(ECMUuploadRequest ecmReq) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("   SELECT * FROM ECERT_ECM_MASTERDATA WHERE TYPE_CODE = ? AND SOURCE = ? AND REPOSITORY = ?  ");
+		List<Object> params = new ArrayList<>();
+		params.add(ecmReq.getTmbDocTypeCode());
+		params.add(ecmReq.getTmbSource());
+		params.add(ecmReq.getRepositoryId());
+		EcmMasterData result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), ecmMasterMapper);
 		
 		return result;
 	}
@@ -248,6 +262,20 @@ public class CheckRequestDetailDao {
 			row.setLockFlag(rs.getInt("LOCK_FLAG"));
 			row.setMajorNo(rs.getString("MAJOR_NO"));
 			return row;
+		}
+	};
+	
+	private RowMapper<EcmMasterData> ecmMasterMapper = new RowMapper<EcmMasterData>() {
+		@Override
+		public EcmMasterData mapRow(ResultSet rs, int arg1) throws SQLException {
+			EcmMasterData list = new EcmMasterData();
+			list.setTypeShortName(rs.getString("TYPE_SHORT_NAME"));
+			list.setArchivalPeriod(rs.getInt("ARCHIVAL_PERIOD"));
+			list.setDisposalPeriod(rs.getInt("DISPOSAL_PERIOD"));
+			list.setTypeNameTh(rs.getString("TYPE_NAME_TH"));
+			list.setTypeNameEn(rs.getString("TYPE_NAME_EN"));
+
+			return list;
 		}
 	};
 	

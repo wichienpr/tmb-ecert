@@ -93,6 +93,7 @@ public class ProjectConstant {
 		public static final String XPRESS_BILLPAYMENT = "ecert.xpress.billpayment.endpoint";
 		public static final String APPROVE_BEFOREPAYMENT = "ecert.dbd.approvebeforepay.endpoint";
 		public static final String REALTIME_PAYMENT = "ecert.dbd.realtimepayment.endpoint";
+		public static final String ECM_CREATE_DOC = "ecert.ecm.v2.createdoc.endpoint";
 	}
 
 	public static class WEB_SERVICE_PARAMS {
@@ -146,5 +147,26 @@ public class ProjectConstant {
 		public static final String MANUAL_PATH = "ecert.manual.path";
 		public static final String MANUAL_FILENAME = "ecert.manual.filename";
 		public static final String MANUAL_PATHVIDEO = "ecert.manual.pathvideo";
+	}
+	public static class ECM_PARAMETER {
+		public static final String ECM_V2_REPOSITORY = "ecm.v2.repositoryId";
+		public static final String ECM_V2_TMB_SOURCE = "ecm.v2.tmb_source";
+		public static final String ECM_V2_SUMMIT_CHANNEL = "ecm.v2.submit_channel";
+		public static final String ECM_V2_DOCTYPE_REQ = "ecm.v2.doctype.requestform";
+		public static final String ECM_V2_DOCTYPE_RECP = "ecm.v2.doctype.receipt";
+		public static final String ECM_V2_DOCTYPE_CER = "ecm.v2.doctype.certificate";
+		public static final String ECM_V2_DOCTYPE_IDCARD = "ecm.v2.doctype.idcard";
+		public static final String ECM_V2_DOCTYPE_OTHER = "ecm.v2.doctype.other";
+		public static final String ECM_V2_TMB_IDTYPE = "ecm.v2.tmb_id_type";
+		public static final String ECM_V2_OBJ_ID = "ecm.v2.objtypeid";
+		public static final String ECM_CONFIGURARION="ecm.configuration";
+		
+		public static final String ECM_DOCTYPE_REQ = "ecm.doctype.requestform";
+		public static final String ECM_DOCTYPE_RECP = "ecm.doctype.receipt";
+		public static final String ECM_DOCTYPE_CER = "ecm.doctype.certificate";
+		public static final String ECM_DOCTYPE_IDCARD = "ecm.doctype.idcard";
+		public static final String ECM_DOCTYPE_OTHER = "ecm.doctype.other";
+		
+		
 	}
 }

@@ -236,7 +236,18 @@ public class UploadCertificateService {
 	}
 
 	private ImportDocumentResponse callImportWS(RequestForm reqVo, String reqID, String channelid, String userid,
-			List<SftpFileVo> files, String docTyep) {
+			List<SftpFileVo> files, String docType) {
+		String fileReq = "REQFORM";
+		String fileRecp = "RECEIPT";
+		String fileCer = "CERTIFICATE";
+		String fileId = "IDCARD";
+		String fileOther = "NCHANGE";
+		
+		String docTypeReq = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
+		String docTypeCer = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
+		String docTypeRec =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
+		String docTypeId  =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
+		String docTypeOther =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
 
 		String endPoint = ApplicationCache
 				.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_IMPORT_DOCUMENT);
@@ -250,11 +261,23 @@ public class UploadCertificateService {
 
 			fileImport.setFileName(fileName);
 			fileImport.setCusName(reqVo.getCompanyName());
-			fileImport.setDocTypeCode(docTyep);
+//			fileImport.setDocTypeCode(docType);
 			fileImport.setImportDate(EcerDateUtils.formatDDMMYYYYDate(new Date()));
 			fileImport.setRegistrationId(reqVo.getOrganizeId());
 			fileImport.setRefAppNo(reqVo.getTmbRequestNo());
-
+			
+			if (fileReq.indexOf(files.get(j).getFileName()) >=0) {
+				fileImport.setDocTypeCode(docTypeReq);
+			}if (fileRecp.indexOf(files.get(j).getFileName()) >=0) {
+				fileImport.setDocTypeCode(docTypeRec);
+			}if (fileCer.indexOf(files.get(j).getFileName()) >=0) {
+				fileImport.setDocTypeCode(docTypeCer);
+			}if (fileId.indexOf(files.get(j).getFileName()) >=0) {
+				fileImport.setDocTypeCode(docTypeId);
+			}else {
+				fileImport.setDocTypeCode(docTypeOther);
+			}
+			
 			fileslist.add(fileImport);
 		}
 		req.setFiles(fileslist);
