@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { PAGE_AUTH, MESSAGE_STATUS } from 'app/baiwa/common/constants';
 import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import { updateLocale } from 'moment';
+import { every } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sup02000',
@@ -27,6 +28,7 @@ export class Sup02000Component implements OnInit, AfterViewInit {
   paramsGroupSelected: string = "ALL";
   responseObj: any;
   user: UserDetail;
+  remark_ecm:boolean = false;
 
   constructor(private store: Store<AppState>, private service: Sup02000Service, private fb: FormBuilder,
     private modal: ModalService, private commonService: CommonService,
@@ -108,6 +110,12 @@ export class Sup02000Component implements OnInit, AfterViewInit {
   }
 
   paramsGroupChange(event) {
+    console.log("selection is ", event);
+    if (event == "12006"){
+      this.remark_ecm = true;
+    }else{
+      this.remark_ecm = false;
+    }
     this.paramsGroupSelected = event;
   }
 
