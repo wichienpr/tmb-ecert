@@ -26,6 +26,7 @@ import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class CheckRequestCertificatService {
@@ -54,6 +55,9 @@ public class CheckRequestCertificatService {
 
 	@Autowired
 	private RequestorDao requesterDao;
+	
+	@Autowired
+	private UploadCertificateV2Service uploadCertificateV2Service;
 
 	public CommonMessage<String> upLoadCertificateByCk(CertificateVo certificateVo) {
 		Date currentDate = new Date();
@@ -120,8 +124,14 @@ public class CheckRequestCertificatService {
 			UserDetails user) throws Exception {
 		
 		try {
-			
-			uploadCerService.uploadEcertificate(certificateVo.getId(), user.getUserId());
+			String ecmConfig = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_CONFIGURARION);
+			if(StatusConstant.ECM_CONFIGURATION.NEW_VERSION.equals(ecmConfig)) {
+				uploadCertificateV2Service.uploadCertificate(certificateVo.getId(), user.getUserId());
+				
+			}else {
+				uploadCerService.uploadEcertificate(certificateVo.getId(), user.getUserId());
+				
+			}
 			req.setOfficeCode(user.getOfficeCode());
 			requesterDao.update(req);
 			historyDao.save(req);
