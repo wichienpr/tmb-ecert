@@ -141,7 +141,8 @@ public class UploadCertificateV2Service {
 				if (i==0) {
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathReq));
 					ecmUploadRequest.setTmbDocTypeCode(docTypeReq);
-					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+//					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+					ecmMaster = this.mockEcmMaster();
 					
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getRequestFormFile(), docTypeReq, ecmMaster.getTypeShortName()));
 					ecmUploadRequest.setFile(bty);
@@ -151,7 +152,8 @@ public class UploadCertificateV2Service {
 					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 				}else if(i == 1) {
 					ecmUploadRequest.setTmbDocTypeCode(docTypeCer);
-					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+//					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+					ecmMaster = this.mockEcmMaster();
 					
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getCertificateFile(), docTypeCer, ecmMaster.getTypeShortName()));
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathCer));
@@ -162,7 +164,8 @@ public class UploadCertificateV2Service {
 					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 				}else if(i == 2) {
 					ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
-					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+//					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+					ecmMaster = this.mockEcmMaster();
 					
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
@@ -174,7 +177,8 @@ public class UploadCertificateV2Service {
 				}else if (i==3) {
 					if(StringUtils.isNotBlank(pathIdCard)) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeId);
-						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+//						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+						ecmMaster = this.mockEcmMaster();
 						
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getIdCardFile(), docTypeId, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfiel +"/" +pathIdCard));
@@ -187,7 +191,8 @@ public class UploadCertificateV2Service {
 				}else if (i==4) {
 					if(StringUtils.isNotBlank(pathOther)) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeOther);
-						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+//						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+						ecmMaster = this.mockEcmMaster();
 						
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getChangeNameFile(), docTypeOther, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfiel +"/" +pathOther));
@@ -238,6 +243,16 @@ public class UploadCertificateV2Service {
 		int yearReturn = Integer.parseInt(EcerDateUtils.formatYYYY_EN(new Date())) + year;
 		
 		return yearReturn;
+		
+	}
+	public EcmMasterData mockEcmMaster() {
+		EcmMasterData data = new EcmMasterData();
+		data.setArchivalPeriod(1);
+		data.setDisposalPeriod(10);
+		data.setTypeShortName("TypeShotname");
+		data.setTypeNameTh("ประเภทเอกสาร");
+		data.setTypeNameEn("TypeDoc");
+		return data;
 		
 	}
 
