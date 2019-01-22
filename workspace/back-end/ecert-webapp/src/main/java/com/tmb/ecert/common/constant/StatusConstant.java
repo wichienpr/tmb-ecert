@@ -24,6 +24,8 @@ public class StatusConstant {
 		public final static String BATCH_HR = "60004";
 		public final static String BATCH_AUDILOG = "60005";
 		public final static String BATCH_HOUSEKEEP = "60006";
+		public final static String BATCH_ECM = "60007";
+		public final static String BATCH_ECM_MASTER = "60008";
 		
 		public final static String BATCH_MESSAGE_NODATA = "Data not found";
 		public final static String BATCH_MESSAGE_CONVERT = "Convert file fail";

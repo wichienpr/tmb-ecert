@@ -331,13 +331,13 @@ public class ImportECMBatchService {
 			
 			if (arrFile.get(j).getFileName().indexOf(fileReq) >=0) {
 				fileImport.setDocTypeCode(docTypeReq);
-			}if (arrFile.get(j).getFileName().indexOf(fileRecp) >=0) {
+			}else if (arrFile.get(j).getFileName().indexOf(fileRecp) >=0) {
 				fileImport.setDocTypeCode(docTypeRec);
-			}if (arrFile.get(j).getFileName().indexOf(fileCer) >=0) {
+			}else if (arrFile.get(j).getFileName().indexOf(fileCer) >=0) {
 				fileImport.setDocTypeCode(docTypeCer);
-			}if (arrFile.get(j).getFileName().indexOf(fileId) >=0) {
+			}else if (arrFile.get(j).getFileName().indexOf(fileId) >=0) {
 				fileImport.setDocTypeCode(docTypeId);
-			}if (arrFile.get(j).getFileName().indexOf(fileOther) >= 0) {
+			}else if (arrFile.get(j).getFileName().indexOf(fileOther) >= 0) {
 				fileImport.setDocTypeCode(docTypeOther);
 			}else {
 				fileImport.setDocTypeCode(docTypeReq);

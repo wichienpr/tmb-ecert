@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.batchjob.constant.BatchJobConstant.PARAMETER_CONFIG;
 import com.tmb.ecert.batchjob.service.AuditLogBatchService;
+import com.tmb.ecert.batchjob.service.EcmMasterDataBatchService;
 import com.tmb.ecert.batchjob.service.HROfficeCodeBatchService;
 import com.tmb.ecert.batchjob.service.HouseKeepingBatchService;
+import com.tmb.ecert.batchjob.service.ImportECMBatchService;
 import com.tmb.ecert.batchjob.service.PaymentDBDSummaryBatchService;
 import com.tmb.ecert.batchjob.service.PaymentGLSummaryBatchService;
 import com.tmb.ecert.batchjob.service.PaymentOnDemandSummaryBatchService;
@@ -54,6 +56,12 @@ public class Btm01000Service {
 	@Autowired
 	private PaymentGLSummaryBatchService paymentGLService ;
 	
+	@Autowired
+	private ImportECMBatchService importEcmService ;
+	
+	@Autowired
+	private EcmMasterDataBatchService ecmMasterService ;
+	
 	public DataTableResponse<Btm01000Vo> getListBatch(Btm01000FormVo form) {
 		DataTableResponse<Btm01000Vo> list  = new DataTableResponse<>();
 		List<Btm01000Vo> adl01000VoList = batchDao.getListBatch(form);
@@ -88,6 +96,12 @@ public class Btm01000Service {
 			}else if (StatusConstant.JOBMONITORING.BATCH_GL.equals(form.getJobtypeCode())) {
 				paymentGLService.reRunBatchJob(EcerDateUtils.parseDateEN(form.getStartDate()),EcerDateUtils.parseDateEN(form.getStopDate()));
 				logger.info("rerun BATCH_GL.");
+			}else if (StatusConstant.JOBMONITORING.BATCH_ECM.equals(form.getJobtypeCode())) {
+				importEcmService.sendDocumentToECM();
+				logger.info("rerun BATCH_IMPORT TO ECM.");
+			}else if (StatusConstant.JOBMONITORING.BATCH_ECM_MASTER.equals(form.getJobtypeCode())) {
+				ecmMasterService.runBatchJob();
+				logger.info("rerun BATCH_ECM MASTER.");
 			}
 			batchDao.updateRerunJobById(form, fullName, userid);
 			logger.info("rerun batch success.");
