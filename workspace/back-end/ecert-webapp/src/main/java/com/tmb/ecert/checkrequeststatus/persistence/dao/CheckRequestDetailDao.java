@@ -134,10 +134,11 @@ public class CheckRequestDetailDao {
 		return result;
 	}
 	
-	public int updateECMFlag(Long reqID) {
+	public int updateECMFlag(Long reqID,Long ecmStatus) {
 		StringBuilder sql = new StringBuilder(" ");
-		sql.append("  UPDATE ECERT_REQUEST_FORM SET ECM_FLAG = 1  WHERE REQFORM_ID = ?   ");
+		sql.append("  UPDATE ECERT_REQUEST_FORM SET ECM_FLAG = ?  WHERE REQFORM_ID = ?   ");
 		List<Object> params = new ArrayList<>();
+		params.add(ecmStatus);
 		params.add(reqID);
 
 		Log.info(sql.toString());

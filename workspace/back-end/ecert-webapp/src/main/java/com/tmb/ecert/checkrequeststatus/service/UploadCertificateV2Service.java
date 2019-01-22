@@ -27,6 +27,7 @@ import com.tmb.ecert.checkrequeststatus.persistence.vo.ws.ECMUuploadRequest;
 import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.common.service.EmailService;
 
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
@@ -43,41 +44,57 @@ public class UploadCertificateV2Service {
 	@Autowired
 	private CheckRequestDetailDao checkReqDetailDao;
 	
+	@Autowired
+	private EmailService emailservice;
+	
 	public void uploadCertificate(Long certificateID, String userid) throws Exception {
 		
 		log.info(" START PROCESS UPLOAD CERTIFIACTE BY CERTIFICATE ID "+Long.toString(certificateID));
-		RequestForm reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
+		RequestForm reqVo =  null;
+		String wsErrorDesc = "";
+		try {
 
-		List<String> listFile = new ArrayList<String>();
-		String pathReq = pathUploadfiel +"/" + reqVo.getRequestFormFile();
-		String pathCer = pathUploadfiel +"/" + reqVo.getCertificateFile();
-		String pathRec = pathUploadfiel +"/" + reqVo.getReceiptFile();
-		String pathIdCard = "";
-		String pathOther = "";
-		
-		listFile.add(pathRec);
-		listFile.add(pathCer);
-		listFile.add(pathReq);
+			reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
 
-		
-		if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-			pathIdCard = reqVo.getIdCardFile();
-			listFile.add(pathIdCard);
+			List<String> listFile = new ArrayList<String>();
+			String pathReq = pathUploadfiel +"/" + reqVo.getRequestFormFile();
+			String pathCer = pathUploadfiel +"/" + reqVo.getCertificateFile();
+			String pathRec = pathUploadfiel +"/" + reqVo.getReceiptFile();
+			String pathIdCard = "";
+			String pathOther = "";
+			
+			listFile.add(pathRec);
+			listFile.add(pathCer);
+			listFile.add(pathReq);
+
+			
+			if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
+				pathIdCard = reqVo.getIdCardFile();
+				listFile.add(pathIdCard);
+			}
+			if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+				pathOther = reqVo.getChangeNameFile();
+				listFile.add(pathOther);
+			}
+			
+			List<ECMUuploadRequest> listRequest = createRequest(reqVo, userid);
+			boolean statusWS = false;
+			statusWS = CallECMWevserviceV2(listRequest);
+			
+			if (!statusWS) {
+				checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
+				log.info(" END PROCESS UPLOAD CERTIFIACTE FAIL!! ");
+				throw new Exception();
+			}
+			checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
+			log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS.. ");
+			
+		} catch (Exception e) {
+			checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
+			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
+			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE ERROR ", e);
+			throw new Exception(wsErrorDesc);
 		}
-		if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-			pathOther = reqVo.getChangeNameFile();
-			listFile.add(pathOther);
-		}
-		
-		List<ECMUuploadRequest> listRequest = createRequest(reqVo, userid);
-		boolean statusWS = false;
-		statusWS = CallECMWevserviceV2(listRequest);
-		
-		if (!statusWS) {
-			log.info(" END PROCESS UPLOAD CERTIFIACTE FAIL!! ");
-			throw new Exception();
-		}
-		log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS.. ");
 
 	}
 	

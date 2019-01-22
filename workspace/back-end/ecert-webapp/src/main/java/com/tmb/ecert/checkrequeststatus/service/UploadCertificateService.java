@@ -199,15 +199,17 @@ public class UploadCertificateService {
 			}
 
 			if (statusUpload) {
-				int upldateResult = checkReqDetailDao.updateECMFlag(certificateID);
+				checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
 				log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 			} else {
+				checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
 				emailservice.sendEmailFailSendDoc(reqVo,new Date(),wsErrorDesc);
 				log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE FAIL ", wsErrorDesc);
 				throw new Exception(wsErrorDesc);
 			}
 
 		} catch (Exception e) {
+			checkReqDetailDao.updateECMFlag(certificateID,StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
 			emailservice.sendEmailFailSendDoc(reqVo,new Date(),e.toString());
 			log.error("END PROCESS UPLOAD CERTIFIACTE CERTIFICATE ERROR ", e);
 			throw new Exception(wsErrorDesc);
@@ -266,16 +268,18 @@ public class UploadCertificateService {
 			fileImport.setRegistrationId(reqVo.getOrganizeId());
 			fileImport.setRefAppNo(reqVo.getTmbRequestNo());
 			
-			if (fileReq.indexOf(files.get(j).getFileName()) >=0) {
+			if (files.get(j).getFileName().indexOf(fileReq) >=0) {
 				fileImport.setDocTypeCode(docTypeReq);
-			}if (fileRecp.indexOf(files.get(j).getFileName()) >=0) {
+			}if (files.get(j).getFileName().indexOf(fileRecp) >=0) {
 				fileImport.setDocTypeCode(docTypeRec);
-			}if (fileCer.indexOf(files.get(j).getFileName()) >=0) {
+			}if (files.get(j).getFileName().indexOf(fileCer) >=0) {
 				fileImport.setDocTypeCode(docTypeCer);
-			}if (fileId.indexOf(files.get(j).getFileName()) >=0) {
+			}if (files.get(j).getFileName().indexOf(fileId) >=0) {
 				fileImport.setDocTypeCode(docTypeId);
-			}else {
+			}if (files.get(j).getFileName().indexOf(fileOther) >= 0) {
 				fileImport.setDocTypeCode(docTypeOther);
+			}else {
+				fileImport.setDocTypeCode(docTypeReq);
 			}
 			
 			fileslist.add(fileImport);
