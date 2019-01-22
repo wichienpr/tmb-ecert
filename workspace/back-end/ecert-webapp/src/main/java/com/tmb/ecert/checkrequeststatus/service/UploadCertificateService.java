@@ -278,8 +278,6 @@ public class UploadCertificateService {
 				fileImport.setDocTypeCode(docTypeId);
 			}else if (files.get(j).getFileName().indexOf(fileOther) >= 0) {
 				fileImport.setDocTypeCode(docTypeOther);
-			}else {
-				fileImport.setDocTypeCode(docTypeReq);
 			}
 			
 			fileslist.add(fileImport);
