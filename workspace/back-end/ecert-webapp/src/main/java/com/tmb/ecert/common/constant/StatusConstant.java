@@ -71,5 +71,7 @@ public class StatusConstant {
 	public static class ECM_CONFIGURATION {
 		public final static String NEW_VERSION = "1";
 		public final static String OLD_VERSION = "0";
+		public final static long ECM_SUCCESS = 1;
+		public final static long ECM_FAIL = 0;
 	}
 }

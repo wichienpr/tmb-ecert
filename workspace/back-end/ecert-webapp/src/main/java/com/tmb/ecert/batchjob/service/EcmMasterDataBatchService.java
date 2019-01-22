@@ -61,7 +61,7 @@ public class EcmMasterDataBatchService {
 		
 		try {
 			String path = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_PATH);
-			String host = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_PATH);
+			String host = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_IP);
 			String username = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_USERNAME);
 			String password = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_PASSWORD);
 			String fileName = ApplicationCache.getParamValueByName(ECM_MASTER.BATCH_ECM_V2_FILENAME);
