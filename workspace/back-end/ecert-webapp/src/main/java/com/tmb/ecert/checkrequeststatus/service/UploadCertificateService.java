@@ -246,10 +246,10 @@ public class UploadCertificateService {
 		String fileOther = "NCHANGE";
 		
 		String docTypeReq = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
-		String docTypeCer = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
-		String docTypeRec =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
-		String docTypeId  =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
-		String docTypeOther =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_REQ);
+		String docTypeCer = ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_CER);
+		String docTypeRec =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_RECP);
+		String docTypeId  =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_IDCARD);
+		String docTypeOther =ApplicationCache.getParamValueByName(ProjectConstant.ECM_PARAMETER.ECM_DOCTYPE_OTHER);
 
 		String endPoint = ApplicationCache
 				.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_IMPORT_DOCUMENT);
