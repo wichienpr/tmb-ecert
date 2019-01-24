@@ -225,7 +225,7 @@ public class UploadCertificateV2Service {
 					break;
 				}
 				statusWS = true;
-				log.info("CALL WS CHECK STATUS {}", response.getDescription());
+				log.info("CALL WS CREATE DOC {}", response.getDescription());
 			}
 		}
 		return statusWS;
