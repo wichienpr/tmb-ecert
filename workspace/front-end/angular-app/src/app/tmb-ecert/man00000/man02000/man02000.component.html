@@ -1,20 +1,22 @@
 <div class="ui grid">
   <div class="two wide column"></div>
   <div class="twelve wide column">
-    <!-- <vg-player >
-            <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
-              <source src="/ecert-webapp/api/manual/video" type="video/mp4">
-            </video>
-          </vg-player> -->
-    <!-- <vg-buffering></vg-buffering>
-    <vg-scrub-bar [vgSlider]="true" style="display: none;">
-    </vg-scrub-bar> -->
+
     <vg-player>
       <video [vgMedia]="media" #media id="singleVideo" loop="true" preload="auto" controls>
         <source [src]="pathVideo" type="video/mp4"  codecs=" H.264/MPEG-4" >
-          <!-- <source src="/assets/videogular.mp4" type="video/mp4"  codecs=" H.264/MPEG-4" > -->
       </video>
     </vg-player>
+  </div>
+
+  <div class="two wide column"></div>
+</div>
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="twelve wide column">
+      <br>
+    <br>
+    <span>*หมายเหตุ :หากไม่สามารถเปิด vdo นี้ได้ ท่านสามารถรับชม vdo สำหรับ requester ได้ตามลิ้งค์นี้ <a (click)="openLink()">https://youtu.be/gMs-PgHeDF4</a></span>
   </div>
   <div class="two wide column"></div>
 </div>
