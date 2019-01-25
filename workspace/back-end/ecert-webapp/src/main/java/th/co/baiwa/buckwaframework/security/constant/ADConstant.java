@@ -1,7 +1,7 @@
 package th.co.baiwa.buckwaframework.security.constant;
 
 public class ADConstant {
-	public static final String AD_PROJECT = "OU=OBDS";
+	public static final String AD_PROJECT = "OU=DBDS";
 	
 	public static final String ROLE_ADMIN = "DBDS_SysAdmin";
 	public static final String ROLE_MAKER = "DBDS_Maker";
