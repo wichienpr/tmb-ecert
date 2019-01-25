@@ -52,6 +52,7 @@ public class ProjectConstant {
 		public static final String PRINT_FORM_CODE = "70018";
 		public static final String PRINT_FORMREQ_CODE = "70019";
 		public static final String LOGIN_FAILED = "70020";
+		public static final String ROLE_MANAGEMENT = "70021";
 
 	}
 
@@ -75,6 +76,9 @@ public class ProjectConstant {
 		public static final String DOWNLOAD_ECERT_CODE = "auditlog.downloadcertificate";
 		public static final String PRINT_FORM = "auditlog.reqform.04";
 		public static final String PRINT_FORMREQ = "auditlog.reqform.05";
+		public static final String ROLE_ADD = "auditlog.addrole";
+		public static final String ROLE_EDIT = "auditlog.editrole";
+		public static final String ROLE_IMPORT = "auditlog.importrole";
 
 	}
 

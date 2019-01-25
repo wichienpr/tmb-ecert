@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,22 +35,24 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
+import com.tmb.ecert.batchjob.domain.AuditLog;
+import com.tmb.ecert.common.constant.ProjectConstant;
 import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RoleVo;
+import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.ExcalService;
-import com.tmb.ecert.report.persistence.vo.Rep02000FormVo;
-import com.tmb.ecert.report.persistence.vo.Rep02000Vo;
 import com.tmb.ecert.setup.dao.UserRoleDao;
 import com.tmb.ecert.setup.vo.Sup01000FormVo;
 import com.tmb.ecert.setup.vo.Sup01100FormVo;
 import com.tmb.ecert.setup.vo.Sup01100Vo;
-import com.tmb.ecert.setup.vo.Sup03000Vo;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
+import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
 import th.co.baiwa.buckwaframework.preferences.constant.MessageConstants.MESSAGE_STATUS;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
+import th.co.baiwa.buckwaframework.support.ApplicationCache;
 
 @Service
 public class Sup01000Service {
@@ -62,6 +62,9 @@ public class Sup01000Service {
 
 	@Autowired
 	private ExcalService excalService;
+	
+	@Autowired
+	private AuditLogService auditLogService;
 	
 	@Value("${app.datasource.path.report}")
 	private String PATH_EXPORT;
@@ -126,6 +129,7 @@ public class Sup01000Service {
 			if (form.getRoleId() == null || form.getRoleId() == 0) {
 				if (countDup == 0) {
 					idRole = userRoleDao.createUserRole(form, fullName, user.getUserId());
+					this.saveAuditLog(form.getRoleName(), user,1);
 				} else {
 					message.setData(MESSAGE_STATUS.FAILED);
 					message.setMessage(MESSAGE_STATUS.FAILED);
@@ -135,6 +139,7 @@ public class Sup01000Service {
 				userRoleDao.updateRolePermissByRoleID(form, fullName, user.getUserId());
 				int deleterow = userRoleDao.delectRolePermissByRoleID(form.getRoleId());
 				idRole = form.getRoleId();
+				this.saveAuditLog(form.getRoleName(), user,0);
 			}
 			for (RoleVo roleVo : form.getRolePermission()) {
 				Sup01100Vo vo = new Sup01100Vo();
@@ -146,6 +151,9 @@ public class Sup01000Service {
 			}
 
 			userRoleDao.createRolePermission(permissionList, fullName, user.getUserId());
+			
+
+			
 			message.setData(MESSAGE_STATUS.SUCCEED);
 			message.setMessage(MESSAGE_STATUS.SUCCEED);
 			return message;
@@ -542,6 +550,7 @@ public class Sup01000Service {
 		UserDetails user = UserLoginUtils.getCurrentUserLogin();
 		String fullName = user.getFirstName() + " " + user.getLastName();
 		List<Sup01100Vo> permissionList = new ArrayList<>();
+		String roleDescp = " ";
 		try {
 			for (Sup01100FormVo rolePermiss : listRolePermission) {
 
@@ -562,11 +571,12 @@ public class Sup01000Service {
 					vo.setStatus(roleVo.getStatus());
 					permissionList.add(vo);
 				}
-
+				roleDescp = roleDescp +" [ "+ rolePermiss.getRoleName()+" ] " ;
 				userRoleDao.createRolePermission(permissionList, fullName, user.getUserId());
 			}
+			this.saveAuditLog(roleDescp, user, 2);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("ExportRoleTemplate",e);
 		}
 
 		
@@ -611,6 +621,42 @@ public class Sup01000Service {
 		}
 		return val;
 		
+	}
+	
+	public void saveAuditLog(String roleName ,UserDetails user,int action) {
+		Date currentDate = new Date();
+		String strInsetLog  ="";
+		try {
+			if (action == 0) {
+				strInsetLog = ApplicationCache.getParamValueByName(ProjectConstant.ACTION_AUDITLOG_DESC.ROLE_EDIT);
+			}else if (action == 1) {
+				strInsetLog = ApplicationCache.getParamValueByName(ProjectConstant.ACTION_AUDITLOG_DESC.ROLE_ADD);
+			}else if (action == 2) {
+				strInsetLog = ApplicationCache.getParamValueByName(ProjectConstant.ACTION_AUDITLOG_DESC.ROLE_IMPORT);
+			}
+			String description = String.format(strInsetLog, user.getUserId(),roleName,EcerDateUtils.formatLogDate(currentDate));
+			
+			AuditLog auditLog  = new AuditLog();
+			auditLog.setActionCode(ProjectConstant.ACTION_AUDITLOG.ROLE_MANAGEMENT);
+			auditLog.setDescription(description);
+
+			auditLog.setCreateById(user!=null ? user.getUserId():StringUtils.EMPTY);
+			auditLog.setCreatedByName(user!=null ? (user.getFirstName().concat(StringUtils.EMPTY).concat(user.getLastName())): StringUtils.EMPTY);
+			auditLogService.insertAuditLog(auditLog);
+
+		} catch (Exception e) {
+			logger.error("ExportRoleTemplate",e);
+		}
+
+	}
+	
+	public String covertRolePermissionToStr (List<RoleVo> list) {
+		
+		String str = " ";
+		for (int i = 0; i < list.size(); i++) {
+			str = str + " "+ list.get(i).getRoleName()+" ,";
+		}
+		return str;
 	}
 	
 
