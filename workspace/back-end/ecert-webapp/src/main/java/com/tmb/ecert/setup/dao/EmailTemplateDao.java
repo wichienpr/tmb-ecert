@@ -30,7 +30,7 @@ public class EmailTemplateDao {
 	
 	private static String SELECT_EMAILDETAIL = "  SELECT A.EMAILDETAIL_ID ,A.EMAILCONFIG_ID ,A.SUBJECT ,A.BODY,A.[FROM],A.[TO] , A.ATTACHFILE_FLAG   " + 
 			" FROM ECERT_EMAILCONFIG_DETAIL A INNER JOIN ECERT_EMAIL_CONFIG B ON A.EMAILCONFIG_ID = B.EMAILCONFIG_ID  " +
-			"  WHERE A.EMAILDETAIL_ID = ? AND B.STATUS = 0 ";
+			"  WHERE A.EMAILDETAIL_ID = ?  ";
 
 	public List<Sup03000Vo> getEmailTemplate(Sup03000Vo form) {
 		StringBuilder sql = new StringBuilder("");

@@ -132,6 +132,79 @@ public class AuthenController {
 		}
 		return vo;
 	}
+	
+	@PostMapping("/getUserlogin")
+	public AjaxLoginVo getUserSession(HttpServletRequest request, HttpServletResponse response) {
+
+		AjaxLoginVo vo = new AjaxLoginVo();
+		UserDetails user = null;
+		Date currentDate = new Date();
+
+		try {
+
+			HttpSession session = request.getSession(false);
+
+			logger.info("onLoginSeccess : {}", session.getId());
+
+			user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			vo.setUserId(user.getUserId());
+			vo.setFirstName(user.getFirstName());
+			vo.setLastName(user.getLastName());
+			vo.setUsername(user.getUsername());
+
+			for (GrantedAuthority item : user.getAuthorities()) {
+				vo.getRoles().add(item.getAuthority());
+			}
+
+			vo.setStatus(LOGIN_STATUS.SUCCESS);
+			vo.setAuths(user.getAuths());
+
+			List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
+
+			logger.info("{}", inallsess.size());
+
+			if (inallsess.size() >= 2) {
+				vo.setStatus(LOGIN_STATUS.DUP_LOGIN);
+				if (!session.getId().equals(inallsess.get(1).getSessionId())) { // Currently user
+					this.forceLogOut(request, response);
+					vo = new AjaxLoginVo();
+					vo.setStatus(LOGIN_STATUS.FAIL);
+					return vo;
+				}
+			} else {
+				if (!session.getId().equals(inallsess.get(0).getSessionId())) { // Previously user
+					this.forceLogOut(request, response);
+					vo = new AjaxLoginVo();
+					vo.setStatus(LOGIN_STATUS.FAIL);
+					return vo;
+				}
+			}
+
+			// check out off service
+			String timefrom = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_FROM);
+			String timeto = ApplicationCache.getParamValueByName(SERVICE_TIMMING.SHUTDOWN_TIME_TO);
+			String currentTime = DateFormatUtils.format(new Date(), "HHmm").trim();
+
+			String strFrom = timefrom.replace(":", "").trim();
+			String strTo = timeto.replace(":", "").trim();
+			if (NumberUtils.toInt(strFrom) <= NumberUtils.toInt(currentTime)
+					&& NumberUtils.toInt(strTo) >= NumberUtils.toInt(currentTime)) {
+				logger.info("ON SERVICE");
+//				auditLogService.insertAuditLog(ACTION_AUDITLOG.LOGIN_CODE, ACTION_AUDITLOG_DESC.LOGIN,
+//						(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+//						currentDate);
+			} else {
+				logger.info("OUTOFF SERVICE");
+				vo.setStatus(LOGIN_STATUS.OUTOFF_SERVICE);
+				vo.setDiscription(timefrom + "  ถึงเวลา " + timeto);
+				this.forceLogOut(request, response);
+			}
+		} catch (Exception e) {
+			logger.error("AuthenController.onLoginSeccess Error: {} ", e.getMessage());
+		}
+		return vo;
+	}
 
 	@PostMapping("/onloginerror")
 	public AjaxLoginVo onloginerror(@RequestParam String error) {
