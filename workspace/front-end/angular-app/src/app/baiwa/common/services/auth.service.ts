@@ -38,7 +38,8 @@ export class AuthService {
 
   public getUser() : Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let getuserurl: string = AjaxService.CONTEXT_PATH + "/onloginseccess";
+      // let getuserurl: string = AjaxService.CONTEXT_PATH + "/onloginseccess";
+      let getuserurl: string = AjaxService.CONTEXT_PATH + "/getUserlogin";
       // console.log("getUser");
       this.http.post(getuserurl, {}).subscribe(resp => {
         let result: AjaxLoginVo = resp as AjaxLoginVo;
