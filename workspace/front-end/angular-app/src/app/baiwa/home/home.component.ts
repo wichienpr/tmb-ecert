@@ -7,7 +7,7 @@ import { DashboardService } from 'app/baiwa/home/dashboard.service';
 import * as DashboardAction from 'app/dash-board.action';
 import { Router } from "@angular/router";
 import { CommonService, ModalService } from '../common/services';
-import { ROLES } from '../common/constants';
+import { ROLES, PAGE_AUTH } from '../common/constants';
 import { UpdateUser } from 'app/user.action';
 
 @Component({
@@ -81,7 +81,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   get isShowDashBoard() {
-    return !this.commonserv.isRole(ROLES.ADMIN);
+    // return !this.commonserv.isRole(ROLES.ADMIN);
+    return this.commonserv.isAuth(PAGE_AUTH.P0000200);
   }
 
 }
