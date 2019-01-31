@@ -2,6 +2,7 @@ package th.co.baiwa.buckwaframework.common.config;
 
 import java.io.IOException;
 
+import javax.management.relation.RoleInfoNotFoundException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -89,6 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				System.out.println("customfailHandler");
 				if(exception instanceof BadCredentialsException ) {
 					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.FAIL).forward(request, response);
+				}else if (exception  instanceof InternalAuthenticationServiceException) {
+					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.MULTI_ROLE).forward(request, response);
 				}
 
 			}

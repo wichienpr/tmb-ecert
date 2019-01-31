@@ -23,5 +23,6 @@ public class SecurityConstants {
 		public static final String FAIL = "FAIL";
 		public static final String DUP_LOGIN = "DUP_LOGIN";
 		public static final String OUTOFF_SERVICE = "OUTOFF_SERVICE";
+		public static final String MULTI_ROLE = "MULTI_ROLE";
 	}
 }

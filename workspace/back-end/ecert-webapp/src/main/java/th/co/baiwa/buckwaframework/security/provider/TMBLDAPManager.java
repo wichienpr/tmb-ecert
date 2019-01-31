@@ -5,9 +5,11 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.relation.RoleInfoNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.sql.rowset.spi.TransactionalWriter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,7 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.query.LdapQuery;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Service;
 
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
@@ -127,29 +130,33 @@ public class TMBLDAPManager {
 					// check role name for return only role
 					int value= 0;
 					String roleName = "";
-					if (memberOfs != null) {
-						for (int i = 0; i < memberOfs.size(); i++) {
-							if(getValueRoleByRoleName(memberOfs.get(i).toString())> value) {
-								value = getValueRoleByRoleName(memberOfs.get(i).toString());
-							}
-						}
-						
-						if (value == 0) {
-							roleName = memberOfs.get(0).toString();
-						}else {
-							roleName = getRoleNameByValue(value);
-						}
-					}
-
-					List<String> listOfRole = new ArrayList<>();
-					listOfRole.add(roleName);
-					tmbPerson.setMemberOfs(listOfRole);
+//					if (memberOfs != null) {
+//						for (int i = 0; i < memberOfs.size(); i++) {
+//							if(getValueRoleByRoleName(memberOfs.get(i).toString())> value) {
+//								value = getValueRoleByRoleName(memberOfs.get(i).toString());
+//							}
+//						}
+//						
+//						if (value == 0) {
+//							roleName = memberOfs.get(0).toString();
+//						}else {
+//							roleName = getRoleNameByValue(value);
+//						}
+//					}
+//					List<String> listOfRole = new ArrayList<>();
+//					listOfRole.add(roleName);
+					
+					
+					tmbPerson.setMemberOfs(memberOfs);
 					return tmbPerson;
 				}
 			});
 
 			if (res.isEmpty()) {
 				throw new Exception("Invalid Username and Password[not found in dir ldap]");
+			}
+			if (res.get(0).getMemberOfs().size() > 1) {
+				throw new InternalAuthenticationServiceException("User ldap have more one role");
 			}
 
 			return res.get(0);
