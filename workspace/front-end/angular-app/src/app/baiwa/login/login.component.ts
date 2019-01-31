@@ -89,6 +89,9 @@ export class LoginComponent implements OnInit {
       } else if (result.status == "OUTOFF_SERVICE") {
         this.loginMessage = "ไม่สามารถดำเนินการต่อได้ในขณะนี้เนื่องจากปิดระบบตั้งแต่เวลา " + result.discription; //........ถึงเวลา........";
         this.showLoginMessage = true;
+      } else if (result.status == "MULTI_ROLE"){
+        this.loginMessage = "เกิดข้อผิดผลาด โปรดติดต่อ ITIA เนื่องจาก User ของท่านมีสิทธิ์มากกว่า 1 Role";
+        this.showLoginMessage = true;
       } else {
         this.loginMessage = "ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
         this.showLoginMessage = true;
