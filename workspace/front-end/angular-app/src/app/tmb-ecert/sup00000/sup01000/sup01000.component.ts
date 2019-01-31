@@ -53,7 +53,7 @@ export class Sup01000Component implements OnInit {
 
   userRoleForm: FormGroup = new FormGroup({
     roleName: new FormControl('', Validators.required),
-    status: new FormControl(90001, Validators.required)
+    status: new FormControl(90002, Validators.required)
   });
 
   uploadForm: FormGroup = new FormGroup({
@@ -173,7 +173,7 @@ export class Sup01000Component implements OnInit {
 
 
     clickClear() {
-      this.userRoleForm.reset({ roleName: "", status: 0 });
+      this.userRoleForm.reset({ roleName: "", status: 90002 });
       this.store.dispatch(new SUP01000ACTION.ClearRole());
       this.statusDropDown.clear();
       this.roleDT.clear();
