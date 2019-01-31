@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -58,7 +59,12 @@ public class TmbAuthenticationProvider  implements AuthenticationProvider {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			if (e instanceof InternalAuthenticationServiceException) {
+				throw new InternalAuthenticationServiceException(e.getMessage());
+			}
 			throw new BadCredentialsException(e.getMessage());
+
+
 		}
 		
 		Assert.notNull(user, "UserDetails is null : [TmbAuthenticationProvider]");
