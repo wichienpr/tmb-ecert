@@ -306,18 +306,18 @@ export class Crs02000Component implements OnInit {
     if ( this.data.paidTypeCode == '30004'){
       return false;
     }else{
-      return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+      // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+      return this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
     }
   }
   get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
   get btnUpload() {
-    return (this.roles(ROLES.MAKER)
-      && this.chkStatus(REQ_STATUS.ST10009)
-      && this.common.isAuth(PAGE_AUTH.P0000406));
-    // (this.roles(ROLES.MAKER)
-    // && this.chkStatus(REQ_STATUS.ST10005)
-    // && this.common.isAuth(PAGE_AUTH.P0000406))
-    // || 
+    // return (this.roles(ROLES.MAKER)
+    //   && this.chkStatus(REQ_STATUS.ST10009)
+    //   && this.common.isAuth(PAGE_AUTH.P0000406));
+    return ( this.chkStatus(REQ_STATUS.ST10009)
+    && this.common.isAuth(PAGE_AUTH.P0000406));
+    
   }
 
   get btnPayment(){
