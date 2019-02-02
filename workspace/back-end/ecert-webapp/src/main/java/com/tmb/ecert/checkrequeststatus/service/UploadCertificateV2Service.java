@@ -82,6 +82,7 @@ public class UploadCertificateV2Service {
 			}
 			
 			List<ECMUuploadRequest> listRequest = createRequest(reqVo, userid);
+			log.info(" prepair cmis request success total file : "+Integer.toString(listRequest.size()));
 			boolean statusWS = false;
 			statusWS = CallECMWevserviceV2(listRequest,userid,certificateID);
 			
@@ -209,7 +210,7 @@ public class UploadCertificateV2Service {
 				listRequest.add(ecmUploadRequest);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.info(" PREPAIR REQUEST CMIS FIAL {} "+e);
 		}
 		return listRequest;
 	}
@@ -219,18 +220,20 @@ public class UploadCertificateV2Service {
 		RestTemplate restTemplate = new RestTemplate();
 		URI fooResourceUrl = new URI( ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CREATE_DOC));
 		boolean statusWS = false;
+		log.info(" call webserivce process .. ");
 		for (int i = 0; i < listReq.size(); i++) {
 			if (listReq.get(i).getFile() != null) {
 				HttpEntity<ECMUuploadRequest> request = new HttpEntity<>(listReq.get(i));
 				ResponseEntity<ECMUploadResponse> wsresponse = restTemplate.exchange(fooResourceUrl , HttpMethod.POST, request, ECMUploadResponse.class);
 				response = wsresponse.getBody();
 				if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(response.getStatusCode())) {
+					log.info(" call ws create doc {} ",response.getDescription());
 					statusWS = false;
 					break;
 				}
 				statusWS = true;
 				checkRequestCerDao.insertECMHistory(certificateID, listReq.get(i), response.getObjectId(), userid);
-				log.info("CALL WS CREATE DOC {}", response.getDescription());
+				log.info("call ws create doc {}", response.getDescription());
 			}
 		}
 		return statusWS;
