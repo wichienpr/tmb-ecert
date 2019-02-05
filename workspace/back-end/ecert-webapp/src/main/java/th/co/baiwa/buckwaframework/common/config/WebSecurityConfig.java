@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -71,6 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureHandler(customfailHandler()).and().logout().permitAll().and().csrf().disable();
 		
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
+		
+		http.requiresChannel().antMatchers("/app/**").requiresSecure();
 
 	}
 
@@ -94,6 +97,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				}else if (exception  instanceof InternalAuthenticationServiceException) {
 					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.MULTI_ROLE).forward(request, response);
 				}
+//				else if(exception instanceof AuthenticationCredentialsNotFoundException ) {
+//					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.NOT_ALLOW).forward(request, response);
+//				}
 
 			}
 		};
