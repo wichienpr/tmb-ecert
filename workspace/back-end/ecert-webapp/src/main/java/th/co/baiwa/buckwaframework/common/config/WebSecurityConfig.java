@@ -73,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
 //		redirect http to https 
-		http.requiresChannel().antMatchers("/app/*.html").requiresSecure();
+		http.requiresChannel().antMatchers("/","/*.html").requiresSecure();
 
 	}
 
