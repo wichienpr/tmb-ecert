@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${commons.lang3.version}</version>
+<!-- 			<version>${commons.lang3.version}</version> -->
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -170,11 +170,11 @@
 		</dependency>
 
 		<!-- Database Logging -->
-		<dependency>
-			<groupId>p6spy</groupId>
-			<artifactId>p6spy</artifactId>
-			<version>${p6spy.version}</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>p6spy</groupId> -->
+<!-- 			<artifactId>p6spy</artifactId> -->
+<!-- 			<version>${p6spy.version}</version> -->
+<!-- 		</dependency> -->
 
 		<!-- Springfox Swagger2: JSON API documentation for spring based applications -->
 		<dependency>
