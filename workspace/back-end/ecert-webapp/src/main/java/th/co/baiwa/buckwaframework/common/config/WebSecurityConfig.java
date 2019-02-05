@@ -72,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureHandler(customfailHandler()).and().logout().permitAll().and().csrf().disable();
 		
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
-		
-		http.requiresChannel().antMatchers("/app/**").requiresSecure();
+//		redirect http to https 
+		http.requiresChannel().antMatchers("/app/*.html").requiresSecure();
 
 	}
 
