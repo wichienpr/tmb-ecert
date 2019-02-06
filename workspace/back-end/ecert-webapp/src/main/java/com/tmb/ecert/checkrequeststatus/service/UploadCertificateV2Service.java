@@ -82,7 +82,7 @@ public class UploadCertificateV2Service {
 			}
 			
 			List<ECMUuploadRequest> listRequest = createRequest(reqVo, userid);
-			log.info(" prepair cmis request success total file : "+Integer.toString(listRequest.size()));
+//			log.info(" prepair cmis request success total file : "+Integer.toString(listRequest.size()));
 			boolean statusWS = false;
 			statusWS = CallECMWevserviceV2(listRequest,userid,certificateID);
 			
@@ -130,7 +130,7 @@ public class UploadCertificateV2Service {
 		try {
 			for (int i = 0; i < 5; i++) {
 				ecmUploadRequest = new ECMUuploadRequest();
-				
+				ecmMaster = null;
 				ecmUploadRequest.setRepositoryId(repositoryId);
 				ecmUploadRequest.setObjectTypeId(objTypeId);
 				//NAME : YYYYMMDDHHMM-DocTypeCode-ShortDocName-FileName.xxx
@@ -140,8 +140,8 @@ public class UploadCertificateV2Service {
 				ecmUploadRequest.setTmbIdentificationType(tmbIdType);
 				ecmUploadRequest.setChannel(chanelId);
 				ecmUploadRequest.setApplicationId(req.getTmbRequestNo());
-				ecmUploadRequest.setCustomerFirstNameThai(req.getCustomerName());
-				ecmUploadRequest.setCustomerFirstNameEng(req.getCustomerName());
+				ecmUploadRequest.setCustomerFirstNameThai(req.getCompanyName());
+//				ecmUploadRequest.setCustomerFirstNameEng(req.getCustomerName());
 				
 				if (i==0) {
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathReq));
@@ -151,10 +151,8 @@ public class UploadCertificateV2Service {
 					
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getRequestFormFile(), docTypeReq, ecmMaster.getTypeShortName()));
 					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
-					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
-					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 				}else if(i == 1) {
 					ecmUploadRequest.setTmbDocTypeCode(docTypeCer);
 					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
@@ -163,10 +161,9 @@ public class UploadCertificateV2Service {
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getCertificateFile(), docTypeCer, ecmMaster.getTypeShortName()));
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathCer));
 					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
-					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
-					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
+
 				}else if(i == 2) {
 					ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
 					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
@@ -175,10 +172,8 @@ public class UploadCertificateV2Service {
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
 					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
-					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
-					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 				}else if (i==3) {
 					if(StringUtils.isNotBlank(req.getIdCardFile())) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeId);
@@ -188,10 +183,8 @@ public class UploadCertificateV2Service {
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getIdCardFile(), docTypeId, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfile +"/" +req.getIdCardFile()));
 						ecmUploadRequest.setFile(bty);
-						ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
-						ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
-						ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 					}
 				}else if (i==4) {
 					if(StringUtils.isNotBlank(req.getChangeNameFile())) {
@@ -202,8 +195,8 @@ public class UploadCertificateV2Service {
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getChangeNameFile(), docTypeOther, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfile +"/" +req.getChangeNameFile()));
 						ecmUploadRequest.setFile(bty);
-						ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 						
 					}
 				}
@@ -220,7 +213,7 @@ public class UploadCertificateV2Service {
 		RestTemplate restTemplate = new RestTemplate();
 		URI fooResourceUrl = new URI( ApplicationCache.getParamValueByName(ProjectConstant.WEB_SERVICE_ENDPOINT.ECM_CREATE_DOC));
 		boolean statusWS = false;
-		log.info(" call webserivce process .. ");
+//		log.info(" call webserivce process .. ");
 		for (int i = 0; i < listReq.size(); i++) {
 			if (listReq.get(i).getFile() != null) {
 				HttpEntity<ECMUuploadRequest> request = new HttpEntity<>(listReq.get(i));
