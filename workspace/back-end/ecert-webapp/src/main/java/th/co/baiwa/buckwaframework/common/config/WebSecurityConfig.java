@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -33,6 +34,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Value("${server.https.port}")
+	private String httpsport;
+	
+	@Value("${server.http.port}")
+	private String httpport;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -74,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
 //		redirect http to https 
 		http.requiresChannel().antMatchers("/","/*.html").requiresSecure();
+		http.portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
 
 	}
 
