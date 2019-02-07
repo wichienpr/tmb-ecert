@@ -80,8 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
 //		redirect http to https 
-		http.requiresChannel().antMatchers("/","/app/**","/*.html").requiresSecure();
-		http.portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
+		http.requiresChannel().antMatchers("/**","/app/**","/*.html").requiresSecure()
+		.and().portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
 
 	}
 
