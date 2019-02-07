@@ -196,6 +196,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 			grantedAuthorityList.add(new SimpleGrantedAuthority(role));
 		}
 		
+	
 		UserDetails rs = new UserDetails(username, "" ,grantedAuthorityList	);
 		rs.setUserId(tMBPerson.getUserid());
 		rs.setBranchCode(tMBPerson.getBranchCode());

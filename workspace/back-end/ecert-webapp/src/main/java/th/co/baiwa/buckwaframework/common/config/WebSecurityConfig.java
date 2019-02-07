@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
 //		redirect http to https 
-		http.requiresChannel().antMatchers("/","/*.html").requiresSecure();
+		http.requiresChannel().antMatchers("/","/app/**","/*.html").requiresSecure();
 		http.portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
 
 	}
@@ -105,9 +105,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				}else if (exception  instanceof InternalAuthenticationServiceException) {
 					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.MULTI_ROLE).forward(request, response);
 				}
-//				else if(exception instanceof AuthenticationCredentialsNotFoundException ) {
-//					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.NOT_ALLOW).forward(request, response);
-//				}
+				else if(exception instanceof AuthenticationCredentialsNotFoundException ) {
+					request.getRequestDispatcher("/onloginerror?error=" + LOGIN_STATUS.NOT_ALLOW).forward(request, response);
+				}
 
 			}
 		};

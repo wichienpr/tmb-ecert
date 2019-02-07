@@ -12,14 +12,18 @@ import javax.naming.directory.Attributes;
 import javax.sql.rowset.spi.TransactionalWriter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.AuthenticationException;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.query.LdapQuery;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Service;
+
+import com.tmb.ecert.common.dao.UserProfileDao;
 
 import th.co.baiwa.buckwaframework.security.constant.ADConstant;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
@@ -36,6 +40,9 @@ public class TMBLDAPManager {
 
 	@Value("${ldap.domain}")
 	private String domain;
+	
+	@Autowired
+	private UserProfileDao userProfileDao;
 	
 	public TMBPerson isAuthenticate(String username, String password) throws Exception {
 		LdapContextSource contextSource = new LdapContextSource();
@@ -157,6 +164,14 @@ public class TMBLDAPManager {
 			}
 			if (res.get(0).getMemberOfs().size() > 1) {
 				throw new InternalAuthenticationServiceException("User ldap have more one role");
+			}
+			if (res.get(0).getMemberOfs().size() == 0 ) {
+				throw new AuthenticationCredentialsNotFoundException("Invalid Username have not permission");
+			}
+			// check role is not inactive 
+			int isActive = userProfileDao.checkAuthRole(res.get(0).getMemberOfs().get(0));
+			if (isActive == 1 ) {
+				throw new AuthenticationCredentialsNotFoundException("Invalid Username can not allow permission");
 			}
 
 			return res.get(0);
