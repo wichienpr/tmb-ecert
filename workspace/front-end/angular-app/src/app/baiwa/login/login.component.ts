@@ -92,7 +92,10 @@ export class LoginComponent implements OnInit {
       } else if (result.status == "MULTI_ROLE"){
         this.loginMessage = "เกิดข้อผิดผลาด โปรดติดต่อ ITIA เนื่องจาก User ของท่านมีสิทธิ์มากกว่า 1 Role";
         this.showLoginMessage = true;
-      } else {
+      } else if(result.status ="NOT_ALLOW"){
+        this.loginMessage = "ท่านไม่มีสิทธิ์เข้าใช้งานระบบ";
+        this.showLoginMessage = true;
+      }else{
         this.loginMessage = "ข้อมูล Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
         this.showLoginMessage = true;
       }
