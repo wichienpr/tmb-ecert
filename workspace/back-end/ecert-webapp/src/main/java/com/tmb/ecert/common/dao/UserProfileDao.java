@@ -1,5 +1,6 @@
 package com.tmb.ecert.common.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ public class UserProfileDao {
 		sql.append(" AND p.status = 0 group by p.FUNCTION_CODE                                  ");
 
 		return jdbcTemplate.queryForList(sql.toString(), String.class);
+	}
+	
+	public int checkAuthRole (String roleName) {
+		String sql =" select count(*) from ECERT_ROLE where ROLE_NAME =? and STATUS = 1 " ;
+		List<Object> params = new ArrayList<>();
+		params.add(roleName);
+		return jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
 	}
 
 }

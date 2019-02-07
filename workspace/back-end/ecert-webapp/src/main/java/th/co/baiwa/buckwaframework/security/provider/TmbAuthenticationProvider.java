@@ -3,6 +3,7 @@ package th.co.baiwa.buckwaframework.security.provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -61,6 +62,9 @@ public class TmbAuthenticationProvider  implements AuthenticationProvider {
 			logger.error(e.getMessage());
 			if (e instanceof InternalAuthenticationServiceException) {
 				throw new InternalAuthenticationServiceException(e.getMessage());
+			}
+			if (e instanceof AuthenticationCredentialsNotFoundException) {
+				throw new AuthenticationCredentialsNotFoundException(e.getMessage());
 			}
 			throw new BadCredentialsException(e.getMessage());
 
