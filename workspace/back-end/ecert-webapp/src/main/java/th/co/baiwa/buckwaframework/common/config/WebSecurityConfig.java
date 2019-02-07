@@ -23,6 +23,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import th.co.baiwa.buckwaframework.security.constant.SecurityConstants.LOGIN_STATUS;
 import th.co.baiwa.buckwaframework.security.provider.TmbAuthenticationProvider;
@@ -82,6 +83,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		redirect http to https 
 		http.requiresChannel().antMatchers("/**","/app/**","/*.html").requiresSecure()
 		.and().portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
+		
+		http.headers().defaultsDisabled()
+        .addHeaderWriter(new StaticHeadersWriter("Cache-Control"," no-cache,max-age=0, must-revalidate"))
+        .addHeaderWriter(new StaticHeadersWriter("Expires","0"));
 
 	}
 
