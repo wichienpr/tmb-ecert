@@ -5,6 +5,7 @@ import { Modal, RequestForm, initRequestForm, RequestCertificate, Certificate } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { CertFile, Rejected, ResponseVo } from './crs02000.models';
 import { REQ_STATUS } from 'app/baiwa/common/constants';
+import { FormGroup } from '@angular/forms';
 
 declare var $: any;
 
@@ -22,7 +23,9 @@ export const URL = {
   UPLOAD: "/api/crs/crs01000/upLoadCertificate",
   CER_REJECT: "/api/crs/crs02000/cert/reject",
   CER_APPROVE: "/api/crs/crs02000/cert/approve",
-  PAYMENT_RETRY: "/api/crs/crs02000/retry"
+  PAYMENT_RETRY: "/api/crs/crs02000/retry",
+  REPRINT_RECEIPT: "/api/report/pdf/createAndUpload/reprintReceiptTax/",
+  CANCEL_RECEIPT: "/api/report/pdf/createAndUpload/cancelReceiptTax/",
 }
 
 @Injectable({
@@ -287,7 +290,27 @@ export class Crs02000Service {
         this.common.isLoaded();
       });
     }
+  }
+  reprintReceipt(id: string,reason:string){
+    this.common.isLoading();
+    this.ajax.post(URL.REPRINT_RECEIPT, { id: parseInt(id), reason: reason }, response => {
+      this.ajax.download(URL.PDF + response._body + "/download");
+      this.common.isLoaded();
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
+      this.common.isLoaded();
+    });
+  }
 
+  cancelReceipt(formCancel:any){
+    this.common.isLoading();
+    this.ajax.post(URL.CANCEL_RECEIPT, formCancel, response => {
+      this.ajax.download(URL.PDF + response._body + "/download");
+      this.common.isLoaded();
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
+      this.common.isLoaded();
+    });
   }
 
   saveCertFile(data: CertFile) {

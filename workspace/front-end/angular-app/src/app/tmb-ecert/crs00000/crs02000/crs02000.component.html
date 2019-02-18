@@ -178,6 +178,114 @@
 </ui-modal>
 <!-- ui-modal -->
 
+<ui-modal [modal]="reprintModal">
+  <ng-template>
+    <div class="header" style="background:#1678C2">
+      <diV style="color: rgb(255, 255, 255)">สาเหตุการออกใบแทนใบเสร็จรับเงิน</diV>
+    </div>
+    <div class="content">
+      <div class="ui one grid centered">
+        <div class="ui thirteen wide form column" [formGroup]="reprintForm">
+          <div class="inline fields">
+            <div class="two wide field">
+              <label class="full-width text-right">สาเหตุ</label>
+            </div>
+            <div class="fourteen wide field" [ngClass]="{ 'error': reprintSubmitted && reprintReason.invalid }">
+              <textarea formControlName="reprintReason" name="reprintReason" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="seven btn-group wide column">
+          <button type="button" (click)="reprintSumit()" class="ui blue basic button" [ngClass]="{ 'positive' : reprintForm.valid  }"
+            type="button">
+            <i class="check circle outline icon"></i>
+            ตกลง
+          </button>
+          <button type="button" class="ui grey negative basic button" type="button">
+            <i class="times circle outline icon"></i>
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ui-modal>
+<!-- ui-modal -->
+
+<ui-modal [modal]="cancelReceiptModal">
+  <ng-template>
+    <div class="header" style="background:#1678C2">
+      <diV style="color: rgb(255, 255, 255)">แก้ไขเสร็จรับเงิน</diV>
+    </div>
+    <div class="content">
+      <div class="ui one grid centered">
+        <div class="ui thirteen wide form column" [formGroup]="cancelForm">
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">ชื่อบนใบเสร็จธนาคาร TMB</label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && companyName.invalid }">
+              <input type="text" formControlName="companyName" name="companyName" />
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">เลขประจำตัวผู้เสียภาษี</label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && taxid.invalid }">
+              <input type="text" formControlName="taxid" name="taxid"/>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">สำนักงานใหญ่/สาขาที่ </label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && barnchCode.invalid }">
+              <input type="text" formControlName="barnchCode" name="barnchCode"/>
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">ที่อยู่</label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && address.invalid }">
+              <input type="text" formControlName="address" name="address" />
+            </div>
+          </div>
+          <div class="inline fields">
+            <div class="four wide field">
+              <label class="full-width text-right">สาเหตุ</label>
+            </div>
+            <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && cancelReason.invalid }">
+              <textarea formControlName="cancelReason" name="cancelReason" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui center aligned grid">
+        <div class="seven btn-group wide column">
+          <button type="button" (click)="cancelReceiptSubmit()" class="ui blue basic button" [ngClass]="{ 'positive' : cancelForm.valid  }"
+            type="button">
+            <i class="check circle outline icon"></i>
+            ตกลง
+          </button>
+          <button type="button" class="ui grey negative basic button" type="button">
+            <i class="times circle outline icon"></i>
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ui-modal>
+<!-- ui-modal -->
+
 <div class="ui grid">
   <div class="sixteen wide column">
     <div class="ui active dimmer" style="background:rgba(0,0,0,.5)" *ngIf="dataLoading">
@@ -607,7 +715,38 @@
           </div>
         </div>
 
+      
+        <div class="ui centered grid" *ngIf="receiptToggle">
+          <div class="ui form accordion" style="width: 100%">
+            <div class="{{ toggleTitleRecp }} inline field divider-header header-title" style="margin-bottom: 0.5em !important;margin-top: 1.5em !important;"
+              (click)="toggleReceipt()">
+              <div class="fourteen wide field" style="margin: 1em auto">
+                <h4 class="header">รายละเอียดใบเสร็จรับเงิน <div class="floated right" style="float: right">
+                    <i class="angle double down icon" *ngIf="toggleRecp == 'content'"></i>
+                    <i class="angle double up icon" *ngIf="toggleRecp == ''"></i>
+                  </div>
+                </h4>
+              </div>
+              <div class="ui divider" style="width: 87.5%;margin: 0 auto;"></div>
+            </div>
 
+            <div class="{{ toggleRecp }} inline fields">
+              <div class="one wide field"></div>
+              <div class="three wide field">
+                <label>
+                  ใบคำขอ
+                </label>
+              </div>
+              <div class="eleven wide field">
+                <a class="download-link" (click)="download(data.requestFormFile)" *ngIf="data.requestFormFile">
+                  <u>Download</u>
+                </a>
+                <p *ngIf="!data.requestFormFile">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
 
         <div class="inline field">
           <div class="ui btn-group center aligned grid" style="margin: 1.5em 0 0 0 !important;">
@@ -626,6 +765,14 @@
             <button class="ui blue basic button" *ngIf="btnPrintReciept" (click)="pdf('r')" type="button">
               <i class="print icon"></i>
               พิมพ์ใบเสร็จ
+            </button>
+            <button class="ui blue basic button" *ngIf="btnReprint" (click)="reprint()" type="button">
+              <i class="print icon"></i>
+              พิมพ์ใบเสร็จ(ซ่อม)
+            </button>
+            <button class="ui blue basic button" *ngIf="btnCancelReceipt" (click)="cancel()" type="button">
+              <i class="print icon"></i>
+              ยกเลิกใบเสร็จ
             </button>
             <button class="ui blue basic button" *ngIf="btnPrintCover" (click)="pdf('c')" type="button">
               <i class="print icon"></i>

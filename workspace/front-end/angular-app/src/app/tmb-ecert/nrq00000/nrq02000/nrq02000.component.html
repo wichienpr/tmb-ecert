@@ -413,7 +413,7 @@
             (focus)="accNoFocus()" #accNo (keypress)="accNoPress($event)" autocomplete="off" placeholder="">
         </div>
         <div class="required two wide field">
-          <label>สำนักงานใหญ่/สาขาที่</label>
+          <label>สำนักงานใหญ่/สาขาที่  <br>ของลูกค้า</label>
         </div>
         <div class="five wide field" [ngClass]="{'error': invalid('majorNo'), 'disabled': onlyMaker }">
           <input type="text" (keypress)="accNoPress($event)" maxlength="5" minlength="5" #majorNo formControlName="majorNo"

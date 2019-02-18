@@ -34,6 +34,7 @@ export interface RequestForm {
     amount: number
     amountTmb: number
     amountDbd: number
+    receiptFile: string
     receiptNo: string
     status: string
     errorDescription: string
@@ -90,6 +91,7 @@ export const initRequestForm: RequestForm = {
     amount: 0,
     amountTmb: 0,
     amountDbd: 0,
+    receiptFile: "",
     receiptNo: "",
     status: "",
     errorDescription: "",
