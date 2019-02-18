@@ -25,6 +25,7 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.utils.BeanUtils;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
@@ -279,6 +280,86 @@ public class RequestorDao {
 		int row = jdbcTemplate.update(sql.toString(), new Object[] { vo.getPostDate(), vo.getUpdatedById(),
 				vo.getUpdatedByName(), timestamp, vo.getReqFormId() });
 		logger.info("updatePostDate SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+	public int checkDuplicateReqID(Long reqID) {
+		String sql = " SELECT COUNT(*) FROM ECERT_REQFORM_RECEIPT WHERE REQFORM_ID = ?  ";
+		
+		int result = jdbcTemplate.queryForObject(sql.toString(), new Object[] {reqID}, Integer.class);
+		return result;
+	}
+	
+	public void insertReqRecipt(ReqReceiptVo vo) {
+
+		StringBuilder sql = new StringBuilder(" INSERT INTO ECERT_REQFORM_RECEIPT  ");
+		sql.append(" ( REQFORM_ID,TMB_REQUESTNO,RECEIPT_NO,RECEIPT_DATE,FILE_NAME,CUSTOMER_NAME,ORGANIZE_ID,ADDRESS, " + 
+				" MAJOR_NO,AMOUNT,AMOUNT_TMB,AMOUNT_DBD,AMOUNT_VAT_TMB,DELETE_FLAG,REASON , RECEIPT_NO_REFERENCE, CANCEL_FLAG ," + 
+				" CREATED_BY_ID,CREATED_BY_NAME,CREATED_DATETIME ) ");
+		sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) ");
+
+		List<Object> params = new ArrayList<>();
+
+		params.add( vo.getReqform_id());
+		params.add( vo.getTmb_requestno());
+		params.add(vo.getReceipt_no());
+		params.add( vo.getReceipt_date());
+		params.add( vo.getFile_name());
+		params.add(vo.getCustomer_name());
+		params.add( vo.getOrganize_id());
+		params.add( vo.getAddress());
+		params.add(vo.getMajor_no());
+		params.add( vo.getAmount());
+		params.add( vo.getAmount_tmb());
+		params.add(vo.getAmount_dbd());
+		params.add( vo.getAmount_vat_tmb());
+		params.add( vo.getDelete_flag());
+		params.add( vo.getReason());
+		params.add( vo.getReceipt_no_reference());
+		params.add( vo.getCancel_flag());
+		params.add(vo.getCreatedById());
+		params.add( vo.getCreatedByName());
+		params.add( new java.util.Date());
+		
+		int row = jdbcTemplate.update(sql.toString(), params.toArray());
+
+		logger.info("SQL_ECERT_REQUEST_FORM_UPDATE rows updated => {}", row);
+	}
+	
+	public void updateReqReceipt(ReqReceiptVo vo ) {
+		StringBuilder sql = new StringBuilder(" UPDATE ECERT_REQFORM_RECEIPT  SET ");
+		sql.append(" RECEIPT_DATE = ?,FILE_NAME = ? ,CUSTOMER_NAME = ?,"
+				+ " ORGANIZE_ID = ? ,ADDRESS = ? ,  MAJOR_NO = ? "
+				+ ",PRINT_COUNT = ? ,REASON = ? , RECEIPT_NO_REFERENCE = ? ,CANCEL_FLAG = ? ,DELETE_FLAG = ?  ");
+		sql.append("  WHERE REQFORM_ID = ? ");
+		
+		List<Object> params = new ArrayList<>();
+
+		params.add( vo.getReceipt_date());
+		params.add( vo.getFile_name());
+		params.add( vo.getCustomer_name());
+		params.add( vo.getOrganize_id());
+		params.add( vo.getAddress());
+		params.add( vo.getMajor_no());
+		params.add( vo.getPrint_count());
+		params.add( vo.getReason());
+		params.add( vo.getReceipt_no_reference());
+		params.add( vo.getCancel_flag());
+		params.add( vo.getDelete_flag());
+		params.add( vo.getReqform_id());
+		int row = jdbcTemplate.update(sql.toString(), params.toArray());
+	}
+	public void updateCancelFlagReqReceipt(ReqReceiptVo vo ) {
+		StringBuilder sql = new StringBuilder(" UPDATE ECERT_REQFORM_RECEIPT  SET ");
+		sql.append(" REASON = ? , CANCEL_FLAG = ? , UPDATED_BY_ID = ? ,UPDATED_BY_NAME=?,UPDATED_DATETIME = ? ");
+		sql.append("  WHERE RECEIPT_ID = ? ");
+		
+		List<Object> params = new ArrayList<>();
+		params.add(vo.getReason());
+		params.add( vo.getCancel_flag());
+		params.add( vo.getUpdatedById());
+		params.add( vo.getUpdatedByName());
+		params.add( new java.util.Date());
+		params.add( vo.getReceipt_id());
+		int row = jdbcTemplate.update(sql.toString(), params.toArray());
 	}
 
 }

@@ -20,6 +20,7 @@ import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 import com.tmb.ecert.requestorform.persistence.vo.Nrq02000FormVo;
 
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
@@ -244,6 +245,7 @@ public class CheckRequestDetailDao {
 			row.setPaymentDate(rs.getTimestamp("PAYMENT_DATE"));
 			row.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
 			row.setPostDate(rs.getTimestamp("POSTDATE"));
+			row.setReceiptFile(rs.getString("RECEIPT_FILE"));
 			row.setReceiptNo(rs.getString("RECEIPT_NO"));
 			row.setRef1(rs.getString("REF1"));
 			row.setRef2(rs.getString("REF2"));
@@ -294,5 +296,41 @@ public class CheckRequestDetailDao {
 
 		return result;
 	}
+	
+	public ReqReceiptVo findRequestReceiptByReqID (Long reqID) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("   SELECT * FROM ECERT_REQFORM_RECEIPT WHERE REQFORM_ID = ?  ORDER BY CREATED_DATETIME DESC ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+		List<ReqReceiptVo> result = jdbcTemplate.query(sql.toString(), params.toArray(), reqReceiptMasterMapper);
+		return result.get(0);
+	}
+	
+	private RowMapper<ReqReceiptVo> reqReceiptMasterMapper = new RowMapper<ReqReceiptVo>() {
+		@Override
+		public ReqReceiptVo mapRow(ResultSet rs, int arg1) throws SQLException {
+			ReqReceiptVo list = new ReqReceiptVo();
+			list.setReceipt_id(rs.getLong("RECEIPT_ID"));
+			list.setTmb_requestno(rs.getString("TMB_REQUESTNO"));
+			list.setReceipt_no(rs.getString("RECEIPT_NO"));
+			list.setReceipt_date(rs.getTimestamp("RECEIPT_DATE"));
+			list.setCustomer_name(rs.getString("CUSTOMER_NAME"));
+			list.setOrganize_id(rs.getString("ORGANIZE_ID"));
+			list.setAddress(rs.getString("ADDRESS"));
+			list.setMajor_no(rs.getString("MAJOR_NO"));
+			list.setAmount(rs.getBigDecimal("AMOUNT"));
+			list.setAmount_dbd(rs.getBigDecimal("AMOUNT_DBD"));
+			list.setAmount_tmb(rs.getBigDecimal("AMOUNT_TMB"));
+			list.setAmount_vat_tmb(rs.getBigDecimal("AMOUNT_VAT_TMB"));
+			list.setPrint_count(rs.getInt("PRINT_COUNT"));
+			list.setReason(rs.getString("REASON"));
+			list.setDelete_flag(rs.getInt("DELETE_FLAG"));
+			list.setCancel_flag(rs.getInt("CANCEL_FLAG"));
+			list.setFile_name(rs.getString("FILE_NAME"));
+			list.setReceipt_no_reference(rs.getString("RECEIPT_NO_REFERENCE"));
+			
+			return list;
+		}
+	};
 
 }

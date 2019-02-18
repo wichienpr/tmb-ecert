@@ -65,5 +65,19 @@ public class ReportPdfController {
 	public String pdfreqForm(@RequestBody RpReqFormVo vo) throws IOException, JRException {
 		return reportPdfService.reqFormToPdf(vo);
 	}
+	
+	/* reprintreceiptTax */
+	@PostMapping("/createAndUpload/reprintReceiptTax")
+	@ResponseBody
+	public String pdfReprintReceiptTax(@RequestBody RpReceiptTaxVo vo) throws IOException, JRException {
+		return reportPdfService.reprintReceiptTax(vo);
+	}
+
+	/* cancelreceiptTax */
+	@PostMapping("/createAndUpload/cancelReceiptTax")
+	@ResponseBody
+	public String pdfCancelReceiptTax(@RequestBody RpReceiptTaxVo vo) throws IOException, JRException {
+		return reportPdfService.cancelReceiptTax(vo);
+	}
 
 }

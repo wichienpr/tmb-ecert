@@ -39,6 +39,7 @@ import com.tmb.ecert.common.service.UploadService;
 import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.common.utils.ThaiBaht;
 import com.tmb.ecert.report.persistence.dao.ReportPdfDao;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 import com.tmb.ecert.report.persistence.vo.RpCertificateVo;
 import com.tmb.ecert.report.persistence.vo.RpCoverSheetVo;
 import com.tmb.ecert.report.persistence.vo.RpReceiptTaxVo;
@@ -63,6 +64,7 @@ import th.co.baiwa.buckwaframework.common.constant.ReportConstants.PATH;
 import th.co.baiwa.buckwaframework.common.util.EcertFileUtils;
 import th.co.baiwa.buckwaframework.common.util.ReportUtils;
 import th.co.baiwa.buckwaframework.security.domain.UserDetails;
+import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
 @Service
 public class ReportPdfService {
@@ -141,29 +143,20 @@ public class ReportPdfService {
 			params01.put("pageActive", "1");
 			params01.put("pageTotal", "2");
 			params01.put("majorNo", req.getMajorNo());
+//			params01.put("reprintHeader", "TEST REPRINT HEADER");
+//			params01.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+//			params01.put("reason", "testreson 00000000000000000000000000000000000000000000000");
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 				//vat
 				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
 				//amountTmb
 				params01.put("amountTmb", formatNumber.format(req.getAmountTmb()));
 				
-
-//				vatAmount = (feeAmount*(vat/100)) 
-//				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
 				vatAmount = (req.getAmountTmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
 				params01.put("vatAmount",formatNumber.format(vatAmount));
 				 
-//				feeAmount = Amount_tmb * (100/ (100+ vat) );
-//				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
 				feeAmount = req.getAmountTmb().doubleValue() - vatAmount;
 				params01.put("feeAmount",formatNumber.format(feeAmount));
-				
-			
-/*				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
-				params01.put("feeAmount",formatNumber.format(new BigDecimal(feeAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
-				
-				vatAmount = req.getAmountTmb().doubleValue() * ( Double.parseDouble(vat.getVat()) / 100);
-				params01.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));*/
 				
 				/*thaiBath*/
 				params01.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
@@ -193,28 +186,21 @@ public class ReportPdfService {
 			params02.put("pageActive", "2");
 			params02.put("pageTotal", "2");
 			params02.put("majorNo", req.getMajorNo());
+//			params02.put("reprintHeader", "TEST REPRINT HEADER");
+//			params02.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+//			params02.put("reason", "testreson 00000000000000000000000000000000000000000000000");
 			if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
 				//vat
 				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
 				//amountTmb
 				params02.put("amountTmb", formatNumber.format(req.getAmountTmb()));
-				
-//				vatAmount = (feeAmount*(vat/100)) 
-//				vatAmount=feeAmount*(Double.parseDouble(vat.getVat())/oneHundred);
+
 				vatAmount = (req.getAmountTmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
 				params02.put("vatAmount",formatNumber.format(vatAmount));
 				 
-//				feeAmount = Amount_tmb * (100/ (100+ vat) );
-//				feeAmount=req.getAmountTmb().doubleValue()*(oneHundred/(oneHundred+Double.parseDouble(vat.getVat())));
 				feeAmount = req.getAmountTmb().doubleValue() - vatAmount;
 				params02.put("feeAmount",formatNumber.format(feeAmount));
-				
-/*				feeAmount =  req.getAmountTmb().doubleValue() * ( 1-(Double.parseDouble(vat.getVat())/100));
-				params02.put("feeAmount",formatNumber.format(new BigDecimal(feeAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));
-				
-				vatAmount = req.getAmountTmb().doubleValue() * ( Double.parseDouble(vat.getVat()) / 100);
-				params02.put("vatAmount",formatNumber.format(new BigDecimal(vatAmount).setScale(2, BigDecimal.ROUND_HALF_EVEN)));*/
-				
+	
 				/*thaiBath*/
 				params02.put("thaiBath", new ThaiBaht().getText(req.getAmountTmb()));
 			} else {
@@ -252,6 +238,17 @@ public class ReportPdfService {
 //			upDateReqDetailDao.update(req);
 			upDateReqDetailDao.updateAfterPrint(req);
 			
+//			UserDetails user = UserLoginUtils.getCurrentUserLogin();
+//			ReqReceiptVo reqReceipt = addReqReceipt(req);
+//			reqReceipt.setReqform_id(vo.getId());
+//			reqReceipt.setFile_name(req.getReceiptFile());
+//			reqReceipt.setCreatedById(user.getUserId());
+//			reqReceipt.setCreatedByName(user.getFirstName()+" "+user.getLastName());
+//			int dupReqid = upDateReqDetailDao.checkDuplicateReqID(vo.getId());
+//			if (dupReqid > 0) {
+//				upDateReqDetailDao.insertReqRecipt(reqReceipt);
+//			}
+
 			// สร้าง ที่ พาท REPORT
 			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
 			// สร้าง ที่ พาท upload
@@ -606,6 +603,352 @@ public class ReportPdfService {
 				reportFile.close();
 			}
 		}
+	}
+	public String reprintReceiptTax(RpReceiptTaxVo vo) throws IOException, JRException {
+		Date currentDate = new Date();
+		ReqReceiptVo req = null;
+		ByteArrayOutputStream os =null;
+		try {
+			// Folder Exist ??
+			initialService();
+			DecimalFormat formatNumber = new DecimalFormat("#,##0.00");
+			Double oneHundred = new Double(100);
+			Double  feeAmount = new Double(0);
+			Double vatAmount = new Double(0);
+			
+			req = checkReqDetailDao.findRequestReceiptByReqID(vo.getId());
+			RpVatVo vat = reportPdfDao.vat().get(0);
+			req.setReqform_id(vo.getId());
+			int print_count = 0;
+			if (req.getPrint_count() != null ) {
+				print_count = req.getPrint_count();
+				print_count++;
+			}
+
+			// RP001
+			String reportName01 = "RP_RECEIPT_TAX";
+			Map<String, Object> params01 = new HashMap<>();
+			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params01.put("docType", "ใบแทน ( ต้นฉบับ )");
+			params01.put("receiptNo", req.getReceipt_no());
+//			params01.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+//			params01.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+			params01.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params01.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
+			params01.put("customerNameReceipt", req.getCustomer_name());
+			params01.put("organizeId", req.getOrganize_id());
+			params01.put("address", req.getAddress());
+			params01.put("pageActive", "1");
+			params01.put("pageTotal", "2");
+			params01.put("majorNo", req.getMajor_no());
+			params01.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+			params01.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+			params01.put("reason", vo.getReason());
+			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
+				//vat
+				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params01.put("amountTmb", formatNumber.format(req.getAmount_tmb()));
+				
+				vatAmount = (req.getAmount_tmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params01.put("vatAmount",formatNumber.format(vatAmount));
+				 
+				feeAmount = req.getAmount_tmb().doubleValue() - vatAmount;
+				params01.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/*thaiBath*/
+				params01.put("thaiBath", new ThaiBaht().getText(req.getAmount_tmb()));
+			} else {
+				params01.put("vat", "0.00");
+				params01.put("amountTmb", "0.00");
+				params01.put("feeAmount", "0.00");
+				params01.put("vatAmount", "0.00");
+				params01.put("thaiBath", "ศูนย์บาทถ้วน");
+			}
+
+			params01.put("tmbRequestNo", req.getTmb_requestno());
+			String reportName02 = "RP_RECEIPT_TAX";
+			Map<String, Object> params02 = new HashMap<>();
+			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params02.put("docType", "ใบแทน ( สำเนา )");
+			params02.put("receiptNo", req.getReceipt_no());
+//			params02.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+//			params02.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+			params02.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params02.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
+			params02.put("customerNameReceipt", req.getCustomer_name());
+			params02.put("organizeId", req.getOrganize_id());
+			params02.put("address", req.getAddress());
+			params02.put("pageActive", "2");
+			params02.put("pageTotal", "2");
+			params02.put("majorNo", req.getMajor_no());
+			params02.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+			params02.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+			params02.put("reason", vo.getReason());
+			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
+				//vat
+				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params02.put("amountTmb", formatNumber.format(req.getAmount_tmb()));
+				
+				vatAmount = (req.getAmount_tmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params02.put("vatAmount",formatNumber.format(vatAmount));
+				 
+				feeAmount = req.getAmount_tmb().doubleValue() - vatAmount;
+				params02.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/*thaiBath*/
+				params02.put("thaiBath", new ThaiBaht().getText(req.getAmount_tmb()));
+			} else {
+				params02.put("vat", "0.00");
+				params02.put("amountTmb", "0.00");
+				params02.put("feeAmount", "0.00");
+				params02.put("vatAmount", "0.00");
+				params02.put("thaiBath", "ศูนย์บาทถ้วน");
+			}
+
+			params02.put("tmbRequestNo", req.getTmb_requestno());
+
+			JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
+			JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
+
+			// merge doc
+			List<ExporterInputItem> itemList = new ArrayList<>();
+			itemList.add(new SimpleExporterInputItem(jasperPrint01));
+			itemList.add(new SimpleExporterInputItem(jasperPrint02));
+
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(itemList));
+
+			os = new ByteArrayOutputStream();
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+			exporter.exportReport();
+
+			byte[] reportFile = os.toByteArray();
+
+			// set_name
+			String name = "RECEIPT_" + req.getTmb_requestno() + ".pdf";
+
+			// save to DB
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//			req.setReceiptFile(name);
+//			req.setReceiptDate(timestamp);
+//			upDateReqDetailDao.update(req);
+			req.setPrint_count(print_count);
+			req.setReason(vo.getReason());
+//			req.setDelete_flag(0);
+			upDateReqDetailDao.updateReqReceipt(req);
+			
+			// สร้าง ที่ พาท REPORT
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
+			// สร้าง ที่ พาท upload
+			String folder = SUB_PATH_UPLOAD;
+			upload.createFile(reportFile, folder, name);
+
+			ReportUtils.closeResourceFileInputStream(params01);
+		}catch(Exception ex) {
+			logger.error("ReportPdfService Error: {} ", ex);
+		}finally {
+			EcertFileUtils.closeStream( os );
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.RECEIPT_CODE, ACTION_AUDITLOG_DESC.RECEIPT,
+					(req!=null ? req.getTmb_requestno() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
+					currentDate);
+		}
+		
+		return "RECEIPT_" + (req!=null ?  req.getTmb_requestno() : null);
+	}
+	
+	
+	public String cancelReceiptTax(RpReceiptTaxVo vo) throws IOException, JRException {
+		Date currentDate = new Date();
+		ReqReceiptVo req = null;
+		ByteArrayOutputStream os =null;
+		String cancelRemark = "เป็นการยกเลิกและออกใบกำกับภาษีฉบับใหม่แทนฉบับเดิมเลขที %s เนื่องจาก %s ";
+		try {
+			UserDetails user = UserLoginUtils.getCurrentUserLogin();
+			// Folder Exist ??
+			initialService();
+			DecimalFormat formatNumber = new DecimalFormat("#,##0.00");
+			Double oneHundred = new Double(100);
+			Double  feeAmount = new Double(0);
+			Double vatAmount = new Double(0);
+			
+			req = checkReqDetailDao.findRequestReceiptByReqID(vo.getId());
+			RpVatVo vat = reportPdfDao.vat().get(0);
+			
+			String receiptNo = receiptGenKeyService.getNextKey();
+			String oldReceiptNo = req.getReceipt_no();
+			req.setCancel_flag(0);
+			req.setReqform_id(vo.getId());
+			req.setReason("ถูกยกเลิกและออกใบกำกับภาษีฉบับใหม่ด้วย เลขที่ "+ receiptNo);
+			req.setUpdatedById(user.getUserId());
+			req.setUpdatedByName(user.getFirstName()+" "+user.getLastName());
+			upDateReqDetailDao.updateCancelFlagReqReceipt(req);
+			
+			req.setReceipt_no_reference(oldReceiptNo);
+			req.setReceipt_no(receiptNo);
+
+			// RP001
+			String reportName01 = "RP_RECEIPT_TAX";
+			Map<String, Object> params01 = new HashMap<>();
+			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params01.put("docType", "ต้นฉบับ");
+			params01.put("receiptNo", req.getReceipt_no());
+			params01.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params01.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+			params01.put("customerNameReceipt", vo.getCustomerName());
+			params01.put("organizeId", vo.getOrganizeId());
+			params01.put("address", vo.getAddress());
+			params01.put("pageActive", "1");
+			params01.put("pageTotal", "2");
+			params01.put("majorNo", vo.getBarnchCode());
+//			params01.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+			params01.put("reasonHeader", "สาเหตุการยกเลิก");
+			params01.put("reason",  String.format(cancelRemark,req.getReceipt_no_reference(),vo.getReason()));
+			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
+				//vat
+				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params01.put("amountTmb", formatNumber.format(req.getAmount_tmb()));
+				
+				vatAmount = (req.getAmount_tmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params01.put("vatAmount",formatNumber.format(vatAmount));
+				 
+				feeAmount = req.getAmount_tmb().doubleValue() - vatAmount;
+				params01.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/*thaiBath*/
+				params01.put("thaiBath", new ThaiBaht().getText(req.getAmount_tmb()));
+			} else {
+				params01.put("vat", "0.00");
+				params01.put("amountTmb", "0.00");
+				params01.put("feeAmount", "0.00");
+				params01.put("vatAmount", "0.00");
+				params01.put("thaiBath", "ศูนย์บาทถ้วน");
+			}
+
+			params01.put("tmbRequestNo", req.getTmb_requestno());
+			String reportName02 = "RP_RECEIPT_TAX";
+			Map<String, Object> params02 = new HashMap<>();
+			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			params02.put("docType", "สำเนา");
+			params02.put("receiptNo", req.getReceipt_no());
+			params02.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params02.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+			params02.put("customerNameReceipt", vo.getCustomerName());
+			params02.put("organizeId", vo.getOrganizeId());
+			params02.put("address", vo.getAddress());
+			params02.put("pageActive", "2");
+			params02.put("pageTotal", "2");
+			params02.put("majorNo", vo.getBarnchCode());
+//			params02.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+			params02.put("reasonHeader", "สาเหตุการยกเลิก");
+			params02.put("reason",  String.format(cancelRemark,req.getReceipt_no_reference(),vo.getReason()));
+			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
+				//vat
+				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
+				//amountTmb
+				params02.put("amountTmb", formatNumber.format(req.getAmount_tmb()));
+				
+				vatAmount = (req.getAmount_tmb().doubleValue() * Double.parseDouble(vat.getVat()) / ( 100+Double.parseDouble(vat.getVat()) ));
+				params02.put("vatAmount",formatNumber.format(vatAmount));
+				 
+				feeAmount = req.getAmount_tmb().doubleValue() - vatAmount;
+				params02.put("feeAmount",formatNumber.format(feeAmount));
+				
+				/*thaiBath*/
+				params02.put("thaiBath", new ThaiBaht().getText(req.getAmount_tmb()));
+			} else {
+				params02.put("vat", "0.00");
+				params02.put("amountTmb", "0.00");
+				params02.put("feeAmount", "0.00");
+				params02.put("vatAmount", "0.00");
+				params02.put("thaiBath", "ศูนย์บาทถ้วน");
+			}
+
+			params02.put("tmbRequestNo", req.getTmb_requestno());
+
+			JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01, new JREmptyDataSource());
+			JasperPrint jasperPrint02 = ReportUtils.exportReport(reportName02, params02, new JREmptyDataSource());
+
+			// merge doc
+			List<ExporterInputItem> itemList = new ArrayList<>();
+			itemList.add(new SimpleExporterInputItem(jasperPrint01));
+			itemList.add(new SimpleExporterInputItem(jasperPrint02));
+
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(itemList));
+
+			os = new ByteArrayOutputStream();
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+			exporter.exportReport();
+
+			byte[] reportFile = os.toByteArray();
+
+			// set_name
+			String name = "RECEIPT_" + req.getTmb_requestno() + ".pdf";
+
+			// save to DB
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			req.setReason(String.format(cancelRemark,req.getReceipt_no_reference(),vo.getReason()));
+			req.setDelete_flag(0);
+			req.setReqform_id(vo.getId());
+			req.setAddress(vo.getAddress());
+			req.setCustomer_name(vo.getCustomerName());
+			req.setMajor_no(vo.getBarnchCode());
+			req.setOrganize_id(vo.getOrganizeId());
+			req.setFile_name(name);
+			req.setCreatedById(user.getUserId());
+			req.setCreatedByName(user.getFirstName()+" "+user.getLastName());
+			req.setCancel_flag(1);
+			upDateReqDetailDao.insertReqRecipt(req);
+			
+			// สร้าง ที่ พาท REPORT
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
+			// สร้าง ที่ พาท upload
+			String folder = SUB_PATH_UPLOAD;
+			upload.createFile(reportFile, folder, name);
+
+			ReportUtils.closeResourceFileInputStream(params01);
+		}catch(Exception ex) {
+			logger.error("ReportPdfService Error: {} ", ex);
+		}finally {
+			EcertFileUtils.closeStream( os );
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.RECEIPT_CODE, ACTION_AUDITLOG_DESC.RECEIPT,
+					(req!=null ? req.getTmb_requestno() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), 
+					currentDate);
+		}
+		
+		return "RECEIPT_" + (req!=null ?  req.getTmb_requestno() : null);
+	}
+	
+	public ReqReceiptVo addReqReceipt(RequestForm req ) {
+		
+		ReqReceiptVo reqReceipt = new ReqReceiptVo();
+		reqReceipt.setReceipt_no( req.getReceiptNo());
+		reqReceipt.setReceipt_date(req.getPaymentDate());
+		reqReceipt.setCustomer_name(req.getCustomerNameReceipt());
+		reqReceipt.setOrganize_id(req.getOrganizeId());
+		reqReceipt.setAddress(req.getAddress());
+		reqReceipt.setMajor_no(req.getMajorNo());
+		reqReceipt.setTmb_requestno(req.getTmbRequestNo());
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
+			reqReceipt.setAmount(req.getAmountTmb());
+			reqReceipt.setAmount_vat_tmb(req.getAmountTmbVat());
+			reqReceipt.setAmount_dbd(req.getAmountDbd());
+			reqReceipt.setAmount_tmb(req.getAmountTmb());
+		} else {
+			reqReceipt.setAmount(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_vat_tmb(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_dbd(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_tmb(BigDecimal.valueOf(0));
+		}
+
+		return reqReceipt;
+		
 	}
 
 }

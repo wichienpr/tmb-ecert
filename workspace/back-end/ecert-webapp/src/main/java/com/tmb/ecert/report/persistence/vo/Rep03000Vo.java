@@ -18,6 +18,7 @@ public class Rep03000Vo {
 
 	private String customerName;
 	private String majorNo;
+	private String remark;
 
 	public String getMajorNo() {
 		return majorNo;
@@ -114,5 +115,14 @@ public class Rep03000Vo {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 
 }

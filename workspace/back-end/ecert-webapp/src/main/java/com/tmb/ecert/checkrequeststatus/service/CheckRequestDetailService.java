@@ -1,5 +1,6 @@
 package com.tmb.ecert.checkrequeststatus.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,9 @@ import com.tmb.ecert.common.service.AuditLogService;
 import com.tmb.ecert.common.service.DownloadService;
 import com.tmb.ecert.common.service.EmailService;
 import com.tmb.ecert.common.service.PaymentWebService;
+import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
@@ -72,6 +75,9 @@ public class CheckRequestDetailService {
 	
 	@Autowired
 	private ReceiptGenKeyService receiptGenKeyService;
+	
+	@Autowired
+	private RequestorDao upDateReqDetailDao;
 
 	public List<Certificate> findCertListByReqFormId(String id) {
 		Long reqFormId = Long.valueOf(id);
@@ -213,6 +219,7 @@ public class CheckRequestDetailService {
 							newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 							updateForm(newReq, user);
 							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
+							createRequestFormReceipt(newReq, user);
 
 						} else {
 							response.setData(new ResponseVo(realtimeStep.getData().getDescription(),
@@ -283,6 +290,43 @@ public class CheckRequestDetailService {
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
 		updateForm(req, user);
 		return msg;
+	}
+	
+	private void createRequestFormReceipt(RequestForm req,UserDetails user) {
+		
+		ReqReceiptVo reqReceipt = new ReqReceiptVo();
+		reqReceipt.setReceipt_no( req.getReceiptNo());
+		reqReceipt.setReceipt_date(req.getPaymentDate());
+		reqReceipt.setCustomer_name(req.getCustomerNameReceipt());
+		reqReceipt.setOrganize_id(req.getOrganizeId());
+		reqReceipt.setAddress(req.getAddress());
+		reqReceipt.setMajor_no(req.getMajorNo());
+		reqReceipt.setTmb_requestno(req.getTmbRequestNo());
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
+			reqReceipt.setAmount(req.getAmountTmb());
+			reqReceipt.setAmount_vat_tmb(req.getAmountTmbVat());
+			reqReceipt.setAmount_dbd(req.getAmountDbd());
+			reqReceipt.setAmount_tmb(req.getAmountTmb());
+		} else {
+			reqReceipt.setAmount(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_vat_tmb(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_dbd(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_tmb(BigDecimal.valueOf(0));
+		}
+		reqReceipt.setReqform_id(req.getReqFormId());
+		reqReceipt.setFile_name(req.getReceiptFile());
+		reqReceipt.setCreatedById(user.getUserId());
+		reqReceipt.setCreatedByName(user.getFirstName()+" "+user.getLastName());
+		
+		upDateReqDetailDao.insertReqRecipt(reqReceipt);
+		
+		
+//		int dupReqid = upDateReqDetailDao.checkDuplicateReqID(req.getReqFormId());
+//		if (dupReqid == 0) {
+//			upDateReqDetailDao.insertReqRecipt(reqReceipt);
+//		}
+	
 	}
 
 }
