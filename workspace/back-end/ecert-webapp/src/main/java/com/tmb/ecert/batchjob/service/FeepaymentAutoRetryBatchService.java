@@ -188,6 +188,8 @@ public class FeepaymentAutoRetryBatchService {
 		reqReceipt.setFile_name(req.getReceiptFile());
 		reqReceipt.setCreatedById(req.getMakerById());
 		reqReceipt.setCreatedByName(req.getMakerByName());
+		reqReceipt.setCancel_flag(0);
+		reqReceipt.setDelete_flag(0);
 		
 		upDateReqDetailDao.insertReqRecipt(reqReceipt);
 

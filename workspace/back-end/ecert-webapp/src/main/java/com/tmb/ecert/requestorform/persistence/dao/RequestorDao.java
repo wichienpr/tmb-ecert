@@ -329,7 +329,7 @@ public class RequestorDao {
 		sql.append(" RECEIPT_DATE = ?,FILE_NAME = ? ,CUSTOMER_NAME = ?,"
 				+ " ORGANIZE_ID = ? ,ADDRESS = ? ,  MAJOR_NO = ? "
 				+ ",PRINT_COUNT = ? ,REASON = ? , RECEIPT_NO_REFERENCE = ? ,CANCEL_FLAG = ? ,DELETE_FLAG = ?  ");
-		sql.append("  WHERE REQFORM_ID = ? ");
+		sql.append("  WHERE RECEIPT_ID = ? ");
 		
 		List<Object> params = new ArrayList<>();
 
@@ -344,7 +344,7 @@ public class RequestorDao {
 		params.add( vo.getReceipt_no_reference());
 		params.add( vo.getCancel_flag());
 		params.add( vo.getDelete_flag());
-		params.add( vo.getReqform_id());
+		params.add( vo.getReceipt_id());
 		int row = jdbcTemplate.update(sql.toString(), params.toArray());
 	}
 	public void updateCancelFlagReqReceipt(ReqReceiptVo vo ) {

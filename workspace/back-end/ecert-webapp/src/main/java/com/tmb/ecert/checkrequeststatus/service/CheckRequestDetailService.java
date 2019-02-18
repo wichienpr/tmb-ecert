@@ -318,6 +318,8 @@ public class CheckRequestDetailService {
 		reqReceipt.setFile_name(req.getReceiptFile());
 		reqReceipt.setCreatedById(user.getUserId());
 		reqReceipt.setCreatedByName(user.getFirstName()+" "+user.getLastName());
+		reqReceipt.setCancel_flag(0);
+		reqReceipt.setDelete_flag(0);
 		
 		upDateReqDetailDao.insertReqRecipt(reqReceipt);
 		
