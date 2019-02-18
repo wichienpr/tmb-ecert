@@ -53,6 +53,7 @@ export class AuthService {
             lastName: result.lastName,
             auths: result.auths,
             segment: result.segment || "",
+            department:result.department
           };
           this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
           resolve(true);

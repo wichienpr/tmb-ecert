@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
               lastName: "",
               auths: [],
               segment: "",
+              department:""
             };
             this.store.dispatch(new UpdateUser(INIT_USER_DETAIL));
             this.router.navigate(['/login']);

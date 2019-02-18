@@ -21,6 +21,7 @@ const INIT_USER_DETAIL: UserDetail = {
     lastName: "",
     auths: [],
     segment: "",
+    department:""
 };
 
 // Reducers
