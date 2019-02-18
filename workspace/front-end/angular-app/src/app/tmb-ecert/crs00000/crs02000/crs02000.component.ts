@@ -221,8 +221,8 @@ export class Crs02000Component implements OnInit {
     this.service.pdf(what == 'c' ? cover : receipt, this.id, this.data.tmbRequestNo);
     setTimeout(() => {
       this.isprintReceipt = this.service.isPrinted;
-      console.log("service printed is "+this.service.isPrinted)
-    }, 400);
+      // console.log("service printed is "+this.service.isPrinted)
+    }, 500);
 
   }
 
