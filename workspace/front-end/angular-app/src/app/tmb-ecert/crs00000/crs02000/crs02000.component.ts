@@ -219,6 +219,11 @@ export class Crs02000Component implements OnInit {
     const cover = "crsCover02000";
     const receipt = "crsReceipt02000";
     this.service.pdf(what == 'c' ? cover : receipt, this.id, this.data.tmbRequestNo);
+    setTimeout(() => {
+      this.isprintReceipt = this.service.isPrinted;
+      console.log("service printed is "+this.service.isPrinted)
+    }, 400);
+
   }
 
   invalid(formGroup: FormGroup, control: string): boolean {
@@ -337,7 +342,7 @@ export class Crs02000Component implements OnInit {
 
   cancelReceiptSubmit(){
     this.cancelSubmitted = true;
-    console.log("cancel receipt",this.cancelForm.value);
+    // console.log("cancel receipt",this.cancelForm.value);
     let form = {id: parseInt(this.id),reason: this.cancelForm.value.cancelReason,
     customerName:this.cancelForm.value.companyName ,
     barnchCode:this.cancelForm.value.barnchCode,
@@ -434,7 +439,7 @@ export class Crs02000Component implements OnInit {
       return false;
     }else{
       // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
-      return (this.chkStatus(REQ_STATUS.ST10009) || this.chkStatus(REQ_STATUS.ST10010)) && this.common.isAuth(PAGE_AUTH.P0000404) ;
+      return (this.chkStatus(REQ_STATUS.ST10009) || this.chkStatus(REQ_STATUS.ST10010)) && this.common.isAuth(PAGE_AUTH.P0000404)  && this.isprintReceipt;
     }
   }
   get receiptToggle() {
