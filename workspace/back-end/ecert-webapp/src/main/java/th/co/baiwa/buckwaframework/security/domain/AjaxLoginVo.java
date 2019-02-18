@@ -12,6 +12,7 @@ public class AjaxLoginVo {
 	private String status;
 	private String discription;
 	private String segment;
+	private String department;
 	private List<String> roles = new ArrayList<>();
 	private List<String> auths = new ArrayList<>();
 
@@ -86,6 +87,15 @@ public class AjaxLoginVo {
 	public void setSegment(String segment) {
 		this.segment = segment;
 	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	
 	
 
 }
