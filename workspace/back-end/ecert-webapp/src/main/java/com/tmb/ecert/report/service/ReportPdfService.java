@@ -730,10 +730,9 @@ public class ReportPdfService {
 			String name = "RECEIPT_" + req.getTmb_requestno() + ".pdf";
 
 			// save to DB
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 //			req.setReceiptFile(name);
-//			req.setReceiptDate(timestamp);
-//			upDateReqDetailDao.update(req);
+			req.setReceipt_date(new Timestamp(System.currentTimeMillis()));
 			req.setPrint_count(print_count);
 			req.setReason(vo.getReason());
 //			req.setDelete_flag(0);
