@@ -7,4 +7,5 @@ export interface UserDetail {
     lastName: string
     segment: string
     auths: string[]
+    department:string
 }
