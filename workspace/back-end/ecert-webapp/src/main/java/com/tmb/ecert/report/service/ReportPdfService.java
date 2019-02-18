@@ -778,7 +778,7 @@ public class ReportPdfService {
 			
 			String receiptNo = receiptGenKeyService.getNextKey();
 			String oldReceiptNo = req.getReceipt_no();
-			req.setCancel_flag(0);
+//			req.setCancel_flag(0);
 			req.setReqform_id(vo.getId());
 			req.setReason("ถูกยกเลิกและออกใบกำกับภาษีฉบับใหม่ด้วย เลขที่ "+ receiptNo);
 			req.setUpdatedById(user.getUserId());
