@@ -122,18 +122,32 @@
         <br>
         <div style="overflow-x: auto;white-space: nowrap;">
             <ng-datatable-search [ng-datatable]="repDT"></ng-datatable-search>
-            <table e [ngDatatable]="repDTConfig" #repDT="ngDatatable"   class="ui small celled table nowrap" style="width: 100%" id="table">
+            <table e [ngDatatable]="repDTConfig" #repDT="ngDatatable"   class="ui small celled table nowrap" style="table-layout: fixed;" id="table">
                 <thead>
+                    <!-- <colgroup>
+                        <col style="width: 30px;"/>
+                        <col style="width: 80px;"/>
+                        <col style="width: 80px;"/>
+                        <col style="width: 120px;"/>
+                        <col style="width: 120px;"/>
+                        <col style="width: 100px;"/>
+                        <col style="width: 100px;"/>
+                        <col style="width: 100px;"/>
+                        <col style="width: 100px;"/>
+                        <col style="width: 100px;"/>
+                    
+                    </colgroup> -->
                     <tr style="text-align: center;">
-                        <th rowspan="2">ลำดับ</th>
-                        <th colspan="2">ใบกำกับภาษี</th>
-                        <th rowspan="2">ชื่อผู้ซื้อสินค้า/ผู้รับบริการ</th>
-                        <th rowspan="2">เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ</th>
-                        <th rowspan="2" style="width: 200px">สถานประกอบการ</th>
+                        <th rowspan="2" width="60px">ลำดับ</th>
+                        <th colspan="2" width="200px">ใบกำกับภาษี</th>
+                        <th rowspan="2" width="300px">ชื่อผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                        <th rowspan="2" width="200px">เลขประจำตัวผู้เสียภาษีอากรของ <br> ผู้ซื้อสินค้า/ผู้รับบริการ</th>
+                        <th rowspan="2" width="400px">สถานประกอบการ</th>
                         <!-- <th rowspan="2">สำนักงานใหญ่/สาขา</th> -->
-                        <th rowspan="2">มูลค่าสินค้า/บริการ</th>
-                        <th rowspan="2">จำนวนเงินภาษีมูลค่าเพิ่ม</th>
-                        <th rowspan="2">จำนวนเงินรวม</th>
+                        <th rowspan="2" width="120px">มูลค่าสินค้า/บริการ</th>
+                        <th rowspan="2"  width="120px">จำนวนเงิน <br>ภาษีมูลค่าเพิ่ม</th>
+                        <th rowspan="2"  width="120px">จำนวนเงินรวม</th>
+                        <th rowspan="2"  width="400px">หมายเหตุ</th>
                     </tr>
                     <tr style="text-align: center;">
                         <th>เลขที่</th>
@@ -148,13 +162,14 @@
                         <td style="text-align: center !important;">{{i+1}}</td>
                         <td style="text-align: center !important;">{{data.receiptNo}}</td>
                         <td style="text-align: center !important;">{{data.paymentDate | dateFromString}}</td>
-                        <td style="text-align: left   !important;">{{data.companyName}}</td>
+                        <td style="text-align: left   !important; white-space: pre-wrap">{{data.companyName}}</td>
                         <td style="text-align: center !important;">{{data.organizeId}}</td>
-                        <td style="text-align: left   !important;">{{data.address}}</td>
+                        <td style="text-align: left   !important;  white-space: pre-wrap">{{data.address}}</td>
                         <!-- <td style="text-align: left   !important;">{{data.branch}}</td> -->
                         <td style="text-align: right  !important;">{{data.amountTmbVat | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: right  !important;">{{data.amountVat | decimalFormat :"###,###.00"}}</td>
                         <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: left  !important; white-space: pre-wrap">{{data.remark}}</td>
                     </tr>
                 </tbody>
             </table>

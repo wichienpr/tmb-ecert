@@ -20,6 +20,8 @@ export class Crs02000Component implements OnInit {
   formCert: FormGroup;
   formReject: FormGroup;
   formAuth: FormGroup;
+  reprintForm: FormGroup;
+  cancelForm: FormGroup;
 
   id: string = "";
   date: Date = new Date();
@@ -27,13 +29,16 @@ export class Crs02000Component implements OnInit {
   certSubmitted: boolean = false;
   rejectSubmitted: boolean = false;
   authSubmitted: boolean = false;
+  reprintSubmitted: boolean = false;
   history: RequestForm[] = [];
   chkList: Certificate[] = [];
   data: RequestForm = initRequestForm;
   cert: RequestCertificate[] = [];
   paidModal: Modal;
   allowedModal: Modal;
-  documentModal: Modal;
+  documentModal: Modal;  
+  reprintModal: Modal;
+  cancelReceiptModal: Modal;
   allowed: Dropdown;
   tab: any;
   paidTypeString: string = "";
@@ -42,6 +47,9 @@ export class Crs02000Component implements OnInit {
   toggleDoc: string = "content";
   toggleTitle: string = "title";
 
+  toggleRecp: string = "content";
+  toggleTitleRecp: string = "title";
+
   @ViewChild("historyDt")
   historyDt: DatatableDirective;
   historyConfig: DatatableCofnig;
@@ -49,6 +57,10 @@ export class Crs02000Component implements OnInit {
   authForSubmit: Modal;
 
   files: any;
+
+  isprintReceipt:boolean = false;
+  cancelSubmitted:boolean = false;
+
 
   constructor(
     private service: Crs02000Service,
@@ -62,6 +74,8 @@ export class Crs02000Component implements OnInit {
     this.allowedModal = { modalId: "allowed", type: "custom" };
     this.documentModal = { modalId: "document", type: "custom" };
     this.allowedModal = { modalId: "allowed", type: "custom" };
+    this.reprintModal = { modalId: "reprint", type: "custom" };
+    this.cancelReceiptModal= { modalId: "cancel", type: "custom" };
     this.files = {
       certFile: null,
     };
@@ -80,9 +94,23 @@ export class Crs02000Component implements OnInit {
       serverSide: true,
       useBlockUi: true
     };
+
   }
 
   ngOnInit() {
+
+    this.reprintForm = this.formBuilder.group({
+      reprintReason: ['', Validators.required]
+    });
+
+    this.cancelForm = this.formBuilder.group({
+      companyName: ['', Validators.required],
+      taxid: ['', Validators.required],
+      barnchCode: ['', Validators.required],
+      address: ['', Validators.required],
+      cancelReason: ['', Validators.required],
+    });
+
     this.formCert = this.formBuilder.group({
       certFile: ['', Validators.required]
     });
@@ -128,6 +156,7 @@ export class Crs02000Component implements OnInit {
       }
       setTimeout(() => {
         this.dataLoading = false;
+        this.checkPrintReceipt();
       }, 500);
     }
   }
@@ -262,6 +291,16 @@ export class Crs02000Component implements OnInit {
     }
   }
 
+  toggleReceipt() {
+    if (this.toggleRecp=== "content") {
+      this.toggleRecp = "";
+      this.toggleTitleRecp = "";
+    } else {
+      this.toggleRecp = "content";
+      this.toggleTitleRecp = "title";
+    }
+  }
+
   classByCode(e) {
     switch (e) {
       case '50001':
@@ -274,6 +313,63 @@ export class Crs02000Component implements OnInit {
         return ''
     }
   }
+  reprint(){
+    $('#reprint').modal('show');
+    // console.log("data ",this.data );
+  }
+  reprintSumit(){
+
+    this.reprintSubmitted = true;
+    if (this.reprintForm.valid) {
+      this.service.reprintReceipt(this.id,this.reprintForm.value.reprintReason)
+    }
+  }
+
+  cancel(){
+    this.cancelForm.setValue({
+      companyName:this.data.companyName,
+      taxid:this.data.organizeId,
+      barnchCode:this.data.majorNo,
+      address:this.data.address,
+      cancelReason:''});
+    $('#cancel').modal('show');
+  }
+
+  cancelReceiptSubmit(){
+    this.cancelSubmitted = true;
+    console.log("cancel receipt",this.cancelForm.value);
+    let form = {id: parseInt(this.id),reason: this.cancelForm.value.cancelReason,
+    customerName:this.cancelForm.value.companyName ,
+    barnchCode:this.cancelForm.value.barnchCode,
+    address:this.cancelForm.value.address,
+    organizeId:this.cancelForm.value.taxid}
+   
+    if (this.cancelForm.valid){
+      this.service.cancelReceipt(form)
+    }
+
+
+  }
+
+  checkPrintReceipt(){
+    if (this.data.receiptFile != "" && this.data.receiptFile != null ){
+      this.isprintReceipt = true;
+      // console.log("already print receipt..",this.data.receiptFile);
+    }else{
+      this.isprintReceipt = false;
+    }
+
+    if (this.chkStatus(REQ_STATUS.ST10010) == true){
+      this.isprintReceipt = true;
+    }
+  }
+  get reprintReason() { return this.reprintForm.get("reprintReason") }
+
+  get companyName(){return this.cancelForm.get("companyName")}
+  get taxid(){return this.cancelForm.get("taxid")}
+  get barnchCode(){return this.cancelForm.get("barnchCode")}
+  get address(){return this.cancelForm.get("address")}
+  get cancelReason(){return this.cancelForm.get("cancelReason")}
 
   get authUsername() { return this.formAuth.get("authUsername") }
   get authPassword() { return this.formAuth.get("authPassword") }
@@ -307,7 +403,7 @@ export class Crs02000Component implements OnInit {
       return false;
     }else{
       // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
-      return this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+      return this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) && !this.isprintReceipt
     }
   }
   get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
@@ -322,6 +418,27 @@ export class Crs02000Component implements OnInit {
 
   get btnPayment(){
     return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10008) && this.common.isAuth(PAGE_AUTH.P0000401)
+  }
+
+  get btnReprint(){
+    if ( this.data.paidTypeCode == '30004'){
+      return false;
+    }else{
+      // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+      return (this.chkStatus(REQ_STATUS.ST10009) || this.chkStatus(REQ_STATUS.ST10010)) && this.common.isAuth(PAGE_AUTH.P0000404) && this.isprintReceipt
+    }
+  }
+
+  get btnCancelReceipt(){
+    if ( this.data.paidTypeCode == '30004'){
+      return false;
+    }else{
+      // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
+      return (this.chkStatus(REQ_STATUS.ST10009) || this.chkStatus(REQ_STATUS.ST10010)) && this.common.isAuth(PAGE_AUTH.P0000404) ;
+    }
+  }
+  get receiptToggle() {
+    return (this.chkStatus(REQ_STATUS.ST10009) || this.chkStatus(REQ_STATUS.ST10010)) && this.common.isAuth(PAGE_AUTH.P0000404) ;
   }
 
 }
