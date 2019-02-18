@@ -34,6 +34,7 @@ export const URL = {
 export class Crs02000Service {
 
   private hasAuthed: string = "false";
+  public isPrinted:boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -284,6 +285,7 @@ export class Crs02000Service {
     if (what == receipt) {
       this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
+        this.isPrinted = true;
         this.common.isLoaded();
       }, error => {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
