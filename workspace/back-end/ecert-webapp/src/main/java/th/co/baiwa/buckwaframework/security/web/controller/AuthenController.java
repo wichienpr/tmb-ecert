@@ -86,6 +86,7 @@ public class AuthenController {
 
 			vo.setStatus(LOGIN_STATUS.SUCCESS);
 			vo.setAuths(user.getAuths());
+			vo.setSegment(user.getDepartment());
 
 			List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
 
@@ -159,6 +160,7 @@ public class AuthenController {
 
 			vo.setStatus(LOGIN_STATUS.SUCCESS);
 			vo.setAuths(user.getAuths());
+			vo.setSegment(user.getDepartment());
 
 			List<SessionInformation> inallsess = sessionRegistry.getAllSessions(user, false);
 

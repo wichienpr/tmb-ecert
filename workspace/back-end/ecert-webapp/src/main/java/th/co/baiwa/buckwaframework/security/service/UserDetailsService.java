@@ -207,13 +207,21 @@ public class UserDetailsService implements org.springframework.security.core.use
 		rs.setTelephoneNo(tMBPerson.getTelephoneNo());
 		rs.setEmail(tMBPerson.getEmail());
 		rs.setDepartmentCode(tMBPerson.getDepartmentCode());
-		
-		String fullName = tMBPerson.getName(); // firstname , lastname
-		logger.debug("Full Name : {}", fullName); // TODO plz checked
-		String[] spfullName = fullName.split(" ");
-		 
-		rs.setFirstName(spfullName[0]);
-		rs.setLastName(spfullName[1]);
+		String fullName = "";
+		if (tMBPerson.getName() != null) {
+			
+			fullName = tMBPerson.getName(); // firstname , lastname
+			logger.debug("Full Name : {}", fullName); // TODO plz checked
+			String[] spfullName = fullName.split(" ");
+			 
+			rs.setFirstName(spfullName[0]);
+			rs.setLastName(spfullName[1]);
+		}else {
+			// set name when role admin
+			rs.setFirstName(" ");
+			rs.setLastName(" ");
+		}
+
 		
 		List<String> roles = new ArrayList<>();
 		for ( GrantedAuthority g : grantedAuthorityList) {

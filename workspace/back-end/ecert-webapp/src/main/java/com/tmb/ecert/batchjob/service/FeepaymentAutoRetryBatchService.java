@@ -1,5 +1,6 @@
 package com.tmb.ecert.batchjob.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +21,13 @@ import com.tmb.ecert.common.constant.StatusConstant.PAYMENT_STATUS;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.common.service.PaymentWebService;
+import com.tmb.ecert.common.utils.BeanUtils;
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
+import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
+
+import th.co.baiwa.buckwaframework.security.domain.UserDetails;
 
 @Service
 @ConditionalOnProperty(name = "job.autoRetryFeePayment.cornexpression", havingValue = "", matchIfMissing = false)
@@ -40,8 +46,10 @@ public class FeepaymentAutoRetryBatchService {
 	
 	@Autowired
 	private ReceiptGenKeyService receiptGenKeyService;
-
-
+	
+	@Autowired
+	private RequestorDao upDateReqDetailDao;
+	
 	public void run() {
 		List<RequestForm> forms = dao.findByStatus(StatusConstant.PAYMENT_FAILED);
 		for (RequestForm form : forms) {
@@ -113,6 +121,7 @@ public class FeepaymentAutoRetryBatchService {
 						response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 						dao.updateRequestForm(newReq);
 						history.save(newReq);
+						createRequestFormReceipt(newReq);
 
 					} else {
 						response.setData(new ResponseVo(realtimeStep.getData().getDescription(),
@@ -150,5 +159,38 @@ public class FeepaymentAutoRetryBatchService {
 		dao.updateRequestForm(req);
 		msg.setMessage(PAYMENT_STATUS.ERROR_MSG);
 		return msg;
+	}
+	
+
+	private void createRequestFormReceipt(RequestForm req) {
+		
+		ReqReceiptVo reqReceipt = new ReqReceiptVo();
+		reqReceipt.setReceipt_no( req.getReceiptNo());
+		reqReceipt.setReceipt_date(req.getPaymentDate());
+		reqReceipt.setCustomer_name(req.getCustomerNameReceipt());
+		reqReceipt.setOrganize_id(req.getOrganizeId());
+		reqReceipt.setAddress(req.getAddress());
+		reqReceipt.setMajor_no(req.getMajorNo());
+		reqReceipt.setTmb_requestno(req.getTmbRequestNo());
+
+		if (BeanUtils.isNotEmpty(req.getAmountTmb())) {
+			reqReceipt.setAmount(req.getAmountTmb());
+			reqReceipt.setAmount_vat_tmb(req.getAmountTmbVat());
+			reqReceipt.setAmount_dbd(req.getAmountDbd());
+			reqReceipt.setAmount_tmb(req.getAmountTmb());
+		} else {
+			reqReceipt.setAmount(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_vat_tmb(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_dbd(BigDecimal.valueOf(0));
+			reqReceipt.setAmount_tmb(BigDecimal.valueOf(0));
+		}
+		reqReceipt.setReqform_id(req.getReqFormId());
+		reqReceipt.setFile_name(req.getReceiptFile());
+		reqReceipt.setCreatedById(req.getMakerById());
+		reqReceipt.setCreatedByName(req.getMakerByName());
+		
+		upDateReqDetailDao.insertReqRecipt(reqReceipt);
+
+	
 	}
 }

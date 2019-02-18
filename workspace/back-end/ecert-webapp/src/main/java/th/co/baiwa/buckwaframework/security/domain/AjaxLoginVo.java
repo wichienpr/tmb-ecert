@@ -11,6 +11,7 @@ public class AjaxLoginVo {
 	private String lastName;
 	private String status;
 	private String discription;
+	private String segment;
 	private List<String> roles = new ArrayList<>();
 	private List<String> auths = new ArrayList<>();
 
@@ -77,5 +78,14 @@ public class AjaxLoginVo {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
+	}
+	
 
 }

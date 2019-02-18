@@ -30,6 +30,7 @@ import com.tmb.ecert.common.service.ExcalService;
 import com.tmb.ecert.report.persistence.dao.RepDao;
 import com.tmb.ecert.report.persistence.vo.Rep03000FormVo;
 import com.tmb.ecert.report.persistence.vo.Rep03000Vo;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 import th.co.baiwa.buckwaframework.common.util.EcerDateUtils;
@@ -45,29 +46,35 @@ public class Rep03000tService {
 	@Autowired
 	private ExcalService excalService;
 
-	public Rep03000FormVo findAll(Rep03000FormVo formVo) {
-		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
-		rep03000VoList = repDao.getDataRep03000(formVo);
+	public List<ReqReceiptVo> findAll(Rep03000FormVo formVo) {
+//		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
+		List<ReqReceiptVo> rep03000VoList = new ArrayList<ReqReceiptVo>();
+		
+//		rep03000VoList = repDao.getDataRep03000(formVo);
+		rep03000VoList = repDao.getDataReqRep03000(formVo);
+		
+//
+//		if (rep03000VoList.size() != 0) {
+//			formVo.setCustomerNameHead(rep03000VoList.get(0).getCustomerName());
+//			formVo.setOrganizeIdHead(rep03000VoList.get(0).getOrganizeId());
+//			formVo.setCompanyNameHead(rep03000VoList.get(0).getCompanyName());
+//			formVo.setBranchHead(rep03000VoList.get(0).getBranch());
+//			formVo.setAddressHead(rep03000VoList.get(0).getAddress());
+//		}
 
-		if (rep03000VoList.size() != 0) {
-			formVo.setCustomerNameHead(rep03000VoList.get(0).getCustomerName());
-			formVo.setOrganizeIdHead(rep03000VoList.get(0).getOrganizeId());
-			formVo.setCompanyNameHead(rep03000VoList.get(0).getCompanyName());
-			formVo.setBranchHead(rep03000VoList.get(0).getBranch());
-			formVo.setAddressHead(rep03000VoList.get(0).getAddress());
-		}
+//		formVo.setRep03000VoList(rep03000VoList);
 
-		formVo.setRep03000VoList(rep03000VoList);
-
-		return formVo;
+		return rep03000VoList;
 	}
 
 	public DataTableResponse<Rep03000Vo> findAllDatatable(Rep03000FormVo formVo) {
 		List<Rep03000Vo> rep03000VoList = new ArrayList<Rep03000Vo>();
 		DataTableResponse<Rep03000Vo> datatableList = new DataTableResponse<>();
-		rep03000VoList = repDao.getDataRep03000Datatable(formVo);
+//		rep03000VoList = repDao.getDataRep03000Datatable(formVo);
+		rep03000VoList = repDao.getDataReqRep03000Datateble(formVo);
 		datatableList.setData(rep03000VoList);
-		int count = repDao.getDataRep03000Count(formVo);
+//		int count = repDao.getDataRep03000Count(formVo);
+		int count = repDao.getDataReqRep03000Count(formVo);
 		datatableList.setRecordsTotal(count);
 
 		return datatableList;
@@ -75,11 +82,11 @@ public class Rep03000tService {
 
 	public void exportFile(Rep03000FormVo formVo, HttpServletResponse response) throws IOException {
 		Rep03000FormVo formVofindAll = new Rep03000FormVo();
-		List<Rep03000Vo> dataTestList = new ArrayList<Rep03000Vo>();
+		List<ReqReceiptVo> dataTestList = new ArrayList<ReqReceiptVo>();
 	
-		formVofindAll= findAll(formVo);
+		dataTestList= findAll(formVo);
 		
-		dataTestList = formVofindAll.getRep03000VoList();
+//		dataTestList = formVofindAll.getRep03000VoList();
 //		dataTestList = formVo.getDataT();
 		
 			/* create spreadsheet */
@@ -181,7 +188,7 @@ public class Rep03000tService {
 /*			String[] tbTH1 = { "ลำดับ","ใบกำกับภาษี","","ชื่อผู้ซื้อสินค้า/ผู้รับบริการ","เลขประจำตัวผู้เสียภาษีอากรของผู้ซื้อสินค้า/ผู้รับบริการ","สถานประกอบการ","สำนักงานใหญ่/สาขา", "มูลค่าสินค้า/บริการ",
 		             "จำนวนเงินภาษีมูลค่าเพิ่ม","จำนวนเงินรวม"};*/
 			String[] tbTH1 = { "ลำดับ","ใบกำกับภาษี","","ชื่อผู้ซื้อสินค้า/ผู้รับบริการ","เลขประจำตัวผู้เสียภาษีอากร \n ของผู้ซื้อสินค้า/ผู้รับบริการ","สถานประกอบการ", "มูลค่าสินค้า/บริการ",
-		             "จำนวนเงิน \n ภาษีมูลค่าเพิ่ม","จำนวนเงินรวม"};
+		             "จำนวนเงิน \n ภาษีมูลค่าเพิ่ม","จำนวนเงินรวม" ,"หมายเหตุ"};
 			row = sheet.createRow(rowNum);
 			for (cellNum = 0; cellNum < tbTH1.length; cellNum++) {
 				cell = row.createCell(cellNum);
@@ -191,7 +198,7 @@ public class Rep03000tService {
 			rowNum++;
 			
 //			String[] tbTH2 = formVo.getTrHtml2();
-			String[] tbTH2 = { "เลขที่", "วันที่","","","สำนักงานใหญ่/สาขา","","",""};
+			String[] tbTH2 = { "เลขที่", "วันที่","","","สำนักงานใหญ่/สาขา","","","",""};
 			row = sheet.createRow(rowNum);
 			int cellNumtbTH2 = 1;
 			for (int i = 0; i < tbTH2.length; i++) {
@@ -222,24 +229,31 @@ public class Rep03000tService {
 			Double sumVat = new Double(0);
 			Double sumAmountTMBvat = new Double(0);
 			Double sumAmountTMB = new Double(0);
-			for (Rep03000Vo detail : dataTestList) {
+			BigDecimal amountTMBVat = new BigDecimal(0);
+			for (ReqReceiptVo detail : dataTestList) {
+				
+				Float totalAmountVat = convertBigDecimalToLong(detail.getAmount_tmb()) - convertBigDecimalToLong(detail.getAmount_vat_tmb());
+				amountTMBVat = new BigDecimal(totalAmountVat).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 				row = sheet.createRow(rowNum);
 				// No.
 				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue(String.valueOf(order));
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getReceiptNo()))?detail.getReceiptNo(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getPaymentDate()))?detail.getPaymentDate(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft);cell.setCellValue((StringUtils.isNotBlank(detail.getCompanyName()))?detail.getCompanyName(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellTextCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganizeId()))?detail.getOrganizeId(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getReceipt_no()))?detail.getReceipt_no(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(DateConstant.convertDateToStrDDMMYYYY(detail.getReceipt_date())))?DateConstant.convertDateToStrDDMMYYYY(detail.getReceipt_date()): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft);cell.setCellValue((StringUtils.isNotBlank(detail.getCustomer_name()))?detail.getCustomer_name(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellTextCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getOrganize_id()))?detail.getOrganize_id(): "" );
 //				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getAddress()))?detail.getAddress(): "" );
 //				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getBranch()))?detail.getBranch(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMajorNo())) ? detail.getMajorNo() : "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmbVat().toString()))?detail.getAmountTmbVat().toString(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountVat().toString()))?detail.getAmountVat().toString(): "" );
-				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmountTmb().toString()))?detail.getAmountTmb().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellCenter);cell.setCellValue((StringUtils.isNotBlank(detail.getMajor_no())) ? detail.getMajor_no() : "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(amountTMBVat.toString()))?amountTMBVat.toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount_vat_tmb().toString()))?detail.getAmount_vat_tmb().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellRight);cell.setCellValue((StringUtils.isNotBlank(detail.getAmount_tmb().toString()))?detail.getAmount_tmb().toString(): "" );
+				cell = row.createCell(cellNum++);cell.setCellStyle(excalService.cellLeft);cell.setCellValue((StringUtils.isNotBlank(detail.getReason()))?detail.getReason(): "" );
 				
-				sumAmountTMB = sumAmountTMB + convertBigDecimalToLong(detail.getAmountTmb());
-				sumVat = sumVat + convertBigDecimalToLong(detail.getAmountVat());
-				sumAmountTMBvat = sumAmountTMBvat + + convertBigDecimalToLong(detail.getAmountTmbVat());
+				if (detail.getCancel_flag() == 0) {
+					sumAmountTMB = sumAmountTMB + convertBigDecimalToLong(detail.getAmount_tmb());
+					sumVat = sumVat + convertBigDecimalToLong(detail.getAmount_vat_tmb());
+					sumAmountTMBvat = sumAmountTMBvat + + convertBigDecimalToLong(amountTMBVat);
+				}
 				
 				rowNum++;
 				order++;
@@ -307,6 +321,10 @@ public class Rep03000tService {
 
 	public Float convertBigDecimalToLong(BigDecimal bigdecimal) {
 		return (bigdecimal != null) ? bigdecimal.floatValue() : 0f;
+	}
+	public BigDecimal convertBigDecimalToZero(BigDecimal bigdecimal) {
+		return (bigdecimal != null) ? bigdecimal.setScale(2, BigDecimal.ROUND_HALF_EVEN)
+				: BigDecimal.ZERO.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 	}
 
 }
