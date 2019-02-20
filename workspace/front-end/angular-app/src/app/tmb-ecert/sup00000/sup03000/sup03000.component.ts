@@ -157,7 +157,7 @@ export class Sup03000Component implements OnInit {
   }
 
   get isCanEdit() {
-    return this.commonService.ishasAuth(this.user, PAGE_AUTH.P0000200)
+    return this.commonService.ishasAuth(this.user, PAGE_AUTH.P0001501)
   }
 
 }
