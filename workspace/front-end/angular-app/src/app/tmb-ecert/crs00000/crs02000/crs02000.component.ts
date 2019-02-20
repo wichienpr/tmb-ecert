@@ -215,14 +215,21 @@ export class Crs02000Component implements OnInit {
     this.service.download(fileName);
   }
 
-  pdf(what: string) {
+  async pdf(what: string) {
     const cover = "crsCover02000";
     const receipt = "crsReceipt02000";
-    this.service.pdf(what == 'c' ? cover : receipt, this.id, this.data.tmbRequestNo);
-    setTimeout(() => {
-      this.isprintReceipt = this.service.isPrinted;
-      // console.log("service printed is "+this.service.isPrinted)
-    }, 500);
+    // this.service.pdf(what == 'c' ? cover : receipt, this.id, this.data.tmbRequestNo);
+    // setTimeout(() => {
+    //   this.isprintReceipt = this.service.isPrinted;
+    //   // console.log("service printed is "+this.service.isPrinted)
+    // }, 500);
+
+    if (what == 'c') {
+      this.service.pdf( cover, this.id, this.data.tmbRequestNo);
+    }
+    else{
+      this.isprintReceipt = await this.service.pdfReceipt( this.id, this.data.tmbRequestNo);
+    }
 
   }
 

@@ -272,7 +272,7 @@ export class Crs02000Service {
     const cover = "crsCover02000";
     const receipt = "crsReceipt02000";
 
-    if (what == cover) {
+    
       this.ajax.post(URL.CREATE_COVER, { id: parseInt(id), tmpReqNo: tmbNo }, response => {
         this.ajax.download(URL.PDF + response._body + "/download");
         this.common.isLoaded();
@@ -280,18 +280,33 @@ export class Crs02000Service {
         this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
         this.common.isLoaded();
       });
-    }
+    
 
-    if (what == receipt) {
-      this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
-        this.ajax.download(URL.PDF + response._body + "/download");
-        this.isPrinted = true;
-        this.common.isLoaded();
-      }, error => {
-        this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
-        this.common.isLoaded();
-      });
-    }
+    // if (what == receipt) {
+    //   this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
+    //     this.ajax.download(URL.PDF + response._body + "/download");
+    //     this.isPrinted = true;
+    //     this.common.isLoaded();
+    //   }, error => {
+    //     this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
+    //     this.common.isLoaded();
+    //   });
+    // }
+  }
+
+  pdfReceipt(id: string, tmbNo: string = ""){
+    this.common.isLoading();
+    return this.ajax.post(URL.CREATE_RECEIPT, { id: parseInt(id) }, response => {
+      this.ajax.download(URL.PDF + response._body + "/download");
+      // this.isPrinted = true;
+      this.common.isLoaded();
+      return true;
+    }, error => {
+      this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
+      this.common.isLoaded();
+      return false;
+    });
+
   }
   reprintReceipt(id: string,reason:string){
     this.common.isLoading();
