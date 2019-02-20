@@ -547,7 +547,7 @@ public class ReportPdfService {
 
 			Map<String, Object> params02 = new HashMap<>();
 			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
-			params02.put("companyName", vo.getCompanyName());
+			params02.put("companyName", vo.getAccountName());
 			params02.put("accountNo", vo.getAccountNo());
 
 			Date reqDate2 = DateConstant.convertStrDDMMYYYYToDate(vo.getReqDate());

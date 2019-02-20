@@ -24,6 +24,7 @@ public class UserDetails extends User implements UserBean {
 	private String telephoneNo;
 	private String email;
 	private String departmentCode;
+	private String position;
 	
 	
 	// Constructor
@@ -136,6 +137,14 @@ public class UserDetails extends User implements UserBean {
 
 	public void setDepartmentCode(String departmentCode) {
 		this.departmentCode = departmentCode;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 	
 	

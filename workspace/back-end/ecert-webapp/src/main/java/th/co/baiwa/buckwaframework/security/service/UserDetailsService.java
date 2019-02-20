@@ -207,6 +207,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 		rs.setTelephoneNo(tMBPerson.getTelephoneNo());
 		rs.setEmail(tMBPerson.getEmail());
 		rs.setDepartmentCode(tMBPerson.getDepartmentCode());
+		rs.setPosition(tMBPerson.getPosition());
 		String fullName = "";
 		if (tMBPerson.getName() != null) {
 			
