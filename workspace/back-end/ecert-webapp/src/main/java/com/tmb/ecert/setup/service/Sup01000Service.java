@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -222,7 +223,84 @@ public class Sup01000Service {
 		Cell cell = row.createCell(cellNum);
 		row.setHeight((short) 0x249);
 		
+		for (int i = 0; i < headerTable.length; i++) {
+			row = sheet.createRow(i);
+			cell = row.createCell(0);
+			cell.setCellValue(headerTable[i]);
+			cell.setCellStyle(headerBlue);
+		}
+		
+		for (int i = 0; i < headerTableSub.length; i++) {
+			row = sheet.getRow(i);
+			cell = row.createCell(1);
+			cell.setCellValue(headerTableSub[i]);
+			cell.setCellStyle(headerBlue);
+		}
+		
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(3, 4, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(5, 15,0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(16,16,0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(17, 17, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(18, 19, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(20, 21, 0, 1));
+		sheet.addMergedRegion(new CellRangeAddress(22, 23, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(24, 25, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(26, 27, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(28, 32, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(33, 34, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(35, 36, 0, 0));
+		sheet.addMergedRegion(new CellRangeAddress(37, 37, 0, 1));
+		
+		List<Sup01100Vo> permissionRole;
+		rowNum = 2;
+		cellNum = 1;
+		int order = 1;
+		
+		for (RoleVo detail : roleList) {
+			permissionRole = userRoleDao.getListPermissionByRoleID(detail.getRoldId());
+			
+			row = sheet.getRow(0);
+			
+			cell = row.createCell(rowNum);
+			cell.setCellStyle(excalService.cellCenter);
+			cell.setCellValue(detail.getRoleName());
 
+			row = sheet.getRow(1);
+			cell = row.createCell(rowNum);
+			cell.setCellStyle(excalService.cellCenter);
+			cell.setCellValue(detail.getStatus() == 0 ? "Active" : "Inactive");
+			String[] arrDropdown = new String[] { "Active", "Inactive" };
+			DataValidationHelper dvHelper = sheet.getDataValidationHelper();
+			DataValidation validation = createDroupDown(1 , 1 , rowNum, rowNum, arrDropdown,
+					dvHelper);
+			sheet.addValidationData(validation);
+			
+			for (int i = 2; i < permissionRole.size()+2; i++) {
+
+				row = sheet.getRow(i);
+				cell = row.createCell(rowNum);
+				cell.setCellStyle(excalService.cellCenter);
+				if (permissionRole.size() > i) {
+					cell.setCellValue(permissionRole.get(i).getStatus() == 0 ? "Yes" : "No");
+				}else {
+					cell.setCellValue("Yes");
+				}
+				String[] arrDropdownPerm = new String[] { "Yes", "No" };
+				DataValidation validationPerm = createDroupDown(i, i, rowNum, rowNum,
+						arrDropdownPerm, dvHelper);
+				sheet.addValidationData(validationPerm);
+		
+			}
+			rowNum++;
+			cellNum++;
+		}
+		
+
+		
+/*
 		for (cellNum = 0; cellNum < headerTable.length; cellNum++) {
 			cell = row.createCell(cellNum);
 			cell.setCellValue(headerTable[cellNum]);
@@ -279,18 +357,7 @@ public class Sup01000Service {
 					dvHelper);
 			sheet.addValidationData(validation);
 
-//			for (Sup01100Vo permissionVo : permissionRole) {
-//
-//				cell = row.createCell(cellNum++);
-//				cell.setCellStyle(excalService.cellCenter);
-//				cell.setCellValue(permissionVo.getStatus() == 0 ? "Yes" : "No");
-//
-//				String[] arrDropdownPerm = new String[] { "Yes", "No" };
-//				DataValidation validationPerm = createDroupDown(rowNum, rowNum, cellNum - 1, cellNum - 1,
-//						arrDropdownPerm, dvHelper);
-//				sheet.addValidationData(validationPerm);
-//
-//			}
+
 			for (int i = 0; i <arrRolePermission.length; i++) {
 				cell = row.createCell(cellNum++);
 				cell.setCellStyle(excalService.cellCenter);
@@ -308,7 +375,7 @@ public class Sup01000Service {
 			rowNum++;
 			order++;
 			cellNum = 0;
-		}
+		}*/
 
 		String fileName = EXCEL_FILE_EXPORT_NAME+DateFormatUtils.format(new Date(),EXCEL_DATE_FORMAT);
 		logger.info(fileName);
@@ -452,7 +519,88 @@ public class Sup01000Service {
 					InputStream myInputStream = new ByteArrayInputStream(bytes); 
 					XSSFWorkbook workbook = new XSSFWorkbook(myInputStream);
 					Sheet datatypeSheet = workbook.getSheetAt(0);
+					// read cell value at sheet
 					
+					int lastRow = datatypeSheet.getLastRowNum();
+					int lastCell = datatypeSheet.getRow(0).getLastCellNum();
+					int statusFlag = 0;
+					
+					for (int i = 2; i < lastCell; i++) {
+						Sup01100FormVo vo = new Sup01100FormVo();
+						List<RoleVo> listRole = new ArrayList<>();
+						for (int j = 0; j <= lastRow; j++) {
+							RoleVo roleVo = new RoleVo();
+							Row currentRow = datatypeSheet.getRow(j);
+							Cell currentCell = currentRow.getCell(i);
+							// get role name
+							if ( j == 0 ) {
+								vo.setRoleName(currentCell.getStringCellValue());
+//								System.out.println(" role name "+ currentCell.getStringCellValue());
+							}
+							// get role status
+							if ( j == 1) {
+								statusFlag = covertStatus(currentCell.getStringCellValue());
+								if (statusFlag == 2) {
+									logger.error("uploadFileRole","Upload Role Permission format error");
+									message.setData(MESSAGE_STATUS.FAILED);
+									message.setMessage(EXCEL_ERR_MSG_FORMAT);
+									return message;
+								}else {
+									vo.setStatus(statusFlag);
+//									System.out.println(" role status "+ Integer.toString(statusFlag));
+								}
+							}
+							// get role permission value
+							if (j >1) {
+								statusFlag = covertStatus(currentCell.getStringCellValue());
+								if (statusFlag == 2) {
+									logger.error("uploadFileRole","Upload Role Permission format error");
+									message.setData(MESSAGE_STATUS.FAILED);
+									message.setMessage(EXCEL_ERR_MSG_FORMAT);
+									return message;
+								}
+//								System.out.println(" role permission "+arrRolePermission[j-1]+" "+ Integer.toString(statusFlag));
+								roleVo.setStatus(statusFlag);
+								roleVo.setFunctionCode(arrRolePermission[j-2]);
+								listRole.add(roleVo);
+							}
+							
+						}
+						vo.setRolePermission(listRole);
+						listRolePermission.add(vo);
+					}
+					
+					//check duplicate role name in list
+					for (int i = 0; i < listRolePermission.size(); i++) {
+						if(StringUtils.isBlank(listRolePermission.get(i).getRoleName())) {
+							logger.error("uploadFileRole","Upload Role Permission role name is blank.");
+							message.setData(MESSAGE_STATUS.FAILED);
+							message.setMessage(EXCEL_ERR_MSG_NAME_BLANK);
+							return message;
+							
+						}else {
+							for (int j = 1; j < listRolePermission.size()-i; j++) {
+								String roleName = listRolePermission.get(j+i).getRoleName();
+
+								if(listRolePermission.get(i).getRoleName().equals(roleName)) {
+									logger.error("uploadFileRole","Upload Role Permission role name is duplicate.");
+									message.setData(MESSAGE_STATUS.FAILED);
+									message.setMessage(EXCEL_ERR_MSG_NAME_DUP);
+									return message;
+								}
+							}
+						}
+
+					}
+
+					saveListRolePermission(listRolePermission);
+					logger.info("uploadFileRole","upload excel file success");
+					message.setData(MESSAGE_STATUS.SUCCEED);
+					message.setMessage(MESSAGE_STATUS.SUCCEED);
+					return message;
+					
+					// pivot 
+					/*
 					for (int i = 2; i <=  datatypeSheet.getLastRowNum() ; i++) {
 						Row currentRow = datatypeSheet.getRow(i);
 						Sup01100FormVo vo = new Sup01100FormVo();
@@ -519,7 +667,7 @@ public class Sup01000Service {
 					message.setData(MESSAGE_STATUS.SUCCEED);
 					message.setMessage(MESSAGE_STATUS.SUCCEED);
 					return message;
-
+*/
 				} catch (Exception e) {
 					logger.info("uploadFileRole","upload excel file fail ");
 					e.printStackTrace();
@@ -568,6 +716,7 @@ public class Sup01000Service {
 					Sup01100Vo vo = new Sup01100Vo();
 					vo.setRoleId(idRole);
 					vo.setFunctionCode(roleVo.getFunctionCode());
+//					System.out.println("role id "+idRole+" function code "+ roleVo.getFunctionCode());
 					vo.setStatus(roleVo.getStatus());
 					permissionList.add(vo);
 				}
