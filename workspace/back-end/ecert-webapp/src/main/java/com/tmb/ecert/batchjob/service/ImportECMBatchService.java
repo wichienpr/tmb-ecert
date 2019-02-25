@@ -165,9 +165,9 @@ public class ImportECMBatchService {
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
 								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
 							}
-							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
-							}
+//							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
+//								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+//							}
 							
 						}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 							
@@ -187,9 +187,9 @@ public class ImportECMBatchService {
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
 								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
 							}
-							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
-							}
+//							if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
+//								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getChangeNameFile()), ftpPath, requestForm.getChangeNameFile()));
+//							}
 						}
 
 						SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
@@ -406,7 +406,7 @@ public class ImportECMBatchService {
 				
 				for (RequestForm requestForm : reqFormList) {
 					
-					List<String> listFile = new ArrayList<String>();
+/*					List<String> listFile = new ArrayList<String>();
 					String pathReq = pathUploadfile +"/" + requestForm.getRequestFormFile();
 					String pathCer = pathUploadfile +"/" + requestForm.getCertificateFile();
 					String pathRec = pathUploadfile +"/" + requestForm.getReceiptFile();
@@ -425,7 +425,7 @@ public class ImportECMBatchService {
 					if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
 						pathOther = requestForm.getChangeNameFile();
 						listFile.add(pathOther);
-					}
+					}*/
 					
 					List<ECMUuploadRequest> listRequest = createRequest(requestForm, requestForm.getMakerById());
 					boolean statusWS = CallECMWevserviceV2(listRequest);
@@ -555,7 +555,8 @@ public class ImportECMBatchService {
 						ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 						ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 					}
-				}else if (i==4) {
+				}
+/*				else if (i==4) {
 					if(StringUtils.isNotBlank(req.getChangeNameFile())) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeOther);
 						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
@@ -567,7 +568,7 @@ public class ImportECMBatchService {
 						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
 						
 					}
-				}
+				}*/
 				listRequest.add(ecmUploadRequest);
 			}
 		} catch (Exception e) {

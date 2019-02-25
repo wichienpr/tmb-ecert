@@ -110,9 +110,9 @@ public class UploadCertificateService {
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
 						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
 					}
-					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
-					}
+//					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+//						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
+//					}
 					
 				}else if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_PARTIAL_SUCCESS.equals(checkStatusVo.getStatusCode())){
 					
@@ -131,9 +131,9 @@ public class UploadCertificateService {
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
 						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
 					}
-					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
-					}
+//					if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
+//						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getChangeNameFile()), pathFile, reqVo.getChangeNameFile()));
+//					}
 				}
 
 				SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
