@@ -60,27 +60,6 @@ public class UploadCertificateV2Service {
 
 			reqVo = checkReqDetailDao.findCertificateFileByReqID(certificateID);
 
-			List<String> listFile = new ArrayList<String>();
-			String pathReq = pathUploadfile +"/" + reqVo.getRequestFormFile();
-			String pathCer = pathUploadfile +"/" + reqVo.getCertificateFile();
-			String pathRec = pathUploadfile +"/" + reqVo.getReceiptFile();
-			String pathIdCard = "";
-			String pathOther = "";
-			
-			listFile.add(pathRec);
-			listFile.add(pathCer);
-			listFile.add(pathReq);
-
-			
-			if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
-				pathIdCard = reqVo.getIdCardFile();
-				listFile.add(pathIdCard);
-			}
-			if (StringUtils.isNotBlank(reqVo.getChangeNameFile())) {
-				pathOther = reqVo.getChangeNameFile();
-				listFile.add(pathOther);
-			}
-			
 			List<ECMUuploadRequest> listRequest = createRequest(reqVo, userid);
 //			log.info(" prepair cmis request success total file : "+Integer.toString(listRequest.size()));
 			boolean statusWS = false;
@@ -186,12 +165,12 @@ public class UploadCertificateV2Service {
 						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
 						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 					}
-				}else if (i==4) {
+				}
+/*				else if (i==4) {
 					if(StringUtils.isNotBlank(req.getChangeNameFile())) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeOther);
 						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
-//						ecmMaster = this.mockEcmMaster();
-						
+
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getChangeNameFile(), docTypeOther, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfile +"/" +req.getChangeNameFile()));
 						ecmUploadRequest.setFile(bty);
@@ -199,7 +178,7 @@ public class UploadCertificateV2Service {
 						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 						
 					}
-				}
+				}*/
 				listRequest.add(ecmUploadRequest);
 			}
 		} catch (Exception e) {
