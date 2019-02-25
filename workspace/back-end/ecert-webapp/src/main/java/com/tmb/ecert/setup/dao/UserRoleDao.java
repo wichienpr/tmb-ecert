@@ -53,7 +53,7 @@ public class UserRoleDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, form.getRoleName());
+				ps.setString(1, StringUtils.trim(form.getRoleName()));
 				ps.setInt(2, form.getStatus());
 				ps.setString(3, userID);
 				ps.setString(4, username);
@@ -269,12 +269,12 @@ public class UserRoleDao {
 		
 		List<RoleVo> list = new ArrayList<>();
 		
-		sql.append(" SELECT ROLE_ID,ROLE_NAME,STATUS FROM ECERT_ROLE WHERE 1 = 1 ");
-		
-		if (StringUtils.isNotBlank(form.getRoleName())) {
-			sql.append(" AND  ROLE_NAME = ? ");
-			params.add(StringUtils.trim(form.getRoleName()));
-		}
+		sql.append(" SELECT ROLE_ID,ROLE_NAME,STATUS FROM ECERT_ROLE WHERE ROLE_NAME = ?");
+		params.add(StringUtils.trim(form.getRoleName()));
+//		if (StringUtils.isNotBlank(form.getRoleName())) {
+//			sql.append(" AND  ROLE_NAME = ? ");
+//			params.add(StringUtils.trim(form.getRoleName()));
+//		}
 
 
 		list = jdbcTemplate.query(sql.toString(), params.toArray(), sup01000RowMapper);
