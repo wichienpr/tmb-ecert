@@ -283,8 +283,8 @@ public class Sup01000Service {
 				row = sheet.getRow(i);
 				cell = row.createCell(rowNum);
 				cell.setCellStyle(excalService.cellCenter);
-				if (permissionRole.size() > i) {
-					cell.setCellValue(permissionRole.get(i).getStatus() == 0 ? "Yes" : "No");
+				if (permissionRole.size() > i-2) {
+					cell.setCellValue(permissionRole.get(i-2).getStatus() == 0 ? "Yes" : "No");
 				}else {
 					cell.setCellValue("Yes");
 				}
@@ -572,6 +572,8 @@ public class Sup01000Service {
 					
 					//check duplicate role name in list
 					for (int i = 0; i < listRolePermission.size(); i++) {
+//						System.out.println("list role permission "+listRolePermission.get(i).getRoleName()+
+//								" size permission "+ Integer.toString(listRolePermission.get(i).getRolePermission().size()) );
 						if(StringUtils.isBlank(listRolePermission.get(i).getRoleName())) {
 							logger.error("uploadFileRole","Upload Role Permission role name is blank.");
 							message.setData(MESSAGE_STATUS.FAILED);
@@ -697,11 +699,11 @@ public class Sup01000Service {
 		Long idRole = 0L;
 		UserDetails user = UserLoginUtils.getCurrentUserLogin();
 		String fullName = user.getFirstName() + " " + user.getLastName();
-		List<Sup01100Vo> permissionList = new ArrayList<>();
+		List<Sup01100Vo> permissionList =null ;
 		String roleDescp = " ";
 		try {
 			for (Sup01100FormVo rolePermiss : listRolePermission) {
-
+				permissionList  = new ArrayList<>();
 				int countDup = userRoleDao.validateDuplicateRoleName(rolePermiss);
 				if (countDup == 0) {
 					idRole = userRoleDao.createUserRole(rolePermiss, fullName, user.getUserId());
