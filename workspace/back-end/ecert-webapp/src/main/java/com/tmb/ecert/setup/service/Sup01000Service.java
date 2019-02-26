@@ -84,11 +84,11 @@ public class Sup01000Service {
 	private static String EXCEL_DATE_FORMAT =  "yyyyMMdd";
 	private static String EXCEL_REPORT = "report/excel_template/";
 	private static String EXCEL_TEMPALTE = "RolePermission_Template.xlsx";
-	private static String EXCEL_ERR_MSG_FORMAT_FILE = "ทำรายไม่สำเร็จ เนื่องจากประเภทไฟล์ไม่ถูกต้อง" ;
-	private static String EXCEL_ERR_MSG_FORMAT = "ทำรายไม่สำเร็จ เนื่องจากข้อมูลไฟล์ไม่ถูกต้อง" ;
-	private static String EXCEL_ERR_MSG_NAME_BLANK = "ทำรายไม่สำเร็จ เนื่องจากชื่อสิทธิ์ไม่ถูกต้อง" ;
-	private static String EXCEL_ERR_MSG_NAME_DUP = "ทำรายไม่สำเร็จ เนื่องจากมีชื่อสิทธิ์ซ้ำในไฟล์" ;
-	private static String EXCEL_ERR_MSG_FAIL = "ทำรายไม่สำเร็จ" ;
+	private static String EXCEL_ERR_MSG_FORMAT_FILE = "ทำรายการไม่สำเร็จ เนื่องจากประเภทไฟล์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_FORMAT = "ทำรายการไม่สำเร็จ เนื่องจากข้อมูลไฟล์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_NAME_BLANK = "ทำรายการไม่สำเร็จ เนื่องจากชื่อสิทธิ์ไม่ถูกต้อง" ;
+	private static String EXCEL_ERR_MSG_NAME_DUP = "ทำรายการไม่สำเร็จ เนื่องจากมีชื่อสิทธิ์ซ้ำในไฟล์" ;
+	private static String EXCEL_ERR_MSG_FAIL = "ทำรายการไม่สำเร็จ" ;
 	
 
 	private static String[] headerTable = { "Role Name ", " สถานะ ", "ยินดีต้อนรับ \n (UI-00002)",
@@ -246,7 +246,7 @@ public class Sup01000Service {
 			row = sheet.getRow(i);
 			cell = row.createCell(1);
 			cell.setCellValue(headerTableSub[i]);
-			cell.setCellStyle(thStyle);
+			cell.setCellStyle(excalService.bgBuleGrey);
 		}
 		
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
@@ -553,7 +553,7 @@ public class Sup01000Service {
 								return message;
 							}
 							
-							if ( lastRow-1 > arrRolePermission.length ) {
+							if ( lastRow-1 != arrRolePermission.length ) {
 								logger.info("uploadFileRole Upload Role Permission format error");
 								message.setData(MESSAGE_STATUS.FAILED);
 								message.setMessage(EXCEL_ERR_MSG_FORMAT);
