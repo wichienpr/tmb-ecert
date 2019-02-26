@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CurrencyEditor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -214,7 +215,7 @@ public class Sup01000Service {
 		List<RoleVo> roleList = userRoleDao.getRoleForExport(form);
 		
 		XSSFWorkbook workbook = excalService.setUpExcel();
-		CellStyle thStyle = excalService.bgLightBule;
+		CellStyle thStyle = excalService.bgDarkBule;
 		CellStyle headerBlue = excalService.bgBule;
 		Sheet sheet = workbook.createSheet();
 		int rowNum = 0;
@@ -224,17 +225,28 @@ public class Sup01000Service {
 		row.setHeight((short) 0x249);
 		
 		for (int i = 0; i < headerTable.length; i++) {
-			row = sheet.createRow(i);
-			cell = row.createCell(0);
-			cell.setCellValue(headerTable[i]);
-			cell.setCellStyle(headerBlue);
+			if (i == 0 ) {
+				row = sheet.createRow(i);
+				cell = row.createCell(0);
+				cell.setCellValue(headerTable[i]);
+				cell.setCellStyle(thStyle);
+			}else {
+				row = sheet.createRow(i);
+				cell = row.createCell(0);
+				cell.setCellValue(headerTable[i]);
+				cell.setCellStyle(headerBlue);
+			}
+//			row = sheet.createRow(i);
+//			cell = row.createCell(0);
+//			cell.setCellValue(headerTable[i]);
+//			cell.setCellStyle(headerBlue);
 		}
 		
 		for (int i = 0; i < headerTableSub.length; i++) {
 			row = sheet.getRow(i);
 			cell = row.createCell(1);
 			cell.setCellValue(headerTableSub[i]);
-			cell.setCellStyle(headerBlue);
+			cell.setCellStyle(thStyle);
 		}
 		
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
@@ -265,7 +277,7 @@ public class Sup01000Service {
 			row = sheet.getRow(0);
 			
 			cell = row.createCell(rowNum);
-			cell.setCellStyle(excalService.cellCenter);
+			cell.setCellStyle(excalService.bgDarkBule);
 			cell.setCellValue(detail.getRoleName());
 
 			row = sheet.getRow(1);
@@ -528,10 +540,27 @@ public class Sup01000Service {
 					for (int i = 2; i < lastCell; i++) {
 						Sup01100FormVo vo = new Sup01100FormVo();
 						List<RoleVo> listRole = new ArrayList<>();
+						
 						for (int j = 0; j <= lastRow; j++) {
 							RoleVo roleVo = new RoleVo();
 							Row currentRow = datatypeSheet.getRow(j);
 							Cell currentCell = currentRow.getCell(i);
+							
+							if ( currentCell == null ) {
+								logger.info("uploadFileRole Upload Role Permission format error");
+								message.setData(MESSAGE_STATUS.FAILED);
+								message.setMessage(EXCEL_ERR_MSG_FORMAT);
+								return message;
+							}
+							
+							if ( lastRow-1 > arrRolePermission.length ) {
+								logger.info("uploadFileRole Upload Role Permission format error");
+								message.setData(MESSAGE_STATUS.FAILED);
+								message.setMessage(EXCEL_ERR_MSG_FORMAT);
+								return message;
+							}
+							
+							
 							// get role name
 							if ( j == 0 ) {
 								vo.setRoleName(currentCell.getStringCellValue());
@@ -541,7 +570,7 @@ public class Sup01000Service {
 							if ( j == 1) {
 								statusFlag = covertStatus(currentCell.getStringCellValue());
 								if (statusFlag == 2) {
-									logger.error("uploadFileRole","Upload Role Permission format error");
+									logger.info("uploadFileRole Upload Role Permission format error");
 									message.setData(MESSAGE_STATUS.FAILED);
 									message.setMessage(EXCEL_ERR_MSG_FORMAT);
 									return message;
@@ -554,7 +583,7 @@ public class Sup01000Service {
 							if (j >1) {
 								statusFlag = covertStatus(currentCell.getStringCellValue());
 								if (statusFlag == 2) {
-									logger.error("uploadFileRole","Upload Role Permission format error");
+									logger.info("uploadFileRole Upload Role Permission format error");
 									message.setData(MESSAGE_STATUS.FAILED);
 									message.setMessage(EXCEL_ERR_MSG_FORMAT);
 									return message;
@@ -575,7 +604,7 @@ public class Sup01000Service {
 //						System.out.println("list role permission "+listRolePermission.get(i).getRoleName()+
 //								" size permission "+ Integer.toString(listRolePermission.get(i).getRolePermission().size()) );
 						if(StringUtils.isBlank(listRolePermission.get(i).getRoleName())) {
-							logger.error("uploadFileRole","Upload Role Permission role name is blank.");
+							logger.info("uploadFileRole Upload Role Permission role name is blank.");
 							message.setData(MESSAGE_STATUS.FAILED);
 							message.setMessage(EXCEL_ERR_MSG_NAME_BLANK);
 							return message;
@@ -585,7 +614,7 @@ public class Sup01000Service {
 								String roleName = listRolePermission.get(j+i).getRoleName();
 
 								if(listRolePermission.get(i).getRoleName().equals(roleName)) {
-									logger.error("uploadFileRole","Upload Role Permission role name is duplicate.");
+									logger.info("uploadFileRole","Upload Role Permission role name is duplicate.");
 									message.setData(MESSAGE_STATUS.FAILED);
 									message.setMessage(EXCEL_ERR_MSG_NAME_DUP);
 									return message;
