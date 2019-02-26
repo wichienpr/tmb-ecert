@@ -32,6 +32,7 @@ public class ExcalService {
 	public CellStyle bgLightBule;
 	public CellStyle bgBule;
 	public CellStyle cellTextCenter;
+	public CellStyle bgDarkBule;
 	public Font fontHeader;
 	
 	public XSSFWorkbook setUpExcel() {
@@ -124,6 +125,21 @@ public class ExcalService {
         bgBule.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
         bgBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         bgBule.setWrapText(true);
+        
+        bgDarkBule = workbook.createCellStyle();
+        bgDarkBule.setAlignment(HorizontalAlignment.CENTER);
+        bgDarkBule.setBorderBottom(BorderStyle.THIN);
+        bgDarkBule.setBorderLeft(BorderStyle.THIN);
+        bgDarkBule.setBorderRight(BorderStyle.THIN);
+        bgDarkBule.setBorderTop(BorderStyle.THIN);
+        bgDarkBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
+        XSSFFont font1 = workbook.createFont();
+        font1.setColor(IndexedColors.WHITE1.getIndex());
+        font1.setBold(true);
+        bgDarkBule.setFont(font1);
+        bgDarkBule.setFillForegroundColor(IndexedColors.DARK_BLUE.getIndex());
+        bgDarkBule.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        bgDarkBule.setWrapText(true);
 
 		topCenter = workbook.createCellStyle();
 		topCenter.setAlignment(HorizontalAlignment.CENTER);
