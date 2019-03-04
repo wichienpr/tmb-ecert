@@ -237,7 +237,7 @@
               <label class="full-width text-right">เลขประจำตัวผู้เสียภาษี</label>
             </div>
             <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && taxid.invalid }">
-              <input type="text" formControlName="taxid" name="taxid"/>
+              <input type="text"  (keypress)="accNoPress($event)" maxlength="13" minlength="13"  formControlName="taxid" name="taxid"/>
             </div>
           </div>
           <div class="inline fields">
@@ -245,7 +245,7 @@
               <label class="full-width text-right">สำนักงานใหญ่/สาขาที่ <br>ของลูกค้า </label>
             </div>
             <div class="eleven wide field" [ngClass]="{ 'error': cancelSubmitted && barnchCode.invalid }">
-              <input type="text" formControlName="barnchCode" name="barnchCode"/>
+              <input type="text" (keypress)="accNoPress($event)" maxlength="5" minlength="5" formControlName="barnchCode" name="barnchCode"/>
             </div>
           </div>
           <div class="inline fields">

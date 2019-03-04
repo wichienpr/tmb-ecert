@@ -375,6 +375,15 @@ export class Crs02000Component implements OnInit {
       this.isprintReceipt = true;
     }
   }
+
+  accNoPress(e, hasDot?: boolean) {
+    if (hasDot) {
+      return e.charCode == 46 || e.charCode >= 48 && e.charCode <= 57;
+    }
+    return e.charCode >= 48 && e.charCode <= 57;
+  }
+
+
   get reprintReason() { return this.reprintForm.get("reprintReason") }
 
   get companyName(){return this.cancelForm.get("companyName")}
