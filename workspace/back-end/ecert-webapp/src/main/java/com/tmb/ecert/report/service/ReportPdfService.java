@@ -608,6 +608,7 @@ public class ReportPdfService {
 		Date currentDate = new Date();
 		ReqReceiptVo req = null;
 		ByteArrayOutputStream os =null;
+		String reasonFormat = "ใบแทนออกให้ครั้งที่ %s   เมื่อวันที่ %s  เนื่องจาก %s ";
 		try {
 			// Folder Exist ??
 			initialService();
@@ -631,19 +632,20 @@ public class ReportPdfService {
 			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 			params01.put("docType", "ใบแทน ( ต้นฉบับ )");
 			params01.put("receiptNo", req.getReceipt_no());
-//			params01.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
-//			params01.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
-			params01.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
-			params01.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
+			params01.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params01.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+//			params01.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
+//			params01.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
 			params01.put("customerNameReceipt", req.getCustomer_name());
 			params01.put("organizeId", req.getOrganize_id());
 			params01.put("address", req.getAddress());
 			params01.put("pageActive", "1");
 			params01.put("pageTotal", "2");
 			params01.put("majorNo", req.getMajor_no());
-			params01.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+//			params01.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
 			params01.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
-			params01.put("reason", vo.getReason());
+			params01.put("reason", String.format(reasonFormat, Integer.toString(print_count),
+					DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")), vo.getReason()));
 			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
 				//vat
 				params01.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
@@ -672,19 +674,20 @@ public class ReportPdfService {
 			params02.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
 			params02.put("docType", "ใบแทน ( สำเนา )");
 			params02.put("receiptNo", req.getReceipt_no());
-//			params02.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
-//			params02.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
-			params02.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
-			params02.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
+			params02.put("date", DateFormatUtils.format(req.getReceipt_date(), "dd MMMM yyyy", new Locale("th", "TH")));
+			params02.put("time", DateFormatUtils.format(req.getReceipt_date(), "HH.mm", new Locale("th", "TH")));
+//			params02.put("date", DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")));
+//			params02.put("time", DateFormatUtils.format(new Date(), "HH.mm", new Locale("th", "TH")));
 			params02.put("customerNameReceipt", req.getCustomer_name());
 			params02.put("organizeId", req.getOrganize_id());
 			params02.put("address", req.getAddress());
 			params02.put("pageActive", "2");
 			params02.put("pageTotal", "2");
 			params02.put("majorNo", req.getMajor_no());
-			params02.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
+//			params02.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
 			params02.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
-			params02.put("reason", vo.getReason());
+			params02.put("reason", String.format(reasonFormat, Integer.toString(print_count),
+					DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")), vo.getReason()));
 			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
 				//vat
 				params02.put("vat",formatNumber.format(Double.parseDouble(vat.getVat())));
@@ -732,7 +735,8 @@ public class ReportPdfService {
 			// save to DB
 //			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 //			req.setReceiptFile(name);
-			req.setReceipt_date(new Timestamp(System.currentTimeMillis()));
+//			req.setReceipt_date(new Timestamp(System.currentTimeMillis()));
+			req.setReceipt_date(req.getReceipt_date());
 			req.setPrint_count(print_count);
 			req.setReason(vo.getReason());
 //			req.setDelete_flag(0);
