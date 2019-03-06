@@ -53,6 +53,11 @@ export class Crs02000Component implements OnInit {
   @ViewChild("historyDt")
   historyDt: DatatableDirective;
   historyConfig: DatatableCofnig;
+
+  @ViewChild("receiptHisDt")
+  receiptHisDt: DatatableDirective;
+  receiptHisConfig:DatatableCofnig;
+  
   
   authForSubmit: Modal;
 
@@ -85,7 +90,9 @@ export class Crs02000Component implements OnInit {
     });
     this.tab = {
       A: "active",
-      B: ""
+      B: "",
+      C:""
+
     };
     this.authForSubmit = { modalId: "auth", type: "custom" };
 
@@ -94,6 +101,12 @@ export class Crs02000Component implements OnInit {
       serverSide: true,
       useBlockUi: true
     };
+
+    this.receiptHisConfig = {
+      url: URL.RECEIPT_HISTORY,
+      serverSide: true,
+      useBlockUi: true
+    }
 
   }
 
@@ -189,6 +202,9 @@ export class Crs02000Component implements OnInit {
     if ("" == this.tab.B) {
       this.historyDt.searchParams({ reqFormId: parseInt(this.id) });
       this.historyDt.search()
+    } if ("" == this.tab.C){
+      this.receiptHisDt.searchParams({ reqFormId: parseInt(this.id) });
+      this.receiptHisDt.search()
     }
     this.tab = this.service.tabsToggle(name, this.tab);
   }
@@ -249,7 +265,7 @@ export class Crs02000Component implements OnInit {
   saveCertFile() {
     this.certSubmitted = true;
     if (this.formCert.valid) {
-      if (this.data.paidTypeCode == "30004") {
+      if (this.data.paidTypeCode == "30004"||  this.data.paidTypeCode == '30003' ||  this.data.paidTypeCode == '30002') {
         const data: CertFile = {
           id: parseInt(this.id),
           status: "",
@@ -420,7 +436,7 @@ export class Crs02000Component implements OnInit {
     return false;
   }
   get btnPrintReciept() { 
-    if ( this.data.paidTypeCode == '30004'){
+    if ( this.data.paidTypeCode == '30004' ||  this.data.paidTypeCode == '30003' ||  this.data.paidTypeCode == '30002'){
       return false;
     }else{
       // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
@@ -442,7 +458,7 @@ export class Crs02000Component implements OnInit {
   }
 
   get btnReprint(){
-    if ( this.data.paidTypeCode == '30004'){
+    if ( this.data.paidTypeCode == '30004' ||  this.data.paidTypeCode == '30003' ||  this.data.paidTypeCode == '30002'){
       return false;
     }else{
       // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 
@@ -451,7 +467,7 @@ export class Crs02000Component implements OnInit {
   }
 
   get btnCancelReceipt(){
-    if ( this.data.paidTypeCode == '30004'){
+    if ( this.data.paidTypeCode == '30004' ||  this.data.paidTypeCode == '30003' ||  this.data.paidTypeCode == '30002'){
       return false;
     }else{
       // return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) 

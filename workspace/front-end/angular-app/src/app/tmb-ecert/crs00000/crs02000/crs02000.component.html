@@ -438,6 +438,7 @@
       <div class="ui top attached tabular menu">
         <a class="item {{ tab.A }}" (click)="tabs('A')">รายละเอียดลูกค้า</a>
         <a class="item {{ tab.B }}" (click)="tabs('B')"> ประวัติการทำรายการ</a>
+        <a class="item {{ tab.C }}" (click)="tabs('C')"> ประวัติการออกใบกำกับภาษี</a>
       </div>
       <div class="ui bottom attached tab segment {{ tab.A }}" id="subTap1" data-tab="first">
 
@@ -768,7 +769,7 @@
             </button>
             <button class="ui blue basic button" *ngIf="btnReprint" (click)="reprint()" type="button">
               <i class="print icon"></i>
-              พิมพ์ใบเสร็จ(ซ่อม)
+              ออกใบแทน
             </button>
             <button class="ui blue basic button" *ngIf="btnCancelReceipt" (click)="cancel()" type="button">
               <i class="print icon"></i>
@@ -838,6 +839,49 @@
         </div>
         <br>
         <ng-datatable-footer [ng-datatable]="historyDt"></ng-datatable-footer>
+      </div>
+
+      <div class="ui bottom attached tab segment {{ tab.C }}">
+        <ng-datatable-search [ng-datatable]="receiptHisDt"></ng-datatable-search>
+        <br>
+        <div class="scrollable">
+          <table [ngDatatable]="receiptHisConfig" #receiptHisDt="ngDatatable" class="ui small celled table nowrap" style="width: 100%">
+            <thead>
+              <tr style="text-align: center;">
+                <th>ลำดับ</th>
+                <th>วันเวลาที่ดำเนินการ</th>
+                <th>ผู้ดำเนินการ </th>
+                <th>เลขที่ใบเสร็จ</th>
+                <th>เลขประจำตัวผู้เสียภาษี</th>
+                <th>ชื่อบนใบเสร็จธนาคาร TMB</th>
+                <th>สำนักงานใหญ่/ <br>สาขาที่ของลูกค้า</th>
+                <th>ที่อยู่</th>
+                <th>สถานะการดำเนินการ</th>
+                <th>สาเหตุ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngIf="receiptHisDt.isEmpty">
+                <td colspan="21" style="text-align: center !important;">ไม่พบรายการ</td>
+              </tr>
+              <tr class="text-center" *ngFor="let h of receiptHisDt.datas; let i=index">
+                <td style="text-align: center !important;">{{ i+1 }}</td>
+                <td style="text-align: center !important;">{{ h.updatedDateTime ? (h.updatedDateTime | datetimeString)  :(h.createdDateTime | datetimeString  ) }}</td>
+                <td style="text-align: left   !important;">{{ h.updateByName ? h.updateById +' - '+ h.updateByName: h.createdById + ' - ' + h.createdByName }}</td>
+                <td style="text-align: center   !important;"> {{h.receipt_no}} </td>
+                <td style="text-align: center   !important;"> {{h.organize_id}} </td>
+                <td style="text-align: left   !important;"> {{ h.customer_name}} </td>
+                <td style="text-align: center   !important;"> {{ h.major_no}} </td>
+                <td style="text-align: left   !important;"> {{ h.address}} </td>
+                <td style="text-align: center   !important;"> {{ i == 0 ? (h.cancel_flag == 1 ? (h.print_count ?'ออกใบแทน ครั้งที่ '+h.print_count:'พิมพ์ใบเสร็จ' ): (h.print_count ?'ออกใบแทน ครั้งที่ '+h.print_count:'พิมพ์ใบเสร็จ' ) | emptyString): 'ถูกยกเลิก'}} </td>
+                <td style="text-align: left   !important;"> {{h.reason | emptyString}} </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <ng-datatable-footer [ng-datatable]="receiptHisDt"></ng-datatable-footer>
       </div>
     </div>
   </div>

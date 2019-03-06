@@ -19,6 +19,7 @@ export const URL = {
   CREATE_COVER: "/api/report/pdf/coverSheet/",
   CREATE_RECEIPT: "/api/report/pdf/createAndUpload/receiptTax/",
   REQUEST_HISTORY: "/api/history/list",
+  RECEIPT_HISTORY:"/api/history/receipt/list",
   PDF: "/api/report/pdf/view/",
   UPLOAD: "/api/crs/crs01000/upLoadCertificate",
   CER_REJECT: "/api/crs/crs02000/cert/reject",
