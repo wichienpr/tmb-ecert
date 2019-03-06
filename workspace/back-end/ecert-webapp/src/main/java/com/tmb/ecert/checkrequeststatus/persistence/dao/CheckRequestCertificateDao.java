@@ -41,6 +41,23 @@ public class CheckRequestCertificateDao {
 		return row > 0;
 	}
 	
+	public boolean upDateCertificateFile(RequestForm reqForm) {
+		StringBuilder sql = new StringBuilder(SQL_ECERT_REQUEST_FORM_UPDATE);
+		sql.append(" CERTIFICATE_FILE = ? ");
+//		sql.append(" STATUS =? ");
+		sql.append(" WHERE 1 = 1 ");
+		sql.append(" AND REQFORM_ID = ? ");
+		sql.append(" AND REQUESTFORM_FILE IS NOT NULL  ");
+//		sql.append(" AND RECEIPT_FILE IS NOT NULL   ");
+		
+		log.info("id => {}", reqForm.getReqFormId());
+
+		int row = jdbcTemplate.update(sql.toString(),
+				new Object[] { reqForm.getCertificateFile(), reqForm.getReqFormId() });
+		
+		return row > 0;
+	}
+	
 	public int insertECMHistory(Long reqID,ECMUuploadRequest ecmReq,String objId,String userId) {
 		Date current = new Date();
 		StringBuilder sql = new StringBuilder(" ");

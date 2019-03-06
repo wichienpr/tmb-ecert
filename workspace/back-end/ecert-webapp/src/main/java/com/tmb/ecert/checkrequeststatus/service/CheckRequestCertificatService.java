@@ -82,6 +82,7 @@ public class CheckRequestCertificatService {
 				
 				if ("true".equalsIgnoreCase(certificateVo.getIgnoreReceipt())) {
 					// call webservice
+					certificateDao.upDateCertificateFile(req);
 					if (StringUtils.isNotBlank(req.getCaNumber())) {
 						preUploadCertificate(certificateVo, req, folder, certificates, user);
 						msg.setMessage("SUCCESS");

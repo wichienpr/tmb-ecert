@@ -201,13 +201,13 @@ public class UploadCertificateV2Service {
 				ResponseEntity<ECMUploadResponse> wsresponse = restTemplate.exchange(fooResourceUrl , HttpMethod.POST, request, ECMUploadResponse.class);
 				response = wsresponse.getBody();
 				if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(response.getStatusCode())) {
-					log.info(" call ws create doc {} ",response.getDescription());
+//					log.info(" call ws create doc {} ",response.getDescription());
 					statusWS = false;
 					break;
 				}
 				statusWS = true;
 				checkRequestCerDao.insertECMHistory(certificateID, listReq.get(i), response.getObjectId(), userid);
-				log.info("call ws create doc {}", response.getDescription());
+//				log.info("call ws create doc {}", response.getDescription());
 			}
 		}
 		return statusWS;
