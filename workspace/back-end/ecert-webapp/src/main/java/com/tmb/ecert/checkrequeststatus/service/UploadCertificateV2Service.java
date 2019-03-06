@@ -144,15 +144,17 @@ public class UploadCertificateV2Service {
 					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 
 				}else if(i == 2) {
-					ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
-					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
-//					ecmMaster = this.mockEcmMaster();
-					
-					ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
-					byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
-					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
-					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
+					if(StringUtils.isNotBlank(req.getReceiptFile())) {
+						ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
+						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+	//					ecmMaster = this.mockEcmMaster();
+						
+						ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
+						byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
+						ecmUploadRequest.setFile(bty);
+						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
+					}
 				}else if (i==3) {
 					if(StringUtils.isNotBlank(req.getIdCardFile())) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeId);

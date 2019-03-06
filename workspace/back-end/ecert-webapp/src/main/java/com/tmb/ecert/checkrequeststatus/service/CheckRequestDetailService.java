@@ -211,15 +211,16 @@ public class CheckRequestDetailService {
 						if (isSuccess(realtimeStep.getMessage())) {
 							
 							// UPDATE RECEIPT ID WHEN PAYMENT SUCCESS.
-							if (StringUtils.isEmpty(newReq.getReceiptNo())) {
+							if (StringUtils.isEmpty(newReq.getReceiptNo()) && PAYMENT_STATUS.PAY_TMB_DBD.equals(newReq.getPaidTypeCode())) {
 								String receiptNo = receiptGenKeyService.getNextKey();
 								newReq.setReceiptNo(receiptNo);
+								createRequestFormReceipt(newReq, user);
 							}
 							
 							newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 							updateForm(newReq, user);
 							response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
-							createRequestFormReceipt(newReq, user);
+							
 
 						} else {
 							response.setData(new ResponseVo(realtimeStep.getData().getDescription(),

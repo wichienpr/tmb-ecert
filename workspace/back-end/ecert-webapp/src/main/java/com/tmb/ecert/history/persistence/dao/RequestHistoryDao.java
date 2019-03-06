@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.tmb.ecert.common.constant.ProjectConstant.APPLICATION_LOG_NAME;
 import com.tmb.ecert.common.domain.RequestForm;
 import com.tmb.ecert.history.persistence.vo.RequestHistoryVo;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.common.util.DatatableUtils;
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
@@ -251,5 +252,69 @@ public class RequestHistoryDao {
 				params.toArray());
 		return rs.intValue();
 	}
+	
+	public List<ReqReceiptVo> findReciptHis(RequestHistoryVo formVo) {
+		StringBuilder sql = new StringBuilder();
+		sql.append( " SELECT A.* from ECERT_REQFORM_RECEIPT AS A  ");
+		sql.append(	" INNER JOIN ECERT_REQUEST_FORM AS B ");
+		sql.append(	" ON  A.REQFORM_ID = B.REQFORM_ID " );
+				
+		List<Object> params = new ArrayList<Object>();
+
+		sql.append(" WHERE B.REQFORM_ID = ?");
+		sql.append(" ORDER BY A.RECEIPT_ID DESC");
+		params.add(formVo.getReqFormId());
+		return jdbc.query(DatatableUtils.limitForDataTable(sql.toString(), formVo.getStart(), formVo.getLength()),
+				params.toArray(), reqReceiptMasterMapper);
+	}
+	
+	public int receiptHisCount(RequestHistoryVo formVo) {
+		StringBuilder sql = new StringBuilder();
+		sql.append( " SELECT A.* from ECERT_REQFORM_RECEIPT AS A  ");
+		sql.append(	" INNER JOIN ECERT_REQUEST_FORM AS B ");
+		sql.append(	" ON  A.REQFORM_ID = B.REQFORM_ID " );
+				
+		List<Object> params = new ArrayList<Object>();
+		sql.append(" WHERE B.REQFORM_ID = ?");
+		params.add(formVo.getReqFormId());
+		BigDecimal rs = jdbc.queryForObject(DatatableUtils.countForDatatable(sql.toString()), BigDecimal.class,
+				params.toArray());
+		return rs.intValue();
+	}
+	
+	
+	
+	private RowMapper<ReqReceiptVo> reqReceiptMasterMapper = new RowMapper<ReqReceiptVo>() {
+		@Override
+		public ReqReceiptVo mapRow(ResultSet rs, int arg1) throws SQLException {
+			ReqReceiptVo list = new ReqReceiptVo();
+			list.setReceipt_id(rs.getLong("RECEIPT_ID"));
+			list.setTmb_requestno(rs.getString("TMB_REQUESTNO"));
+			list.setReceipt_no(rs.getString("RECEIPT_NO"));
+			list.setReceipt_date(rs.getTimestamp("RECEIPT_DATE"));
+			list.setCustomer_name(rs.getString("CUSTOMER_NAME"));
+			list.setOrganize_id(rs.getString("ORGANIZE_ID"));
+			list.setAddress(rs.getString("ADDRESS"));
+			list.setMajor_no(rs.getString("MAJOR_NO"));
+			list.setAmount(rs.getBigDecimal("AMOUNT"));
+			list.setAmount_dbd(rs.getBigDecimal("AMOUNT_DBD"));
+			list.setAmount_tmb(rs.getBigDecimal("AMOUNT_TMB"));
+			list.setAmount_vat_tmb(rs.getBigDecimal("AMOUNT_VAT_TMB"));
+			list.setPrint_count(rs.getInt("PRINT_COUNT"));
+			list.setReason(rs.getString("REASON"));
+			list.setDelete_flag(rs.getInt("DELETE_FLAG"));
+			list.setCancel_flag(rs.getInt("CANCEL_FLAG"));
+			list.setFile_name(rs.getString("FILE_NAME"));
+			list.setReceipt_no_reference(rs.getString("RECEIPT_NO_REFERENCE"));
+			list.setUpdatedById(rs.getString("UPDATED_BY_ID"));
+			list.setUpdatedByName(rs.getString("UPDATED_BY_NAME"));
+			list.setUpdatedDateTime(rs.getTimestamp("UPDATED_DATETIME"));
+			list.setCreatedByName(rs.getString("CREATED_BY_NAME"));
+			list.setCreatedDateTime(rs.getTimestamp("CREATED_DATETIME"));
+			list.setCreatedById(rs.getString("CREATED_BY_ID"));
+			
+			return list;
+		}
+	};
 
 }

@@ -103,6 +103,8 @@ public class PaymentWebService {
 				req.setTranCode(reqF.getTranCode());
 				req.setFromAccountType(reqF.getAccountType() != null ? reqF.getAccountType()
 						: ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_FROM_ACCOUNT_TYPE));
+				req.setBranchIdent(reqF.getGlType());
+				
 			}else {
 				
 				//set trans code by degit account no 
@@ -133,7 +135,7 @@ public class PaymentWebService {
 			req.setRef2(reqF.getRef2()); // ECERT_REQUEST_FORM.REF2
 			req.setPostedDate(DateConstant.convertDateToStrDDMMYYYY(new Date()));
 			req.setEpayCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_EPAY));
-			req.setBranchIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_BRANCH));
+//			req.setBranchIdent(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_BRANCH));
 			req.setCompCode(ApplicationCache.getParamValueByName(WEB_SERVICE_PARAMS.FEE_COMP_CODE));
 			req.setPostedTime(DateConstant.convertDateToStrHHmmss(new Date()));
 			

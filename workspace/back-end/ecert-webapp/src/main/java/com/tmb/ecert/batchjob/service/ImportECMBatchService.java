@@ -160,8 +160,10 @@ public class ImportECMBatchService {
 							
 							files.add(new SftpFileVo(new File(pathUploadfile +"/" + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
 							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
 							
+							if (StringUtils.isNotBlank(requestForm.getReceiptFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							}
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
 								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
 							}
@@ -181,8 +183,10 @@ public class ImportECMBatchService {
 							
 							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getCertificateFile()), ftpPath, requestForm.getCertificateFile()));
 							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getRequestFormFile()), ftpPath, requestForm.getRequestFormFile()));
-							files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
 							
+							if (StringUtils.isNotBlank(requestForm.getReceiptFile())) {
+								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getReceiptFile()), ftpPath, requestForm.getReceiptFile()));
+							}
 							
 							if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
 								files.add(new SftpFileVo(new File(pathUploadfile  +"/" + requestForm.getIdCardFile()), ftpPath,  requestForm.getIdCardFile()));
@@ -532,16 +536,18 @@ public class ImportECMBatchService {
 					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 				}else if(i == 2) {
-					ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
-					ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
-					
-					ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
-					byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
-					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
-					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
-					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+					if(StringUtils.isNotBlank(req.getReceiptFile())) {
+						ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
+						ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
+						
+						ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
+						byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
+						ecmUploadRequest.setFile(bty);
+						ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
+						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+						ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
+						ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
+					}
 				}else if (i==3) {
 					if(StringUtils.isNotBlank(req.getIdCardFile())) {
 						ecmUploadRequest.setTmbDocTypeCode(docTypeId);
