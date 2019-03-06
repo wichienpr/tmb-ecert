@@ -112,17 +112,17 @@ public class FeepaymentAutoRetryBatchService {
 					if (isSuccess(realtimeStep.getMessage())) {
 						
 						// UPDATE RECEIPT ID WHEN PAYMENT SUCCESS.
-						if (StringUtils.isEmpty(newReq.getReceiptNo())) {
+						if ( StringUtils.isEmpty(newReq.getReceiptNo()) && PAYMENT_STATUS.PAY_TMB_DBD.equals(newReq.getPaidTypeCode())) {
 							String receiptNo = receiptGenKeyService.getNextKey();
 							newReq.setReceiptNo(receiptNo);
+							createRequestFormReceipt(newReq);
 						}
 						
 						newReq.setStatus(StatusConstant.WAIT_UPLOAD_CERTIFICATE);
 						response.setMessage(PAYMENT_STATUS.SUCCESS_MSG);
 						dao.updateRequestForm(newReq);
 						history.save(newReq);
-						createRequestFormReceipt(newReq);
-
+						
 					} else {
 						response.setData(new ResponseVo(realtimeStep.getData().getDescription(),
 								realtimeStep.getData().getStatusCode()));

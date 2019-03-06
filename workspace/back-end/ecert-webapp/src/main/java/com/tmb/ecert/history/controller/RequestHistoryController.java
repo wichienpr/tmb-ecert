@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tmb.ecert.history.persistence.vo.RequestHistoryVo;
 import com.tmb.ecert.history.service.RequestHistoryService;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 
@@ -46,4 +47,13 @@ public class RequestHistoryController {
 	public List<RequestHistoryVo> list(@PathVariable("id") String reqFormId) {
 		return reqHistory.findByReqFormId(reqFormId);
 	}
+	
+	@PostMapping("receipt/list")
+	@ResponseBody
+	public DataTableResponse<ReqReceiptVo> receiptList(@RequestBody RequestHistoryVo vo) {
+		return reqHistory.findReceiptHisByReqID(vo);
+	}
+	
+	
+	
 }

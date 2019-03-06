@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tmb.ecert.history.persistence.dao.RequestHistoryDao;
 import com.tmb.ecert.history.persistence.vo.RequestHistoryVo;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.common.bean.DataTableResponse;
 
@@ -30,6 +31,15 @@ public class RequestHistoryService {
 		DataTableResponse<RequestHistoryVo> response = new DataTableResponse<RequestHistoryVo>();
 		response.setData(list);
 		int count = requestHistoryDao.count(vo);
+		response.setRecordsTotal(count);
+		return response;
+	}
+	
+	public DataTableResponse<ReqReceiptVo> findReceiptHisByReqID(RequestHistoryVo vo) {
+		List<ReqReceiptVo> list = requestHistoryDao.findReciptHis(vo);
+		DataTableResponse<ReqReceiptVo> response = new DataTableResponse<ReqReceiptVo>();
+		response.setData(list);
+		int count = requestHistoryDao.receiptHisCount(vo);
 		response.setRecordsTotal(count);
 		return response;
 	}

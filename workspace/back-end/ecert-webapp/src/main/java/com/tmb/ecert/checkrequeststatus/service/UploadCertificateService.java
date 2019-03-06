@@ -105,7 +105,10 @@ public class UploadCertificateService {
 					
 					files.add(new SftpFileVo(new File(pathReq), pathFile, reqVo.getCertificateFile()));
 					files.add(new SftpFileVo(new File(pathCer), pathFile, reqVo.getRequestFormFile()));
-					files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
+					
+					if (StringUtils.isNotBlank(reqVo.getReceiptFile())) {
+						files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
+					}
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
 						files.add(new SftpFileVo(new File(pathUploadfiel  +"/"+ reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
@@ -126,7 +129,10 @@ public class UploadCertificateService {
 					
 					files.add(new SftpFileVo(new File(pathReq), pathFile, reqVo.getCertificateFile()));
 					files.add(new SftpFileVo(new File(pathCer), pathFile, reqVo.getRequestFormFile()));
-					files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
+//					files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
+					if (StringUtils.isNotBlank(reqVo.getReceiptFile())) {
+						files.add(new SftpFileVo(new File(pathRec), pathFile, reqVo.getReceiptFile()));
+					}
 					
 					if (StringUtils.isNotBlank(reqVo.getIdCardFile())) {
 						files.add(new SftpFileVo(new File(pathUploadfiel +"/" + reqVo.getIdCardFile()), pathFile,  reqVo.getIdCardFile()));
