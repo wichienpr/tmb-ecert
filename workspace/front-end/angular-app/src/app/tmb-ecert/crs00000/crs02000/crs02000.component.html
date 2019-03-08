@@ -873,7 +873,7 @@
                 <td style="text-align: left   !important;"> {{ h.customer_name}} </td>
                 <td style="text-align: center   !important;"> {{ h.major_no}} </td>
                 <td style="text-align: left   !important;"> {{ h.address}} </td>
-                <td style="text-align: center   !important;"> {{ i == 0 ? (h.cancel_flag == 1 ? (h.print_count ?'ออกใบแทน ครั้งที่ '+h.print_count:'พิมพ์ใบเสร็จ' ): (h.print_count ?'ออกใบแทน ครั้งที่ '+h.print_count:'พิมพ์ใบเสร็จ' ) | emptyString): 'ถูกยกเลิก'}} </td>
+                <td style="text-align: center   !important;"> {{ ( h.receiptStatus != '13003' ? h.statusName : h.statusName + ' ครั้งที่ '+ h.print_count )| emptyString }} </td>
                 <td style="text-align: left   !important;"> {{h.reason | emptyString}} </td>
 
               </tr>
