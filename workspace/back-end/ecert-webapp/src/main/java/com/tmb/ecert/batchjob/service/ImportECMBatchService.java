@@ -365,7 +365,7 @@ public class ImportECMBatchService {
 		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
-		checkReq.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));
+		checkReq.setSegmentCode(null);
 		checkReq.setCaNumber(reqVo.getCaNumber());
 
 		HttpEntity<CheckStatusDocumentRequest> chekcRequest = new HttpEntity<>(checkReq);

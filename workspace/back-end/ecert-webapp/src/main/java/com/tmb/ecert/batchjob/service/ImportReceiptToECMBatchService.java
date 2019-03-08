@@ -289,7 +289,7 @@ public class ImportReceiptToECMBatchService {
 		req.setCaNumber(recpVo.getCaNumber());
 		req.setChannelId(channelid);
 		req.setReqUserId(userId);
-		req.setSegmentCode(convertCostomerSegment(recpVo.getCustomerSegment()));
+		req.setSegmentCode(null);
 		
 		FileImportRequest fileImport = new FileImportRequest();
 		fileImport.setCusName(recpVo.getCompanyName());
@@ -320,7 +320,7 @@ public class ImportReceiptToECMBatchService {
 		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
-		checkReq.setSegmentCode(convertCostomerSegment(recpVo.getCustomerSegment()));
+		checkReq.setSegmentCode(null);
 		checkReq.setCaNumber(recpVo.getCaNumber());
 
 		HttpEntity<CheckStatusDocumentRequest> chekcRequest = new HttpEntity<>(checkReq);
