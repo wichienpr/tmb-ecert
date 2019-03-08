@@ -76,4 +76,12 @@ public class StatusConstant {
 		public final static long ECM_SUCCESS = 1;
 		public final static long ECM_FAIL = 0;
 	}
+	public static class RECEIPT_STATUS {
+		public final static String CREATE_RECEIPT = "13001";
+		public final static String PRINT_RECEIPT =  "13002";
+		public final static String REPRINT_RECEIPT = "13003";
+		public final static String CANCEL_RECEIPT = "13004";
+		public final static String EDIT_RECEIPT = "13005";
+
+	}
 }

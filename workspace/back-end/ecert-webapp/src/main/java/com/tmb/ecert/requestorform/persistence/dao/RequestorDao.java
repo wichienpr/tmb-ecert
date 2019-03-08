@@ -292,9 +292,9 @@ public class RequestorDao {
 
 		StringBuilder sql = new StringBuilder(" INSERT INTO ECERT_REQFORM_RECEIPT  ");
 		sql.append(" ( REQFORM_ID,TMB_REQUESTNO,RECEIPT_NO,RECEIPT_DATE,FILE_NAME,CUSTOMER_NAME,ORGANIZE_ID,ADDRESS, " + 
-				" MAJOR_NO,AMOUNT,AMOUNT_TMB,AMOUNT_DBD,AMOUNT_VAT_TMB,DELETE_FLAG,REASON , RECEIPT_NO_REFERENCE, CANCEL_FLAG ," + 
+				" MAJOR_NO,AMOUNT,AMOUNT_TMB,AMOUNT_DBD,AMOUNT_VAT_TMB,DELETE_FLAG,REASON , RECEIPT_NO_REFERENCE, CANCEL_FLAG ,RECEIPT_STATUS, ECM_FLAG , " + 
 				" CREATED_BY_ID,CREATED_BY_NAME,CREATED_DATETIME ) ");
-		sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) ");
+		sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) ");
 
 		List<Object> params = new ArrayList<>();
 
@@ -315,6 +315,9 @@ public class RequestorDao {
 		params.add( vo.getReason());
 		params.add( vo.getReceipt_no_reference());
 		params.add( vo.getCancel_flag());
+		params.add( vo.getReceiptStatus());
+		params.add( vo.getEcm_flag());
+		
 		params.add(vo.getCreatedById());
 		params.add( vo.getCreatedByName());
 		params.add( new java.util.Date());
@@ -328,7 +331,7 @@ public class RequestorDao {
 		StringBuilder sql = new StringBuilder(" UPDATE ECERT_REQFORM_RECEIPT  SET ");
 		sql.append(" RECEIPT_DATE = ?,FILE_NAME = ? ,CUSTOMER_NAME = ?,"
 				+ " ORGANIZE_ID = ? ,ADDRESS = ? ,  MAJOR_NO = ? "
-				+ ",PRINT_COUNT = ? ,REASON = ? , RECEIPT_NO_REFERENCE = ? ,CANCEL_FLAG = ? ,DELETE_FLAG = ?  ");
+				+ ",PRINT_COUNT = ? ,REASON = ? , RECEIPT_NO_REFERENCE = ? ,CANCEL_FLAG = ? ,DELETE_FLAG = ?  ,RECEIPT_STATUS = ? ");
 		sql.append("  WHERE RECEIPT_ID = ? ");
 		
 		List<Object> params = new ArrayList<>();
@@ -344,12 +347,13 @@ public class RequestorDao {
 		params.add( vo.getReceipt_no_reference());
 		params.add( vo.getCancel_flag());
 		params.add( vo.getDelete_flag());
+		params.add( vo.getReceiptStatus());
 		params.add( vo.getReceipt_id());
 		int row = jdbcTemplate.update(sql.toString(), params.toArray());
 	}
 	public void updateCancelFlagReqReceipt(ReqReceiptVo vo ) {
 		StringBuilder sql = new StringBuilder(" UPDATE ECERT_REQFORM_RECEIPT  SET ");
-		sql.append(" REASON = ? , CANCEL_FLAG = ? , UPDATED_BY_ID = ? ,UPDATED_BY_NAME=?,UPDATED_DATETIME = ? ");
+		sql.append(" REASON = ? , CANCEL_FLAG = ? , UPDATED_BY_ID = ? ,UPDATED_BY_NAME=?,UPDATED_DATETIME = ? ,RECEIPT_STATUS = ? ");
 		sql.append("  WHERE RECEIPT_ID = ? ");
 		
 		List<Object> params = new ArrayList<>();
@@ -358,6 +362,7 @@ public class RequestorDao {
 		params.add( vo.getUpdatedById());
 		params.add( vo.getUpdatedByName());
 		params.add( new java.util.Date());
+		params.add( vo.getReceiptStatus());
 		params.add( vo.getReceipt_id());
 		int row = jdbcTemplate.update(sql.toString(), params.toArray());
 	}

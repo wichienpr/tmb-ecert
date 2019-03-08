@@ -255,10 +255,11 @@ public class RequestHistoryDao {
 	
 	public List<ReqReceiptVo> findReciptHis(RequestHistoryVo formVo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append( " SELECT A.* from ECERT_REQFORM_RECEIPT AS A  ");
+		sql.append( " SELECT A.*,C.NAME as STATUS_NAME from ECERT_REQFORM_RECEIPT AS A  ");
 		sql.append(	" INNER JOIN ECERT_REQUEST_FORM AS B ");
 		sql.append(	" ON  A.REQFORM_ID = B.REQFORM_ID " );
-				
+		sql.append(	" INNER JOIN ECERT_LISTOFVALUE C ");
+		sql.append(	" ON A.RECEIPT_STATUS = C.CODE ");
 		List<Object> params = new ArrayList<Object>();
 
 		sql.append(" WHERE B.REQFORM_ID = ?");
@@ -273,7 +274,8 @@ public class RequestHistoryDao {
 		sql.append( " SELECT A.* from ECERT_REQFORM_RECEIPT AS A  ");
 		sql.append(	" INNER JOIN ECERT_REQUEST_FORM AS B ");
 		sql.append(	" ON  A.REQFORM_ID = B.REQFORM_ID " );
-				
+		sql.append(	" INNER JOIN ECERT_LISTOFVALUE C ");
+		sql.append(	" ON A.RECEIPT_STATUS = C.CODE ");
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" WHERE B.REQFORM_ID = ?");
 		params.add(formVo.getReqFormId());
@@ -312,6 +314,8 @@ public class RequestHistoryDao {
 			list.setCreatedByName(rs.getString("CREATED_BY_NAME"));
 			list.setCreatedDateTime(rs.getTimestamp("CREATED_DATETIME"));
 			list.setCreatedById(rs.getString("CREATED_BY_ID"));
+			list.setReceiptStatus(rs.getString("RECEIPT_STATUS"));
+			list.setStatusName(rs.getString("STATUS_NAME"));
 			
 			return list;
 		}
