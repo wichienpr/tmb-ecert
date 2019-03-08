@@ -14,6 +14,7 @@ import com.tmb.ecert.batchjob.service.EcmMasterDataBatchService;
 import com.tmb.ecert.batchjob.service.HROfficeCodeBatchService;
 import com.tmb.ecert.batchjob.service.HouseKeepingBatchService;
 import com.tmb.ecert.batchjob.service.ImportECMBatchService;
+import com.tmb.ecert.batchjob.service.ImportReceiptToECMBatchService;
 import com.tmb.ecert.batchjob.service.PaymentDBDSummaryBatchService;
 import com.tmb.ecert.batchjob.service.PaymentGLSummaryBatchService;
 import com.tmb.ecert.batchjob.service.PaymentOnDemandSummaryBatchService;
@@ -62,6 +63,9 @@ public class Btm01000Service {
 	@Autowired
 	private EcmMasterDataBatchService ecmMasterService ;
 	
+	@Autowired
+	private ImportReceiptToECMBatchService importReceiptToECMBatchService;
+	
 	public DataTableResponse<Btm01000Vo> getListBatch(Btm01000FormVo form) {
 		DataTableResponse<Btm01000Vo> list  = new DataTableResponse<>();
 		List<Btm01000Vo> adl01000VoList = batchDao.getListBatch(form);
@@ -102,6 +106,9 @@ public class Btm01000Service {
 			}else if (StatusConstant.JOBMONITORING.BATCH_ECM_MASTER.equals(form.getJobtypeCode())) {
 				ecmMasterService.runBatchJob();
 				logger.info("rerun BATCH_ECM MASTER.");
+			}else if (StatusConstant.JOBMONITORING.BATCH_ECM_RECEIPT.equals(form.getJobtypeCode())) {
+				importReceiptToECMBatchService.sendReceiptToECM();
+				logger.info("rerun BATCH IMPORT RECEIPT TO ECM.");
 			}
 			batchDao.updateRerunJobById(form, fullName, userid);
 			logger.info("rerun batch success.");
