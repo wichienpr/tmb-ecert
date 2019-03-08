@@ -161,14 +161,18 @@ public class ImportReceiptToECMBatchService {
 						} else {
 							isSuccess = false;
 //							checkReqDetailDao.updateECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
-							errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail \n";
+//							errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail \n";
 //							log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
 						}
 					}
 					
 					if (!isSuccess) {
-						jobMonitoring.setErrorDesc(errorResp);
+						errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail. ";
 					}
+				}
+				
+				if (!isSuccess) {
+					jobMonitoring.setErrorDesc(errorResp);
 				}
 			}else {
 				jobMonitoring.setErrorDesc(JOBMONITORING.BATCH_MESSAGE_NODATA);
@@ -199,7 +203,7 @@ public class ImportReceiptToECMBatchService {
 		Date current = new Date();
 		long start = System.currentTimeMillis();
 		String errorResp = "";
-		boolean isSuccess = true;
+		boolean isSuccess = false;
 		try {
 //			List<RequestForm> reqFormList = importECMBatchDao.getRequestFormWithEcmFlag();
 			log.info(" START PROCESS UPLOAD RECEIPT TO ECM BY BATCH JOB ");
@@ -217,7 +221,7 @@ public class ImportReceiptToECMBatchService {
 					}else {
 						isSuccess = isSuccess && statusWS;
 //						checkReqDetailDao.updateECMFlag(ecmReceipt.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
-						errorResp = errorResp +" REQ ID "+ecmReceipt.getReqId().toString()+" upload file fail \n";
+						errorResp = errorResp +" REQ ID "+ecmReceipt.getReqId().toString()+" upload file fail.";
 					}
 				}
 				
