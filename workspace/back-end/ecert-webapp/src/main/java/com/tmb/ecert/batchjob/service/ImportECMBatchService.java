@@ -257,7 +257,7 @@ public class ImportECMBatchService {
 //						log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 					} else {
 						isSuccess = false;
-						int upldateResult = checkReqDetailDao.updateECMFlag(requestForm.getReqFormId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
+//						int upldateResult = checkReqDetailDao.updateECMFlag(requestForm.getReqFormId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
 						errorResp = errorResp +" REQ ID "+requestForm.getReqFormId().toString()+" upload file fail \n";
 //						log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
 					}
@@ -409,28 +409,7 @@ public class ImportECMBatchService {
 				log.info(" BATCH REQUEST FROM SIZE  "+reqFormList.size());
 				
 				for (RequestForm requestForm : reqFormList) {
-					
-/*					List<String> listFile = new ArrayList<String>();
-					String pathReq = pathUploadfile +"/" + requestForm.getRequestFormFile();
-					String pathCer = pathUploadfile +"/" + requestForm.getCertificateFile();
-					String pathRec = pathUploadfile +"/" + requestForm.getReceiptFile();
-					String pathIdCard = "";
-					String pathOther = "";
-					
-					listFile.add(pathRec);
-					listFile.add(pathCer);
-					listFile.add(pathReq);
 
-					
-					if (StringUtils.isNotBlank(requestForm.getIdCardFile())) {
-						pathIdCard = requestForm.getIdCardFile();
-						listFile.add(pathIdCard);
-					}
-					if (StringUtils.isNotBlank(requestForm.getChangeNameFile())) {
-						pathOther = requestForm.getChangeNameFile();
-						listFile.add(pathOther);
-					}*/
-					
 					List<ECMUuploadRequest> listRequest = createRequest(requestForm, requestForm.getMakerById());
 					boolean statusWS = CallECMWevserviceV2(listRequest);
 					
@@ -520,8 +499,8 @@ public class ImportECMBatchService {
 					
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getRequestFormFile(), docTypeReq, ecmMaster.getTypeShortName()));
 					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 				}else if(i == 1) {
@@ -531,8 +510,8 @@ public class ImportECMBatchService {
 					ecmUploadRequest.setName(this.convertFilenameForECM(req.getCertificateFile(), docTypeCer, ecmMaster.getTypeShortName()));
 					byte[] bty = FileUtils.readFileToByteArray(new File(pathCer));
 					ecmUploadRequest.setFile(bty);
-					ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-					ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+					ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+					ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 					ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 					ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 				}else if(i == 2) {
@@ -543,8 +522,8 @@ public class ImportECMBatchService {
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getReceiptFile(), docTypeRec, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathRec));
 						ecmUploadRequest.setFile(bty);
-						ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 						ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 						ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 					}
@@ -556,8 +535,8 @@ public class ImportECMBatchService {
 						ecmUploadRequest.setName(this.convertFilenameForECM(req.getIdCardFile(), docTypeId, ecmMaster.getTypeShortName()));
 						byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfile +"/" +req.getIdCardFile()));
 						ecmUploadRequest.setFile(bty);
-						ecmUploadRequest.setArchival(this.convertYearFromMaster(ecmMaster.getArchivalPeriod()));
-						ecmUploadRequest.setDisposal(this.convertYearFromMaster(ecmMaster.getDisposalPeriod()));
+						ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
+						ecmUploadRequest.setDisposal(ecmMaster.getDisposalPeriod());
 						ecmUploadRequest.setCustomerFirstNameThai(ecmMaster.getTypeNameTh());
 						ecmUploadRequest.setCustomerFirstNameEng(ecmMaster.getTypeNameEn());
 					}

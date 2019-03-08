@@ -2,6 +2,7 @@ package com.tmb.ecert.batchjob.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tmb.ecert.batchjob.domain.EcmReceipt;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 @Repository
 public class ImportECMBatchDao {
@@ -19,9 +22,9 @@ public class ImportECMBatchDao {
 	private JdbcTemplate jdbcTemplate;
 		
 	public List<RequestForm> getRequestFormWithEcmFlag() {
-		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE ECM_FLAG = 0 AND DELETE_FLAG=0 "
+		return jdbcTemplate.query("SELECT * FROM ECERT_REQUEST_FORM WHERE ECM_FLAG = 1 AND DELETE_FLAG=0 "
 				+ "AND CA_NUMBER IS NOT NULL "
-				+ "AND STATUS = '10010' "
+				+ "AND STATUS = '10009' "
 				+ "AND CERTIFICATE_FILE IS NOT NULL ", mapping);
 	}
 	
@@ -89,4 +92,35 @@ public class ImportECMBatchDao {
 			return reqForm;
 		}
 	};
+	
+
+	public List<EcmReceipt> findRequestReceipt() {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  SELECT a.RECEIPT_ID,a.REQFORM_ID ,a.FILE_NAME,b.CA_NUMBER,b.CUSTSEGMENT_CODE,    ");
+		sql.append(" b.COMPANY_NAME,b.ORGANIZE_ID,b.TMB_REQUESTNO,b.MAKER_BY_ID from ECERT_REQFORM_RECEIPT a ");
+		sql.append(" INNER JOIN ECERT_REQUEST_FORM b ON a.REQFORM_ID = b.REQFORM_ID ");
+		sql.append(" WHERE a.ECM_FLAG = 1 ");
+		List<EcmReceipt> result = jdbcTemplate.query(sql.toString(), reqReceiptMasterMapper);
+		return result;
+	}
+	
+	private RowMapper<EcmReceipt> reqReceiptMasterMapper = new RowMapper<EcmReceipt>() {
+		@Override
+		public EcmReceipt mapRow(ResultSet rs, int arg1) throws SQLException {
+			EcmReceipt list = new EcmReceipt();
+			list.setReceiptId(rs.getLong("RECEIPT_ID"));
+			list.setReqId(rs.getLong("REQFORM_ID"));
+			list.setFileName(rs.getString("FILE_NAME"));
+			list.setCaNumber(rs.getString("CA_NUMBER"));
+			list.setCompanyName(rs.getString("COMPANY_NAME"));
+			list.setCustomerSegment(rs.getString("CUSTSEGMENT_CODE"));
+			list.setOrganizeId(rs.getString("ORGANIZE_ID"));
+			list.setTmbRequestNo(rs.getString("TMB_REQUESTNO"));
+			list.setMakerById(rs.getString("MAKER_BY_ID"));
+
+			return list;
+		}
+	};
+	
+	
 }

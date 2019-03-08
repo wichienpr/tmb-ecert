@@ -148,6 +148,19 @@ public class CheckRequestDetailDao {
 
 		return result;
 	}
+	public int updateReceiptECMFlag(Long reqID,Long ecmStatus) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  UPDATE ECERT_REQFORM_RECEIPT SET ECM_FLAG = ?  WHERE RECEIPT_ID = ?   ");
+		List<Object> params = new ArrayList<>();
+		params.add(ecmStatus);
+		params.add(reqID);
+
+		Log.info(sql.toString());
+
+		int result = jdbcTemplate.update(sql.toString(), params.toArray());
+
+		return result;
+	}
 
 	private RowMapper<RequestForm> findFileNameMapping = new RowMapper<RequestForm>() {
 		@Override
@@ -304,6 +317,15 @@ public class CheckRequestDetailDao {
 		params.add(reqID);
 		List<ReqReceiptVo> result = jdbcTemplate.query(sql.toString(), params.toArray(), reqReceiptMasterMapper);
 		return result.get(0);
+	}
+	
+	public int countRequestReceiptByReqID (Long reqID) {
+		StringBuilder sql = new StringBuilder(" ");
+		sql.append("  SELECT COUNT(1) from ECERT_REQFORM_RECEIPT  WHERE REQFORM_ID  = ?  ");
+		List<Object> params = new ArrayList<>();
+		params.add(reqID);
+		int result = jdbcTemplate.queryForObject(sql.toString(), params.toArray(), Integer.class);
+		return result;
 	}
 	
 	private RowMapper<ReqReceiptVo> reqReceiptMasterMapper = new RowMapper<ReqReceiptVo>() {
