@@ -318,7 +318,7 @@ public class ImportECMBatchService {
 		req.setCaNumber(reqVo.getCaNumber());
 		req.setChannelId(channelid);
 		req.setReqUserId(userid);
-		req.setSegmentCode(convertCostomerSegment(reqVo.getCustsegmentCode()));
+		req.setSegmentCode(null);
 		
 		List<FileImportRequest> fileslist = new ArrayList<>();
 		FileImportRequest fileImport ;

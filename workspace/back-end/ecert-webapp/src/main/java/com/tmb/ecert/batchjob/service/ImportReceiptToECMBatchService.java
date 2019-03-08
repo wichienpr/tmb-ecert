@@ -382,7 +382,7 @@ public class ImportReceiptToECMBatchService {
 			ecmUploadRequest.setTmbDocTypeCode(docTypeRec);
 			ecmMaster = checkReqDetailDao.findECMMaster(ecmUploadRequest);
 			
-			ecmUploadRequest.setName(importECM.convertFilenameForECM(recpVo.getFileName(), docTypeRec, ecmMaster.getTypeShortName()));
+			ecmUploadRequest.setName(this.convertFilenameForECM(recpVo.getFileName(), docTypeRec, ecmMaster.getTypeShortName()));
 			byte[] bty = FileUtils.readFileToByteArray(new File(pathUploadfile +"/" +recpVo.getFileName()));
 			ecmUploadRequest.setFile(bty);
 			ecmUploadRequest.setArchival(ecmMaster.getArchivalPeriod());
@@ -414,6 +414,14 @@ public class ImportReceiptToECMBatchService {
 		return statusWS;
 		
 	}
+	
+	public String convertFilenameForECM(String fileName,String docTypeCode ,String shotName ) {
+//		format file YYYYMMMDDHHMM-DoctypeCode-ShotDoctypeName-fileName.xxx
+		
+		return String.format("%s-%s-%s-%s", EcerDateUtils.formatYYMMDDDate(new Date()),docTypeCode,shotName,fileName);
+		
+	}
+	
 
 
 }
