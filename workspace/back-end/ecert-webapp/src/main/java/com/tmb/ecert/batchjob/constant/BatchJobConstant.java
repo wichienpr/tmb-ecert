@@ -183,6 +183,7 @@ public class BatchJobConstant {
 		public final static String HOUSEKEEPING_TYPE ="60006";
 		public final static String IMPORT_ECM ="60007";
 		public final static String ECM_MASTERDATA ="60008";
+		public final static String IMPORT_RECEIPT ="60009";
 	}
 
 	public static Integer RERUN_DEFAULT = 1;

@@ -777,6 +777,7 @@ public class ReportPdfService {
 		ReqReceiptVo req = null;
 		ByteArrayOutputStream os =null;
 		String cancelRemark = "เป็นการยกเลิกและออกใบกำกับภาษีฉบับใหม่แทนฉบับเดิมเลขที %s เนื่องจาก %s ";
+		int cancelCount = checkReqDetailDao.countRequestReceiptByReqID(vo.getId());
 		try {
 			UserDetails user = UserLoginUtils.getCurrentUserLogin();
 			// Folder Exist ??
@@ -785,6 +786,8 @@ public class ReportPdfService {
 			Double oneHundred = new Double(100);
 			Double  feeAmount = new Double(0);
 			Double vatAmount = new Double(0);
+			
+
 			
 			req = checkReqDetailDao.findRequestReceiptByReqID(vo.getId());
 			RpVatVo vat = reportPdfDao.vat().get(0);
@@ -900,7 +903,7 @@ public class ReportPdfService {
 			byte[] reportFile = os.toByteArray();
 
 			// set_name
-			String name = "RECEIPT_" + req.getTmb_requestno() + ".pdf";
+			String name = "RECEIPT_" + req.getTmb_requestno()+"_" +Integer.toString(cancelCount)+ ".pdf";
 
 			// save to DB
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -936,7 +939,7 @@ public class ReportPdfService {
 					currentDate);
 		}
 		
-		return "RECEIPT_" + (req!=null ?  req.getTmb_requestno() : null);
+		return "RECEIPT_" + (req!=null ?  req.getTmb_requestno()+"_"+Integer.toString(cancelCount) : null);
 	}
 	
 	public ReqReceiptVo addReqReceipt(RequestForm req ) {
