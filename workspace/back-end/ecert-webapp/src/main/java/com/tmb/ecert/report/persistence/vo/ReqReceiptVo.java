@@ -32,6 +32,11 @@ public class ReqReceiptVo {
 	private Timestamp updatedDateTime;
 	
 	
+	private String receiptStatus;
+	private String statusName;
+	private Integer ecm_flag;
+	
+	
 	public Long getReceipt_id() {
 		return receipt_id;
 	}
@@ -181,6 +186,24 @@ public class ReqReceiptVo {
 	}
 	public void setUpdatedDateTime(Timestamp updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
+	}
+	public String getReceiptStatus() {
+		return receiptStatus;
+	}
+	public void setReceiptStatus(String receiptStatus) {
+		this.receiptStatus = receiptStatus;
+	}
+	public Integer getEcm_flag() {
+		return ecm_flag;
+	}
+	public void setEcm_flag(Integer ecm_flag) {
+		this.ecm_flag = ecm_flag;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 	
 	

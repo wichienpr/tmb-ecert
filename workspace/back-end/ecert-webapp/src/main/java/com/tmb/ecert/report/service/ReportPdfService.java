@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import com.tmb.ecert.checkrequeststatus.persistence.dao.CheckRequestDetailDao;
 import com.tmb.ecert.common.constant.DateConstant;
 import com.tmb.ecert.common.constant.ProjectConstant;
+import com.tmb.ecert.common.constant.StatusConstant;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG;
 import com.tmb.ecert.common.constant.ProjectConstant.ACTION_AUDITLOG_DESC;
 import com.tmb.ecert.common.domain.RequestForm;
@@ -50,6 +51,7 @@ import com.tmb.ecert.report.persistence.vo.RpVatVo;
 import com.tmb.ecert.requestorform.persistence.dao.RequestorDao;
 import com.tmb.ecert.requestorform.service.ReceiptGenKeyService;
 
+import ch.qos.logback.core.status.Status;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -114,6 +116,7 @@ public class ReportPdfService {
 		Date currentDate = new Date();
 		RequestForm req = null;
 		ByteArrayOutputStream os =null;
+		ReqReceiptVo reqRec = null;
 		try {
 			// Folder Exist ??
 			initialService();
@@ -259,6 +262,12 @@ public class ReportPdfService {
 		}catch(Exception ex) {
 			logger.error("ReportPdfService Error: {} ", ex);
 		}finally {
+			// UPDATE RECEIPT STATUS
+			reqRec = checkReqDetailDao.findRequestReceiptByReqID(vo.getId());
+			reqRec.setReceiptStatus(StatusConstant.RECEIPT_STATUS.PRINT_RECEIPT);
+			upDateReqDetailDao.updateReqReceipt(reqRec);
+			
+			
 			EcertFileUtils.closeStream( os );
 			auditLogService.insertAuditLog(ACTION_AUDITLOG.RECEIPT_CODE, ACTION_AUDITLOG_DESC.RECEIPT,
 					(req!=null ? req.getTmbRequestNo() : StringUtils.EMPTY),
@@ -643,7 +652,7 @@ public class ReportPdfService {
 			params01.put("pageTotal", "2");
 			params01.put("majorNo", req.getMajor_no());
 //			params01.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
-			params01.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+			params01.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน ใบเสร็จรับเงิน");
 			params01.put("reason", String.format(reasonFormat, Integer.toString(print_count),
 					DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")), vo.getReason()));
 			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
@@ -685,7 +694,7 @@ public class ReportPdfService {
 			params02.put("pageTotal", "2");
 			params02.put("majorNo", req.getMajor_no());
 //			params02.put("reprintHeader", "พิมพ์ซ่อมครั้งที่ "+ Integer.toString(print_count));
-			params02.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน");
+			params02.put("reasonHeader", "สาเหตุการพิมพ์ใบแทน ใบเสร็จรับเงิน");
 			params02.put("reason", String.format(reasonFormat, Integer.toString(print_count),
 					DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")), vo.getReason()));
 			if (BeanUtils.isNotEmpty(req.getAmount_tmb())) {
@@ -739,7 +748,7 @@ public class ReportPdfService {
 			req.setReceipt_date(req.getReceipt_date());
 			req.setPrint_count(print_count);
 			req.setReason(vo.getReason());
-//			req.setDelete_flag(0);
+			req.setReceiptStatus(StatusConstant.RECEIPT_STATUS.REPRINT_RECEIPT);
 			upDateReqDetailDao.updateReqReceipt(req);
 			
 			// สร้าง ที่ พาท REPORT
@@ -787,6 +796,7 @@ public class ReportPdfService {
 			req.setReason("ถูกยกเลิกและออกใบกำกับภาษีฉบับใหม่ด้วย เลขที่ "+ receiptNo);
 			req.setUpdatedById(user.getUserId());
 			req.setUpdatedByName(user.getFirstName()+" "+user.getLastName());
+			req.setReceiptStatus(StatusConstant.RECEIPT_STATUS.CANCEL_RECEIPT);
 			upDateReqDetailDao.updateCancelFlagReqReceipt(req);
 			
 			req.setReceipt_no_reference(oldReceiptNo);
@@ -905,6 +915,8 @@ public class ReportPdfService {
 			req.setCreatedById(user.getUserId());
 			req.setCreatedByName(user.getFirstName()+" "+user.getLastName());
 			req.setCancel_flag(1);
+			req.setReceiptStatus(StatusConstant.RECEIPT_STATUS.EDIT_RECEIPT);
+			req.setEcm_flag(1);
 			upDateReqDetailDao.insertReqRecipt(req);
 			
 			// สร้าง ที่ พาท REPORT
