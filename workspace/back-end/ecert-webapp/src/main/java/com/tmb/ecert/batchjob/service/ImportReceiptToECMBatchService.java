@@ -119,6 +119,7 @@ public class ImportReceiptToECMBatchService {
 					while (countftp < timeLoop) {
 						String reqID = ramdomKey(channelid);
 						boolean ftpSuccess = putftpFile(reqReceiptVo,reqID);
+						
 						if (ftpSuccess) {
 							Thread.sleep(timesleep);
 							ImportDocumentResponse impResp = importDocumentWebService(reqID,reqReceiptVo,reqReceiptVo.getMakerById());
@@ -153,21 +154,16 @@ public class ImportReceiptToECMBatchService {
 //							System.out.println("ftp fail");
 						}
 						countftp++;	
-						if (statusUpload) {
-							isSuccess = isSuccess && statusUpload;
-							int updateStatus = checkReqDetailDao.updateReceiptECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
-							log.info(" RECEIPT ID "+Long.toString(reqReceiptVo.getReceiptId())+" UPLOAD CERTIFIACTE SUCCESS "+ Integer.toString(updateStatus));
-						} else {
-							isSuccess = false;
-//							checkReqDetailDao.updateECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
-//							errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail \n";
-//							log.info(" END PROCESS UPLOAD CERTIFIACTE FAILED!! ");
-						}
 					}
-					
-					if (!isSuccess) {
-						errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail. ";
+					if (statusUpload) {
+						isSuccess = isSuccess && statusUpload;
+						int updateStatus = checkReqDetailDao.updateReceiptECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
+						log.info(" RECEIPT ID "+Long.toString(reqReceiptVo.getReceiptId())+" UPLOAD CERTIFIACTE SUCCESS "+ Integer.toString(updateStatus));
+					} else {
+						isSuccess = false;
+						errorResp = errorResp +" REQ ID "+reqReceiptVo.getReqId().toString()+" upload file fail \n";
 					}
+
 				}
 				
 				if (!isSuccess) {
