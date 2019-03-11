@@ -138,7 +138,6 @@ public class ImportReceiptToECMBatchService {
 									checkStatusVo  = CheckStatusWS(reqReceiptVo,reqID,channelid,reqReceiptVo.getMakerById());
 									
 									if (StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(checkStatusVo.getStatusCode())) {
-										System.out.println(" call ws check success");
 										statusUpload = true;
 										break ;
 									}else {
@@ -156,7 +155,7 @@ public class ImportReceiptToECMBatchService {
 						countftp++;	
 						if (statusUpload) {
 							isSuccess = isSuccess && statusUpload;
-							checkReqDetailDao.updateECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
+							checkReqDetailDao.updateReceiptECMFlag(reqReceiptVo.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
 //							log.info(" END PROCESS UPLOAD CERTIFIACTE SUCCESS!! ");
 						} else {
 							isSuccess = false;
@@ -217,7 +216,7 @@ public class ImportReceiptToECMBatchService {
 					
 					if (statusWS) {
 						isSuccess = isSuccess && statusWS;
-						checkReqDetailDao.updateECMFlag(ecmReceipt.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
+						checkReqDetailDao.updateReceiptECMFlag(ecmReceipt.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_SUCCESS);
 					}else {
 						isSuccess = isSuccess && statusWS;
 //						checkReqDetailDao.updateECMFlag(ecmReceipt.getReceiptId(),StatusConstant.ECM_CONFIGURATION.ECM_FAIL);
