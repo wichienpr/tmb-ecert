@@ -268,7 +268,7 @@ public class ImportReceiptToECMBatchService {
 		String ftpPath = pathFile+ "/"+ reqId;
 		try {
 			files.add(new SftpFileVo(new File(pathUploadfile  +"/" + reqReceiptVo.getFileName()), ftpPath, reqReceiptVo.getFileName()));
-			SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername, TmbAesUtil.decrypt(keystorePath, ftpPassword));
+			SftpVo sftpVo = new SftpVo(files, ftpHost, ftpUsername,TmbAesUtil.decrypt(keystorePath, ftpPassword));
 			return  SftpUtils.putFile(sftpVo,ftpPath);
 			
 		} catch (Exception e) {
@@ -289,7 +289,7 @@ public class ImportReceiptToECMBatchService {
 		req.setCaNumber(recpVo.getCaNumber());
 		req.setChannelId(channelid);
 		req.setReqUserId(userId);
-		req.setSegmentCode(null);
+		req.setSegmentCode("");
 		
 		FileImportRequest fileImport = new FileImportRequest();
 		fileImport.setCusName(recpVo.getCompanyName());
@@ -320,7 +320,7 @@ public class ImportReceiptToECMBatchService {
 		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
-		checkReq.setSegmentCode(null);
+		checkReq.setSegmentCode("");
 		checkReq.setCaNumber(recpVo.getCaNumber());
 
 		HttpEntity<CheckStatusDocumentRequest> chekcRequest = new HttpEntity<>(checkReq);

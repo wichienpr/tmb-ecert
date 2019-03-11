@@ -318,7 +318,7 @@ public class ImportECMBatchService {
 		req.setCaNumber(reqVo.getCaNumber());
 		req.setChannelId(channelid);
 		req.setReqUserId(userid);
-		req.setSegmentCode(null);
+		req.setSegmentCode("");
 		
 		List<FileImportRequest> fileslist = new ArrayList<>();
 		FileImportRequest fileImport ;
@@ -365,7 +365,7 @@ public class ImportECMBatchService {
 		checkReq.setReqId(reqID);
 		checkReq.setChannelId(channelid);
 		checkReq.setReqUserId(userid);
-		checkReq.setSegmentCode(null);
+		checkReq.setSegmentCode("");
 		checkReq.setCaNumber(reqVo.getCaNumber());
 
 		HttpEntity<CheckStatusDocumentRequest> chekcRequest = new HttpEntity<>(checkReq);
