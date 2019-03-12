@@ -43,6 +43,7 @@ export class Crs02000Component implements OnInit {
   tab: any;
   paidTypeString: string = "";
   paidType: Lov[] = [];
+  receiptData:any;
 
   toggleDoc: string = "content";
   toggleTitle: string = "title";
@@ -158,6 +159,7 @@ export class Crs02000Component implements OnInit {
       this.paidType = await this.service.getPaidType().toPromise();
       this.history = await this.service.getHistory(this.id);
       this.chkList = await this.service.getChkList(this.id);
+      // this.receiptData =  await this.service.getReceiptData(this.id);
       if (this.service.getStatusCode() !== "10011") {
         this.paidTypeString = this.paidType.find(obj => obj.code == this.data.paidTypeCode).name;
         for (let i = 0; i < this.chkList.length; i++) {
@@ -353,12 +355,13 @@ export class Crs02000Component implements OnInit {
     }
   }
 
-  cancel(){
+  async cancel(){
+    this.receiptData = await this.service.getReceiptData(this.id);
     this.cancelForm.setValue({
-      companyName:this.data.companyName,
-      taxid:this.data.organizeId,
-      barnchCode:this.data.majorNo,
-      address:this.data.address,
+      companyName:this.receiptData.customer_name,
+      taxid:this.receiptData.organize_id,
+      barnchCode:this.receiptData.major_no,
+      address:this.receiptData.address,
       cancelReason:''});
     $('#cancel').modal('show');
   }
@@ -443,7 +446,7 @@ export class Crs02000Component implements OnInit {
       return this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000404) && !this.isprintReceipt
     }
   }
-  get btnPrintCover() { return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
+  get btnPrintCover() { return this.chkStatus(REQ_STATUS.ST10009) && this.common.isAuth(PAGE_AUTH.P0000405) }
   get btnUpload() {
     // return (this.roles(ROLES.MAKER)
     //   && this.chkStatus(REQ_STATUS.ST10009)
@@ -454,7 +457,7 @@ export class Crs02000Component implements OnInit {
   }
 
   get btnPayment(){
-    return this.roles(ROLES.MAKER) && this.chkStatus(REQ_STATUS.ST10008) && this.common.isAuth(PAGE_AUTH.P0000401)
+    return this.chkStatus(REQ_STATUS.ST10008) && this.common.isAuth(PAGE_AUTH.P0000401)
   }
 
   get btnReprint(){
