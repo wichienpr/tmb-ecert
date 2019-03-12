@@ -228,7 +228,7 @@ export class sup01100Component implements OnInit {
         status: 0,
         fuctioncode: PAGE_AUTH.P0001400,
         chliddata: [{
-          rolename: "แก้ไข",
+          rolename: "บันทึก",
           status: 0,
           fuctioncode: PAGE_AUTH.P0001401
         }]
