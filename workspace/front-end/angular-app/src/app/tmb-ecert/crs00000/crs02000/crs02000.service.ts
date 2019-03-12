@@ -27,6 +27,7 @@ export const URL = {
   PAYMENT_RETRY: "/api/crs/crs02000/retry",
   REPRINT_RECEIPT: "/api/report/pdf/createAndUpload/reprintReceiptTax/",
   CANCEL_RECEIPT: "/api/report/pdf/createAndUpload/cancelReceiptTax/",
+  RECEIPT_DATA:"/api/crs/crs02000/receipt"
 }
 
 @Injectable({
@@ -142,6 +143,12 @@ export class Crs02000Service {
       }
     }, error => {
       this.modal.alert({ msg: "ทำรายการไม่สำเร็จ กรุณาดำเนินการอีกครั้งหรือติดต่อผู้ดูแลระบบ โทร. 02-299-2765" });
+    });
+  }
+  getReceiptData(id: String) {
+    return this.ajax.get(URL.RECEIPT_DATA+"/"+id, response => {
+      let data: any = response.json();
+      return data;
     });
   }
 

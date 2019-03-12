@@ -45,7 +45,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
          * this.checkA(PAGE_AUTH.P0001501) 
          * this.checkRA(ROLES.ADMIN, PAGE_AUTH.P0001501)
          */
-        role: this.checkA(PAGE_AUTH.P0000600 || PAGE_AUTH.P0000500),
+        role: this.checkAuthMenu([PAGE_AUTH.P0000600 , PAGE_AUTH.P0000500]),
         child: [ // Sub Menu 1.1 
           {
             label: "Request Form (พิมพ์ใบคำขอเปล่าให้ลูกค้าลงนาม และบันทึกข้อมูลภายหลัง)",
@@ -71,7 +71,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       { // Main Menu 3
         label: "รายงาน",
         url: null,
-        role: this.checkA(PAGE_AUTH.P0000700 || PAGE_AUTH.P0000800 || PAGE_AUTH.P0000900),
+        role: this.checkAuthMenu([PAGE_AUTH.P0000700 , PAGE_AUTH.P0000800 , PAGE_AUTH.P0000900]),
         child: [ // Sub Menu 3.1
           {
             label: "รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : End day",
@@ -103,7 +103,7 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       { // Main Menu 6
         label: "Setup",
         url: null,
-        role: this.checkA(PAGE_AUTH.P0001300 || PAGE_AUTH.P0001400 || PAGE_AUTH.P0001500),
+        role: this.checkAuthMenu([PAGE_AUTH.P0001300 , PAGE_AUTH.P0001400 , PAGE_AUTH.P0001500]),
         child: [ // Sub Menu 6.1
           { label: "Role Management", url: "/sup/sup01000", role: this.checkA(PAGE_AUTH.P0001300) },
           { label: "Parameter Configuration", url: "/sup/sup02000", role: this.checkA(PAGE_AUTH.P0001400) },
@@ -137,7 +137,9 @@ export class SemanticMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   //   const value = e.target.value;
   //   this.store.dispatch(new UserActions.UpdateStatus(value));
   // }
-
+  checkAuthMenu(_auths: any[]) {
+    return this.commonsv.isAuthMenu(_auths);
+  }
   checkA(_auths: PAGE_AUTH) {
     return this.commonsv.isAuth(_auths);
   }

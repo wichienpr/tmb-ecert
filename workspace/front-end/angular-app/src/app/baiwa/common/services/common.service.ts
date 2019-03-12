@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AjaxService } from './ajax.service';
+import { userReducer } from 'app/user.reducer';
 declare var $;
 
 @Injectable({
@@ -23,13 +24,29 @@ export class CommonService {
   isAuth(page_auth: PAGE_AUTH): boolean {
     return this.ishasAuth(this.user, page_auth);
   }
+  isAuthMenu(page_auth: any): boolean {
+    return this.ishasAuthMenu(this.user, page_auth);
+  }
 
+  ishasAuthMenu(user: UserDetail, page_auth: any): boolean {
+    for (let i = 0; i < page_auth.length; i++) {
+      const element = page_auth[i];
+      for (let j = 0; j < user.auths.length; j++) {
+        if (element == user.auths[j] ){
+          return true;
+        }
+      }
+    }
+    console.log("return false");
+    return false;
+  }
   ishasAuth(user: UserDetail, page_auth: PAGE_AUTH): boolean {
     if (user.auths) {
       return user.auths.indexOf(page_auth) >= 0;
     }
     return false;
   }
+
 
   isRole(roles: ROLES): boolean {
     return this.ishasRole(this.user, roles);
