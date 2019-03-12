@@ -403,12 +403,11 @@ public class ImportReceiptToECMBatchService {
 		response = wsresponse.getBody();
 		if (!StatusConstant.IMPORT_ECM_WS.CHECK_STATUS_SUCCESS.equals(response.getStatusCode())) {
 			statusWS = false;
+			return statusWS;
+		}else {
+			statusWS = true;
+			return statusWS;
 		}
-		statusWS = true;
-//		log.info("CALL WS CHECK STATUS {}", response.getDescription());
-
-		return statusWS;
-		
 	}
 	
 	public String convertFilenameForECM(String fileName,String docTypeCode ,String shotName ) {

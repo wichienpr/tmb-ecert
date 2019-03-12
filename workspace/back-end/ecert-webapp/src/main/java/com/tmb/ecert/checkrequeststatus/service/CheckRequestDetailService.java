@@ -332,5 +332,19 @@ public class CheckRequestDetailService {
 //		}
 	
 	}
+	
+	
+	public ReqReceiptVo getReceipt(String reqFormId) {
+
+		List<ReqReceiptVo> listReceipt  = dao.findReceiptByReqID(Long.valueOf(reqFormId));
+		if (listReceipt.size() > 0) {
+			return listReceipt.get(0);
+		}else {
+			ReqReceiptVo receiptVo = new ReqReceiptVo();
+			return receiptVo;
+		}
+
+	}
+
 
 }

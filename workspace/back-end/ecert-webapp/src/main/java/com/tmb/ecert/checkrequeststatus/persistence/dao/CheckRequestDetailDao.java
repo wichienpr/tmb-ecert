@@ -328,6 +328,17 @@ public class CheckRequestDetailDao {
 		return result;
 	}
 	
+	public List<ReqReceiptVo> findReceiptByReqID(Long reqFormId) {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sql = new StringBuilder("");
+		sql.append(" SELECT * FROM ECERT_REQFORM_RECEIPT  WHERE REQFORM_ID = ? "); 
+		sql.append(" AND CREATED_DATETIME = ( SELECT MAX(CREATED_DATETIME) FROM ECERT_REQFORM_RECEIPT  WHERE REQFORM_ID = ? ) ");
+		params.add(reqFormId);
+		params.add(reqFormId);
+		List<ReqReceiptVo> receipt = jdbcTemplate.query(sql.toString(), params.toArray(), reqReceiptMasterMapper);
+		return receipt;
+	}
+	
 	private RowMapper<ReqReceiptVo> reqReceiptMasterMapper = new RowMapper<ReqReceiptVo>() {
 		@Override
 		public ReqReceiptVo mapRow(ResultSet rs, int arg1) throws SQLException {

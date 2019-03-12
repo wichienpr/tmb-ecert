@@ -19,6 +19,7 @@ import com.tmb.ecert.common.domain.Certificate;
 import com.tmb.ecert.common.domain.CommonMessage;
 import com.tmb.ecert.common.domain.RequestCertificate;
 import com.tmb.ecert.common.domain.RequestForm;
+import com.tmb.ecert.report.persistence.vo.ReqReceiptVo;
 
 import th.co.baiwa.buckwaframework.security.util.UserLoginUtils;
 
@@ -76,6 +77,12 @@ public class CheckRequestDetailController {
 	@ResponseBody
 	public CommonMessage<ResponseVo> retry(@PathVariable("reqFormId") String reqid, HttpServletResponse response) {
 		return this.crsService.retryPayment(reqid, UserLoginUtils.getCurrentUserLogin());
+	}
+	
+	@GetMapping("receipt/{reqFormId}")
+	@ResponseBody
+	public ReqReceiptVo getReceipt(@PathVariable("reqFormId") String reqid, HttpServletResponse response) {
+		return this.crsService.getReceipt(reqid);
 	}
 
 }
