@@ -394,12 +394,12 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE2), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_TAXCODE2), 0, 2));
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
@@ -517,7 +517,15 @@ public class PaymentGLSummaryBatchService {
 		String indicator = "T"; 
 		BigDecimal calSumTransaction = new BigDecimal(0.0);
 		for (RequestForm request : requestForms) {
-			BigDecimal enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountTmb())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			BigDecimal enteredAmount = null;
+			if (PAID_TYPE.CUSTOMER_PAY_DBD.equals(request.getPaidTypeCode())) {
+				enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountTmb())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			} else if (PAID_TYPE.CUSTOMER_PAY_DBD_TMB.equals(request.getPaidTypeCode())) {
+				enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountTmb())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			} else if (PAID_TYPE.TMB_PAY_DBD_TMB.equals(request.getPaidTypeCode())) {
+				enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			}
+
 			calSumTransaction = calSumTransaction.add(enteredAmount);
 		}
 		calSumTransaction = calSumTransaction.setScale(2, BigDecimal.ROUND_HALF_EVEN);
