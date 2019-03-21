@@ -62,8 +62,16 @@
         <span>ผลการค้นหา </span>
     </div>
     <div class="ui attached segment {{ loading? 'loading' : '' }}">
+            
             <div style="overflow-x: auto;white-space: nowrap;">
-                    <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                <div id="chartdiv1"></div> <div id="chartdiv2"></div>
+                <!-- <div class="text-left">&nbsp;&nbsp;Remark: Inner Circle: จำนวนคำขอ, Outer Circle: จำนวนเงิน</div> --> 
+            </div>
+
+            <br>
+            <br>  
+            <div style="overflow-x: auto;white-space: nowrap;"></div>
+                <table class="ui small celled table nowrap" style="width: 100%" id="table">
                 <thead>
                     <tr>
                         <th rowspan="2">Segment</th>
