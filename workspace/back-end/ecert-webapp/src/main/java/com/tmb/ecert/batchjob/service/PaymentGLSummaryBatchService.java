@@ -394,12 +394,14 @@ public class PaymentGLSummaryBatchService {
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CHANNELCODE2), 0, 2));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_PROJECTCODE2), 0, 8));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_TAXCODE2), 0, 2));
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+//		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountDBDNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add("");
 		tmp.add("");
 		tmp.add("");
-		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+//		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountDbd()), 0, 16));
+		tmp.add(this.replaceValue(this.getAmountDBDNoVat(request.getAmountDbd()), 0, 16));
 		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_CURRENCY_CODE2), 0, 3));
 		tmp.add(this.replaceValue(getCertificateRequest(request.getCertificateList()), 0, 240));
 		tmp.add(this.replaceValue(request.getTmbRequestNo(), 0, 30));
@@ -523,7 +525,7 @@ public class PaymentGLSummaryBatchService {
 			} else if (PAID_TYPE.CUSTOMER_PAY_DBD_TMB.equals(request.getPaidTypeCode())) {
 				enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountTmb())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			} else if (PAID_TYPE.TMB_PAY_DBD_TMB.equals(request.getPaidTypeCode())) {
-				enteredAmount = new BigDecimal(this.getDefaultAmount(request.getAmountDbd())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				enteredAmount = new BigDecimal(this.getAmountDBDNoVat(request.getAmountDbd())).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			}
 
 			calSumTransaction = calSumTransaction.add(enteredAmount);
@@ -597,7 +599,9 @@ public class PaymentGLSummaryBatchService {
 		}
 		return glCustomerCode;
 	}
-	
+	private String getAmountDBDNoVat(BigDecimal amount) {
+		return String.format("%.2f", amount);
+	}
 	private String getAmountNoVat(BigDecimal amount) {
 		return String.format("%.2f", this.getDefaultAmount(amount));
 	}
@@ -670,6 +674,7 @@ public class PaymentGLSummaryBatchService {
 //		}else{
 //			returnOfficeCode =  paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
 //		}
+		officeCode = StringUtils.trim(officeCode);
 		if (StringUtils.isNotBlank(officeCode)) {
 			if ( officeCode.length() == 4) {
 				str = paymentGLSummaryBatchDao.queryOfficeCode2(officeCode);
