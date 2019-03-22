@@ -72,16 +72,16 @@ public class TMBLDAPManager {
 		ldapTemplate.afterPropertiesSet();
 		ldapTemplate.setIgnorePartialResultException(true);
 
-		LdapQuery query = query().where("objectclass").is("organizationalPerson").and("sAMAccountName").is(username);
+		LdapQuery query = query().where("objectclass").is("organizationalPerson").and("sAMAccountName").is(adUsername);
 		
 	         
 		try {
 
 			List<TMBPerson> res = ldapTemplate.search(query, new AttributesMapper<TMBPerson>() {
 				public TMBPerson mapFromAttributes(Attributes attrs) throws NamingException {
-
 					TMBPerson tmbPerson = new TMBPerson();
-					tmbPerson.setUseranme(username);
+					Attribute usernameAttr = attrs.get("sAMAccountName");
+					tmbPerson.setUseranme((String)usernameAttr.get(0));
 					tmbPerson.setPassword(password);
 					tmbPerson.setTmbcn(attrs.get("cn").get().toString());
 					tmbPerson.setUserid(usernames[0]);
