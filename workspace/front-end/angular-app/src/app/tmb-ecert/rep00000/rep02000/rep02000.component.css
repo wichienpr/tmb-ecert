@@ -2,3 +2,17 @@ label.status{
     display: block !important;
     width: 45px !important;
 }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv1 {
+    width: 50%;
+    height: 350px;
+    float: left; 
+} 
+#chartdiv2 {
+    width: 50%;
+    height: 350px;
+    float: right; 
+} 
