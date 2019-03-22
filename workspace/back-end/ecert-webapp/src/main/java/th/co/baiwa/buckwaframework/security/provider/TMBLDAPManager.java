@@ -41,6 +41,12 @@ public class TMBLDAPManager {
 	@Value("${ldap.domain}")
 	private String domain;
 	
+	@Value("${ldap.username}")
+	private String systemUsername;
+	
+	@Value("${ldap.password}")
+	private String systemPwd;
+	
 	@Autowired
 	private UserProfileDao userProfileDao;
 	
@@ -48,26 +54,37 @@ public class TMBLDAPManager {
 		LdapContextSource contextSource = new LdapContextSource();
 		contextSource.setUrl(url);
 		contextSource.setBase(base);
-		contextSource.setUserDn(username  +"@" + domain);
-		contextSource.setPassword(password);
+		String[] usernames = username.split(" ");
+		String adUsername = null;
+		if(usernames!=null && usernames.length>0){
+			adUsername = usernames[0];
+			if("true".equals(usernames[1])) {
+				contextSource.setUserDn(adUsername  +"@" + domain);
+				contextSource.setPassword(password);
+			}else {
+				contextSource.setUserDn(systemUsername  +"@" + domain);
+				contextSource.setPassword(systemPwd);
+			}
+		}
+		
 		contextSource.afterPropertiesSet();
 		LdapTemplate ldapTemplate = new LdapTemplate(contextSource);
 		ldapTemplate.afterPropertiesSet();
 		ldapTemplate.setIgnorePartialResultException(true);
 
-		LdapQuery query = query().where("objectclass").is("organizationalPerson").and("sAMAccountName").is(username);
+		LdapQuery query = query().where("objectclass").is("organizationalPerson").and("sAMAccountName").is(adUsername);
 		
 	         
 		try {
 
 			List<TMBPerson> res = ldapTemplate.search(query, new AttributesMapper<TMBPerson>() {
 				public TMBPerson mapFromAttributes(Attributes attrs) throws NamingException {
-
 					TMBPerson tmbPerson = new TMBPerson();
-					tmbPerson.setUseranme(username);
+					Attribute usernameAttr = attrs.get("sAMAccountName");
+					tmbPerson.setUseranme((String)usernameAttr.get(0));
 					tmbPerson.setPassword(password);
 					tmbPerson.setTmbcn(attrs.get("cn").get().toString());
-					tmbPerson.setUserid(username);
+					tmbPerson.setUserid(usernames[0]);
 //					tmbPerson.setName(attrs.get("displayName").get().toString());
 //					name th
 					Attribute displayName = attrs.get("msDS-PhoneticDisplayName");

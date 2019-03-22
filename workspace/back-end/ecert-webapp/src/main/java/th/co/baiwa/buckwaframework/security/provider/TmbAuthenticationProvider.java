@@ -15,6 +15,7 @@ import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
+import net.bytebuddy.agent.builder.AgentBuilder.InitializationStrategy.SelfInjection.Split;
 import th.co.baiwa.buckwaframework.security.domain.TMBPerson;
 import th.co.baiwa.buckwaframework.security.service.UserDetailsService;
 
@@ -50,13 +51,20 @@ public class TmbAuthenticationProvider  implements AuthenticationProvider {
 		Assert.notNull(userDetailsService, "userDetailsService is null : [TmbAuthenticationProvider]");
 		String username = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
-		
+
 		UserDetails user = null;
 
 		try {
 			TMBPerson tmb = tmbldapManager.isAuthenticate(username, password);
 			logger.info("AD is OK. user :{} ,  userid : {} " , username, tmb.getUserid());
-			user = userDetailsService.loadUserByUsername(username, tmb);
+			
+			String[] usernames = username.split(" ");
+			String adUsername = null;
+			if(usernames!=null && usernames.length>0){
+				adUsername = usernames[0];
+			}
+			
+			user = userDetailsService.loadUserByUsername(adUsername, tmb);
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());

@@ -1,6 +1,7 @@
 package th.co.baiwa.buckwaframework.security.web.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,9 +69,7 @@ public class AuthenController {
 		Date currentDate = new Date();
 
 		try {
-
-			HttpSession session = request.getSession(false);
-
+			HttpSession session = request.getSession(true); //false
 			logger.info("onLoginSeccess : {}", session.getId());
 
 			user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -257,5 +256,4 @@ public class AuthenController {
 			logger.info("forceLogOut : {}", session.getId());
 		}
 	}
-
 }
