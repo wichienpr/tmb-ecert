@@ -21,10 +21,10 @@ export class AuthService {
   }
 
 
-  public login(username: string, password: string) {
+  public login(username: string, password: string, authflag: string) {
     let f: FormData = new FormData();
 
-    f.append("username", username);
+    f.append("username", username+" "+authflag);
     f.append("password", password);
 
     let url: string = AjaxService.CONTEXT_PATH + "/login";

@@ -5,6 +5,7 @@ import { dateLocale } from "helpers/";
 
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
+import * as am4core from "@amcharts/amcharts4/core";
 
 @Injectable()
 export class Rep02000Service {
@@ -51,4 +52,26 @@ export class Rep02000Service {
         return this.dropdownObj;
     }
 
+    getColorObj() : am4core.Color[] {
+        let colorList = [
+            am4core.color('#f44336'),
+            am4core.color('#e91e63'),
+            am4core.color('#9c27b0'),
+            am4core.color('#673ab7'),
+            am4core.color('#3f51b5'),
+            am4core.color('#2196f3'),
+            am4core.color('#03a9f4'),
+            am4core.color('#00bcd4'),
+            am4core.color('#009688'),
+            am4core.color('#4caf50'),
+            am4core.color('#8bc34a'),
+            am4core.color('#cddc39'),
+            am4core.color('#ffeb3b'),
+            am4core.color('#ffc107'),
+            am4core.color('#ff9800'),
+            am4core.color('#ff5722'),
+            am4core.color('#795548')
+          ]
+          return colorList;
+    }
 }
