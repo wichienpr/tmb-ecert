@@ -10,7 +10,7 @@ cd .\front-end\angular-app\
 echo "1. UPDATE LIB"
 npm install
 echo "2. Build Angular"
-ng build --prod --build-optimizer --base-href=/ecert-webapp/app/
+npm run build --prod --build-optimizer --base-href=/ecert-webapp/app/
 cd ../..
 echo "3. COPY TO STATIC WEP-APP"
 Remove-Item .\back-end\ecert-webapp\src\main\resources\static\app -Force -Recurse
@@ -19,6 +19,6 @@ echo "3. COPY SUCCESS"
 
 echo "3. PACK WAR"
 cd .\back-end\ecert-webapp\
-mvn clean package -DskipTests
+mvn clean package -DskipTests 
 cd ../..
 
