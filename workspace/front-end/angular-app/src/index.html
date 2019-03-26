@@ -1,16 +1,47 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" http-equiv="x-ua-compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
   <title>TMB e-Certificate</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.ico"> 
   <script type="text/javascript">
-    var net = new ActiveXObject("WScript.Network");
-    var username = net.Username;
-    sessionStorage.setItem("ssologin-id", username);  //'16412'
+	try {
+	    var wshshell=new ActiveXObject("wscript.shell");
+		var username=wshshell.ExpandEnvironmentStrings("%username%");
+		alert(username);
+		sessionStorage.setItem("ssologin-id", username);
+	}
+	catch(err) {
+	  console.log('Error:'+err.message);
+	}
+   
+	//var net = new ActiveXObject("WScript.Network");
+	//alert(IsActiveXSupported());
+	function IsActiveXSupported() {
+		var isSupported = false;
+
+		if(window.ActiveXObject) {
+			return true;
+		}
+
+		if("ActiveXObject" in window) {
+			return true;
+		}
+
+		try {
+			var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+			isSupported = true;
+		} catch (e) {
+			if (e.name === "TypeError" || e.name === "Error") {
+				isSupported = true;
+			}
+		}
+
+		return isSupported;
+	}
   </script>
 </head>
 <body>
