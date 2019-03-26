@@ -87,8 +87,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().defaultsDisabled()
         .addHeaderWriter(new StaticHeadersWriter("Cache-Control"," no-cache,max-age=0, must-revalidate"))
         .addHeaderWriter(new StaticHeadersWriter("Expires","0")); */
-
-		
 	}
 
 	@Override
