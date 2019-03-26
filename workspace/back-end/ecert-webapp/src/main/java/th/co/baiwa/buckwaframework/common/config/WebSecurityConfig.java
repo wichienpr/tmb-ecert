@@ -79,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.successForwardUrl("/onloginseccess")
 				.failureHandler(customfailHandler()).and().logout().permitAll().and().csrf().disable();
 		
-		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());
+		http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry()); 
 //		redirect http to https 
 /*		http.requiresChannel().antMatchers("/**","/app/**","/*.html").requiresSecure()
 		.and().portMapper().http(Integer.valueOf(httpport)).mapsTo(Integer.valueOf(httpsport));
