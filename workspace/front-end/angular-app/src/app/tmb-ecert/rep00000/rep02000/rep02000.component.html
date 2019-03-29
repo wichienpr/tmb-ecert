@@ -1,141 +1,146 @@
 <div class="ui grid">
-        <div class="sixteen wide column">
-                <h2 class="ui header">รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly </h2>
-        
-                <div class="ui top attached header segment">
-                    <span>ระบุเงื่อนไขในการค้นหา </span>
-                </div>
-        
-        
-                <div class="ui attached segment">
-                    <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
-        
-                        <div class="inline fields">
-                            <div class="one wide field"></div>
-                            <div class="two wide field">
-                                <label>ตั้งแต่เดือน<span style="color: red"> * </span></label>
-                            </div>
-                            <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
-                                <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar> -->
-                                <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar"  style="width:100%"></ng-calendar>
-                            </div>
-                            <div class="two wide field">
-                                <label>ถึงเดือน<span style="color: red"> * </span></label>
-                            </div>
-                            <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
-                                <!-- <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar> -->
-                                <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar"  style="width:100%"></ng-calendar>
-                            </div>
-                        </div>
+    <div class="sixteen wide column">
+        <h2 class="ui header">รายงานสรุปการให้บริการขอหนังสือรับรองนิติบุคคล ( e-Certificate ) : Monthly </h2>
 
-                        <div class="inline fields">
-                            <div class="one wide field"></div>
-                            <div class="two wide field ">
-                                <label>ประเภทการชำระเงิน</label>
-                            </div>
-                            <div class="five wide field ">
-                                <ui-dropdown [dropdown]="dropdownObj.paidType" [reset]="paidTypeClear" (valueChange)="paidTypeChange($event)"></ui-dropdown>
-                            </div>
-                        </div>
-        
-                        <br>
-                        <br>
-                        <div class="ui center aligned grid">
-                            <button class="ui blue basic button" type="submit" >
-                                <i class="search icon"></i>
-                                ค้นหา
-                            </button>
-                            <button class="ui grey  basic button" type="button" (click)="clearData()">
-                                <i class="trash alternate outline icon"></i>
-                                ล้างข้อมูล
-                            </button>
-                            <br>
-                        </div>
-                        <br>
-                    </form>
-            </div>
+        <div class="ui top attached header segment">
+            <span>ระบุเงื่อนไขในการค้นหา </span>
+        </div>
+
+        <div class="ui attached segment">
+            <form class="ui form" #ngForm="ngForm" [formGroup]="form" (submit)="searchData()">
+
+                <div class="inline fields">
+                    <div class="one wide field"></div>
+                    <div class="two wide field">
+                        <label>ตั้งแต่เดือน<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="five wide field" [ngClass]="validate('dateForm', ngForm.submitted) ? '' : 'error'">
+                        <!-- <ui-calendar [calendar]="calendar1" (calendarValue)="calendarValue('dateForm',$event)" style="width:100%"></ui-calendar> -->
+                        <ng-calendar [config]="calendarFromConig" #calendarFrom="ng-calendar" style="width:100%">
+                        </ng-calendar>
+                    </div>
+                    <div class="two wide field">
+                        <label>ถึงเดือน<span style="color: red"> * </span></label>
+                    </div>
+                    <div class="five wide field" [ngClass]="validate('dateTo', ngForm.submitted) ? '' : 'error'">
+                        <!-- <ui-calendar [calendar]="calendar2" (calendarValue)="calendarValue('dateTo',$event)" style="width:100%"></ui-calendar> -->
+                        <ng-calendar [config]="calendarToConig" #calendarTo="ng-calendar" style="width:100%">
+                        </ng-calendar>
+                    </div>
+                </div>
+
+                <div class="inline fields">
+                    <div class="one wide field"></div>
+                    <div class="two wide field ">
+                        <label>ประเภทการชำระเงิน</label>
+                    </div>
+                    <div class="five wide field ">
+                        <ui-dropdown [dropdown]="dropdownObj.paidType" [reset]="paidTypeClear"
+                            (valueChange)="paidTypeChange($event)"></ui-dropdown>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+                <div class="ui center aligned grid">
+                    <button class="ui blue basic button" type="submit">
+                        <i class="search icon"></i>
+                        ค้นหา
+                    </button>
+                    <button class="ui grey  basic button" type="button" (click)="clearData()">
+                        <i class="trash alternate outline icon"></i>
+                        ล้างข้อมูล
+                    </button>
+                    <br>
+                </div>
+                <br>
+            </form>
+        </div>
     </div>
 </div>
-
+<br>
 <div class="sixteen wide column" *ngIf="showData">
-        <div class="ui top attached header segment">
-            <span>ผลการค้นหา </span>
-        </div>
-        <div class="ui attached segment {{ loading? 'loading' : '' }}">
-    
-        <div style="overflow-x: auto;white-space: nowrap;">  
-         <div id="chartdiv1"></div> <div id="chartdiv2"></div>
-        <!-- <div class="text-left">&nbsp;&nbsp;Remark: Inner Circle: จำนวนคำขอ, Outer Circle: จำนวนเงิน</div> --> 
-        </div>
-    
-        <br>
-        <br>
-            <div style="overflow-x: auto;white-space: nowrap;">
-                <table class="ui small celled table nowrap" style="width: 100%" id="table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Segment</th>
-                            <th rowspan="2">จำนวนคำขอ</th>
-                            <th colspan="4">ประเภทการชำระเงิน</th>
-                            <th colspan="2">ประเภทคำขอ : ราย</th>
-                            <th colspan="2">จำนวนเงิน : บาท</th>
-                            <th rowspan="2">จำนวนเงิน</th>
-                            <th colspan="2">สถานะ : จำนวนราย</th>
-                            <th rowspan="2" style="width: 220px">สาเหตุ</th>
-                        </tr>
-                        <tr>
-                            <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD,TMB</th>
-                            <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD ยกเว้น TMB</th>
-                            <th>TMB ชำระค่าธรรมเนียม<br>DBD ทั้งหมด</th>
-                            <th>ไม่ได้ดำเนินการชำระเงิน<br>ผ่านระบบ E-Cert</th>
-                            <th>หนังสือรับรอง </th>
-                            <th>รับรองสำเนา</th>
-                            <th>DBD</th>
-                            <th>TMB</th>
-                            <th><label class="status">Success</label></th>
-                            <th><label class="status">Fail</label></th>
-                        </tr>
-                    </thead>
-                    <tbody> 
-                        <tr class="text-center" *ngIf="dataT.length==0">
-                            <td colspan="14" style="text-align: center !important;">ไม่มีข้อมูล</td>
-                        </tr>
-                        <tr class="text-center" *ngFor="let data of dataT; let i=index">
-                            <td style="text-align: left   !important;">{{data.custsegmentDesc}}</td>
-                            <td style="text-align: right  !important;">{{data.custsegmentCount}}</td>
-                            <td style="text-align: right  !important;">{{data.paymentTypeCountDT}}</td>
-                            <td style="text-align: right  !important;">{{data.paymentTypeCountDNoT}}</td>
-                            <td style="text-align: right  !important;">{{data.paymentTypeCountDAll}}</td>
-                            <td style="text-align: right  !important;">{{data.paymentTypeCountECert}}</td>
-                            <td style="text-align: right  !important;">{{data.certificate}}</td>
-                            <td style="text-align: right  !important;">{{data.copyGuarantee}}</td>
-                            <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
-                            <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
-                            <td style="text-align: right  !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}</td>
-                            <td style="text-align: right  !important;">{{data.success}}</td>
-                            <td style="text-align: right  !important;">{{data.fail}}</td>
-                            <td style="text-align: center">
-                                <button class="ui mini red basic button" (click)="remark(data.custsegmentCode)"
-                                *ngIf="data.fail!=0">สาเหตุ
-                                    <i class="arrow alternate circle right outline icon"></i>
-                                </button>
-                                <button class="ui mini blue basic button" (click)="departmentDetails(data.custsegmentCode)"
-                                *ngIf="data.custsegmentCode=='20007'"> รายละเอียด
-                                    <i class="arrow alternate circle right outline icon"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <br>
-            <br>
-            <div class="ui center aligned grid">
-                <div class="sixteen wide column">
-                    <button class="ui blue basic button" (click)="exportFile()">
-                        <i class="file excel outline icon"></i>Export to Excel</button>
-                </div>
-            </div>
-            <br>
-        </div>
+    <div class="ui top attached header segment">
+        <span>ผลการค้นหา </span>
     </div>
+    <div class="ui attached segment {{ loading? 'loading' : '' }}">
+
+        <div style="overflow: hidden; ">
+            <div id="chartspace1"> <label><B>จำนวนเงิน (TMB) : บาท</B></label> </div>
+            <div id="chartspace2"> <label><B>จำนวนคำขอ : ราย</B></label> </div>
+            <div id="chartdiv1"></div>
+            <div id="chartdiv2"></div>
+        </div>
+
+        <br>
+        <br>
+        <div style="overflow-x: auto;white-space: nowrap;">
+            <table class="ui small celled table nowrap" style="width: 100%" id="table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Segment</th>
+                        <th rowspan="2">จำนวนคำขอ</th>
+                        <th colspan="4">ประเภทการชำระเงิน</th>
+                        <th colspan="2">ประเภทคำขอ : ราย</th>
+                        <th colspan="2">จำนวนเงิน : บาท</th>
+                        <th rowspan="2">จำนวนเงิน</th>
+                        <th colspan="2">สถานะ : จำนวนราย</th>
+                        <th rowspan="2" style="width: 220px">สาเหตุ</th>
+                    </tr>
+                    <tr>
+                        <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD,TMB</th>
+                        <th>ลูกค้าชำระค่าธรรมเนียม<br>DBD ยกเว้น TMB</th>
+                        <th>TMB ชำระค่าธรรมเนียม<br>DBD ทั้งหมด</th>
+                        <th>ไม่ได้ดำเนินการชำระเงิน<br>ผ่านระบบ E-Cert</th>
+                        <th>หนังสือรับรอง </th>
+                        <th>รับรองสำเนา</th>
+                        <th>DBD</th>
+                        <th>TMB</th>
+                        <th><label class="status">Success</label></th>
+                        <th><label class="status">Fail</label></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" *ngIf="dataT.length==0">
+                        <td colspan="14" style="text-align: center !important;">ไม่มีข้อมูล</td>
+                    </tr>
+                    <tr class="text-center" *ngFor="let data of dataT; let i=index">
+                        <td style="text-align: left   !important;">{{data.custsegmentDesc}}</td>
+                        <td style="text-align: right  !important;">{{data.custsegmentCount}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDNoT}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountDAll}}</td>
+                        <td style="text-align: right  !important;">{{data.paymentTypeCountECert}}</td>
+                        <td style="text-align: right  !important;">{{data.certificate}}</td>
+                        <td style="text-align: right  !important;">{{data.copyGuarantee}}</td>
+                        <td style="text-align: right  !important;">{{data.amountDbd | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.amountTmb | decimalFormat :"###,###.00"}}</td>
+                        <td style="text-align: right  !important;">{{data.totalAmount | decimalFormat :"###,###.00"}}
+                        </td>
+                        <td style="text-align: right  !important;">{{data.success}}</td>
+                        <td style="text-align: right  !important;">{{data.fail}}</td>
+                        <td style="text-align: center">
+                            <button class="ui mini red basic button" (click)="remark(data.custsegmentCode)"
+                                *ngIf="data.fail!=0">สาเหตุ
+                                <i class="arrow alternate circle right outline icon"></i>
+                            </button>
+                            <button class="ui mini blue basic button" (click)="departmentDetails(data.custsegmentCode)"
+                                *ngIf="data.custsegmentCode=='20007'"> รายละเอียด
+                                <i class="arrow alternate circle right outline icon"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+        <div class="ui center aligned grid">
+            <div class="sixteen wide column">
+                <button class="ui blue basic button" (click)="exportFile()">
+                    <i class="file excel outline icon"></i>Export to Excel</button>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>

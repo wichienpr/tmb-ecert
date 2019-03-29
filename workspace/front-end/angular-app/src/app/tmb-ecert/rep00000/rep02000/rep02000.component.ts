@@ -12,6 +12,7 @@ import { NgCalendarConfig, NgCalendarComponent } from 'app/baiwa/common/componen
 
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import { AttrAst } from '@angular/compiler';
 
 const URL = {
   export: "/api/rep/rep02000/exportFile"
@@ -160,7 +161,8 @@ export class Rep02000Component implements OnInit {
       let chart1 = am4core.create("chartdiv1", am4charts.PieChart);
       let chart2 = am4core.create("chartdiv2", am4charts.PieChart);
       for (let x in this.dataT) {
-        sumOfAmt += this.dataT[x].totalAmount;
+        //sumOfAmt += this.dataT[x].totalAmount;
+        sumOfAmt += this.dataT[x].amountTmb;
         sumOfReq += this.dataT[x].custsegmentCount;
       }
 
@@ -168,21 +170,25 @@ export class Rep02000Component implements OnInit {
         objPie = {
           "Segment": this.dataT[y].custsegmentDesc,
           "Request": this.dataT[y].custsegmentCount,
-          "Amount": this.dataT[y].totalAmount,
-          "PercentOfAmt": (this.dataT[y].totalAmount / sumOfAmt * 100).toFixed(1),
+          "Amount": this.dataT[y].amountTmb,
+          "PercentOfAmt": (this.dataT[y].amountTmb / sumOfAmt * 100).toFixed(1),
           "PercentOfReq": (this.dataT[y].custsegmentCount / sumOfReq * 100).toFixed(1)
         };
         arrayPie.push(objPie);
       }
+
       chart1.data = arrayPie;
       chart2.data = arrayPie;
-      chart1.innerRadius = am4core.percent(50);
-      chart2.innerRadius = am4core.percent(50);
+      chart1.radius = am4core.percent(40);
+      chart1.innerRadius = am4core.percent(20);
+      chart2.radius = am4core.percent(40);
+      chart2.innerRadius = am4core.percent(20);
 
       let pieSeriesRt1 = chart1.series.push(new am4charts.PieSeries());
       pieSeriesRt1.dataFields.value = "Amount";
       pieSeriesRt1.dataFields.category = "Segment";
-      pieSeriesRt1.labels.template.text = "{Segment}: ({Amount}): {PercentOfAmt}% ";
+      pieSeriesRt1.labels.template.text = "{Segment}\n({Amount}): {PercentOfAmt}%[/]";
+      pieSeriesRt1.labels.template.fontSize = 9;
       pieSeriesRt1.slices.template.stroke = am4core.color("#fff");
       pieSeriesRt1.slices.template.strokeWidth = 1;
       pieSeriesRt1.slices.template.strokeOpacity = 1;
@@ -210,7 +216,8 @@ export class Rep02000Component implements OnInit {
       pieSeriesRt2.dataFields.value = "Request";
       pieSeriesRt2.dataFields.category = "Segment";
       pieSeriesRt2.slices.template.stroke = am4core.color("#fff");
-      pieSeriesRt2.labels.template.text = "{Segment}: ({Request}): {PercentOfReq}% ";
+      pieSeriesRt2.labels.template.text = "{Segment}\n({Request}): {PercentOfReq}%[/]";
+      pieSeriesRt2.labels.template.fontSize = 9;
       pieSeriesRt2.colors.list = this.service.getColorObj();
 
       pieSeriesRt2.labels.template.adapter.add("fill", function (color, target) {
