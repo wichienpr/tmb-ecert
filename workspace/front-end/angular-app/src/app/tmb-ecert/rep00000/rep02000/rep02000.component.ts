@@ -128,20 +128,6 @@ export class Rep02000Component implements OnInit {
     // console.log(this.form);
     this.loading = true;
     this.dataT = [];
-    let sumOfAmt = 0;
-    let sumOfReq = 0;
-    let arrayPie = [], objPie = {};
-    let countLeft = 0;
-    let sumLeft = 0;
-    let countRight = 0;
-    let sumRight = 0;
-    let jLeft = 0;
-    let iLeft = 0;
-    let kLeft = 0;
-    let jRight = 0;
-    let iRight = 0;
-    let kRight = 0;
-
     const URL = "/api/rep/rep02000/list";
     this.ajax.post(URL, {
       dateForm: ThMonthYearToEnMonthYear(this.form.controls.dateForm.value),
@@ -157,87 +143,103 @@ export class Rep02000Component implements OnInit {
       data.forEach(element => {
         this.dataT.push(element);
       });
-
-      let chart1 = am4core.create("chartdiv1", am4charts.PieChart);
-      let chart2 = am4core.create("chartdiv2", am4charts.PieChart);
-      for (let x in this.dataT) {
-        //sumOfAmt += this.dataT[x].totalAmount;
-        sumOfAmt += this.dataT[x].amountTmb;
-        sumOfReq += this.dataT[x].custsegmentCount;
-      }
-
-      for (let y in this.dataT) {
-        objPie = {
-          "Segment": this.dataT[y].custsegmentDesc,
-          "Request": this.dataT[y].custsegmentCount,
-          "Amount": this.dataT[y].amountTmb,
-          "PercentOfAmt": (this.dataT[y].amountTmb / sumOfAmt * 100).toFixed(1),
-          "PercentOfReq": (this.dataT[y].custsegmentCount / sumOfReq * 100).toFixed(1)
-        };
-        arrayPie.push(objPie);
-      }
-
-      chart1.data = arrayPie;
-      chart2.data = arrayPie;
-      chart1.radius = am4core.percent(40);
-      chart1.innerRadius = am4core.percent(20);
-      chart2.radius = am4core.percent(40);
-      chart2.innerRadius = am4core.percent(20);
-
-      let pieSeriesRt1 = chart1.series.push(new am4charts.PieSeries());
-      pieSeriesRt1.dataFields.value = "Amount";
-      pieSeriesRt1.dataFields.category = "Segment";
-      pieSeriesRt1.labels.template.text = "{Segment}\n({Amount}): {PercentOfAmt}%[/]";
-      pieSeriesRt1.labels.template.fontSize = 9;
-      pieSeriesRt1.slices.template.stroke = am4core.color("#fff");
-      pieSeriesRt1.slices.template.strokeWidth = 1;
-      pieSeriesRt1.slices.template.strokeOpacity = 1;
-      pieSeriesRt1.colors.list = this.service.getColorObj();
-
-      pieSeriesRt1.labels.template.adapter.add("fill", function (color, target) {
-        countLeft += 1;
-        if (countLeft > arrayPie.length) {
-          iLeft = arrayPie[jLeft].PercentOfAmt / 2 + sumLeft;
-          sumLeft += parseFloat(arrayPie[jLeft].PercentOfAmt);
-          jLeft += 1;
-        }
-        if (countLeft / 2 > pieSeriesRt1.colors.list.length) {
-          return color;
-        } else if (countLeft > arrayPie.length && iLeft <= 50) {
-          return pieSeriesRt1.colors.list[(countLeft - 1) - arrayPie.length];
-        } else if (countLeft > arrayPie.length && iLeft > 50) {
-          kLeft += 1;
-          return pieSeriesRt1.colors.list[arrayPie.length - kLeft];
-        }
-      });
-
-      // Add and configure Series
-      let pieSeriesRt2 = chart2.series.push(new am4charts.PieSeries());
-      pieSeriesRt2.dataFields.value = "Request";
-      pieSeriesRt2.dataFields.category = "Segment";
-      pieSeriesRt2.slices.template.stroke = am4core.color("#fff");
-      pieSeriesRt2.labels.template.text = "{Segment}\n({Request}): {PercentOfReq}%[/]";
-      pieSeriesRt2.labels.template.fontSize = 9;
-      pieSeriesRt2.colors.list = this.service.getColorObj();
-
-      pieSeriesRt2.labels.template.adapter.add("fill", function (color, target) {
-        countRight += 1;
-        if (countRight > arrayPie.length) {
-          iRight = arrayPie[jRight].PercentOfReq / 2 + sumRight;
-          sumRight += parseFloat(arrayPie[jRight].PercentOfReq);
-          jRight += 1;
-        }
-        if (countRight / 2 > pieSeriesRt2.colors.list.length) {
-          return color;
-        } else if (countRight > arrayPie.length && iRight <= 50) {
-          return pieSeriesRt2.colors.list[(countRight - 1) - arrayPie.length];
-        } else if (countRight > arrayPie.length && iRight > 50) {
-          kRight += 1;
-          return pieSeriesRt2.colors.list[arrayPie.length - kRight];
-        }
-      });
+      this.createDashboard(this.dataT);
     });
 
+  }
+
+  createDashboard(dataT : any[]) : void{
+    let sumOfAmt = 0;
+    let sumOfReq = 0;
+    let arrayPie = [], objPie = {};
+    let countLeft = 0;
+    let sumLeft = 0;
+    let countRight = 0;
+    let sumRight = 0;
+    let jLeft = 0;
+    let iLeft = 0;
+    let kLeft = 0;
+    let jRight = 0;
+    let iRight = 0;
+    let kRight = 0;
+
+    let chart1 = am4core.create("chartdiv1", am4charts.PieChart);
+    let chart2 = am4core.create("chartdiv2", am4charts.PieChart);
+    for (let x in dataT) { 
+      sumOfAmt += dataT[x].amountTmb; 
+      sumOfReq += dataT[x].custsegmentCount; 
+    }
+
+    for (let y in dataT) { 
+      objPie = {
+        "Segment": dataT[y].custsegmentDesc,
+        "Request": dataT[y].custsegmentCount,
+        "Amount": dataT[y].amountTmb,
+        "PercentOfAmt": (dataT[y].amountTmb / sumOfAmt * 100).toFixed(1),
+        "PercentOfReq": (dataT[y].custsegmentCount / sumOfReq * 100).toFixed(1)
+      };
+      arrayPie.push(objPie);
+    }
+
+    chart1.data = arrayPie;
+    chart2.data = arrayPie;
+    chart1.radius = am4core.percent(45);
+    chart1.innerRadius = am4core.percent(25);
+    chart2.radius = am4core.percent(45);
+    chart2.innerRadius = am4core.percent(25);
+
+    let pieSeriesRt1 = chart1.series.push(new am4charts.PieSeries());
+    pieSeriesRt1.dataFields.value = "Amount";
+    pieSeriesRt1.dataFields.category = "Segment";
+    pieSeriesRt1.labels.template.text = "{Segment}\n({Amount}): {PercentOfAmt}%[/]";
+    pieSeriesRt1.labels.template.fontSize = 10;
+    pieSeriesRt1.slices.template.stroke = am4core.color("#fff");
+    pieSeriesRt1.slices.template.strokeWidth = 1;
+    pieSeriesRt1.slices.template.strokeOpacity = 1;
+    pieSeriesRt1.colors.list = this.service.getColorObj();
+
+    pieSeriesRt1.labels.template.adapter.add("fill", function (color, target) {
+      countLeft += 1;
+      if (countLeft > arrayPie.length) {
+        iLeft = arrayPie[jLeft].PercentOfAmt / 2 + sumLeft;
+        sumLeft += parseFloat(arrayPie[jLeft].PercentOfAmt);
+        jLeft += 1;
+      }
+      if (countLeft / 2 > pieSeriesRt1.colors.list.length) {
+        return color;
+      } else if (countLeft > arrayPie.length && iLeft <= 50) {
+        return pieSeriesRt1.colors.list[(countLeft - 1) - arrayPie.length];
+      } else if (countLeft > arrayPie.length && iLeft > 50) {
+        kLeft += 1;
+        return pieSeriesRt1.colors.list[arrayPie.length - kLeft];
+      }
+    });
+    
+    // Add and configure Series
+    let pieSeriesRt2 = chart2.series.push(new am4charts.PieSeries());
+    pieSeriesRt2.dataFields.value = "Request";
+    pieSeriesRt2.dataFields.category = "Segment";
+    pieSeriesRt2.slices.template.stroke = am4core.color("#fff");
+    pieSeriesRt2.labels.template.text = "{Segment}\n({Request}): {PercentOfReq}%[/]";
+    pieSeriesRt2.labels.template.fontSize = 10;
+    pieSeriesRt2.colors.list = this.service.getColorObj();
+
+    pieSeriesRt2.labels.template.adapter.add("fill", function (color, target) {
+      countRight += 1;
+      if (countRight > arrayPie.length) {
+        iRight = arrayPie[jRight].PercentOfReq / 2 + sumRight;
+        sumRight += parseFloat(arrayPie[jRight].PercentOfReq);
+        jRight += 1;
+      }
+      if (countRight / 2 > pieSeriesRt2.colors.list.length) {
+        return color;
+      } else if (countRight > arrayPie.length && iRight <= 50) {
+        return pieSeriesRt2.colors.list[(countRight - 1) - arrayPie.length];
+      } else if (countRight > arrayPie.length && iRight > 50) {
+        kRight += 1;
+        return pieSeriesRt2.colors.list[arrayPie.length - kRight];
+      }
+    });
   }
 
   searchData(): void {
