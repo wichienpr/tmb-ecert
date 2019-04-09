@@ -968,5 +968,138 @@ public class ReportPdfService {
 		return reqReceipt;
 		
 	}
+	
+	/* reqFormToPdf */
+	public String reqFormToPdfOnepage(RpReqFormVo vo) throws IOException, JRException {
+		
+		Date currentDate = new Date();
+		ByteArrayOutputStream os = null;
+		try{
+			initialService();
+			// RP001
+			String reportName01 = "REQUESTFORM_ONLY_2ND";
+
+			Map<String, Object> params01 = new HashMap<>();
+
+//			params01.put("logoDbd", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoDbd.png"));
+			params01.put("logoTmb", ReportUtils.getResourceFile(PATH.IMAGE_PATH, "logoTmb.png"));
+			if ("50001".equals(vo.getTypeCertificate())) {
+				params01.put("typeCertificate", "นิติบุคคล");
+			} else if ("50002".equals(vo.getTypeCertificate())) {
+				params01.put("typeCertificate", "ธุรกิจต่างด้าว");
+			} else if ("50003".equals(vo.getTypeCertificate())) {
+				params01.put("typeCertificate", "สมาคมและหอการค้า");
+			} else {
+				params01.put("typeCertificate", "   ");
+			}
+			params01.put("typeCertificate",vo.getTypeCertificate());
+			params01.put("customerName", vo.getCustomerName());
+			params01.put("telephone", vo.getTelephone());
+
+			Date reqDate = DateConstant.convertStrDDMMYYYYToDate(vo.getReqDate());
+			params01.put("reqDate", DateFormatUtils.format(reqDate, "dd MMMM yyyy", new Locale("th", "TH")));
+			params01.put("tmpReqNo", vo.getTmpReqNo());
+
+			List<RpReqFormListVo> rpReqFormListVoList = new ArrayList<>();
+			RpReqFormListVo rpReqFormListVo = null;
+
+			int i = 0;
+			for (RpReqFormListVo data : vo.getRpReqFormList()) {
+				rpReqFormListVo = new RpReqFormListVo();
+				params01.put("organizeId", vo.getOrganizeId());
+				params01.put("companyName", vo.getCompanyName());
+				params01.put("accountName", vo.getAccountName());
+				params01.put("accountNo", vo.getAccountNo());
+				rpReqFormListVo.setSeq(String.valueOf(i + 1));
+
+				if (BeanUtils.isNotEmpty(data.getBox1())) {
+					params01.put("certificate", data.getBox1());
+				}
+				if (BeanUtils.isNotEmpty(data.getBox2())) {
+					params01.put("certificateCopy",data.getBox2());
+				}
+				if (BeanUtils.isNotEmpty(data.getBox3())) {
+					params01.put("statements",data.getBox3());
+				} 
+				if (BeanUtils.isNotEmpty(data.getBox4())) {
+					params01.put("stockholder",data.getBox4());
+				}
+				
+				if (BeanUtils.isNotEmpty(data.getTotalNum())) {
+					params01.put("certificateTotal", Integer.toString(data.getTotalNum()));
+				}
+				if (BeanUtils.isNotEmpty(data.getNumSetCc()) || BeanUtils.isNotEmpty(data.getNumEditCc())
+						|| BeanUtils.isNotEmpty(data.getNumOtherCc())) {
+					rpReqFormListVo.setNumSetCc(data.getNumSetCc());
+					rpReqFormListVo.setNumEditCc(data.getNumEditCc());
+					rpReqFormListVo.setNumOtherCc(data.getNumOtherCc());
+					rpReqFormListVo.setTotalNumCc(data.getNumSetCc() + data.getNumEditCc() + data.getNumOtherCc());
+					params01.put("certificateCopyTotal", Integer.toString(data.getNumSetCc() + data.getNumEditCc()));
+					params01.put("moaDoc",data.getNumSetCc());
+				}
+				
+				if (BeanUtils.isNotEmpty(data.getNumSetCc()) || BeanUtils.isNotEmpty(data.getNumEditCc())){
+					
+				}
+
+				if (BeanUtils.isNotEmpty(data.getOther())) {
+					params01.put("other", "Y");
+					params01.put("otherDesc", data.getOther());
+				}else {
+					params01.put("other", "N");
+				}
+				if (BeanUtils.isNotEmpty(data.getStatementYear())) {
+					params01.put("statementYear", data.getStatementYear());
+				}
+				if (BeanUtils.isNotEmpty(data.getDateEditReg())) {
+					Date dateEditReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateEditReg());
+					params01.put("moaDocLastestDate", DateFormatUtils.format(dateEditReg, "dd MMMM yyyy", new Locale("th", "TH")));
+				}
+				if (BeanUtils.isNotEmpty(data.getDateOtherReg())) {
+					Date dateOtherReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateOtherReg());
+					rpReqFormListVo
+							.setDateOtherReg(DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
+					
+				}
+				if (BeanUtils.isNotEmpty(data.getDateAccepted())) {
+					Date dateAccepted = DateConstant.convertStrDDMMYYYYToDate(data.getDateAccepted());
+					params01.put("stockholderDate", DateFormatUtils.format(dateAccepted, "dd MMMM yyyy", new Locale("th", "TH")));
+				}
+				rpReqFormListVoList.add(rpReqFormListVo);
+				i++;
+			}
+
+			JasperPrint jasperPrint01 = ReportUtils.exportReport(reportName01, params01,
+					new JRBeanCollectionDataSource(rpReqFormListVoList));
+
+
+			List<ExporterInputItem> itemList = new ArrayList<>();
+			itemList.add(new SimpleExporterInputItem(jasperPrint01));
+
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(itemList));
+
+			os = new ByteArrayOutputStream();
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+			exporter.exportReport();
+
+			byte[] reportFile = os.toByteArray();
+
+			String name = "REQFORM_" + vo.getTmpReqNo() + ".pdf";
+			IOUtils.write(reportFile, new FileOutputStream(new File(PATH_REPORT+"/" + name)));
+			ReportUtils.closeResourceFileInputStream(params01);
+		}catch(Exception e) {
+			emailService.sendEmailAbnormal(new Date(), ProjectConstant.EMAIL_SERVICE.FUNCTION_NAME_PRINT_RECEIPT, e.toString());
+			logger.error("ReportPdfService Error: ", e);
+		}finally {
+			EcertFileUtils.closeStream( os );
+			auditLogService.insertAuditLog(ACTION_AUDITLOG.PRINT_FORMREQ_CODE, ACTION_AUDITLOG_DESC.PRINT_FORMREQ,
+					 (vo!=null ? vo.getTmpReqNo() : StringUtils.EMPTY),
+					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), currentDate);
+		}
+
+		return "REQFORM_" + (vo!=null ? vo.getTmpReqNo() : null);
+	}
+
 
 }
