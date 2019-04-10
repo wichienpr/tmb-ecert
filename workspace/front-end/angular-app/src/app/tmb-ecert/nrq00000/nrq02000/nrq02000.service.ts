@@ -578,7 +578,7 @@ export class Nrq02000Service {
             const data: Pdf = {
                 id: dt.reqFormId,
                 typeCertificate: this.form.get("reqTypeSelect").value,
-                customerName: this.form.get("corpName").value,
+                customerName: this.form.get("corpName1").value,
                 companyName: this.form.get("corpName").value,
                 organizeId: this.form.get("corpNo").value,
                 accountName: this.form.get("accName").value,
