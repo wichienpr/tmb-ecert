@@ -25,6 +25,9 @@
 	<parameter name="other" class="java.lang.String"/>
 	<parameter name="otherDesc" class="java.lang.String"/>
 	<parameter name="accountNo" class="java.lang.String"/>
+	<parameter name="receiptName" class="java.lang.String"/>
+	<parameter name="numSetCc" class="java.lang.String"/>
+	<parameter name="numEditCc" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -109,7 +112,7 @@
 				<textFieldExpression><![CDATA["เจ้าของบัญชีเงินฝากเลขที่"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="consent_title" x="95" y="154" width="106" height="18" uuid="94fb7bd6-2c74-42a8-9b32-d12d0d1b5fe3"/>
+				<reportElement style="consent_title" x="95" y="154" width="97" height="18" uuid="94fb7bd6-2c74-42a8-9b32-d12d0d1b5fe3"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -122,11 +125,11 @@
 				<textFieldExpression><![CDATA[$P{accountNo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="consent_detail" positionType="Float" x="201" y="154" width="334" height="18" uuid="88bd4762-339f-46dd-98bd-809434e2492e"/>
+				<reportElement style="consent_detail" positionType="Float" x="192" y="154" width="343" height="18" uuid="88bd4762-339f-46dd-98bd-809434e2492e"/>
 				<textElement markup="styled">
 					<font size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA["<style isBold='true'> บัญชีเงินฝาก</style>  ขอทำหนังสือยินยอมให้แก่ธนาคารเพื่อให้ธนาคารหักเงินจากบัญชีเงินฝากของ"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["<style isBold='true'> (“บัญชีเงินฝาก”)</style>  ขอทำหนังสือยินยอมให้แก่ธนาคารเพื่อให้ธนาคารหักเงินจากบัญชีเงินฝากของ"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="consent_detail" x="0" y="172" width="535" height="18" uuid="4153c575-89b7-42b3-b2cc-68f24ffcc3c7"/>
@@ -140,7 +143,7 @@
 				<textElement textAlignment="Left" markup="styled">
 					<font size="13"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(e-Certificate)ตามจำนวนเงินที่ธนาคารได้รับแจ้งจากข้อมูลอิเล็กทรอนิกส์ (Electronic Data) ของกรมพัฒนาธุรกิจการค้า <style isBold='true'> คำขอ</style> และ/หรือ บัญชีอื่นใด"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(e-Certificate)ตามจำนวนเงินที่ธนาคารได้รับแจ้งจากข้อมูลอิเล็กทรอนิกส์ (Electronic Data) ของกรมพัฒนาธุรกิจการค้า <style isBold='true'> (“คำขอ”)</style> และ/หรือ บัญชีอื่นใด"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="consent_detail" x="0" y="208" width="535" height="18" uuid="c1ea0667-63f8-4d27-adac-9ec5124ff938"/>
@@ -327,14 +330,14 @@
 					<textFieldExpression><![CDATA["ทะเบียนเลขที่"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="137" y="90" width="74" height="18" uuid="46976e34-40de-4df0-944c-478c6610107e"/>
+					<reportElement style="consent_detail" x="144" y="90" width="67" height="18" uuid="46976e34-40de-4df0-944c-478c6610107e"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Center">
 						<font size="13"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{certificate} ?$P{certificateTotal} : ""]]></textFieldExpression>
@@ -354,16 +357,17 @@
 					<textFieldExpression><![CDATA["ระบุ ชื่อผู้ชำระเงินในใบเสร็จ"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="343" y="90" width="170" height="18" uuid="1b186d20-243e-484e-8584-b7c03e6a5398"/>
+					<reportElement style="consent_detail" x="345" y="90" width="168" height="18" uuid="1b186d20-243e-484e-8584-b7c03e6a5398"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Left">
 						<font size="13"/>
 					</textElement>
+					<textFieldExpression><![CDATA[$P{certificate} ?$P{receiptName} : ""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="consent_detail" x="213" y="108" width="30" height="18" uuid="36de745c-efad-4543-a73e-7d02abb625f5"/>
@@ -380,7 +384,33 @@
 					<textFieldExpression><![CDATA["ระบุ ชื่อผู้ชำระเงินในใบเสร็จ"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="343" y="108" width="170" height="18" uuid="3c589925-e1e8-4780-96ec-289926cc784e"/>
+					<reportElement style="consent_detail" x="345" y="108" width="168" height="18" uuid="3c589925-e1e8-4780-96ec-289926cc784e"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateCopy}?"0".equals( $P{certificateCopyTotal})?"":$P{receiptName} : ""]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="144" y="108" width="67" height="18" uuid="de748111-8f65-4aa9-b84b-1c8943b35e27"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" markup="none">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateCopy}?"0".equals( $P{certificateCopyTotal})?"":$P{certificateCopyTotal} : ""]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="consent_detail" x="231" y="144" width="135" height="18" uuid="16dbb2c7-37e1-4251-bc80-02deaf2e5651"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -390,35 +420,10 @@
 					<textElement textAlignment="Center">
 						<font size="13"/>
 					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateCopy} ?$P{moaDocLastestDate} != null ?$P{moaDocLastestDate}:"" : ""]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="133" y="108" width="78" height="18" uuid="de748111-8f65-4aa9-b84b-1c8943b35e27"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="13"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{certificateCopy}?"0".equals( $P{certificateCopyTotal})?"":$P{certificateCopyTotal} : "\u2610"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="231" y="144" width="142" height="18" uuid="16dbb2c7-37e1-4251-bc80-02deaf2e5651"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="13"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{certificateCopy} ?$P{moaDocLastestDate} != null ?$P{moaDocLastestDate}:"\u2610" : "\u2610"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="121" y="181" width="141" height="18" uuid="803fe482-f199-4e29-b967-ddd054272c7d"/>
+					<reportElement style="consent_detail" x="121" y="181" width="143" height="18" uuid="803fe482-f199-4e29-b967-ddd054272c7d"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -444,7 +449,7 @@
 					<textFieldExpression><![CDATA[$P{stockholderDate}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="consent_detail" x="73" y="252" width="168" height="18" uuid="a8597264-2b0b-4b64-9ad7-66c90b3d3298"/>
+					<reportElement style="consent_detail" x="73" y="253" width="168" height="17" uuid="a8597264-2b0b-4b64-9ad7-66c90b3d3298"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -528,17 +533,17 @@
 				</textField>
 				<textField>
 					<reportElement style="consent_detail" x="50" y="108" width="89" height="18" uuid="cce28aca-2ade-45ca-8272-853d614e5dbf"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Left" markup="styled">
 						<font size="13" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["รับรองสำเนา จำนวน"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["รับรองสำเนา  <style isBold='false'>จำนวน</style>"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="consent_detail" x="50" y="90" width="94" height="18" uuid="a390f0c2-caea-4684-9615-6bb749a762d8"/>
-					<textElement textAlignment="Left">
+					<textElement textAlignment="Left" markup="styled">
 						<font size="13" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["หนังสือรับรอง จำนวน"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["หนังสือรับรอง  <style isBold='false'>จำนวน</style>"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="37" y="92" width="12" height="18" uuid="24193086-1e35-4d30-b763-94ee0e745515"/>
@@ -762,13 +767,13 @@
 					</graphicElement>
 				</line>
 				<line>
-					<reportElement x="137" y="122" width="76" height="1" uuid="e8874f24-36af-45b0-8c1e-31edaf5a11ab"/>
+					<reportElement x="140" y="122" width="73" height="1" uuid="e8874f24-36af-45b0-8c1e-31edaf5a11ab"/>
 					<graphicElement>
 						<pen lineStyle="Dotted"/>
 					</graphicElement>
 				</line>
 				<line>
-					<reportElement x="345" y="103" width="168" height="1" uuid="e69d9d9b-6751-4a01-a8cf-db4c3a0631f9"/>
+					<reportElement x="345" y="104" width="168" height="1" uuid="e69d9d9b-6751-4a01-a8cf-db4c3a0631f9"/>
 					<graphicElement>
 						<pen lineStyle="Dotted"/>
 					</graphicElement>
@@ -780,7 +785,7 @@
 					</graphicElement>
 				</line>
 				<line>
-					<reportElement x="233" y="158" width="140" height="1" uuid="3c351a73-646c-4bab-99fe-857308cdc746"/>
+					<reportElement x="232" y="159" width="133" height="1" uuid="3c351a73-646c-4bab-99fe-857308cdc746"/>
 					<graphicElement>
 						<pen lineStyle="Dotted"/>
 					</graphicElement>
@@ -798,11 +803,65 @@
 					</graphicElement>
 				</line>
 				<line>
-					<reportElement x="71" y="267" width="169" height="1" uuid="a24b06e6-245c-4874-b942-9fa989aef3a2"/>
+					<reportElement x="72" y="268" width="169" height="1" uuid="a24b06e6-245c-4874-b942-9fa989aef3a2"/>
 					<graphicElement>
 						<pen lineStyle="Dotted"/>
 					</graphicElement>
 				</line>
+				<textField>
+					<reportElement style="consent_detail" x="201" y="126" width="42" height="18" uuid="a9ee8bff-ab48-47f3-a0ef-a732f7b7dfe4"/>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["จำนวน"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="239" y="140" width="46" height="1" uuid="c0d89662-4a48-41af-9048-19667e975756"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement style="consent_detail" x="285" y="126" width="25" height="18" uuid="e5a41762-779a-4f3f-8c8e-f9cd7d0f2f3f"/>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="243" y="126" width="42" height="18" uuid="ca7f133d-3099-4aa1-889a-909752a71b82"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cordia New" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateCopy} ? $P{moaDoc} > 0 ?$P{numSetCc}:"" : ""]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="consent_detail" x="366" y="144" width="33" height="18" uuid="ecdcda9f-64f7-484a-9c1d-db27c470aa00"/>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["จำนวน"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="399" y="144" width="48" height="18" uuid="d5557119-418e-4dd2-b8a7-2490baba9595"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cordia New" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateCopy} ?$P{moaDocLastestDate} != null ?$P{numEditCc}:"" : ""]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="399" y="158" width="48" height="1" uuid="2eb3eb6e-6522-49da-b0d4-f2ac74839dab"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement style="consent_detail" x="447" y="144" width="25" height="18" uuid="1b8d4f67-1922-402c-a908-38a02b71592f"/>
+					<textElement textAlignment="Center">
+						<font size="13"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
+				</textField>
 			</frame>
 			<line>
 				<reportElement x="44" y="120" width="89" height="1" uuid="a7368c90-a5f1-4271-9500-ba8363e9d9ea"/>
@@ -817,7 +876,7 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="95" y="169" width="105" height="1" uuid="405f4d05-33c8-4e73-ac62-c13e52538294"/>
+				<reportElement x="95" y="168" width="97" height="1" uuid="405f4d05-33c8-4e73-ac62-c13e52538294"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>

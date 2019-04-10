@@ -993,8 +993,9 @@ public class ReportPdfService {
 				params01.put("typeCertificate", "   ");
 			}
 			params01.put("typeCertificate",vo.getTypeCertificate());
-			params01.put("customerName", vo.getCustomerName());
+			params01.put("customerName", vo.getCompanyName());
 			params01.put("telephone", vo.getTelephone());
+			params01.put("receiptName", vo.getCustomerName());
 
 			Date reqDate = DateConstant.convertStrDDMMYYYYToDate(vo.getReqDate());
 			params01.put("reqDate", DateFormatUtils.format(reqDate, "dd MMMM yyyy", new Locale("th", "TH")));
@@ -1036,6 +1037,8 @@ public class ReportPdfService {
 					rpReqFormListVo.setTotalNumCc(data.getNumSetCc() + data.getNumEditCc() + data.getNumOtherCc());
 					params01.put("certificateCopyTotal", Integer.toString(data.getNumSetCc() + data.getNumEditCc()));
 					params01.put("moaDoc",data.getNumSetCc());
+					params01.put("numSetCc",Integer.toString(data.getNumSetCc()));
+					params01.put("numEditCc",Integer.toString(data.getNumEditCc()));
 				}
 				
 				if (BeanUtils.isNotEmpty(data.getNumSetCc()) || BeanUtils.isNotEmpty(data.getNumEditCc())){
