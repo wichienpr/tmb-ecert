@@ -503,7 +503,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="13"/>
 					</textElement>
-					<textFieldExpression><![CDATA["\u2611"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["\u2610"]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement style="consent_detail" x="291" y="19" width="39" height="18" uuid="23480717-a7a2-4cb0-9371-598fcdae2f05"/>
@@ -855,6 +855,13 @@
 					<font size="13" isBold="false" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<style isBold = \"true\" isUnderline=\"true\">หมายเหตุ</style> :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="678" width="170" height="18" uuid="7c8163cb-a86a-43d2-9b04-fe8a0a79119d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Cordia New" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{accountName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
