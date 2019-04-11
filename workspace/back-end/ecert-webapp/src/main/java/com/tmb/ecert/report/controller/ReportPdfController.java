@@ -63,7 +63,8 @@ public class ReportPdfController {
 	@PostMapping("/reqForm")
 	@ResponseBody
 	public String pdfreqForm(@RequestBody RpReqFormVo vo) throws IOException, JRException {
-		return reportPdfService.reqFormToPdf(vo);
+//		return reportPdfService.reqFormToPdf(vo);
+		return reportPdfService.reqFormToPdfOnepage(vo);
 	}
 	
 	/* reprintreceiptTax */

@@ -59,7 +59,7 @@ public class TMBLDAPManager {
 		LdapContextSource contextSource = new LdapContextSource();
 		contextSource.setUrl(url);
 		contextSource.setBase(base);
-		String[] usernames = username.split(" ");
+		String[] usernames = username.split(" "); 
 		String adUsername = null;
 		if(usernames!=null && usernames.length>0){
 			adUsername = usernames[0];
