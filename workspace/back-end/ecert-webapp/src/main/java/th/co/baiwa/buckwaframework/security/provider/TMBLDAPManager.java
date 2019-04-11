@@ -4,6 +4,7 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.tmb.aes256.TmbAesUtil;
 
 import javax.management.relation.RoleInfoNotFoundException;
 import javax.naming.NamingException;
@@ -12,6 +13,7 @@ import javax.naming.directory.Attributes;
 import javax.sql.rowset.spi.TransactionalWriter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.AuthenticationException;
@@ -47,6 +49,9 @@ public class TMBLDAPManager {
 	@Value("${ldap.password}")
 	private String systemPwd;
 	
+	@Value("${aes256.keystore.path}")
+	private String keystorePath;
+	
 	@Autowired
 	private UserProfileDao userProfileDao;
 	
@@ -63,7 +68,8 @@ public class TMBLDAPManager {
 				contextSource.setPassword(password);
 			}else {
 				contextSource.setUserDn(systemUsername  +"@" + domain);
-				contextSource.setPassword(systemPwd);
+				Log.info("@_Show Decrypy : " + TmbAesUtil.decrypt(keystorePath, systemPwd));
+				contextSource.setPassword(TmbAesUtil.decrypt(keystorePath, systemPwd));  //systemPwd
 			}
 		}
 		
