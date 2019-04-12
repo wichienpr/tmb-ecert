@@ -28,6 +28,7 @@
 	<parameter name="receiptName" class="java.lang.String"/>
 	<parameter name="numSetCc" class="java.lang.String"/>
 	<parameter name="numEditCc" class="java.lang.String"/>
+	<parameter name="otherDate" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -862,6 +863,26 @@
 					</textElement>
 					<textFieldExpression><![CDATA["ฉบับ"]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement x="241" y="253" width="26" height="17" uuid="5e748c7c-826f-4735-833f-2503b23ffbcd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cordia New" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["วันที่"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="265" y="253" width="102" height="17" uuid="7ac314fe-ad6f-4567-9d95-ea7f7224fcf3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cordia New" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Y".equals( $P{other} )?$P{otherDate} : ""]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="265" y="268" width="102" height="1" uuid="4fa10ed7-ada4-429d-8582-7ae85a8bf672"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
 			</frame>
 			<line>
 				<reportElement x="44" y="120" width="89" height="1" uuid="a7368c90-a5f1-4271-9500-ba8363e9d9ea"/>
