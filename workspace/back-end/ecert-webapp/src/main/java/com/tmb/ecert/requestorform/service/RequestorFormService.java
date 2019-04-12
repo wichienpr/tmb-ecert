@@ -421,6 +421,11 @@ public class RequestorFormService {
 			req.setLockFlag(0);
 			req.setDeleteFlag(0);
 			req.setMajorNo("00000");
+			req.setCreatedByDepartment(UserLoginUtils.getCurrentUserLogin().getDepartmentCode() +" / "+UserLoginUtils.getCurrentUserLogin().getDepartment());
+			req.setCreatedByGroup(UserLoginUtils.getCurrentUserLogin().getGroup());
+			req.setCreatedByBelongto(UserLoginUtils.getCurrentUserLogin().getBelongto());
+			req.setCreatedByTel(UserLoginUtils.getCurrentUserLogin().getTelephoneNo());
+			req.setCreatedByEmail(UserLoginUtils.getCurrentUserLogin().getEmail());
 			dao.save(req); // SAVE REQUEST FORM
 			msg.setData(reqTmbNo);
 			msg.setMessage("SUCCESS");

@@ -617,7 +617,7 @@ public class ReportPdfService {
 		Date currentDate = new Date();
 		ReqReceiptVo req = null;
 		ByteArrayOutputStream os =null;
-		String reasonFormat = "ใบแทนออกให้ครั้งที่ %s   เมื่อวันที่ %s  เนื่องจาก %s ";
+		String reasonFormat = "ใบแทนออกให้ครั้งที่ %s  เมื่อวันที่ %s  เนื่องจาก %s ";
 		try {
 			// Folder Exist ??
 			initialService();
@@ -747,7 +747,8 @@ public class ReportPdfService {
 //			req.setReceipt_date(new Timestamp(System.currentTimeMillis()));
 			req.setReceipt_date(req.getReceipt_date());
 			req.setPrint_count(print_count);
-			req.setReason(vo.getReason());
+			req.setReason(String.format(reasonFormat, Integer.toString(print_count),
+					DateFormatUtils.format(new Date(), "dd MMMM yyyy", new Locale("th", "TH")), vo.getReason()));
 			req.setReceiptStatus(StatusConstant.RECEIPT_STATUS.REPRINT_RECEIPT);
 			upDateReqDetailDao.updateReqReceipt(req);
 			
@@ -796,7 +797,7 @@ public class ReportPdfService {
 			String oldReceiptNo = req.getReceipt_no();
 //			req.setCancel_flag(0);
 			req.setReqform_id(vo.getId());
-			req.setReason("ถูกยกเลิกและออกใบกำกับภาษีฉบับใหม่ด้วย เลขที่ "+ receiptNo);
+			req.setReason("ถูกยกเลิกและออกใบกำกับภาษีฉบับใหม่ด้วย เลขที่ "+ receiptNo+" เนื่องจาก "+vo.getReason());
 			req.setUpdatedById(user.getUserId());
 			req.setUpdatedByName(user.getFirstName()+" "+user.getLastName());
 			req.setReceiptStatus(StatusConstant.RECEIPT_STATUS.CANCEL_RECEIPT);
@@ -1048,6 +1049,9 @@ public class ReportPdfService {
 				if (BeanUtils.isNotEmpty(data.getOther())) {
 					params01.put("other", "Y");
 					params01.put("otherDesc", data.getOther());
+					
+					Date dateOtherReg = DateConstant.convertStrDDMMYYYYToDate(data.getDateOtherReg());
+					params01.put("otherDate",DateFormatUtils.format(dateOtherReg, "dd MMMM yyyy", new Locale("th", "TH")));
 				}else {
 					params01.put("other", "N");
 				}
