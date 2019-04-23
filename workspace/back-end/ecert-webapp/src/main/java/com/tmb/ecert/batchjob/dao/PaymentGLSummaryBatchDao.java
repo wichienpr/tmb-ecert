@@ -187,6 +187,7 @@ public class PaymentGLSummaryBatchDao {
 					reqForm.setUpdatedDateTime(rs.getTimestamp("UPDATED_DATETIME"));
 					reqForm.setOfficeCode(rs.getString("OFFICE_CODE"));
 					reqForm.setReceiptFile(rs.getString("RECEIPT_FILE"));
+					reqForm.setMajorNo(rs.getString("MAJOR_NO"));
 
 					long reqFormCertId = rs.getLong("REQFORM_ID_1");
 					if (reqFormCertId > 0) {

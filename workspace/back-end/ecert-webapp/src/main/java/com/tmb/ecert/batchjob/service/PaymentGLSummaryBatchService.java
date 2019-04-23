@@ -264,15 +264,21 @@ public class PaymentGLSummaryBatchService {
 		tmp.add("");
 		tmp.add("");
 		tmp.add(this.replaceValue(request.getReceiptNo(), 0, 30));
-		tmp.add(this.replaceValue(this.covertDate(request.getReceiptDate(), DATE_FORMAT_DDMMYYYY), 0, 8));
+//		fix 22 04 2019 
+//		tmp.add(this.replaceValue(this.covertDate(request.getReceiptDate(), DATE_FORMAT_DDMMYYYY), 0, 8)); 
+		tmp.add(this.replaceValue(this.covertDate(request.getPayLoadTs(), DATE_FORMAT_DDMMYYYY), 0, 8));
+		
 		tmp.add("");
 		tmp.add(this.replaceValue(request.getOrganizeId(), 0, 13));
 		tmp.add(this.replaceValue(request.getCompanyName(), 0, 100));
 		tmp.add(this.replaceValue(request.getAddress(), 0, glAddress[0]));
 		tmp.add(this.replaceValue(request.getAddress(), glAddress[0], glAddress[1]));
 		tmp.add(this.replaceValue(request.getAddress(), glAddress[1], glAddress[2]));
-		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_RD_PLACE), 0, 100));
+//		tmp.add(this.replaceValue(ApplicationCache.getParamValueByName(PAYMENT_GL_SUMMARY.BATCH_GL_RD_PLACE), 0, 100));
 		tmp.add("");
+		tmp.add(this.replaceValue(request.getMajorNo(), 0, 5));
+		
+		
 		tmp.add("");
 		tmp.add("");
 		tmp.add(this.replaceValue(this.getAmountNoVat(request.getAmountTmb()), 0, 16));
